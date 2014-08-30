@@ -110,7 +110,7 @@ TTextoTransfer& TTextoTransfer::operator=( const TTexto &Texto )
 //---------------------------------------------------------------------------
 CDadosGenerico::CDadosGenerico()
 {
-	NumElementos = NumMultipoint = NumArcos = NumTextos = IDArquivo = IndiceDesenho = 0;
+	NumElementos = IDArquivo = IndiceDesenho = 0;
 
 	InfoCelula.somaX = InfoCelula.somaY = InfoCelula.somaZ = InfoCelula.FimCelula = 0;
 	InfoCelula.DentroCelula = false;
@@ -135,56 +135,56 @@ CDadosGenerico::~CDadosGenerico ()
 
 void CDadosGenerico::convertePraTransfer(TDadosTransfer *dados)
 {
-	dados->NumMultipoint = NumMultipoint;
-	dados->NumArcos = NumArcos;
-	dados->NumTextos = NumTextos;
-	dados->Multipoint = new TMultipoint[NumMultipoint];
-	dados->Arcos = new TArco[NumArcos];
-	dados->Textos = new TTextoTransfer[NumTextos];
-	dados->IndiceDesenho = IndiceDesenho;
-	dados->IDArquivo = IDArquivo;
-	for ( int i = 0 ; i < NumMultipoint ; i++ )
-	{
-		dados->Multipoint[i] = Multipoint[i];
-	}
-	//      copy(Multipoint.begin(), Multipoint.end(), dados->Multipoint);
-	if ( NumArcos > 0 )
-		copy(Arcos.begin(), Arcos.end(), dados->Arcos);
-	if ( NumTextos > 0 )
-		copy(Textos.begin(), Textos.end(), dados->Textos);
-	dados->InfoCelula = InfoCelula;
-	dados->NomeArqTam = NomeArq.size();
-	dados->NomeArq = new char[dados->NomeArqTam+1];
-	strncpy(dados->NomeArq, NomeArq.c_str(), dados->NomeArqTam);
+	//dados->NumMultipoint = NumMultipoint;
+	//dados->NumArcos = NumArcos;
+	//dados->NumTextos = NumTextos;
+	//dados->Multipoint = new TMultipoint[NumMultipoint];
+	//dados->Arcos = new TArco[NumArcos];
+	//dados->Textos = new TTextoTransfer[NumTextos];
+	//dados->IndiceDesenho = IndiceDesenho;
+	//dados->IDArquivo = IDArquivo;
+	//for ( int i = 0 ; i < NumMultipoint ; i++ )
+	//{
+	//	dados->Multipoint[i] = Multipoint[i];
+	//}
+	////      copy(Multipoint.begin(), Multipoint.end(), dados->Multipoint);
+	//if ( NumArcos > 0 )
+	//	copy(Arcos.begin(), Arcos.end(), dados->Arcos);
+	//if ( NumTextos > 0 )
+	//	copy(Textos.begin(), Textos.end(), dados->Textos);
+	//dados->InfoCelula = InfoCelula;
+	//dados->NomeArqTam = NomeArq.size();
+	//dados->NomeArq = new char[dados->NomeArqTam+1];
+	//strncpy(dados->NomeArq, NomeArq.c_str(), dados->NomeArqTam);
 }
 //---------------------------------------------------------------------------
 
 void CDadosGenerico::importaTransfer(TDadosTransfer *dados)
 {
-	int i;
-	NumMultipoint = dados->NumMultipoint;
-	NumArcos = dados->NumArcos;
-	NumTextos = dados->NumTextos;
-	NumElementos = NumMultipoint + NumArcos + NumTextos;
-	IndiceDesenho = dados->IndiceDesenho;
-	IDArquivo = dados->IDArquivo;
-	for ( i = 0 ; i < NumMultipoint ; i++ )
-	{
-		Multipoint.push_back(dados->Multipoint[i]);
-	}
-	for ( i = 0 ; i < NumArcos ; i++ )
-	{
-		Arcos.push_back(dados->Arcos[i]);
-	}
-	for ( i = 0 ; i < NumTextos ; i++ )
-	{
-		Textos.push_back(dados->Textos[i]);
-	}
-	//      Multipoint.assign(&dados->Multipoint[0], &dados->Multipoint[NumMultipoint-1]);
-	//      Arcos.assign(&dados->Arcos[0], &dados->Arcos[NumArcos-1]);
-	//      Textos.assign(&dados->Textos[0], &dados->Textos[NumTextos-1]);
-	InfoCelula = dados->InfoCelula;
-	NomeArq = string(dados->NomeArq, dados->NomeArqTam);
+	//int i;
+	//NumMultipoint = dados->NumMultipoint;
+	//NumArcos = dados->NumArcos;
+	//NumTextos = dados->NumTextos;
+	//NumElementos = NumMultipoint + NumArcos + NumTextos;
+	//IndiceDesenho = dados->IndiceDesenho;
+	//IDArquivo = dados->IDArquivo;
+	//for ( i = 0 ; i < NumMultipoint ; i++ )
+	//{
+	//	Multipoint.push_back(dados->Multipoint[i]);
+	//}
+	//for ( i = 0 ; i < NumArcos ; i++ )
+	//{
+	//	Arcos.push_back(dados->Arcos[i]);
+	//}
+	//for ( i = 0 ; i < NumTextos ; i++ )
+	//{
+	//	Textos.push_back(dados->Textos[i]);
+	//}
+	////      Multipoint.assign(&dados->Multipoint[0], &dados->Multipoint[NumMultipoint-1]);
+	////      Arcos.assign(&dados->Arcos[0], &dados->Arcos[NumArcos-1]);
+	////      Textos.assign(&dados->Textos[0], &dados->Textos[NumTextos-1]);
+	//InfoCelula = dados->InfoCelula;
+	//NomeArq = string(dados->NomeArq, dados->NomeArqTam);
 }
 
 void liberaTransfer (TDadosTransfer *dados)

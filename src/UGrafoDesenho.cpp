@@ -167,7 +167,7 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TDadosTran
     tempo->MostraTempo((string)"Tempo " + ExtractFileName(Dados->NomeArq.c_str()).c_str() + ".txt");
 #endif
   }
-    ult = Dados->NumMultipoint;
+  ult = Dados->Multipoint.size();
 }
 //---------------------------------------------------------------------------
 
@@ -176,9 +176,9 @@ CGrafoDesenho::~CGrafoDesenho()
   if (CarregaGrafo)
   {
     int n;
-    for (n=0; n<Dados->NumMultipoint; n++)
+    for (n=0; n<Dados->Multipoint.size(); n++)
       delete CabosReta[n];
-    for (n=0; n<Dados->NumArcos; n++)
+    for (n=0; n<Dados->Arcos.size(); n++)
       delete CabosArco[n];
     delete [] CabosArco;
     delete [] CabosReta;
@@ -196,18 +196,18 @@ CGrafoDesenho::~CGrafoDesenho()
 void CGrafoDesenho::AlocaElementos()
 {
   int n;
-  CabosReta = new CCaboReta * [Dados->NumMultipoint];
-  for (n=0; n<Dados->NumMultipoint; n++)
+  CabosReta = new CCaboReta * [Dados->Multipoint.size()];
+  for (n=0; n<Dados->Multipoint.size(); n++)
     CabosReta[n] = new CCaboReta();
-  CabosArco = new CCaboArco * [Dados->NumArcos];
-  for (n=0; n<Dados->NumArcos; n++)
+  CabosArco = new CCaboArco * [Dados->Arcos.size()];
+  for (n=0; n<Dados->Arcos.size(); n++)
     CabosArco[n] = new CCaboArco();
 
   //	iCabosArco =             new int [Dados->NumArcos];
-  iLinhasBandeirola =      new int [Dados->NumMultipoint];
-  iCirculosBandeirola =    new int [Dados->NumArcos];
-  iRetangulosInstrumento = new int [Dados->NumMultipoint];
-  iCirculosInstrumento =   new int [Dados->NumMultipoint];
+  iLinhasBandeirola =      new int [Dados->Multipoint.size()];
+  iCirculosBandeirola =    new int [Dados->Arcos.size()];
+  iRetangulosInstrumento = new int [Dados->Multipoint.size()];
+  iCirculosInstrumento =   new int [Dados->Multipoint.size()];
 }
 //---------------------------------------------------------------------------
 
@@ -218,7 +218,7 @@ void CGrafoDesenho::GeraListaCabos()
   int n;
   TPonto *Pontos;
   double DifX, DifY;
-  for (n=0; n<Dados->NumMultipoint; n++)
+  for (n=0; n<Dados->Multipoint.size(); n++)
   {
     //verifica o tipo de elemento pela cor
     if ((Dados->Multipoint[n].Nivel==CABO)/* &&
@@ -235,7 +235,7 @@ void CGrafoDesenho::GeraListaCabos()
   }
 
   double SomaRaios=0;
-  for (n=0; n<Dados->NumArcos; n++)
+  for (n=0; n<Dados->Arcos.size(); n++)
   {
     if ((Dados->Arcos[n].Nivel==CABO) &&
       (Dados->Arcos[n].AngTam<180.0)/* &&

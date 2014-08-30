@@ -210,9 +210,6 @@ protected:
 public:
 	int IndiceDesenho;
 	int NumElementos;
-	int NumMultipoint;
-	int NumArcos;
-	int NumTextos;
 	int IDArquivo;
 	TInfoCelula InfoCelula;
 	string NomeArq;
