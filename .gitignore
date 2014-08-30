@@ -1,0 +1,12 @@
+bin
+*.exe
+*.ilk
+*.pdb
+*.res
+*.bin
+*.vcproj
+*.tlog
+*.filters
+*.obj
+*.cache
+*.lastbuildstate
