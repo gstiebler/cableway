@@ -77,54 +77,20 @@ bool CCaboReta::EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int
 
 //---------------------------------------------------------------------------
 
-CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho)
+CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TDadosTransfer *dadosDLL)
 //                                            : CDadosDGN(ParamsGrafoDesenho)
 {
   pri=0;
   CarregaGrafo=ParamsGrafoDesenho.CarregaGrafo;
 
-  // Pega a extensão do arquivo, para tentar carregar
-  // ToDo(?): Abrir qualquer arquivo e pegar a partir do header o seu tipo
-  string extensao;
-  string NomeArq = string(ParamsGrafoDesenho.NomeArq, ParamsGrafoDesenho.TamNomeArq);
-  extensao = NomeArq.substr(NomeArq.size() - 4, 4);
-  transform(extensao.begin(), extensao.end(), extensao.begin(), toupper);
   CTempoExec *tempo = CTempoExec::getInstance();
 
   tempo->MarcaTempo("Inicio da marcacao de tempo no grafoDesenho");
 
   // Cria um DadosGenerico para ser usado
   Dados = new CDadosGenerico();
-  // E seta o dadosDLL pra NULL pois ele será criado na DLL
-  TDadosTransfer *dadosDLL = NULL;
-  if ( extensao == ".DGN" )
-  {
-    // A ordem de carregamento é primeiro V7 e caso não funcione, V8
-    tempo->MarcaTempo("Abre a DLL!");
-    //CarregaArquivoDGNV7(ParamsGrafoDesenho.NomeArq,NomeArq.size(), ParamsGrafoDesenho, &dadosDLL);
-    tempo->MarcaTempo("Tempo de carga do arquivo V7");
-    Dados->importaTransfer(dadosDLL);
-    //liberaDadosDGNV7(&dadosDLL);
 
-    if ( Dados->NomeArq != NomeArq )
-    {
-      //CarregaArquivoDGN(ParamsGrafoDesenho.NomeArq, NomeArq.size(), ParamsGrafoDesenho, &dadosDLL);
-      Dados->importaTransfer(dadosDLL);
-      //liberaDadosDGN(&dadosDLL);
-    }
-  }
-  else if ( extensao == ".DWG" )
-  {
-    //CarregaArquivoDWG(ParamsGrafoDesenho.NomeArq, NomeArq.size(), ParamsGrafoDesenho, &dadosDLL);
-    Dados->importaTransfer(dadosDLL);
-    //liberaDadosDWG(&dadosDLL);
-  }
-  else
-  {
-    // Caso não seja uma extensão conhecida
-    //    ShowMessage("Erro Fatal: Tipo de Arquivo Desconhecido " + extensao + ". O Programa será encerrado.");
-    //Application->Terminate();
-  }
+  Dados->importaTransfer(dadosDLL);
 
   if (CarregaGrafo)
   {

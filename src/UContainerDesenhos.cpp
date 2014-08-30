@@ -77,15 +77,8 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
 
   // Cria um novo params
   TParamsGrafoDesenho ParamsGrafoDesenho;
-  // Preenche com o nome do arquivo
-  ParamsGrafoDesenho.NomeArq = new char[NomeArquivo.size()+1];
-  memset(ParamsGrafoDesenho.NomeArq, 0, NomeArquivo.size()+1);
-  strncpy(ParamsGrafoDesenho.NomeArq, NomeArquivo.c_str(), NomeArquivo.size());
-  ParamsGrafoDesenho.TamNomeArq = NomeArquivo.size();
   // O Id
   ParamsGrafoDesenho.IDArquivo = id;
-  // Diz para fechar o arquivo depois
-  ParamsGrafoDesenho.FechaArquivo=true;
   // Para carregar o grafo
   ParamsGrafoDesenho.CarregaGrafo=carregagrafo;
   // Define as alturas -- HARDCODED?? :(
@@ -102,8 +95,10 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   ParamsGrafoDesenho.NiveisProjeto=Niveis;
   try
   {
+	  //TODO carregar a estrutura TDadosTransfer
+	TDadosTransfer dadosDLL;
     // Tenta criar um grafodesenho com os parâmetros passados
-    Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho);
+    Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, &dadosDLL);
     // E adicionar o desenho na lista de desenhos
     ListaDesenhos.push_back(Desenho);
   }
@@ -112,8 +107,6 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
     // Algo deu errado ao criar/adicionar o desenho.
     ShowMessage("Erro ao criar desenho na memória.");
   }
-  // Apaga o char * com o nome do arquivo
-  delete[] ParamsGrafoDesenho.NomeArq;
 }
 //---------------------------------------------------------------------------
 

@@ -11,9 +11,6 @@ class TListaArestasReduzidas;
 
 struct TParamsDadosGenerico
 {
-  char *NomeArq;
-  int TamNomeArq;
-  bool FechaArquivo;
   int IndiceDesenho;
   TNiveisProjetoTransfer *NiveisProjeto;
   int IDArquivo; 

@@ -2,16 +2,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
+#include "UParamsStructs.h"
+#include "UGrafoDesenho.h"
+#include "UNiveisProjeto.h"
+
 int main (int argc, char *argv[])
 {
-  if (argc < 2)
-    {
-    fprintf(stdout,"Usage: %s number\n",argv[0]);
-    return 1;
-    }
-  double inputValue = atof(argv[1]);
-  double outputValue = sqrt(inputValue);
-  fprintf(stdout,"The square root of %g is %g\n",
-          inputValue, outputValue);
-  return 0;
+	TNiveisProjetoTransfer niveisProjetoTransfer;
+	// Cria um novo params
+	TParamsGrafoDesenho paramsGrafoDesenho;
+	
+	TParamsInfoCircuitos paramsInfoCircuitos;
+	// O Id
+	paramsGrafoDesenho.IDArquivo = 3;
+	// Para carregar o grafo
+	paramsGrafoDesenho.CarregaGrafo = true;
+	// Define as alturas -- HARDCODED?? :(
+	paramsGrafoDesenho.AlturaTeto=2.0;
+	paramsGrafoDesenho.AlturaInterrup=0.7;
+	paramsGrafoDesenho.Altura = 30.0;
+	// Preenche o índice do desenho
+	paramsGrafoDesenho.IndiceDesenho = 0;
+	// Passa um ponteiro para o VerticesGerais (TVerticesGerais)
+	paramsGrafoDesenho.VerticesGerais = paramsInfoCircuitos.VerticesGerais;
+	// E um ponteiro pro Arestas (TListaArestas)
+	paramsGrafoDesenho.Arestas = paramsInfoCircuitos.Arestas;
+	// E um ponteiro pro NiveisProjeto (TNiveisProjetoTransfer)
+	paramsGrafoDesenho.NiveisProjeto = &niveisProjetoTransfer;
+
+	TDadosTransfer dadosDLL;
+
+	CGrafoDesenho grafoDesenho(paramsGrafoDesenho, &dadosDLL);
+
+	return 0;
 }
