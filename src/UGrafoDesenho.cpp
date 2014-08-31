@@ -1362,7 +1362,7 @@ void CGrafoDesenho::OrdenaVerticesRetas()
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::GeraColares(std::vector<void*> ListaDesenhos)
+void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
 {
     if (!CarregaGrafo)
         return;
@@ -1379,8 +1379,8 @@ void CGrafoDesenho::GeraColares(std::vector<void*> ListaDesenhos)
             if ((V1->texto == V2->texto && !V2->EhPrensaCabo) && (V1->iDesenho != V2->iDesenho)
                     && (V1->TipoElemento == INSTRUMENTO) && (V2->TipoElemento == INSTRUMENTO))
             {
-                double alturaDaAresta = ((TDesenho *) (ListaDesenhos[V1->iDesenho]))->Altura
-                        - ((TDesenho *) (ListaDesenhos[V2->iDesenho]))->Altura;
+                double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura
+                        - ListaDesenhos[V2->iDesenho]->Altura;
                 if (alturaDaAresta < 0)
                     alturaDaAresta *= -1;
                 TAresta Aresta;
@@ -1402,7 +1402,7 @@ void CGrafoDesenho::GeraColares(std::vector<void*> ListaDesenhos)
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::ChecagemVerticeDuplo(std::vector<void*> ListaDesenhos)
+void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos)
 {
     if (!CarregaGrafo)
         return;
@@ -1455,8 +1455,7 @@ void CGrafoDesenho::ChecagemVerticeDuplo(std::vector<void*> ListaDesenhos)
 
                         erros->novoErro(
                                 "No desenho: "
-                                        + ((TDesenho *) (ListaDesenhos[((TVerticeGeral *) (Lista->at(
-                                                n )))->iDesenho]))->NomeArquivo + " em nível de "
+                                        + ListaDesenhos[((TVerticeGeral *) (Lista->at( n )))->iDesenho]->NomeArquivo + " em nível de "
                                         + tipo );
                     }
                     else

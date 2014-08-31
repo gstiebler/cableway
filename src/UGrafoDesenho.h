@@ -16,6 +16,8 @@
 #include "UVerticesArestas.h"
 //#include "UErros.h"
 
+struct TDesenho;
+
 enum TTipoOrientacao {VERTICAL, HORIZONTAL};
 
 struct CCaboArco
@@ -129,8 +131,8 @@ public:
   //armazena informações das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
   CCaboReta **CabosReta;
-  void GeraColares(std::vector<void*> ListaDesenhos);
-  void ChecagemVerticeDuplo(std::vector<void*> ListaDesenhos);
+  void GeraColares(const std::vector<TDesenho*> &ListaDesenhos);
+  void ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos);
   int pri;
   int ult;
 //  TVectorPonto PontosBandeirolas[2];

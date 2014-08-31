@@ -14,6 +14,8 @@
 #include <stack>
 #include <vector>
 
+struct TDesenho;
+
 struct intVertices
 {
   int verticeAtual;
@@ -24,7 +26,7 @@ struct intVertices
 class CContainerDesenhos
 {
 private:
-  std::vector<void*> ListaDesenhos;
+  std::vector<TDesenho*> ListaDesenhos;
   TParamsInfoCircuitos ParamsInfoCircuitos;
   TNiveisProjetoTransfer *Niveis;
   static bool verificaTextoWrap(void* PonteiroThis, const char *str);
@@ -39,7 +41,7 @@ public:
   //TfrmDesenho **frmDesenhos;
   void AdicionaDesenho(string NomeArquivo, int id, double altura, bool carregagrafo);
 
-  void addDrawing( CDadosGenerico dados );
+  void addDrawing( CDadosGenerico dados, double altura );
 
   TDesenho * getDesenho(int Indice);
   void CriaFormDesenho(int Indice);

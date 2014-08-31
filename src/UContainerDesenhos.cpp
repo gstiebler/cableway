@@ -92,12 +92,12 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
 }
 //---------------------------------------------------------------------------
 
-void CContainerDesenhos::addDrawing( CDadosGenerico dados )
+void CContainerDesenhos::addDrawing( CDadosGenerico dados, double altura )
 {
     // Cria um novo params
     TParamsGrafoDesenho paramsGrafoDesenho;
     // O Id
-    paramsGrafoDesenho.IDArquivo = 0;
+    paramsGrafoDesenho.IDArquivo = ListaDesenhos.size();
     // Para carregar o grafo
     paramsGrafoDesenho.CarregaGrafo = true;
     // Define as alturas -- HARDCODED?? :(
@@ -118,8 +118,8 @@ void CContainerDesenhos::addDrawing( CDadosGenerico dados )
     // Cria um novo desenho
     TDesenho *desenho = new TDesenho;
     // E o ID
-    desenho->ID = 0;
-    desenho->Altura = 50.0;
+	desenho->ID = ListaDesenhos.size();
+    desenho->Altura = altura;
     desenho->GrafoDesenho = grafoDesenho;
 
     ListaDesenhos.push_back( desenho );
@@ -305,6 +305,13 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
 void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
 {
+	for(int i(0); i < ParamsInfoCircuitos.VerticesGerais->Tamanho(); ++i)
+	{
+		printf( "(%f, %f) - %s \n", ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.x, 
+						ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.y, 
+						ParamsInfoCircuitos.VerticesGerais->getItem( i )->texto.c_str());
+	}
+
     int indice = ListaDesenhos.size() - 1;
     if (indice >= 0)
     {
@@ -321,19 +328,6 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
     callVT.ponteiroFuncao = CContainerDesenhos::verificaTextoWrap;
     GeraListaAdjacencias();
 
-#ifdef DEBUG_BUILDER
-    TStringList *lista_histograma = new TStringList();
-    int histograma[300] =
-    {   0};
-    for(int k = 0; k < ParamsInfoCircuitos.VerticesGerais->Tamanho(); k++)
-    {
-        TVerticeGeral *item = ParamsInfoCircuitos.VerticesGerais->getItem(k);
-        histograma[item->ListaVerticesEArestas->Tamanho()]++;
-    }
-    for(int k = 0; k < 300; k++)
-    lista_histograma->Add("Vertices " + IntToStr(k) + ": " + IntToStr(histograma[k]));
-    lista_histograma->SaveToFile("t:\\histograma_vertices.txt");
-#endif
 //  ReduzGrafo();
     InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos, call, callVT );
 }

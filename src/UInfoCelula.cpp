@@ -22,10 +22,10 @@ TInfoCelula::TInfoCelula()
 
 TInfoCelula::~TInfoCelula()
 {
-	delete ListaCelulasInstrumentos;
-	delete ListaCelulasBandeirolas;
-	if ( ListaItensCelula )
-		delete ListaItensCelula;
+	//delete ListaCelulasInstrumentos;
+	//delete ListaCelulasBandeirolas;
+	//if ( ListaItensCelula )
+	//	delete ListaItensCelula;
 }
 //---------------------------------------------------------------------------
 TInfoCelula& TInfoCelula::operator=( TInfoCelula &f )
