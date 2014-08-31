@@ -37,9 +37,10 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 add_executable(cableway ${ALL_SOURCES} 
 						${SRC_BASE}/main.cpp)
 
-include_directories(../lib/gtest-1.6.0/include)
+set(GTEST_PATH ../lib/gtest-1.6.0)
+include_directories(${GTEST_PATH}/include)
 add_definitions(-D_VARIADIC_MAX=10)
 add_executable(cableway_tests ${ALL_SOURCES} 
 		${SRC_BASE}/tests/main_tests.cpp
 		${SRC_BASE}/tests/basic_tests.cpp)
-target_link_libraries(cableway_tests ../lib/gtest-1.6.0/Debug/gtest)
+target_link_libraries(cableway_tests ${GTEST_PATH}/Debug/gtest)
