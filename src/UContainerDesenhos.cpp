@@ -201,7 +201,7 @@ void CContainerDesenhos::ReduzGrafo()
     TVerticeGeral *vertice = ParamsInfoCircuitos.VerticesGerais->getItem(i);
     // Pega o primeiro vértice que não tenha chance de ser eliminado para começar a busca.
     if ( !VerticesVisitados[i] )
-    if ( vertice->ListaVerticesEArestas->Tamanho() != 2 || vertice->texto != "" )
+    if ( vertice->ListaVerticesEArestas->list.size() != 2 || vertice->texto != "" )
     {
       visitouTudo = false;
       break;
@@ -246,7 +246,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
   {
     // Se a aresta não está zerada, então já tem uma redução em efeito..
     // Mas como estamos falando de um vértice que não tem tamanho 2, ou que é nomeado, então ele é o fim da redução, por isso:
-    if ( verticesArestas->Tamanho() != 2
+    if ( verticesArestas->list.size() != 2
       || vertice->texto != "" )
     {
       arestaRed.Vertice2 = ParamsInfoCircuitos.VerticesReduzidos->Tamanho();
@@ -257,11 +257,11 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
       arestazerada = true;
     }//if ( verticesArestas->Tamanho() != 2 || vertice->texto != "" )
 
-    else if ( verticesArestas->Tamanho() == 2 && vertice->texto == "" )
+    else if ( verticesArestas->list.size() == 2 && vertice->texto == "" )
     {
       // então, segue removendo...
 
-      for ( int j = 0 ; j < verticesArestas->Tamanho() ; j++ )
+      for ( int j = 0 ; j < verticesArestas->list.size() ; j++ )
       {
         TVerticeEAresta *VeA = verticesArestas->getVerticeEAresta(j);
         if ( !VerticesVisitados[VeA->Vertice] ) // Em teoria, isso só vai entrar uma vez.
@@ -277,7 +277,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
   if ( arestazerada )
   {
-    for ( int j = 0 ; j < verticesArestas->Tamanho() ; j++ )
+    for ( int j = 0 ; j < verticesArestas->list.size() ; j++ )
     {
       TVerticeEAresta *VeA = verticesArestas->getVerticeEAresta(j);
       if ( !VerticesVisitados[VeA->Vertice] )

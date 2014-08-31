@@ -602,7 +602,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
         continue;
 
         ListaVerticesEArestasT = VerticesGerais->getItem(vfila)->ListaVerticesEArestas;
-        for(n = 0; n < ListaVerticesEArestasT->Tamanho(); n++)
+        for(n = 0; n < ListaVerticesEArestasT->list.size(); n++)
         {
             VerticeEArestaTemp = ListaVerticesEArestasT->getVerticeEAresta(n);
             vatual = VerticeEArestaTemp->Vertice;
@@ -686,7 +686,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
             if ( Arestas->getItem(vArestas[vatual])->Vertice1 > 0 && VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice1)->EhPrensaCabo )
             {
                 ListaVerticesEArestasT = VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice1)->ListaVerticesEArestas;
-                for ( int i = 0; i < ListaVerticesEArestasT->Tamanho(); i++ )
+                for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )
                 {
                     //Arestas->getItem(ListaVerticesEArestasT->getVerticeEAresta(i)->Aresta)->Tam = Infinity;
                 }
@@ -695,7 +695,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
             if ( Arestas->getItem(vArestas[vatual])->Vertice2 > 0 && VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice2)->EhPrensaCabo )
             {
                 ListaVerticesEArestasT = VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice2)->ListaVerticesEArestas;
-                for ( int i = 0; i < ListaVerticesEArestasT->Tamanho(); i++ )
+                for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )
                 {
                     //Arestas->getItem(ListaVerticesEArestasT->getVerticeEAresta(i)->Aresta)->Tam = Infinity;
                 }
@@ -786,7 +786,7 @@ void CInfoCircuitos::Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDes
         vfila = fila.front();
         fila.pop();
         ListaVerticesEArestas = VerticesGerais->getItem( vfila )->ListaVerticesEArestas;
-        for (n = 0; n < ListaVerticesEArestas->Tamanho(); n++)
+        for (n = 0; n < ListaVerticesEArestas->list.size(); n++)
         {
             //vfila é o vértice que queremos a lista de adjacência
             //n é o enésimo vértice na lista de adjacência de vfila

@@ -38,20 +38,17 @@ struct TVerticeEAresta
 };
 //---------------------------------------------------------------------------  
 
-struct TListaVerticesEArestas: public TListaV<TVerticeEAresta>
-{                                                   
+struct TListaVerticesEArestas
+{
+    std::vector<TVerticeEAresta> list;
+
   TVerticeEAresta* getVerticeEAresta(int Indice);
   void AdicionaVerticeEAresta(int vertice, int aresta);
   TListaVerticesEArestas(){}
   ~TListaVerticesEArestas() {}
   TListaVerticesEArestas(const TListaVerticesEArestas &cpy)
   {
-    for ( int i = 0 ; i < cpy.Tamanho() ; i++) //cpy->lista->Count ; i++ )
-    {
-      TVerticeEAresta *temp = new TVerticeEAresta(*cpy.getItem(i));
-      Adiciona(temp);
-      delete temp;
-    }
+	  list = cpy.list;
   }
 };
 //---------------------------------------------------------------------------

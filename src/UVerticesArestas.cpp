@@ -167,19 +167,16 @@ void TAresta::AdicionaVertices(int v1, int v2, double dist)
 
 void TListaVerticesEArestas::AdicionaVerticeEAresta(int vertice, int aresta)
 {
-    TVerticeEAresta *temp = new TVerticeEAresta;
-    temp->Vertice = vertice;
-    temp->Aresta = aresta;
-    Adiciona( temp );
-    delete temp;
-//  lista->Add(temp);
+    TVerticeEAresta temp;
+    temp.Vertice = vertice;
+    temp.Aresta = aresta;
+    list.push_back( temp );
 }
 //---------------------------------------------------------------------------   
 
 TVerticeEAresta * TListaVerticesEArestas::getVerticeEAresta(int Indice)
 {
-    return getItem( Indice );
-//  return (TVerticeEAresta *)lista->Items[Indice];
+    return &list[Indice];
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
