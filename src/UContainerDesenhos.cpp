@@ -92,9 +92,37 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
 }
 //---------------------------------------------------------------------------
 
-void CContainerDesenhos::addDrawing( TDesenho *Desenho )
+void CContainerDesenhos::addDrawing( CDadosGenerico dados )
 {
-    ListaDesenhos.push_back( Desenho );
+    // Cria um novo params
+    TParamsGrafoDesenho paramsGrafoDesenho;
+    // O Id
+    paramsGrafoDesenho.IDArquivo = 0;
+    // Para carregar o grafo
+    paramsGrafoDesenho.CarregaGrafo = true;
+    // Define as alturas -- HARDCODED?? :(
+    paramsGrafoDesenho.AlturaTeto=2.0;
+    paramsGrafoDesenho.AlturaInterrup=0.7;
+    paramsGrafoDesenho.Altura = 30.0;
+    // Preenche o índice do desenho
+    paramsGrafoDesenho.IndiceDesenho = 0;
+    // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
+    paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
+    // E um ponteiro pro Arestas (TListaArestas)
+    paramsGrafoDesenho.Arestas = ParamsInfoCircuitos.Arestas;
+    // E um ponteiro pro NiveisProjeto (TNiveisProjetoTransfer)
+    paramsGrafoDesenho.NiveisProjeto = Niveis;
+
+    CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, &dados);
+
+    // Cria um novo desenho
+    TDesenho *desenho = new TDesenho;
+    // E o ID
+    desenho->ID = 0;
+    desenho->Altura = 50.0;
+    desenho->GrafoDesenho = grafoDesenho;
+
+    ListaDesenhos.push_back( desenho );
 }
 
 TDesenho * CContainerDesenhos::getDesenho(int Indice)

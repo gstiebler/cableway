@@ -91,6 +91,8 @@ struct TVerticeGeral
 
 struct TVerticesGerais: public TListaV<TVerticeGeral>
 {
+	TVerticesGerais();
+
   void Adiciona(TVerticeGeral &Item);
   int AchaVerticePeloTexto(string Texto);
   bool VerticeEhEquipamento(int n);

@@ -105,6 +105,12 @@ TVerticeGeral::TVerticeGeral(const TVerticeGeral &cpy)
 }
 //---------------------------------------------------------------------------
 
+
+TVerticesGerais::TVerticesGerais()
+{
+}
+
+
 void TVerticesGerais::Adiciona(TVerticeGeral &Item)
 {
     TVerticeGeral *temp = new TVerticeGeral;

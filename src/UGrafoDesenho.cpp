@@ -796,14 +796,12 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
     bool PrensaCabo;
     TPonto PosVertice;
     //percorre células de instrumentos
-    TVectorInt *iVerticesInstrumento = new TVectorInt();
     for (n = 0; n < Dados->InfoCelula.ListaCelulasInstrumentos->Tamanho(); n++) //percorre todas as células do desenho
     {
         bool ligado = false;
         ListaItensCelula = Dados->InfoCelula.ListaCelulasInstrumentos->getItem( n );
-
-        iVerticesInstrumento->clear();
-
+ 
+		vector<int> iVerticesInstrumento;
         PrensaCabo = ListaItensCelula->iTextos.size() > 2;
         if (ListaItensCelula->iTextos.size() == 0)
         {
@@ -815,7 +813,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
         }
 
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
-        CriaVerticesEArestasInstrumento( ListaItensCelula, iVerticesInstrumento, PosVertice,
+        CriaVerticesEArestasInstrumento( ListaItensCelula, &iVerticesInstrumento, PosVertice,
                 PrensaCabo );
 
         for (i = 0; i < ListaItensCelula->Tamanho(); i++)  //percorre todos os itens da célula atual
@@ -826,16 +824,15 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
             {
             case VMULTIPOINT:  //adiciona um vértice de um instrumento na ponta de um cabo
                 GeraVerticesInstrumentosAdicionaMultipoint( ItemCelula->Indice, ListaItensCelula,
-                        ligado, iVerticesInstrumento, PosVertice );
+                        ligado, &iVerticesInstrumento, PosVertice );
                 break;
             case VARCO:
                 GeraVerticesInstrumentosAdicionaArco( ItemCelula->Indice, ListaItensCelula, ligado,
-                        iVerticesInstrumento, PosVertice );
+                        &iVerticesInstrumento, PosVertice );
                 break;
             }  //switch (ItemCelula->TipoVetorCW)
         }  //for (i=0; i<ListaItensCelula->Tamanho(); i++)
     }
-    delete iVerticesInstrumento;
 }
 //---------------------------------------------------------------------------
 
@@ -899,7 +896,8 @@ TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCel
     TPonto PosVertice;
     bool first;
     int maiorX, menorX, maiorY, menorY;
-    maiorX = menorX = maiorY = menorY;
+	menorX = menorY = 100000000;
+	maiorX = maiorY = -1;
     first = true;
     //percorre itens da célula
     for (i = 0; i < ListaItensCelula->Tamanho(); i++)

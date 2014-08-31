@@ -7,6 +7,7 @@
 #include "UNiveisProjeto.h"
 #include "TDesenho.h"
 #include "UContainerDesenhos.h"
+#include "UListaCelulas.h"
 
 int main (int argc, char *argv[])
 {
@@ -18,27 +19,8 @@ int main (int argc, char *argv[])
 	niveisProjetoTransfer.ListaCabo.push_back( "5" );
 	niveisProjetoTransfer.ListaInstrumento.push_back( "7" );
 	niveisProjetoTransfer.ListaTag.push_back( "10" );
-	// Cria um novo params
-	TParamsGrafoDesenho paramsGrafoDesenho;
 	
-	TParamsInfoCircuitos paramsInfoCircuitos;
-	// O Id
-	paramsGrafoDesenho.IDArquivo = 0;
-	// Para carregar o grafo
-	paramsGrafoDesenho.CarregaGrafo = true;
-	// Define as alturas -- HARDCODED?? :(
-	paramsGrafoDesenho.AlturaTeto=2.0;
-	paramsGrafoDesenho.AlturaInterrup=0.7;
-	paramsGrafoDesenho.Altura = 30.0;
-	// Preenche o índice do desenho
-	paramsGrafoDesenho.IndiceDesenho = 0;
-	// Passa um ponteiro para o VerticesGerais (TVerticesGerais)
-	paramsGrafoDesenho.VerticesGerais = paramsInfoCircuitos.VerticesGerais;
-	// E um ponteiro pro Arestas (TListaArestas)
-	paramsGrafoDesenho.Arestas = paramsInfoCircuitos.Arestas;
-	// E um ponteiro pro NiveisProjeto (TNiveisProjetoTransfer)
-	paramsGrafoDesenho.NiveisProjeto = &niveisProjetoTransfer;
-
+	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
 	CDadosGenerico dados;
 
 	{
@@ -54,8 +36,14 @@ int main (int argc, char *argv[])
 		equip1Text.texto = "Equipamento 1";
 		equip1Text.Nivel = TAG;
 		dados.Textos.push_back( equip1Text );
-
-		//dados.InfoCelula.AdicionaTexto( dados.Textos.size(), "equip 1", tagEquipLevel );
+		
+		TItemCelula itemCelula;
+		itemCelula.Indice = dados.Multipoint.size() - 1;
+		itemCelula.TipoVetorCW = VMULTIPOINT;
+		TListaItensCelula lista;
+		lista.Adiciona( itemCelula );
+		lista.iTextos.push_back( dados.Textos.size() - 1 );
+		dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
 	}
 
 	{
@@ -72,7 +60,13 @@ int main (int argc, char *argv[])
 		equip2Text.Nivel = TAG;
 		dados.Textos.push_back( equip2Text );
 
-		//dados.InfoCelula.ListaCelulasInstrumentos->
+		TItemCelula itemCelula;
+		itemCelula.Indice = dados.Multipoint.size() - 1;
+		itemCelula.TipoVetorCW = VMULTIPOINT;
+		TListaItensCelula lista;
+		lista.Adiciona( itemCelula );
+		lista.iTextos.push_back( dados.Textos.size() - 1 );
+		dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
 	}
 
 	{
@@ -83,17 +77,8 @@ int main (int argc, char *argv[])
 		dados.Multipoint.push_back( cable );
 	}
 
-	CGrafoDesenho grafoDesenho(paramsGrafoDesenho, &dados);
 
-	// Cria um novo desenho
-	TDesenho *desenho = new TDesenho;
-	// E o ID
-	desenho->ID = 0;
-	desenho->Altura = 50.0;
-	desenho->GrafoDesenho = &grafoDesenho;
-
-	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
-	containerDesenhos.addDrawing( desenho );
+	containerDesenhos.addDrawing( dados );
 	callbackStatusCarregamento sc;
 	containerDesenhos.Conclui( sc );
 

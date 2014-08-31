@@ -39,7 +39,7 @@ public:
   //TfrmDesenho **frmDesenhos;
   void AdicionaDesenho(string NomeArquivo, int id, double altura, bool carregagrafo);
 
-  void addDrawing( TDesenho *Desenho );
+  void addDrawing( CDadosGenerico dados );
 
   TDesenho * getDesenho(int Indice);
   void CriaFormDesenho(int Indice);
