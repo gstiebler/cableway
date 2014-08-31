@@ -43,7 +43,7 @@ public:
   int NumVertices;
   bool ponta[2];
   TTipoOrientacao TipoOrientacao;
-  TListaVerticeReta VerticesReta;
+  std::vector<TVerticeReta> VerticesReta;
 };
 //---------------------------------------------------------------------------
 

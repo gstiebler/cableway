@@ -17,14 +17,6 @@ struct TVerticeReta
 };
 //---------------------------------------------------------------------------
 
-struct TListaVerticeReta: public TListaV<TVerticeReta>
-{
-public:
-//  void Ordena(TListSortCompare Compare);
-};
-//---------------------------------------------------------------------------
-
-
 struct TArestasCircuito
 {
   string Circuito;

@@ -35,11 +35,11 @@ double DistPontosManhattan(TPonto &p1, TPonto &p2);
 ///<param name"Item1">O primeiro vertice</param>
 ///<param name"Item2">O segundo vertice</param>
 ///<returns>Valor booleano, verdadeiro caso o primeiro seja menor do que o segundo.</returns>
-bool OrdenaRetaHorizontal(TVerticeReta *Item1, TVerticeReta *Item2);
+bool OrdenaRetaHorizontal(const TVerticeReta &Item1, const TVerticeReta &Item2);
 ///<summary>Função para ordenar uma reta de acordo com y.</summary>
 ///<param name"Item1">O primeiro vertice</param>
 ///<param name"Item2">O segundo vertice</param>
 ///<returns>Valor booleano, verdadeiro caso o primeiro seja menor do que o segundo.</returns>
-bool OrdenaRetaVertical(TVerticeReta *Item1, TVerticeReta *Item2);
+bool OrdenaRetaVertical(const TVerticeReta &Item1, const TVerticeReta &Item2);
 
 #endif

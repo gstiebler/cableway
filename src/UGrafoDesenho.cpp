@@ -27,7 +27,7 @@ void CCaboReta::AdicionaVertice(int ID, TPonto &ponto)
     TVerticeReta VerticeReta;
     VerticeReta.ID = ID;
     VerticeReta.pos = ponto;
-    VerticesReta.Adiciona( VerticeReta );
+	VerticesReta.push_back( VerticeReta );
     NumVertices++;
 }
 //---------------------------------------------------------------------------
@@ -1352,11 +1352,11 @@ void CGrafoDesenho::OrdenaVerticesRetas()
     {
         if (CabosReta[n]->TipoOrientacao == VERTICAL)
         {
-            CabosReta[n]->VerticesReta.Ordena( OrdenaRetaVertical );
+            sort(CabosReta[n]->VerticesReta.begin(), CabosReta[n]->VerticesReta.end(), OrdenaRetaVertical );
         }
         else
         {
-            CabosReta[n]->VerticesReta.Ordena( OrdenaRetaHorizontal );
+            sort(CabosReta[n]->VerticesReta.begin(), CabosReta[n]->VerticesReta.end(), OrdenaRetaHorizontal );
         }
     }
 }
@@ -1490,8 +1490,8 @@ void CGrafoDesenho::GeraArestas()
 #endif
         for (m = 0; m < CabosReta[n]->NumVertices - 1; m++)
         {
-            VerticesReta1 = CabosReta[n]->VerticesReta.getItem( m );
-            VerticesReta2 = CabosReta[n]->VerticesReta.getItem( m + 1 );
+            VerticesReta1 = &CabosReta[n]->VerticesReta[m];
+            VerticesReta2 = &CabosReta[n]->VerticesReta[m + 1];
 #ifdef DEBUG_BUILDER
             vertices += " " + IntToStr(VerticesReta2->ID) + "(" + FormatFloat("###,###,###",VerticesReta2->pos.x) + " - " + FormatFloat("###,###,###",VerticesReta2->pos.y) + ")";
 #endif
