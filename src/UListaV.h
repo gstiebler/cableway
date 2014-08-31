@@ -43,9 +43,9 @@ template <typename T> TListaV<T>::TListaV()
 
 template <typename T> TListaV<T>::~TListaV()
 {
-  for (int n=0; n<ultimo; n++)
-    delete lista[n];
-  delete[] lista;
+  //for (int n=0; n<ultimo; n++)
+  //  delete lista[n];
+  //delete[] lista;
   lista = NULL;
 //  delete lista;
 //  lista = NULL;

@@ -16,10 +16,6 @@ TNiveisProjeto::TNiveisProjeto()
 //---------------------------------------------------------------------------
 TNiveisProjeto::~TNiveisProjeto()
 {
-	delete ListaInstrumento;
-	delete ListaBandeirola;
-	delete ListaCabo;
-	delete ListaTag;
 }
 //---------------------------------------------------------------------------
 TTipoElemento TNiveisProjeto::buscaListas(string nivel)

@@ -33,6 +33,7 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UVetor.cpp
 				)
 				
+include_directories(${SRC_BASE})
 
 add_executable(cableway ${ALL_SOURCES} 
 						${SRC_BASE}/main.cpp)

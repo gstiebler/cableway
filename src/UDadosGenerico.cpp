@@ -122,14 +122,7 @@ CDadosGenerico::CDadosGenerico()
 //---------------------------------------------------------------------------
 CDadosGenerico::~CDadosGenerico ()
 {
-	int n;
-//	for (n=0; n<NumMultipoint; n++)
-//		delete [] Multipoint[n].pontos;
-	Multipoint.clear();
-	Arcos.clear();
-	Textos.clear();
-	//      if ( percorridos )
-	//        delete percorridos;
+
 }
 //---------------------------------------------------------------------------
 

@@ -38,12 +38,12 @@ void CContainerDesenhos::MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto)
 
 CContainerDesenhos::~CContainerDesenhos()
 {
-  // Se o InfoCircuitos já não for nulo, então o apaga
-  if (InfoCircuitos)
-  {
-    delete InfoCircuitos;
-    InfoCircuitos = NULL;
-  }
+//  // Se o InfoCircuitos já não for nulo, então o apaga
+//  if (InfoCircuitos)
+//  {
+//    delete InfoCircuitos;
+//    InfoCircuitos = NULL;
+//  }
 }
 //---------------------------------------------------------------------------
 
