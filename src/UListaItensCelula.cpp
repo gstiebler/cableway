@@ -10,10 +10,6 @@ using namespace std;
 //---------------------------------------------------------------------------
 TListaItensCelula::~TListaItensCelula()
 {
-  delete cabosRetaRelacionados;
-  delete cabosArcoRelacionados;
-  delete iTextos;
-  delete iTextosBandeirola;
 }
 //---------------------------------------------------------------------------
 
@@ -21,11 +17,6 @@ TListaItensCelula::TListaItensCelula(): TListaV<TItemCelula>()
 {
   emb=esq=1.5e280;
   enc=dir=-1.5e280;
-
-  cabosRetaRelacionados = new vector<int>();
-  cabosArcoRelacionados = new vector<int>();
-  iTextosBandeirola = new vector<int>();
-  iTextos = new vector<int>();
 }
 //---------------------------------------------------------------------------
 
@@ -45,14 +36,13 @@ TListaItensCelula::TListaItensCelula(const TListaItensCelula &cpy): TListaV<TIte
   dir = cpy.dir;
   id = cpy.id;
 
-  iTextosBandeirola = new vector<int>();
-  iTextosBandeirola->assign(cpy.iTextosBandeirola->begin(), cpy.iTextosBandeirola->end());
-  iTextos = new vector<int>();
-  iTextos->assign(cpy.iTextos->begin(), cpy.iTextos->end());
-  cabosRetaRelacionados = new vector<int>();
-  cabosRetaRelacionados->assign(cpy.cabosRetaRelacionados->begin(), cpy.cabosRetaRelacionados->end());
-  cabosArcoRelacionados = new vector<int>();
-  cabosArcoRelacionados->assign(cpy.cabosArcoRelacionados->begin(), cpy.cabosArcoRelacionados->end());
+  iTextosBandeirola.assign(cpy.iTextosBandeirola.begin(), cpy.iTextosBandeirola.end());
+
+  iTextos.assign(cpy.iTextos.begin(), cpy.iTextos.end());
+
+  cabosRetaRelacionados.assign(cpy.cabosRetaRelacionados.begin(), cpy.cabosRetaRelacionados.end());
+
+  cabosArcoRelacionados.assign(cpy.cabosArcoRelacionados.begin(), cpy.cabosArcoRelacionados.end());
   for ( int i = 0 ; i < cpy.Tamanho() ; i++ )
   {
     TItemCelula temp, *old;
@@ -67,9 +57,9 @@ bool TListaItensCelula::VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int IndiceCab
 {
   bool isAdded = false;
   // Cada cabo só é ligado a um equipamento em um lugar, por isso ele é guardado no cabosRetaRelacionados
-  for ( unsigned int k = 0 ; k <(int) cabosRetaRelacionados->size() ; k++ )
+  for ( unsigned int k = 0 ; k <(int) cabosRetaRelacionados.size() ; k++ )
   {
-    if ( cabosRetaRelacionados->at(k) == IndiceCabo )
+    if ( cabosRetaRelacionados[k] == IndiceCabo )
     {
       isAdded = true;
       break;
@@ -82,9 +72,9 @@ bool TListaItensCelula::VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int IndiceCab
 {
   bool isAdded;
   isAdded = false;
-  for ( unsigned int k = 0 ; k <(int) cabosArcoRelacionados->size() ; k++ )
+  for ( unsigned int k = 0 ; k <(int) cabosArcoRelacionados.size() ; k++ )
   {
-    if ( cabosArcoRelacionados->at(k) == IndiceCabo )
+    if ( cabosArcoRelacionados[k] == IndiceCabo )
     {
       isAdded = true;
       break;

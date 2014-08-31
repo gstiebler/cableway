@@ -38,24 +38,12 @@ void CContainerDesenhos::MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto)
 
 CContainerDesenhos::~CContainerDesenhos()
 {
-  // Apaga o frmDesenhoAbas (não é necessário apagar nada lá dentro?)
-  //if (frmDesenhoAbas)
-  //  delete frmDesenhoAbas;
-
-  // Apaga o conteúdo da lista de desenhos
-    for (int n=0; n<ListaDesenhos.size(); n++)
-    delete (TDesenho *)(ListaDesenhos[n]);
-
   // Se o InfoCircuitos já não for nulo, então o apaga
   if (InfoCircuitos)
   {
     delete InfoCircuitos;
     InfoCircuitos = NULL;
   }
-
-  // Libera as coisas dentro do TNiveisProjetoTransfer e depois ele
-  liberaTNiveisProjetoTransfer(Niveis);
-  delete Niveis;
 }
 //---------------------------------------------------------------------------
 
@@ -289,35 +277,37 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
 void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
 {
-    int indice=ListaDesenhos.size()-1;
-  if (indice>=0)
-  {
-    // Checa vertices duplos(?)
-    ((TDesenho *)(ListaDesenhos[indice]))->GrafoDesenho->ChecagemVerticeDuplo(ListaDesenhos);
-    ((TDesenho *)(ListaDesenhos[indice]))->GrafoDesenho->GeraColares(ListaDesenhos);
-  }
-  // Vê o número de desenhos
-  ParamsInfoCircuitos.NumDesenhos=NumDesenhos();
-  // Cria um novo InfoCircuitos baseado nos parâmetros
-  callbackVerificaTexto callVT;
-  callVT.PonteiroProThis = this;
-  callVT.ponteiroFuncao = CContainerDesenhos::verificaTextoWrap;
-  GeraListaAdjacencias();
-  
+    int indice = ListaDesenhos.size() - 1;
+    if (indice >= 0)
+    {
+		CGrafoDesenho* grafoDesenho = ((TDesenho *) (ListaDesenhos[indice]))->GrafoDesenho;
+        // Checa vertices duplos(?)
+        grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
+        grafoDesenho->GeraColares( ListaDesenhos );
+    }
+    // Vê o número de desenhos
+    ParamsInfoCircuitos.NumDesenhos = NumDesenhos();
+    // Cria um novo InfoCircuitos baseado nos parâmetros
+    callbackVerificaTexto callVT;
+    callVT.PonteiroProThis = this;
+    callVT.ponteiroFuncao = CContainerDesenhos::verificaTextoWrap;
+    GeraListaAdjacencias();
+
 #ifdef DEBUG_BUILDER
     TStringList *lista_histograma = new TStringList();
-    int histograma[300] = {0};
+    int histograma[300] =
+    {   0};
     for(int k = 0; k < ParamsInfoCircuitos.VerticesGerais->Tamanho(); k++)
     {
-      TVerticeGeral *item = ParamsInfoCircuitos.VerticesGerais->getItem(k);
-      histograma[item->ListaVerticesEArestas->Tamanho()]++;
+        TVerticeGeral *item = ParamsInfoCircuitos.VerticesGerais->getItem(k);
+        histograma[item->ListaVerticesEArestas->Tamanho()]++;
     }
     for(int k = 0; k < 300; k++)
-      lista_histograma->Add("Vertices " + IntToStr(k) + ": " + IntToStr(histograma[k]));
+    lista_histograma->Add("Vertices " + IntToStr(k) + ": " + IntToStr(histograma[k]));
     lista_histograma->SaveToFile("t:\\histograma_vertices.txt");
 #endif
 //  ReduzGrafo();
-  InfoCircuitos=new CInfoCircuitos(&ParamsInfoCircuitos, call, callVT);
+    InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos, call, callVT );
 }
 //---------------------------------------------------------------------------
 //TfrmDesenhoAbas *CContainerDesenhos::getfrmDesenhoAbas()

@@ -47,12 +47,12 @@ int main (int argc, char *argv[])
 		equip1.pontos.push_back( TPonto( 20.0, 10.0 ) );
 		equip1.pontos.push_back( TPonto( 20.0, 20.0 ) );
 		equip1.pontos.push_back( TPonto( 10.0, 20.0 ) );
-		equip1.Nivel = equipLevel;
+		equip1.Nivel = INSTRUMENTO;
 		dados.Multipoint.push_back( equip1 );
 
 		TTexto equip1Text;
 		equip1Text.texto = "Equipamento 1";
-		equip1Text.Nivel = tagEquipLevel;
+		equip1Text.Nivel = TAG;
 		dados.Textos.push_back( equip1Text );
 
 		//dados.InfoCelula.AdicionaTexto( dados.Textos.size(), "equip 1", tagEquipLevel );
@@ -64,20 +64,20 @@ int main (int argc, char *argv[])
 		equip2.pontos.push_back( TPonto( 40.0, 10.0 ) );
 		equip2.pontos.push_back( TPonto( 50.0, 10.0 ) );
 		equip2.pontos.push_back( TPonto( 50.0, 20.0 ) );
-		equip2.Nivel = equipLevel;
+		equip2.Nivel = INSTRUMENTO;
 		dados.Multipoint.push_back( equip2 );
 
 		TTexto equip2Text;
 		equip2Text.texto = "Equipamento 2";
-		equip2Text.Nivel = tagEquipLevel;
+		equip2Text.Nivel = TAG;
 		dados.Textos.push_back( equip2Text );
 
-		//dados.InfoCelula.AdicionaTexto( dados.Textos.size(), "equip 2", tagEquipLevel );
+		//dados.InfoCelula.ListaCelulasInstrumentos->
 	}
 
 	{
 		TMultipoint cable;
-		cable.Nivel = cableLevel;
+		cable.Nivel = CABO;
 		cable.pontos.push_back( TPonto( 20.0, 15.0 ) );
 		cable.pontos.push_back( TPonto( 40.0, 15.0 ) );
 		dados.Multipoint.push_back( cable );
@@ -90,6 +90,7 @@ int main (int argc, char *argv[])
 	// E o ID
 	desenho->ID = 0;
 	desenho->Altura = 50.0;
+	desenho->GrafoDesenho = &grafoDesenho;
 
 	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
 	containerDesenhos.addDrawing( desenho );
@@ -98,11 +99,11 @@ int main (int argc, char *argv[])
 
 	double tam;
 	string rota;
-	TArestasCircuito *ArestasCircuito;
+	TArestasCircuito *ArestasCircuito = NULL;
 	vector<int> ListaBandeirolas;
 	vector<string> DEBUG_arestas;
 	string SubRotas; 
-	TCircuitoAreas *CircuitoAreas;
+	TCircuitoAreas *CircuitoAreas = NULL;
 
 	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 2", "Equipamento 1", tam, rota, ArestasCircuito, &ListaBandeirolas,
 		&DEBUG_arestas, SubRotas, CircuitoAreas);

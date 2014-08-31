@@ -85,9 +85,13 @@ private:
   int *PaisVertices, *vArestas;
 public:      
   CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackStatusCarregamento &call, callbackVerificaTexto &callVT);
+
   ~CInfoCircuitos();
+
   TListaArestasCircuito *ArestasDoCircuito;//arestas de um determinado circuito
+
   string CircuitosDaAresta(int Aresta);
+
   int ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceDesenho);
   int ListaArestasDoCircuito(string circuito);
   int ListaArestasDoCircuito(int idCircuito);

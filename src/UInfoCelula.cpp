@@ -68,7 +68,7 @@ void TInfoCelula::AdicionaTexto(int iTexto, string Texto, int NivelTexto)
 	// da célula.
 	if ( NivelTexto == TAG )
 	{
-		ListaItensCelula->iTextos->push_back(iTexto);
+		ListaItensCelula->iTextos.push_back(iTexto);
 	}
 	// Caso ele esteja em nível de bandeirola, ele é adicionado ao vetor de bandeirolas
 	// da célula. 
@@ -76,7 +76,7 @@ void TInfoCelula::AdicionaTexto(int iTexto, string Texto, int NivelTexto)
 	// enquanto os textos de Equipamento ficam em nível de tag.
 	else if ( NivelTexto == BANDEIROLA )
 	{
-		ListaItensCelula->iTextosBandeirola->push_back(iTexto);
+		ListaItensCelula->iTextosBandeirola.push_back(iTexto);
 	}
 }
 
@@ -102,7 +102,7 @@ void TInfoCelula::FechaCelula()
 	// Caso esteja em grupamento de bandeirola, ele adiciona na lista de bandeirolas
 	// e bota os textos que estavam em nível de bandeirola como os textos do grupo
 	case BANDEIROLA:
-		ListaItensCelula->iTextos->assign(ListaItensCelula->iTextosBandeirola->begin(), ListaItensCelula->iTextosBandeirola->end());
+		ListaItensCelula->iTextos.assign(ListaItensCelula->iTextosBandeirola.begin(), ListaItensCelula->iTextosBandeirola.end());
 		ListaCelulasBandeirolas->Adiciona(ListaItensCelula);
 		break;
 	// Caso não esteja em um desses níveis, ele apaga o grupo e seta ListaItensCelula

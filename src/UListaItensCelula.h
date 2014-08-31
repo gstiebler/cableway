@@ -14,7 +14,7 @@ struct TListaItensCelula: public TListaV<TItemCelula>
 //  int iTexto2Colar;
   double esq, dir, enc, emb;
   int id;
-  std::vector<int> *iTextos, *iTextosBandeirola, *cabosRetaRelacionados, *cabosArcoRelacionados;
+  std::vector<int> iTextos, iTextosBandeirola, cabosRetaRelacionados, cabosArcoRelacionados;
   TListaItensCelula();
   TListaItensCelula(const TListaItensCelula &cpy);
   ~TListaItensCelula();
