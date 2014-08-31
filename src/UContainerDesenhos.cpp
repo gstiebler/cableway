@@ -13,7 +13,7 @@ TDesenho::~TDesenho()
 }
 //---------------------------------------------------------------------------
 
-CContainerDesenhos::CContainerDesenhos()
+CContainerDesenhos::CContainerDesenhos(TNiveisProjetoTransfer *niveis)
 {
   // Cria uma nova lista pra guardar os desenhos
   //ListaDesenhos=new TList;
@@ -22,13 +22,7 @@ CContainerDesenhos::CContainerDesenhos()
   InfoCircuitos=NULL;
   //frmDesenhoAbas=NULL;
 
-  // Cria um novo TNiveisProjeto e carrega a config do projeto atual nele
-  TNiveisProjeto *NiveisProjeto = new TNiveisProjeto();
-  CConfig::CarregaBanco(NiveisProjeto);
-  // Depois cria um TNiveisProjetoTransfer, carrega o NiveisProjeto nele e apaga o NiveisProjeto.
-  Niveis = new TNiveisProjetoTransfer();
-  NiveisProjeto->exportaTransfer(Niveis);
-  delete NiveisProjeto;
+  Niveis = niveis;
 }
 //---------------------------------------------------------------------------
 
@@ -96,9 +90,9 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   try
   {
 	  //TODO carregar a estrutura TDadosTransfer
-	TDadosTransfer dadosDLL;
+	CDadosGenerico dados;
     // Tenta criar um grafodesenho com os parâmetros passados
-    Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, &dadosDLL);
+    Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, &dados);
     // E adicionar o desenho na lista de desenhos
     ListaDesenhos.push_back(Desenho);
   }
@@ -109,6 +103,11 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   }
 }
 //---------------------------------------------------------------------------
+
+void CContainerDesenhos::addDrawing( TDesenho *Desenho )
+{
+    ListaDesenhos.push_back( Desenho );
+}
 
 TDesenho * CContainerDesenhos::getDesenho(int Indice)
 {

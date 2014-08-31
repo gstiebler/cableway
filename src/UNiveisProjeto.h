@@ -4,11 +4,13 @@
 #define UNiveisProjetoH
 #include "UDefines.h"
 #include <algorithm>
+#include <vector>
+#include <string>
+
 //---------------------------------------------------------------------------
 struct TNiveisProjetoTransfer
 {
-  char **ListaInstrumento, **ListaBandeirola, **ListaCabo, **ListaTag;
-  int tamListaInstrumento, tamListaBandeirola, tamListaCabo, tamListaTag, tamString;
+  std::vector<std::string> ListaInstrumento, ListaBandeirola, ListaCabo, ListaTag;
 };
 //---------------------------------------------------------------------------
 struct TNiveisProjeto

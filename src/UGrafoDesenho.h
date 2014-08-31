@@ -140,7 +140,7 @@ public:
   //para por exemplo ter um limiar do quanto uma ponta de cabo pode ser separada da outra
   double MediaRaioCaboArco;
   double DistMinElemCaboPraOpenGL;
-  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TDadosTransfer *dadosDLL);
+  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, CDadosGenerico *Dados);
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
   int NumCabosReta;

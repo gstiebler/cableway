@@ -36,7 +36,7 @@ void CCaboReta::AdicionaVertice(int ID, TPonto &ponto)
 bool CCaboReta::EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo)
 {
   TPonto pontoM = Multipoint[Indice].pontos[0];//primeiro ponto
-  TPonto pontoR = Multipoint[Indice].pontos[Multipoint[Indice].tam-1];//último ponto
+  TPonto pontoR = Multipoint[Indice].pontos[Multipoint[Indice].pontos.size() - 1];//último ponto
   //pega distância entre ponto inicial e final, pode ser a distância em x ou em y, e joga em DistMin
   //essas linhas são utilizadas para se ter uma noção de quanto é uma distância pequena no desenho
   double DistMin = fabs(pontoM.x - pontoR.x)*0.1;
@@ -57,7 +57,7 @@ bool CCaboReta::EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, i
 //Retorna verdadeiro se o ponto recebido está próximo ao último ponto do vetor
 bool CCaboReta::EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo)
 {
-  TPonto pontoM = Multipoint[Indice].pontos[Multipoint[Indice].tam-1];
+  TPonto pontoM = Multipoint[Indice].pontos[Multipoint[Indice].pontos.size() - 1];
   TPonto pontoR = Multipoint[Indice].pontos[0];
   double DistMin = fabs(pontoM.x - pontoR.x)*0.1;
   if ( fabs(pontoM.y - pontoR.y)*0.1 > DistMin )
@@ -77,7 +77,7 @@ bool CCaboReta::EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int
 
 //---------------------------------------------------------------------------
 
-CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TDadosTransfer *dadosDLL)
+CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, CDadosGenerico *Dados)
 //                                            : CDadosDGN(ParamsGrafoDesenho)
 {
   pri=0;
@@ -88,9 +88,7 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TDadosTran
   tempo->MarcaTempo("Inicio da marcacao de tempo no grafoDesenho");
 
   // Cria um DadosGenerico para ser usado
-  Dados = new CDadosGenerico();
-
-  Dados->importaTransfer(dadosDLL);
+  this->Dados = Dados;
 
   if (CarregaGrafo)
   {
@@ -189,7 +187,6 @@ CGrafoDesenho::~CGrafoDesenho()
     delete [] iCirculosInstrumento;
     CarregaGrafo = false;
   }
-  delete Dados;
 }
 //---------------------------------------------------------------------------
 
@@ -216,7 +213,7 @@ void CGrafoDesenho::AlocaElementos()
 void CGrafoDesenho::GeraListaCabos()
 {
   int n;
-  TPonto *Pontos;
+  vector<TPonto> Pontos;
   double DifX, DifY;
   for (n=0; n<Dados->Multipoint.size(); n++)
   {
@@ -225,7 +222,7 @@ void CGrafoDesenho::GeraListaCabos()
                                           (Multipoint[n].Estilo==0)*/)//ESTILO SÓLIDO
     {
       CabosReta[NumCabosReta]->Indice=n;
-      Pontos=Dados->Multipoint[n].pontos;
+      Pontos = Dados->Multipoint[n].pontos;
       DifX=fabs(Pontos[0].x-Pontos[1].x);
       DifY=fabs(Pontos[0].y-Pontos[1].y);
       CabosReta[NumCabosReta]->TipoOrientacao=(DifY>DifX) ? VERTICAL : HORIZONTAL;
@@ -259,16 +256,16 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo,
 {
   int m;
   double MenorDist, Dist;
-  TPonto *PontosCabo;
+  vector<TPonto> PontosCabo;
   IndiceCabo=-1;
   MenorDist=Infinity;
   for (m=0; m<NumCabosReta; m++)
   {
     if((Nivel != -1) && (Dados->Multipoint[CabosReta[m]->Indice].Nivel != Nivel))
       continue;
-    PontosCabo=Dados->Multipoint[CabosReta[m]->Indice].pontos;
+    PontosCabo = Dados->Multipoint[CabosReta[m]->Indice].pontos;
     TPonto volta;
-    Dist = DistPontoParaSegmentoReta(PontosCabo, ponto, volta);
+    Dist = DistPontoParaSegmentoReta(&PontosCabo[0], ponto, volta);
     if (( Dist < MenorDist) && (m!=Diferente))
     {
       MenorDist = Dist;
@@ -297,7 +294,7 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
   TVectorInt *JahPassou = new TVectorInt();
   int menores = 0;
   double MenorDist, Dist;
-  TPonto *PontosReta, Ponto;
+  TPonto Ponto;
   int IndiceCabo, CaboPonta;
 
   TPonto PontoInicial;
@@ -317,7 +314,7 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
       if ( m == iM )
         continue;
 
-      PontosReta=Dados->Multipoint[ListaItens->getItem(m)->Indice].pontos;
+      vector<TPonto> &PontosReta = Dados->Multipoint[ListaItens->getItem(m)->Indice].pontos;
       // Vê a distância pra primeira ponta do cabo
       Dist = DistPontos(PontosReta[0], Ponto);
       if ( Dist - MenorDist < DistMinBandeirola && Dist < DistMinBandeirola )
@@ -325,13 +322,13 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
         menores++;
         MenorDist = Dist;
         IndiceCabo = m;
-        CaboPonta = Dados->Multipoint[ListaItens->getItem(m)->Indice].tam-1;
+        CaboPonta = Dados->Multipoint[ListaItens->getItem(m)->Indice].pontos.size() - 1;
         if ( menores > 1 )
           CaboPonta = 0;
       }
 
       // Vê a distância pra segunda ponta do cabo
-      Dist = DistPontos(PontosReta[Dados->Multipoint[ListaItens->getItem(m)->Indice].tam-1], Ponto);
+      Dist = DistPontos(PontosReta[Dados->Multipoint[ListaItens->getItem(m)->Indice].pontos.size() - 1], Ponto);
       if ( Dist - MenorDist < DistMinBandeirola && Dist < DistMinBandeirola )
       {
         menores++;
@@ -339,7 +336,7 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
         IndiceCabo = m;
         CaboPonta = 0;
         if ( menores > 1 )
-          CaboPonta = Dados->Multipoint[ListaItens->getItem(m)->Indice].tam-1;
+          CaboPonta = Dados->Multipoint[ListaItens->getItem(m)->Indice].pontos.size()-1;
       }
     }//for (m=0; m<NumCabosReta; m++)
 
@@ -417,7 +414,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
       if ( ListaItens->getItem(m)->TipoVetorCW == VMULTIPOINT )
       {
         int IndiceNoVetorMultipoint = ListaItens->getItem(m)->Indice;
-        int NumPontos=Dados->Multipoint[IndiceNoVetorMultipoint].tam;
+        int NumPontos=Dados->Multipoint[IndiceNoVetorMultipoint].pontos.size();
         int IndiceDoUltimoPonto = NumPontos-1;
         // Pega o primeiro e o último ponto do multipoint e põe na lista de extremidades.
         PontosExtremidadesElementosBandeirola.push_back(Dados->Multipoint[IndiceNoVetorMultipoint].pontos[0]);
@@ -664,10 +661,10 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint(int Indice, TList
   TMultipoint MultipointT;
   TPonto reta[2];
   MultipointT=Dados->Multipoint[Indice];
-  for (j=0; j<MultipointT.tam; j++)
+  for (j=0; j<MultipointT.pontos.size(); j++)
   {
     reta[0]=MultipointT.pontos[j  ];
-    if ( j+1 != MultipointT.tam )
+    if ( j+1 != MultipointT.pontos.size() )
       reta[1]=MultipointT.pontos[j+1];
     else
       reta[1]=MultipointT.pontos[0];
@@ -861,7 +858,7 @@ TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCel
     //se o item corrente da célula for multipoint, continua
     if ( ListaItensCelula->getItem(i)->TipoVetorCW == VMULTIPOINT )
     {
-      for (j=0; j<Dados->Multipoint[ListaItensCelula->getItem(i)->Indice].tam; j++)
+      for (j=0; j<Dados->Multipoint[ListaItensCelula->getItem(i)->Indice].pontos.size(); j++)
       {
         if ( first )
         {
@@ -1001,9 +998,9 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
     /* Olha todos os cabos reta do desenho */
     tMultipoint=&Dados->Multipoint[CabosReta[n]->Indice];
 
-    for (m=0; m<tMultipoint->tam; m++)
+    for (m=0; m<tMultipoint->pontos.size(); m++)
     {
-      if ( m != 0 && m != tMultipoint->tam-1 )
+      if ( m != 0 && m != tMultipoint->pontos.size()-1 )
         continue;
       /* Olha cada ponta da reta */
       CaboMaisProximo(tMultipoint->pontos[m], iMenorDist, DistMaisProx, PontoNaReta, n, tMultipoint->Nivel);
@@ -1039,13 +1036,13 @@ void CGrafoDesenho::DistRetaParaPontaCaboReta(TPonto Reta[2],
   int m, n;
   unsigned char ContadorMaior;
   double MenorDist, Dist;
-  TPonto *PontosCabo, PontoTemp;
+  TPonto PontoTemp;
   IndiceCabo=-1;
   MenorDist=Infinity;
   for (m=0; m<NumCabosReta; m++)
   {
     // PontosCabo tem os pontos de início e fim do cabo
-    PontosCabo=Dados->Multipoint[CabosReta[m]->Indice].pontos;
+    vector<TPonto> &PontosCabo=Dados->Multipoint[CabosReta[m]->Indice].pontos;
     for (n=0; n<2; n++)
     {
       Dist=DistPontoParaSegmentoReta(Reta, PontosCabo[n], PontoTemp);
@@ -1067,12 +1064,12 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2],
   int m, n;
   unsigned char ContadorMaior;
   double Dist;
-  TPonto *PontosCabo, PontoTemp;
+  TPonto PontoTemp;
   TPontoEIndiceCabo Cabo;
   for (m=0; m<NumCabosReta; m++)
   {
     // PontosCabo tem os pontos de início e fim do cabo
-    PontosCabo=Dados->Multipoint[CabosReta[m]->Indice].pontos;
+    vector<TPonto> &PontosCabo=Dados->Multipoint[CabosReta[m]->Indice].pontos;
     for (n=0; n<2; n++)
     {
       Dist=DistPontoParaSegmentoReta(Reta, PontosCabo[n], PontoTemp);
@@ -1164,7 +1161,7 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIn
   TPontoEIndiceCabo Cabo;
   for (m=0; m<NumCabosReta; m++)
   {
-    PontosCabo=Dados->Multipoint[CabosReta[m]->Indice].pontos;
+    vector<TPonto> &PontosCabo = Dados->Multipoint[CabosReta[m]->Indice].pontos;
     for (n=0; n<2; n++)
     {
       //eixo primário em um círculo é o raio
@@ -1197,12 +1194,11 @@ void CGrafoDesenho::DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, doub
   int m, n;
   unsigned char ContadorMaior;
   double MenorDist, Dist;
-  TPonto *PontosCabo;
   IndiceCabo=-1;
   MenorDist=Infinity;
   for (m=0; m<NumCabosReta; m++)
   {
-    PontosCabo=Dados->Multipoint[CabosReta[m]->Indice].pontos;
+    vector<TPonto> &PontosCabo = Dados->Multipoint[CabosReta[m]->Indice].pontos;
     for (n=0; n<2; n++)
     {
       //eixo primário em um círculo é o raio

@@ -1,4 +1,3 @@
-// A simple program that computes the square root of a number
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -6,16 +5,25 @@
 #include "UParamsStructs.h"
 #include "UGrafoDesenho.h"
 #include "UNiveisProjeto.h"
+#include "TDesenho.h"
+#include "UContainerDesenhos.h"
 
 int main (int argc, char *argv[])
 {
+	int cableLevel = 5;
+	int equipLevel = 7;
+	int tagEquipLevel = 10;
+
 	TNiveisProjetoTransfer niveisProjetoTransfer;
+	niveisProjetoTransfer.ListaCabo.push_back( "5" );
+	niveisProjetoTransfer.ListaInstrumento.push_back( "7" );
+	niveisProjetoTransfer.ListaTag.push_back( "10" );
 	// Cria um novo params
 	TParamsGrafoDesenho paramsGrafoDesenho;
 	
 	TParamsInfoCircuitos paramsInfoCircuitos;
 	// O Id
-	paramsGrafoDesenho.IDArquivo = 3;
+	paramsGrafoDesenho.IDArquivo = 0;
 	// Para carregar o grafo
 	paramsGrafoDesenho.CarregaGrafo = true;
 	// Define as alturas -- HARDCODED?? :(
@@ -31,9 +39,73 @@ int main (int argc, char *argv[])
 	// E um ponteiro pro NiveisProjeto (TNiveisProjetoTransfer)
 	paramsGrafoDesenho.NiveisProjeto = &niveisProjetoTransfer;
 
-	TDadosTransfer dadosDLL;
+	CDadosGenerico dados;
 
-	CGrafoDesenho grafoDesenho(paramsGrafoDesenho, &dadosDLL);
+	{
+		TMultipoint equip1;
+		equip1.pontos.push_back( TPonto( 10.0, 10.0 ) );
+		equip1.pontos.push_back( TPonto( 20.0, 10.0 ) );
+		equip1.pontos.push_back( TPonto( 20.0, 20.0 ) );
+		equip1.pontos.push_back( TPonto( 10.0, 20.0 ) );
+		equip1.Nivel = equipLevel;
+		dados.Multipoint.push_back( equip1 );
+
+		TTexto equip1Text;
+		equip1Text.texto = "Equipamento 1";
+		equip1Text.Nivel = tagEquipLevel;
+		dados.Textos.push_back( equip1Text );
+
+		//dados.InfoCelula.AdicionaTexto( dados.Textos.size(), "equip 1", tagEquipLevel );
+	}
+
+	{
+		TMultipoint equip2;
+		equip2.pontos.push_back( TPonto( 40.0, 20.0 ) );
+		equip2.pontos.push_back( TPonto( 40.0, 10.0 ) );
+		equip2.pontos.push_back( TPonto( 50.0, 10.0 ) );
+		equip2.pontos.push_back( TPonto( 50.0, 20.0 ) );
+		equip2.Nivel = equipLevel;
+		dados.Multipoint.push_back( equip2 );
+
+		TTexto equip2Text;
+		equip2Text.texto = "Equipamento 2";
+		equip2Text.Nivel = tagEquipLevel;
+		dados.Textos.push_back( equip2Text );
+
+		//dados.InfoCelula.AdicionaTexto( dados.Textos.size(), "equip 2", tagEquipLevel );
+	}
+
+	{
+		TMultipoint cable;
+		cable.Nivel = cableLevel;
+		cable.pontos.push_back( TPonto( 20.0, 15.0 ) );
+		cable.pontos.push_back( TPonto( 40.0, 15.0 ) );
+		dados.Multipoint.push_back( cable );
+	}
+
+	CGrafoDesenho grafoDesenho(paramsGrafoDesenho, &dados);
+
+	// Cria um novo desenho
+	TDesenho *desenho = new TDesenho;
+	// E o ID
+	desenho->ID = 0;
+	desenho->Altura = 50.0;
+
+	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
+	containerDesenhos.addDrawing( desenho );
+	callbackStatusCarregamento sc;
+	containerDesenhos.Conclui( sc );
+
+	double tam;
+	string rota;
+	TArestasCircuito *ArestasCircuito;
+	vector<int> ListaBandeirolas;
+	vector<string> DEBUG_arestas;
+	string SubRotas; 
+	TCircuitoAreas *CircuitoAreas;
+
+	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 2", "Equipamento 1", tam, rota, ArestasCircuito, &ListaBandeirolas,
+		&DEBUG_arestas, SubRotas, CircuitoAreas);
 
 	return 0;
 }

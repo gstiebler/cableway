@@ -52,7 +52,14 @@ enum TTipoElemento {NADA, CABO, BANDEIROLA, ESTRUTURA, CALHA, INSTRUMENTO, TAG, 
 //---------------------------------------------------------------------------
 struct TPonto
 {
-  double x, y;
+	double x, y;
+
+	TPonto( double X, double Y ) :
+		x( X ),
+		y( Y )
+	{}
+
+	TPonto() {}
 };
 
 struct TReta

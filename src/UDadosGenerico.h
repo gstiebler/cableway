@@ -40,35 +40,17 @@ struct TElemento
 
 struct TMultipoint: public TElemento
 {
-	int tam;
 	int tipo;
 	// Pontos que formam o Multipoint.
-	TPonto *pontos;
+	std::vector<TPonto> pontos;
 
 	TMultipoint() : TElemento() {
-		tam = 0;
 		tipo = 0;
-		pontos = NULL;
-	}
-	~TMultipoint() {
-		if ( pontos )
-			delete[] pontos;
 	}
   // Construtor de cópia
 	TMultipoint(const TMultipoint& TMulti) : TElemento(TMulti)
 	{
-		tam = TMulti.tam;
-		tipo = TMulti.tipo;
-		pontos = NULL;
-		if ( TMulti.pontos )
-		{
-			pontos = new TPonto[tam];
-			for ( int i = 0 ; i < tam; i++ )
-			{
-				pontos[i].x = TMulti.pontos[i].x;
-				pontos[i].y = TMulti.pontos[i].y;
-			}
-		}
+		*this = TMulti;
 	}
   // Operador de atribuição
 	TMultipoint& operator=( const TMultipoint &TMulti )
@@ -80,18 +62,8 @@ struct TMultipoint: public TElemento
 		Nivel = TMulti.Nivel;
 		Peso = TMulti.Peso;
 		Estilo = TMulti.Estilo;
-		tam = TMulti.tam;
 		tipo = TMulti.tipo;
-		pontos = NULL;
-		if ( TMulti.pontos )
-		{
-			pontos = new TPonto[tam];
-			for ( int i = 0 ; i < tam; i++ )
-			{
-				pontos[i].x = TMulti.pontos[i].x;
-				pontos[i].y = TMulti.pontos[i].y;
-			}
-		}
+		pontos = TMulti.pontos;
 		return *this;
 	}
 };

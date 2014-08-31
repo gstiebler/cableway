@@ -32,12 +32,15 @@ private:
   void GeraListaAdjacencias();
   void buscaEmProfundidadeOsVertices(bool *VerticesVisitados, int indice, bool arestazerada, TArestaReduzida arestaRed);
 public:
-  CContainerDesenhos();
+  CContainerDesenhos(TNiveisProjetoTransfer *niveis);
 //  CContainerDesenhos(TInterfaceMainPar *imp);
   ~CContainerDesenhos();
   CInfoCircuitos *InfoCircuitos;
   //TfrmDesenho **frmDesenhos;
   void AdicionaDesenho(string NomeArquivo, int id, double altura, bool carregagrafo);
+
+  void addDrawing( TDesenho *Desenho );
+
   TDesenho * getDesenho(int Indice);
   void CriaFormDesenho(int Indice);
   void MostraCircuito(string circuito);

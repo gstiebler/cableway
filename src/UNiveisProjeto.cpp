@@ -44,7 +44,7 @@ TTipoElemento TNiveisProjeto::buscaListas(string nivel)
 //---------------------------------------------------------------------------
 void TNiveisProjeto::exportaTransfer(TNiveisProjetoTransfer *Niveis)
 {
-	int tam = 0;
+	/*int tam = 0;
 	vector<string>::iterator it;
 	for ( it = ListaInstrumento->begin() ; it < ListaInstrumento->end() ; it++ )
 		if ( (int) it->size() > tam )
@@ -94,39 +94,39 @@ void TNiveisProjeto::exportaTransfer(TNiveisProjetoTransfer *Niveis)
 		memset(Niveis->ListaTag[i], 0, tam);
 		strcpy(Niveis->ListaTag[i], ListaTag->at(i).c_str());
 	}
-	Niveis->tamListaTag = ListaTag->size();
+	Niveis->tamListaTag = ListaTag->size();*/
 
 }
 //---------------------------------------------------------------------------
 void TNiveisProjeto::importaTransfer(TNiveisProjetoTransfer *Niveis)
 {
-	string temp;
-	for ( int i = 0 ; i < Niveis->tamListaInstrumento ; i++ )
-	{
-		temp = Niveis->ListaInstrumento[i];
-		ListaInstrumento->push_back(temp);
-	}
-	for ( int i = 0 ; i < Niveis->tamListaBandeirola ; i++ )
-	{
-		temp = Niveis->ListaBandeirola[i];
-		ListaBandeirola->push_back(Niveis->ListaBandeirola[i]);
-	}
-	for ( int i = 0 ; i < Niveis->tamListaCabo ; i++ )
-	{
-		temp = Niveis->ListaCabo[i];
-		ListaCabo->push_back(Niveis->ListaCabo[i]);
-	}
-	for ( int i = 0 ; i < Niveis->tamListaTag ; i++ )
-	{
-		temp = Niveis->ListaTag[i];
-		ListaTag->push_back(Niveis->ListaTag[i]);
-	}
+	//string temp;
+	//for ( int i = 0 ; i < Niveis->tamListaInstrumento ; i++ )
+	//{
+	//	temp = Niveis->ListaInstrumento[i];
+	//	ListaInstrumento->push_back(temp);
+	//}
+	//for ( int i = 0 ; i < Niveis->tamListaBandeirola ; i++ )
+	//{
+	//	temp = Niveis->ListaBandeirola[i];
+	//	ListaBandeirola->push_back(Niveis->ListaBandeirola[i]);
+	//}
+	//for ( int i = 0 ; i < Niveis->tamListaCabo ; i++ )
+	//{
+	//	temp = Niveis->ListaCabo[i];
+	//	ListaCabo->push_back(Niveis->ListaCabo[i]);
+	//}
+	//for ( int i = 0 ; i < Niveis->tamListaTag ; i++ )
+	//{
+	//	temp = Niveis->ListaTag[i];
+	//	ListaTag->push_back(Niveis->ListaTag[i]);
+	//}
 
 }
 //---------------------------------------------------------------------------
 void liberaTNiveisProjetoTransfer(TNiveisProjetoTransfer *Niveis)
 {
-	for ( int i = 0 ; i < Niveis->tamListaInstrumento ; i++ )
+	/*for ( int i = 0 ; i < Niveis->tamListaInstrumento ; i++ )
 		delete[] Niveis->ListaInstrumento[i];
 	delete[] Niveis->ListaInstrumento;
 
@@ -140,7 +140,7 @@ void liberaTNiveisProjetoTransfer(TNiveisProjetoTransfer *Niveis)
 
 	for ( int i = 0 ; i < Niveis->tamListaTag ; i++ )
 		delete[] Niveis->ListaTag[i];
-	delete[] Niveis->ListaTag;
+	delete[] Niveis->ListaTag;*/
 }
 
 //---------------------------------------------------------------------------
