@@ -17,7 +17,6 @@ TParamsInfoCircuitos::TParamsInfoCircuitos()
 {
   VerticesGerais=new TVerticesGerais;
   VerticesReduzidos = new TVerticesGerais;
-  ArestasReduzidas = new TListaArestasReduzidas;
   Arestas=new TListaArestas;
 }
 //---------------------------------------------------------------------------
@@ -26,7 +25,6 @@ TParamsInfoCircuitos::~TParamsInfoCircuitos()
 {
   delete VerticesGerais;
   delete VerticesReduzidos;
-  delete ArestasReduzidas;
   delete Arestas;
 }
 //---------------------------------------------------------------------------

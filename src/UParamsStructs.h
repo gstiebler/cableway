@@ -7,7 +7,10 @@
 class TNiveisProjetoTransfer;
 class TVerticesGerais;
 class TListaArestas;
-class TListaArestasReduzidas;
+
+#include "UVerticesArestas.h"
+
+#include <vector>
 
 struct TParamsDadosGenerico
 {
@@ -34,7 +37,7 @@ struct TParamsInfoCircuitos
   ~TParamsInfoCircuitos();
   TVerticesGerais *VerticesGerais, *VerticesReduzidos;
   TListaArestas *Arestas;
-  TListaArestasReduzidas *ArestasReduzidas;
+  std::vector<TArestaReduzida> ArestasReduzidas;
   int NumDesenhos;
 };
 //---------------------------------------------------------------------------

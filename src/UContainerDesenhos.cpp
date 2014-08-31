@@ -252,7 +252,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
       arestaRed.Vertice2 = ParamsInfoCircuitos.VerticesReduzidos->Tamanho();
       tamanho = ParamsInfoCircuitos.VerticesReduzidos->Tamanho();
       ParamsInfoCircuitos.VerticesReduzidos->Adiciona(*vertice);
-      ParamsInfoCircuitos.ArestasReduzidas->Adiciona(arestaRed);
+      ParamsInfoCircuitos.ArestasReduzidas.push_back(arestaRed);
       arestaRed.limpa();
       arestazerada = true;
     }//if ( verticesArestas->Tamanho() != 2 || vertice->texto != "" )

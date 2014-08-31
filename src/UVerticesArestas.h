@@ -103,15 +103,19 @@ struct TArestaReduzida
   int IndiceDesenho;
   int IDArquivo;
   vector<int> *ArestasRetiradas;
-  TArestaReduzida () { ArestasRetiradas = 0; limpa(); }
-  TArestaReduzida (TArestaReduzida &cpy)
+  TArestaReduzida () 
+  { 
+	  ArestasRetiradas = 0; limpa(); 
+  }
+
+  TArestaReduzida(const TArestaReduzida &cpy)
   {
-  Vertice1 = cpy.Vertice1;
-  Vertice2 = cpy.Vertice2;
-  Tam = cpy.Tam;
-  IndiceDesenho = cpy.IndiceDesenho;
-  IDArquivo = cpy.IDArquivo;
-  ArestasRetiradas = new vector<int>(*cpy.ArestasRetiradas);
+	  Vertice1 = cpy.Vertice1;
+	  Vertice2 = cpy.Vertice2;
+	  Tam = cpy.Tam;
+	  IndiceDesenho = cpy.IndiceDesenho;
+	  IDArquivo = cpy.IDArquivo;
+	  ArestasRetiradas = new vector<int>(*cpy.ArestasRetiradas);
   }
   ~TArestaReduzida () { if ( ArestasRetiradas ) delete ArestasRetiradas; ArestasRetiradas = 0; }
   void limpa()
@@ -125,8 +129,6 @@ struct TArestaReduzida
   }
 };
 //---------------------------------------------------------------------------
-
-struct TListaArestasReduzidas: public TListaV<TArestaReduzida> {};
 
 struct TListaArestas: public TListaV<TAresta> {};
 //---------------------------------------------------------------------------
