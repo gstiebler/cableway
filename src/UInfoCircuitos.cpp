@@ -132,7 +132,6 @@ CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callba
     dentroEquipamento = CConfig::DentroEquipamento();
 
     ListaCircuitosArestas = new TListaCircuitos[Arestas->Tamanho()];
-    ArestasDoCircuito = new TListaArestasCircuito;
     for (int n = 0; n < Arestas->Tamanho(); n++)
         ListaCircuitosArestas[n].NumCircuitos = 0;
     GeraInfoCircuitos( call );
@@ -347,8 +346,8 @@ string CInfoCircuitos::CircuitosDaAresta(int Aresta)
 int CInfoCircuitos::ListaArestasDoCircuito(string circuito)
 {
     int n;
-    for (n = 0; n < ArestasDoCircuito->Tamanho(); n++)
-        if (circuito == ArestasDoCircuito->getItem( n )->Circuito)
+    for (n = 0; n < ArestasDoCircuito.size(); n++)
+        if (circuito == ArestasDoCircuito[n].Circuito)
             return n;
     return -1;
 }
@@ -357,8 +356,8 @@ int CInfoCircuitos::ListaArestasDoCircuito(string circuito)
 int CInfoCircuitos::ListaArestasDoCircuito(int idCircuito)
 {
     int n;
-    for (n = 0; n < ArestasDoCircuito->Tamanho(); n++)
-        if (idCircuito == ArestasDoCircuito->getItem( n )->idCircuito)
+    for (n = 0; n < ArestasDoCircuito.size(); n++)
+        if (idCircuito == ArestasDoCircuito[n].idCircuito)
             return n;
     return -1;
 }
@@ -372,7 +371,7 @@ int CInfoCircuitos::ApagaArestasDoCircuito(string circuito, int idCircuito)
         return -1;
     }
 
-    TVectorInt Arestas = ArestasDoCircuito->getItem( n )->Arestas;
+    TVectorInt Arestas = ArestasDoCircuito[n].Arestas;
 
     for (int i = 0; i < (int) Arestas.size(); i++)
     {
@@ -387,13 +386,13 @@ int CInfoCircuitos::ApagaArestasDoCircuito(string circuito, int idCircuito)
             }
         }
     }
-    ArestasDoCircuito->Remove( n );
+    ArestasDoCircuito.erase( ArestasDoCircuito.begin() + n );
     return 0;
 }
 
 TVectorInt * CInfoCircuitos::ArestasCircuito(int circuito, int IndiceDesenho)
 {
-    return &ArestasDoCircuito->getItem( circuito )->ArestasDesenho[IndiceDesenho];
+    return &ArestasDoCircuito[circuito].ArestasDesenho[IndiceDesenho];
 }
 //---------------------------------------------------------------------------
 

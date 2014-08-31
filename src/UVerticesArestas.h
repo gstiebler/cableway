@@ -31,12 +31,6 @@ struct TArestasCircuito
 };
 //---------------------------------------------------------------------------
 
-struct TListaArestasCircuito: public TListaV<TArestasCircuito>
-{
-  void Adicionar(int NumDesenhos);
-};
-//---------------------------------------------------------------------------
-
 struct TVerticeEAresta
 {
   int Vertice;

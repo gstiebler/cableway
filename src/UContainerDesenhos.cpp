@@ -366,7 +366,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
     if (IndiceCircuitoArestas>=0)
     {
       for (int n=0; n<NumDesenhos(); n++)
-        if (InfoCircuitos->ArestasDoCircuito->getItem(IndiceCircuitoArestas)->ArestasDesenho[n].size())
+        if (InfoCircuitos->ArestasDoCircuito[IndiceCircuitoArestas].ArestasDesenho[n].size())
         {
           CriaFormDesenho(n);
           //frmDesenhoAbas->Abas[n].fraDesenho->MostraDesenho->MostraCircuito(IndiceCircuitoArestas);

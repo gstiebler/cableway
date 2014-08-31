@@ -48,26 +48,7 @@ void TArestasCircuito::Apaga()
     Circuito = "";
     idCircuito = -1;
 }
-//---------------------------------------------------------------------------
 
-void TListaArestasCircuito::Adicionar(int NumDesenhos)
-{
-    TArestasCircuito *temp = new TArestasCircuito( NumDesenhos );
-    Adiciona( temp );
-    delete temp;
-//  lista->Add((void *)temp);
-}
-//---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-
-//void TListaVerticeReta::Ordena(TListSortCompare Compare)
-//{
-//  lista->Sort(Compare);
-//}
-//---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
 
 TVerticeGeral::TVerticeGeral()
 {

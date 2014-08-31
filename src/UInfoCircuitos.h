@@ -18,10 +18,10 @@
 #include "UDefines.h"
 #include "UArmazenamentoCircuitos.h"
 #include "UTCallbackStatusCarregamento.h"
+#include "UVerticesArestas.h"
 
 class TListaArestas;
 class TParamsInfoCircuitos;
-class TListaArestasCircuito;
 class TArestasCircuito;
 class TVerticesGerais;
 
@@ -88,7 +88,7 @@ public:
 
   ~CInfoCircuitos();
 
-  TListaArestasCircuito *ArestasDoCircuito;//arestas de um determinado circuito
+  std::vector<TArestasCircuito> ArestasDoCircuito;//arestas de um determinado circuito
 
   string CircuitosDaAresta(int Aresta);
 
