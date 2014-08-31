@@ -36,6 +36,7 @@ TEST_F(BasicTest, singleDrawing)
 	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
 	CDadosGenerico dados;
 
+	// equipment 1
 	{
 		TMultipoint equip1;
 		equip1.pontos.push_back( TPonto( 10.0, 10.0 ) );
@@ -59,6 +60,7 @@ TEST_F(BasicTest, singleDrawing)
 		dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
 	}
 
+	// equipment 2
 	{
 		TMultipoint equip2;
 		equip2.pontos.push_back( TPonto( 40.0, 20.0 ) );
@@ -82,12 +84,36 @@ TEST_F(BasicTest, singleDrawing)
 		dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
 	}
 
+	// cable
 	{
 		TMultipoint cable;
 		cable.Nivel = CABO;
 		cable.pontos.push_back( TPonto( 20.0, 15.0 ) );
 		cable.pontos.push_back( TPonto( 40.0, 15.0 ) );
 		dados.Multipoint.push_back( cable );
+	}
+
+	
+	// bandeirola
+	{
+		TMultipoint bandeirola;
+		bandeirola.pontos.push_back( TPonto( 30.0, 5.0 ) );
+		bandeirola.pontos.push_back( TPonto( 30.0, 14.0 ) );
+		bandeirola.Nivel = BANDEIROLA;
+		dados.Multipoint.push_back( bandeirola );
+
+		TTexto bandeirolaText;
+		bandeirolaText.texto = "Bandeirola1";
+		bandeirolaText.Nivel = BANDEIROLA;
+		dados.Textos.push_back( bandeirolaText );
+
+		TItemCelula itemCelula;
+		itemCelula.Indice = dados.Multipoint.size() - 1;
+		itemCelula.TipoVetorCW = VMULTIPOINT;
+		TListaItensCelula lista;
+		lista.Adiciona( itemCelula );
+		lista.iTextos.push_back( dados.Textos.size() - 1 );
+		dados.InfoCelula.ListaCelulasBandeirolas->Adiciona( lista );
 	}
 
 	containerDesenhos.addDrawing( dados );
@@ -106,7 +132,7 @@ TEST_F(BasicTest, singleDrawing)
 		&DEBUG_arestas, SubRotas, CircuitoAreas);
 
 	EXPECT_FLOAT_EQ( 20.0, tam );
-	EXPECT_STREQ( "Equipamento 1/Equipamento 2", rota.c_str() );
+	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2", rota.c_str() );
 }
 
 
