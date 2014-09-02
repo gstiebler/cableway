@@ -31,10 +31,14 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp )
 				
-include_directories(${SRC_BASE})
+include_directories(${SRC_BASE}
+                     ../lib/dxflib/src)
 
-add_executable(cableway ${ALL_SOURCES} 
-						${SRC_BASE}/main.cpp)
+link_directories(../lib/dxflib/lib/)
+					 
+add_executable(cableway ${SRC_BASE}/main.cpp 
+					${ALL_SOURCES})
+target_link_libraries(cableway dxflib)
 
 set(GTEST_PATH ../lib/gtest-1.6.0)
 include_directories(${GTEST_PATH}/include)
