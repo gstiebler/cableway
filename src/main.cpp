@@ -78,7 +78,7 @@ int main (int argc, char *argv[])
 	}
 
 
-	containerDesenhos.addDrawing( dados );
+	containerDesenhos.addDrawing( dados, 100.0 );
 	callbackStatusCarregamento sc;
 	containerDesenhos.Conclui( sc );
 

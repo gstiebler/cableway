@@ -4,6 +4,8 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+#include <stdio.h>
+
 TPilhaDesenhos::TPilhaDesenhos()
 {
   No=0;

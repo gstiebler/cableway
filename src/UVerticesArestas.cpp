@@ -3,6 +3,8 @@
 #pragma hdrstop
 
 #include "UVerticesArestas.h"
+#include <algorithm>
+#include <string>
 
 //---------------------------------------------------------------------------
 
@@ -109,13 +111,13 @@ int TVerticesGerais::AchaVerticePeloTexto(string Texto)
     int n;
     string texto1, texto2;
     texto1 = Texto;
-    transform( Texto.begin(), Texto.end(), texto1.begin(), toupper );
+    std::transform( Texto.begin(), Texto.end(), texto1.begin(), ::toupper );
 
     for (n = 0; n < Tamanho(); n++)
     {
         texto2 = getItem( n )->texto;
         transform( getItem( n )->texto.begin(), getItem( n )->texto.end(), texto2.begin(),
-                toupper );
+                ::toupper );
 //    if (getItem(n)->texto==Texto)
         //    if (getItem(n)->texto.UpperCase()==Texto.UpperCase())
         if (texto1 == texto2)

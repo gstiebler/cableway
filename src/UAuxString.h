@@ -4,9 +4,10 @@
 #define UAuxStringH
 //---------------------------------------------------------------------------
 
-#include <string>
+#include <string.h>
 #include <sstream>
 #include <algorithm> 
+#include <stdio.h>
 using namespace std;
 
 template <class T>

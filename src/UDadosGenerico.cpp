@@ -5,6 +5,8 @@
 
 #include "UDadosGenerico.h"
 
+#include <string.h>
+
 //---------------------------------------------------------------------------
 
 #pragma package(smart_init)

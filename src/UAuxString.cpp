@@ -23,8 +23,8 @@ string stringTrim(string& str)
 
 bool ordenaStrings(string str, string str2)
 {
-  if ( strcmpi(str.c_str(), str2.c_str()) < 0 )
-    return true;
+//  if ( strcmpi(str.c_str(), str2.c_str()) < 0 )
+//    return true;
 
   return false;
 }

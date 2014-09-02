@@ -16,7 +16,7 @@ struct TTempo
   #ifdef DEBUG_BUILDER
     AnsiString Nome;
   #endif
-  __int64 Momento;
+  long int Momento;
 };
 
 class CTempoExec
@@ -25,7 +25,7 @@ private:
   static CTempoExec *instance;
 
   vector<TTempo> Tempos;
-  __int64 freq, overhead;
+  long int freq, overhead;
   double PeriodoContador;
   CTempoExec();
 public:

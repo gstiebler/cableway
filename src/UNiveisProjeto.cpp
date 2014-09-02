@@ -20,7 +20,7 @@ TNiveisProjeto::~TNiveisProjeto()
 //---------------------------------------------------------------------------
 TTipoElemento TNiveisProjeto::buscaListas(string nivel)
 {
-	transform(nivel.begin(), nivel.end(), nivel.begin(), toupper);
+	//transform(nivel.begin(), nivel.end(), nivel.begin(), toupper);
 	vector<string>::iterator it;
 	for ( it = ListaInstrumento->begin() ; it < ListaInstrumento->end() ; it++ )
 		if ( *it == nivel )
