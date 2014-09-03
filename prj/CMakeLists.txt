@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.4)
 project (cableway)
 
 set(EXECUTABLE_OUTPUT_PATH ../bin)
@@ -36,6 +36,8 @@ include_directories(${SRC_BASE}
 
 link_directories(../lib/dxflib/lib/)
 					 
+set(CMAKE_CXX_FLAGS "-g")
+                     
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES})
 target_link_libraries(cableway dxflib)
