@@ -52,10 +52,10 @@ set(GTEST_PATH ../lib/gtest-1.7.0)
 link_directories(${GTEST_PATH})
                  
 include_directories(${GTEST_PATH}/include)
-add_definitions(-D_VARIADIC_MAX=10)
 
 set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
                   ${SRC_BASE}/tests/basic_tests.cpp
+                  ${SRC_BASE}/tests/TestsUtil.cpp
                   ${SRC_BASE}/tests/UserParamsLoadingTests.cpp)
 
 add_executable(cableway_tests ${ALL_SOURCES} ${TESTS_SOURCES}) 

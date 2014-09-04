@@ -3,6 +3,7 @@
 
 #include <UserParams/UserParams.h>
 #include <UserParams/LoadUserParams.h>
+#include "TestsUtil.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ class UserParamsLoadingTests : public ::testing::Test
 TEST_F(UserParamsLoadingTests, basic)
 {
     UserParams userParams;
-    string fileName = "user_params.xls";
+    string fileName = TestsUtil::getExePath() + "/../data/tests/user_params.xls";
     loadUserParams( fileName, &userParams );
 
     ASSERT_EQ( 2, (int) userParams.drawingsParams.size() );

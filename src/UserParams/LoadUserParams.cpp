@@ -30,7 +30,7 @@ xlsWorkSheet* sheetByName( xlsWorkBook* pWB, const char* sheetName )
 
 void loadDrawingParams( xlsWorkSheet *pWS, vector<DrawingParams> &drawingsParams )
 {
-    for (int cellRow = 0; cellRow <= pWS->rows.lastrow; cellRow++)
+    for (int cellRow = 1; cellRow <= pWS->rows.lastrow; cellRow++)
     {
         DrawingParams drawingParams;
 
@@ -48,7 +48,14 @@ void loadDrawingParams( xlsWorkSheet *pWS, vector<DrawingParams> &drawingsParams
 
 void loadLevelsParams(xlsWorkSheet *pWS, int col, vector<int> &levels )
 {
+    for (int cellRow = 1; cellRow <= pWS->rows.lastrow; cellRow++)
+    {
+        xlsCell *cell = xls_cell(pWS, cellRow, col);
+        if( cell->d < 1.0 )
+            return;
 
+        levels.push_back( (int) cell->d );
+    }
 }
 
 
