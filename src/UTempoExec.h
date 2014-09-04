@@ -30,7 +30,7 @@ private:
   CTempoExec();
 public:
   static CTempoExec *getInstance();
-  void MarcaTempo(char *texto);
+  void MarcaTempo(const char *texto);
   void MostraTempo(string nome);
   void MarcaTempo(string texto);
   static void destroi();

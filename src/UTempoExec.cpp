@@ -39,7 +39,7 @@ CTempoExec* CTempoExec::getInstance()
   return instance;
 }
 
-void CTempoExec::MarcaTempo(char *texto)
+void CTempoExec::MarcaTempo(const char *texto)
 {
 #ifdef DEBUG_BUILDER
   TTempo tempo;

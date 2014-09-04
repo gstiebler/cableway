@@ -4,7 +4,6 @@ project (cableway)
 set(EXECUTABLE_OUTPUT_PATH ../bin)
 set(SRC_BASE ../src)
 
-
 set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UCallbacks.cpp
 				${SRC_BASE}/UConfig.cpp
@@ -31,21 +30,29 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp )
 				
-include_directories(${SRC_BASE}
-                     ../lib/dxflib/src)
+set(LIB_DIRS ../lib/dxflib/src
+             ../lib/libxls/include)                
+                
+include_directories(${SRC_BASE} ${LIB_DIRS})
 
-link_directories(../lib/dxflib/lib/)
-					 
-set(CMAKE_CXX_FLAGS "-g")
+link_directories(../lib/dxflib/lib/
+                 ../lib/libxls/src/.libs)
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES})
-target_link_libraries(cableway dxflib)
+                    
+target_link_libraries(cableway dxflib xlsreader)
 
-set(GTEST_PATH ../lib/gtest-1.6.0)
+# Tests
+set(GTEST_PATH ../lib/gtest-1.7.0)
+
+link_directories(${GTEST_PATH})
+                 
 include_directories(${GTEST_PATH}/include)
 add_definitions(-D_VARIADIC_MAX=10)
-add_executable(cableway_tests ${ALL_SOURCES} 
-		${SRC_BASE}/tests/main_tests.cpp
-		${SRC_BASE}/tests/basic_tests.cpp)
-target_link_libraries(cableway_tests ${GTEST_PATH}/Debug/gtest)
+
+set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
+                  ${SRC_BASE}/tests/basic_tests.cpp)
+
+add_executable(cableway_tests ${ALL_SOURCES} ${TESTS_SOURCES}) 
+target_link_libraries(cableway_tests gtest)
