@@ -28,7 +28,8 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTCallbackStatusCarregamento.cpp
 				${SRC_BASE}/UTempoExec.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
-				${SRC_BASE}/UVerticesArestas.cpp )
+				${SRC_BASE}/UVerticesArestas.cpp
+				${SRC_BASE}/UserParams/LoadUserParams.cpp )
 				
 set(LIB_DIRS ../lib/dxflib/src
              ../lib/libxls/include)                
@@ -52,7 +53,8 @@ include_directories(${GTEST_PATH}/include)
 add_definitions(-D_VARIADIC_MAX=10)
 
 set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
-                  ${SRC_BASE}/tests/basic_tests.cpp)
+                  ${SRC_BASE}/tests/basic_tests.cpp
+                  ${SRC_BASE}/tests/UserParamsLoadingTests.cpp)
 
 add_executable(cableway_tests ${ALL_SOURCES} ${TESTS_SOURCES}) 
 target_link_libraries(cableway_tests gtest)

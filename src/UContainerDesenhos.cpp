@@ -305,12 +305,12 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
 void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
 {
-	for(int i(0); i < ParamsInfoCircuitos.VerticesGerais->Tamanho(); ++i)
-	{
-		printf( "(%f, %f) - %s \n", ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.x, 
-						ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.y, 
-						ParamsInfoCircuitos.VerticesGerais->getItem( i )->texto.c_str());
-	}
+//	for(int i(0); i < ParamsInfoCircuitos.VerticesGerais->Tamanho(); ++i)
+//	{
+//		printf( "(%f, %f) - %s \n", ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.x,
+//						ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.y,
+//						ParamsInfoCircuitos.VerticesGerais->getItem( i )->texto.c_str());
+//	}
 
     int indice = ListaDesenhos.size() - 1;
     if (indice >= 0)
