@@ -41,8 +41,10 @@ link_directories(../lib/dxflib/lib/
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES})
-                    
-target_link_libraries(cableway dxflib xlsreader)
+
+set(CW_LIBRARIES dxflib xlsreader iconv) 
+                   
+target_link_libraries(cableway ${CW_LIBRARIES})
 
 # Tests
 set(GTEST_PATH ../lib/gtest-1.7.0)
@@ -57,4 +59,4 @@ set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
                   ${SRC_BASE}/tests/UserParamsLoadingTests.cpp)
 
 add_executable(cableway_tests ${ALL_SOURCES} ${TESTS_SOURCES}) 
-target_link_libraries(cableway_tests gtest)
+target_link_libraries(cableway_tests  ${CW_LIBRARIES} gtest)
