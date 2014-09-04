@@ -1,3 +1,5 @@
+#ifndef USER_PARAMS_H__
+#define USER_PARAMS_H__
 
 #include <vector>
 #include <string>
@@ -17,3 +19,5 @@ struct UserParams
 	
 	std::vector<DrawingParams> drawingsParams;
 };
+
+#endif
