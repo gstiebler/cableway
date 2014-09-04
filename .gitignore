@@ -10,3 +10,10 @@ bin
 *.obj
 *.cache
 *.lastbuildstate
+dxflib
+gtest-1.7.0
+libxls
+CMakeFiles
+/src/.cproject
+/src/.project
+.settings
