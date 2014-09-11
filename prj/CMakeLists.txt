@@ -29,6 +29,7 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTempoExec.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
+				${SRC_BASE}/DrawingLoader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp )
 				
 set(LIB_DIRS ../lib/dxflib/src
@@ -60,7 +61,8 @@ include_directories(${GTEST_PATH}/include)
 set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
                   ${SRC_BASE}/tests/basic_tests.cpp
                   ${SRC_BASE}/tests/TestsUtil.cpp
-                  ${SRC_BASE}/tests/UserParamsLoadingTests.cpp)
+                  ${SRC_BASE}/tests/UserParamsLoadingTests.cpp
+                  ${SRC_BASE}/tests/DrawingLoaderTests.cpp)
 
 add_executable(cableway_tests ${ALL_SOURCES} ${TESTS_SOURCES}) 
 target_link_libraries(cableway_tests  ${CW_LIBRARIES} gtest)

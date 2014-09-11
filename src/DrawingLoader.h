@@ -8,6 +8,7 @@
 #ifndef DRAWINGLOADER_H_
 #define DRAWINGLOADER_H_
 
+#include <dl_creationadapter.h>
 #include "dl_dxf.h"
 #include <string>
 
@@ -24,14 +25,14 @@ public:
 private:
 
     void addLine(const DL_LineData &d);
-    void addArc(const DL_ArcData&) {}
-    void addCircle(const DL_CircleData&) {}
-    void addEllipse(const DL_EllipseData&) {}
-    void addLayer(const DL_LayerData&) {}
-    void addBlock(const DL_BlockData&) {}
-    void endBlock() {}
-    void addPoint(const DL_PointData&) {}
-    void addText(const DL_TextData&) {}
+    void addArc(const DL_ArcData&);
+    void addCircle(const DL_CircleData&);
+    void addEllipse(const DL_EllipseData&);
+    void addLayer(const DL_LayerData&);
+    void addBlock(const DL_BlockData&);
+    void endBlock();
+    void addPoint(const DL_PointData&);
+    void addText(const DL_TextData&);
 
     CDadosGenerico *_dados;
 };

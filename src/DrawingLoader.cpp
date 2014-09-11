@@ -22,7 +22,7 @@ DrawingLoader::~DrawingLoader()
 
 void DrawingLoader::loadDXF( std::string fileName, CDadosGenerico *dados )
 {
-    DrawingLoader f;
+    DrawingLoader f( dados );
     DL_Dxf dxf;
     if (!dxf.in(fileName.c_str(), &f)) {
         std::cerr << fileName.c_str() << " could not be opened.\n";
