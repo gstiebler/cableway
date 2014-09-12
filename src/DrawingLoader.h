@@ -33,6 +33,8 @@ private:
     void endBlock();
     void addPoint(const DL_PointData&);
     void addText(const DL_TextData&);
+    void addPolyline(const DL_PolylineData&);
+    void addVertex(const DL_VertexData&);
 
     CDadosGenerico *_dados;
 };
