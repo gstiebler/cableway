@@ -8,30 +8,13 @@
 #include "TDesenho.h"
 #include "UContainerDesenhos.h"
 #include "UListaCelulas.h"
-
-#include <dl_creationadapter.h>
-#include "dl_dxf.h"
-
-class MyDxfFilter : public DL_CreationAdapter 
-{
-    virtual void addLine(const DL_LineData& d);
-};
-
-
-void MyDxfFilter::addLine(const DL_LineData& d) 
-{
-    std::cout << "Line: " << d.x1 << "/" << d.y1
-    << " " << d.x2 << "/" << d.y2 << std::endl;
-}
+#include "DwgLoader.h"
 
 int main (int argc, char *argv[])
 {
-	MyDxfFilter f;
-	DL_Dxf* dxf = new DL_Dxf();
-	if (!dxf->in("demo.dxf", &f)) {
-		std::cerr << "drawing.dxf could not be opened.\n"; 
-	}
-	delete dxf;
+    string fileName = "drawing2.dwg";//TestsUtil::getExePath() + "/../data/tests/drawing2.dwg";
+    DwgLoader *loader = new DwgLoader( fileName );
+
 	int cableLevel = 5;
 	int equipLevel = 7;
 	int tagEquipLevel = 10;

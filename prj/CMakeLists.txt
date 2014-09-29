@@ -30,20 +30,23 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/DrawingLoader.cpp
+				${SRC_BASE}/DwgLoader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp )
 				
 set(LIB_DIRS ../lib/dxflib/src
+             ../lib/libredwg/src
              ../lib/libxls/include)                
                 
 include_directories(${SRC_BASE} ${LIB_DIRS})
 
 link_directories(../lib/dxflib/lib/
+                 ../lib/libredwg/src/.libs
                  ../lib/libxls/src/.libs)
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES})
 
-set(CW_LIBRARIES dxflib xlsreader iconv) 
+set(CW_LIBRARIES redwg dxflib xlsreader iconv) 
                    
 target_link_libraries(cableway ${CW_LIBRARIES})
 
