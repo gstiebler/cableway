@@ -47,6 +47,7 @@ void add_insert(Dwg_Entity_INSERT *insert)
         print_obj( insert->first_attrib->obj );
     if(insert->seqend)
         print_obj( insert->seqend->obj );
+    printf("pointer: %p\n", insert->attrib_handles);
     printf( "end insert\n" );
 }
 
@@ -56,6 +57,14 @@ void add_lwpline(Dwg_Entity_LWPLINE *lwpline)
     for(int i(0); i < lwpline->num_points; ++i)
         printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
     printf( "end lwpline\n" );
+}
+
+void add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
+{
+    printf("block header: %s, %d, %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count);
+    for(int i(0); i < block_header->owned_object_count; ++i)
+        print_obj(block_header->entities[i]->obj);
+    printf("end block header\n");
 }
 
 
@@ -71,8 +80,8 @@ void print_obj(Dwg_Object *obj)
     Dwg_Entity_INSERT *insert;
     Dwg_Entity_LWPLINE *lwpline;
     Dwg_Entity_BLOCK *block;
+    Dwg_Object_BLOCK_HEADER *block_header;
 
-    printf( "%x\n", obj->type );
     //dwg_print_object(&dwg.object[i]);
 
     switch (obj->type)
@@ -99,6 +108,10 @@ void print_obj(Dwg_Object *obj)
         case DWG_TYPE_LWPLINE:
             add_lwpline(obj->tio.entity->tio.LWPLINE);
             break;
+        case DWG_TYPE_BLOCK_HEADER:
+            add_block_header(obj->tio.object->tio.BLOCK_HEADER);
+            break;
+        default: printf( "%x\n", obj->type );
    }
 }
 
