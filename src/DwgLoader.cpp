@@ -13,6 +13,9 @@
 
 #include "UDadosGenerico.h"
 #include "UDefines.h"
+#include "UItemCelula.h"
+#include "UListaItensCelula.h"
+#include "UListaV.h"
 
 using namespace std;
 
@@ -24,6 +27,16 @@ void DwgLoader::add_line(Dwg_Entity_LINE *line)
      multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
      multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
     _dados->Multipoint.push_back( multipoint );
+
+    if( _currCell )
+    {
+        TItemCelula itemCelula;
+        itemCelula.Indice = _pointerToMultipointIndex[line];
+        itemCelula.TipoVetorCW = VMULTIPOINT;
+        _currCell->Adiciona( itemCelula );
+    }
+    else
+        _pointerToMultipointIndex[line] = _dados->Multipoint.size() - 1;
 }
 
 void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
@@ -46,6 +59,14 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
     texto.origem.y = text->insertion_pt.y;
     texto.texto = string( (char*) text->text_value );
     _dados->Textos.push_back( texto );
+
+    if( _currCell )
+    {
+        int textIndex = _pointerToTextIndex[text];
+        _currCell->iTextos.push_back( textIndex );
+    }
+    else
+        _pointerToTextIndex[text] = _dados->Textos.size() - 1;
 }
 
 void DwgLoader::add_group( Dwg_Object_GROUP *group )
@@ -79,14 +100,32 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
         printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
     }
     _dados->Multipoint.push_back( multipoint );
+
+
+    if( _currCell )
+    {
+        TItemCelula itemCelula;
+        itemCelula.Indice = _pointerToMultipointIndex[lwpline];
+        itemCelula.TipoVetorCW = VMULTIPOINT;
+        _currCell->Adiciona( itemCelula );
+    }
+    else
+        _pointerToMultipointIndex[lwpline] = _dados->Multipoint.size() - 1;
+
     printf( "end lwpline\n" );
 }
 
 void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
     printf("block header: %s, %d, %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count);
+
+    _currCell = new TListaItensCelula();
     for(int i(0); i < block_header->owned_object_count; ++i)
         print_obj(block_header->entities[i]->obj);
+    delete _currCell;
+    _currCell = NULL;
+
+
     printf("end block header\n");
 }
 
@@ -140,7 +179,8 @@ void DwgLoader::print_obj(Dwg_Object *obj)
 
 
 DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados ) :
-    _dados( dados )
+    _dados( dados ),
+    _currCell( NULL )
 {
     unsigned int i;
     int success;

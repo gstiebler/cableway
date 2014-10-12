@@ -9,9 +9,11 @@
 #define DWGLOADER_H_
 
 #include <string>
+#include <map>
 #include <dwg.h>
 
 class CDadosGenerico;
+class TListaItensCelula;
 
 class DwgLoader
 {
@@ -31,6 +33,12 @@ private:
     void add_line(Dwg_Entity_LINE *line);
 
     CDadosGenerico* _dados;
+
+    TListaItensCelula *_currCell;
+
+    /** Converts the DWG pointer to a index in the CDadosGenerico list */
+    std::map<void*, int> _pointerToMultipointIndex;
+    std::map<void*, int> _pointerToTextIndex;
 };
 
 #endif /* DWGLOADER_H_ */
