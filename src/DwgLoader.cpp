@@ -9,28 +9,46 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <dwg.h>
+#include <vector>
+
+#include "UDadosGenerico.h"
+#include "UDefines.h"
 
 using namespace std;
 
-void print_obj(Dwg_Object *obj);
-
-void add_line(double x1, double y1, double x2, double y2)
+void DwgLoader::add_line(Dwg_Entity_LINE *line)
 {
-    printf( "line: %f %f %f %f\n", x1, y1, x2, y2 );
+    printf( "line: %f %f %f %f\n", line->start.x, line->end.x, line->start.y, line->end.y );
+
+    TMultipoint multipoint;
+     multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
+     multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
+    _dados->Multipoint.push_back( multipoint );
 }
 
-void add_circle(double x, double y, double R)
+void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
 {
-    printf( "circle: %f %f %f\n", x, y, R );
+    printf( "circle: %f %f %f\n", circle->center.x, circle->center.y, circle->radius );
+
+    TArco arco;
+    arco.EixoPrimario = circle->radius;
+    arco.EixoSecundario = circle->radius;
+    arco.Centro.x = circle->center.x;
+    arco.Centro.y = circle->center.y;
+    _dados->Arcos.push_back( arco );
 }
 
-void add_text(double x, double y, unsigned char *txt)
+void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 {
-    printf( "text: %f %f %s\n", x, y, txt );
+    printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, text->text_value );
+    TTexto texto;
+    texto.origem.x = text->insertion_pt.x;
+    texto.origem.y = text->insertion_pt.y;
+    texto.texto = string( (char*) text->text_value );
+    _dados->Textos.push_back( texto );
 }
 
-void add_group( Dwg_Object_GROUP *group )
+void DwgLoader::add_group( Dwg_Object_GROUP *group )
 {
     printf( "group: %d, %s\n", group->num_handles, group->str );
     for(int i(0); i < group->num_handles; ++i)
@@ -38,7 +56,7 @@ void add_group( Dwg_Object_GROUP *group )
     printf("end group\n");
 }
 
-void add_insert(Dwg_Entity_INSERT *insert)
+void DwgLoader::add_insert(Dwg_Entity_INSERT *insert)
 {
     printf( "insert: %d\n", insert->owned_obj_count );
     if(insert->block_header)
@@ -51,15 +69,20 @@ void add_insert(Dwg_Entity_INSERT *insert)
     printf( "end insert\n" );
 }
 
-void add_lwpline(Dwg_Entity_LWPLINE *lwpline)
+void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
 {
     printf( "lwpline: %d\n", lwpline->num_points );
+    TMultipoint multipoint;
     for(int i(0); i < lwpline->num_points; ++i)
+    {
+        multipoint.pontos.push_back( TPonto(lwpline->points[i].x, lwpline->points[i].y) );
         printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
+    }
+    _dados->Multipoint.push_back( multipoint );
     printf( "end lwpline\n" );
 }
 
-void add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
+void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
     printf("block header: %s, %d, %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count);
     for(int i(0); i < block_header->owned_object_count; ++i)
@@ -68,7 +91,7 @@ void add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 }
 
 
-void print_obj(Dwg_Object *obj)
+void DwgLoader::print_obj(Dwg_Object *obj)
 {
     if(!obj)
         return;
@@ -88,15 +111,15 @@ void print_obj(Dwg_Object *obj)
     {
         case DWG_TYPE_LINE:
           line = obj->tio.entity->tio.LINE;
-          add_line(line->start.x, line->end.x, line->start.y, line->end.y);
+          add_line(line);
           break;
         case DWG_TYPE_CIRCLE:
           circle = obj->tio.entity->tio.CIRCLE;
-          add_circle(circle->center.x, circle->center.y, circle->radius);
+          add_circle(circle);
           break;
         case DWG_TYPE_TEXT:
           text = obj->tio.entity->tio.TEXT;
-          add_text(text->insertion_pt.x, text->insertion_pt.y, text->text_value);
+          add_text(text);
           break;
         case DWG_TYPE_GROUP:
             add_group(obj->tio.object->tio.GROUP);
@@ -116,7 +139,8 @@ void print_obj(Dwg_Object *obj)
 }
 
 
-DwgLoader::DwgLoader( string fileName )
+DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados ) :
+    _dados( dados )
 {
     unsigned int i;
     int success;

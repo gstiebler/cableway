@@ -17,5 +17,5 @@ TEST_F(DrawingLoaderTests, basic)
 {
     CDadosGenerico dados;
     string fileName = "../data/tests/drawing2.dwg";//TestsUtil::getExePath() + "/../data/tests/drawing2.dwg";
-    DwgLoader *loader = new DwgLoader( fileName );
+    DwgLoader *loader = new DwgLoader( fileName, &dados );
 }

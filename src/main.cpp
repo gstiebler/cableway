@@ -13,7 +13,6 @@
 int main (int argc, char *argv[])
 {
     string fileName = "drawing2.dwg";//TestsUtil::getExePath() + "/../data/tests/drawing2.dwg";
-    DwgLoader *loader = new DwgLoader( fileName );
 
 	int cableLevel = 5;
 	int equipLevel = 7;
@@ -26,6 +25,7 @@ int main (int argc, char *argv[])
 	
 	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
 	CDadosGenerico dados;
+    DwgLoader *loader = new DwgLoader( fileName, &dados );
 
 	{
 		TMultipoint equip1;
