@@ -59,7 +59,9 @@ void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
 
 void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 {
-    printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, text->text_value );
+    string textStr = string( (char*) text->text_value );
+    textStr = textStr.substr( 0, textStr.length() - 1 );
+    printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, textStr.c_str() );
     if( _currCell )
     {
         int textIndex = _pointerToTextIndex[text];
@@ -73,7 +75,7 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
         TTexto texto;
         texto.origem.x = text->insertion_pt.x;
         texto.origem.y = text->insertion_pt.y;
-        texto.texto = string( (char*) text->text_value );
+        texto.texto = textStr;
         _dados->Textos.push_back( texto );
         _pointerToTextIndex[text] = _dados->Textos.size() - 1;
     }
