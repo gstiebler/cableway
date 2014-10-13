@@ -13,7 +13,7 @@ TDesenho::~TDesenho()
 }
 //---------------------------------------------------------------------------
 
-CContainerDesenhos::CContainerDesenhos(TNiveisProjetoTransfer *niveis)
+CContainerDesenhos::CContainerDesenhos()
 {
   // Cria uma nova lista pra guardar os desenhos
   //ListaDesenhos=new TList;
@@ -21,18 +21,11 @@ CContainerDesenhos::CContainerDesenhos(TNiveisProjetoTransfer *niveis)
   // Bota NULL no InfoCircuitos e no frmDesenhoAbas
   InfoCircuitos=NULL;
   //frmDesenhoAbas=NULL;
-
-  Niveis = niveis;
 }
 //---------------------------------------------------------------------------
 
 void CContainerDesenhos::MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto)
 {
-  liberaTNiveisProjetoTransfer(Niveis);
-  delete Niveis;
-  // Depois cria um TNiveisProjetoTransfer, carrega o NiveisProjeto nele e apaga o NiveisProjeto.
-  Niveis = new TNiveisProjetoTransfer();
-  NiveisProjeto->exportaTransfer(Niveis);
 }
 
 CContainerDesenhos::~CContainerDesenhos()
@@ -72,8 +65,6 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   ParamsGrafoDesenho.VerticesGerais=ParamsInfoCircuitos.VerticesGerais;
   // E um ponteiro pro Arestas (TListaArestas)
   ParamsGrafoDesenho.Arestas=ParamsInfoCircuitos.Arestas;
-  // E um ponteiro pro NiveisProjeto (TNiveisProjetoTransfer)
-  ParamsGrafoDesenho.NiveisProjeto=Niveis;
   try
   {
 	  //TODO carregar a estrutura TDadosTransfer
@@ -109,8 +100,6 @@ void CContainerDesenhos::addDrawing( CDadosGenerico dados, double altura )
     paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
     // E um ponteiro pro Arestas (TListaArestas)
     paramsGrafoDesenho.Arestas = ParamsInfoCircuitos.Arestas;
-    // E um ponteiro pro NiveisProjeto (TNiveisProjetoTransfer)
-    paramsGrafoDesenho.NiveisProjeto = Niveis;
 
     CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, &dados);
 

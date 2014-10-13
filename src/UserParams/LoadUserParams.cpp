@@ -47,7 +47,7 @@ void loadDrawingParams( xlsWorkSheet *pWS, vector<DrawingParams> &drawingsParams
 
 
 
-void loadLevelsParams(xlsWorkSheet *pWS, int col, vector<string> &levels )
+void loadLevelsParams(xlsWorkSheet *pWS, int col, set<string> &levels )
 {
     const int STRING_FORMAT = 253;
     const int NUMBER_FORMAT = 638;
@@ -55,13 +55,13 @@ void loadLevelsParams(xlsWorkSheet *pWS, int col, vector<string> &levels )
     {
         xlsCell *cell = xls_cell(pWS, cellRow, col);
         if( cell->id == STRING_FORMAT )
-            levels.push_back( string((char*)cell->str) );
+            levels.insert( string((char*)cell->str) );
         else if ( cell->id == NUMBER_FORMAT )
         {
             int value = floor( cell->d );
             char temp[256] = {};
             sprintf( temp, "%d", value );
-            levels.push_back( string(temp) );
+            levels.insert( string(temp) );
         }
     }
 }

@@ -14,11 +14,12 @@
 
 class CDadosGenerico;
 class TListaItensCelula;
+struct UserParams;
 
 class DwgLoader
 {
 public:
-    DwgLoader( std::string fileName, CDadosGenerico* dados );
+    DwgLoader( std::string fileName, CDadosGenerico* dados, UserParams *userParams );
     virtual ~DwgLoader();
 
 private:
@@ -43,6 +44,7 @@ private:
     std::map<void*, int> _pointerToMultipointIndex;
     std::map<void*, int> _pointerToTextIndex;
     int _currLayer;
+    UserParams *_userParams;
 };
 
 #endif /* DWGLOADER_H_ */

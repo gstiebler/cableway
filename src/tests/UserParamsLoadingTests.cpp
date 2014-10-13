@@ -32,12 +32,12 @@ TEST_F(UserParamsLoadingTests, basic)
     ASSERT_EQ( 3, (int) userParams.equipmentLevels.size());
     ASSERT_EQ( 2, (int) userParams.cableLevels.size());
 
-    EXPECT_STREQ( "10", userParams.bandeirolaLevels[0].c_str() );
-    EXPECT_STREQ( "15", userParams.tagLevels[0].c_str() );
-    EXPECT_STREQ( "25", userParams.equipmentLevels[0].c_str() );
-    EXPECT_STREQ( "26", userParams.equipmentLevels[1].c_str() );
-    EXPECT_STREQ( "equip", userParams.equipmentLevels[2].c_str() );
-    EXPECT_STREQ( "51", userParams.cableLevels[0].c_str() );
-    EXPECT_STREQ( "52", userParams.cableLevels[1].c_str() );
+    EXPECT_NE( userParams.bandeirolaLevels.end(), userParams.bandeirolaLevels.find( "10" ) );
+    EXPECT_NE( userParams.tagLevels.end(), userParams.tagLevels.find( "15" ) );
+    EXPECT_NE( userParams.equipmentLevels.end(), userParams.equipmentLevels.find( "25" ) );
+    EXPECT_NE( userParams.equipmentLevels.end(), userParams.equipmentLevels.find( "26" ) );
+    EXPECT_NE( userParams.equipmentLevels.end(), userParams.equipmentLevels.find( "equip" ) );
+    EXPECT_NE( userParams.cableLevels.end(), userParams.cableLevels.find( "51" ) );
+    EXPECT_NE( userParams.cableLevels.end(), userParams.cableLevels.find( "52" ) );
 }
 

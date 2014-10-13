@@ -188,12 +188,7 @@ void BasicTest::createFloor2( CDadosGenerico &dados )
 
 TEST_F(BasicTest, singleDrawing) 
 {
-	TNiveisProjetoTransfer niveisProjetoTransfer;
-	niveisProjetoTransfer.ListaCabo.push_back( "5" );
-	niveisProjetoTransfer.ListaInstrumento.push_back( "7" );
-	niveisProjetoTransfer.ListaTag.push_back( "10" );
-	
-	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
+	CContainerDesenhos containerDesenhos;
 	CDadosGenerico dados;
 
 	createFloor1( dados );
@@ -220,12 +215,7 @@ TEST_F(BasicTest, singleDrawing)
 
 TEST_F(BasicTest, multipleDrawings) 
 {
-	TNiveisProjetoTransfer niveisProjetoTransfer;
-	niveisProjetoTransfer.ListaCabo.push_back( "5" );
-	niveisProjetoTransfer.ListaInstrumento.push_back( "7" );
-	niveisProjetoTransfer.ListaTag.push_back( "10" );
-	
-	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
+	CContainerDesenhos containerDesenhos;
 
 	CDadosGenerico floor1Data;
 	createFloor1( floor1Data );
@@ -258,19 +248,15 @@ TEST_F(BasicTest, multipleDrawings)
 
 TEST_F(BasicTest, complete)
 {
-    CDadosGenerico dados;
-    string fileName = "../data/tests/drawing2.dwg";
-    DwgLoader *loader = new DwgLoader( fileName, &dados );
-
     UserParams userParams;
     string xlsFileName = TestsUtil::getExePath() + "/../data/tests/user_params.xls";
     loadUserParams( xlsFileName, &userParams );
 
-    TNiveisProjetoTransfer niveisProjetoTransfer;
-    niveisProjetoTransfer.ListaCabo = userParams.cableLevels;
-    niveisProjetoTransfer.ListaInstrumento = userParams.equipmentLevels;
-    niveisProjetoTransfer.ListaTag = userParams.tagLevels;
-    CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
+    CDadosGenerico dados;
+    string fileName = "../data/tests/drawing2.dwg";
+    DwgLoader *loader = new DwgLoader( fileName, &dados, &userParams );
+
+    CContainerDesenhos containerDesenhos;
 
     containerDesenhos.addDrawing( dados, 100.0 );
     callbackStatusCarregamento sc;
@@ -286,8 +272,8 @@ TEST_F(BasicTest, complete)
     containerDesenhos.InfoCircuitos->GeraRota("Equipamento 1", "Equipamento 2", tam, rota, ArestasCircuito, &ListaBandeirolas,
         &DEBUG_arestas, SubRotas, CircuitoAreas);
 
-    EXPECT_FLOAT_EQ( 96.0, tam );
-    EXPECT_STREQ( "Equipamento 1/Equipamento 2", rota.c_str() );
+    EXPECT_FLOAT_EQ( 500.0, tam );
+    EXPECT_STREQ( "Equipamento 2/Equipamento 1", rota.c_str() );
 }
 
 }  // namespace

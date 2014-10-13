@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <vector>
-#include <stdlib.h>
 
 #include "UDadosGenerico.h"
 #include "UDefines.h"
@@ -19,6 +18,7 @@
 #include "UListaCelulas.h"
 #include "UListaItensCelula.h"
 #include "UListaV.h"
+#include "UserParams/UserParams.h"
 
 using namespace std;
 
@@ -181,7 +181,9 @@ void DwgLoader::print_obj(Dwg_Object *obj)
     {
         Dwg_Object *layer = obj->tio.entity->layer->obj;
         Dwg_Object_LAYER *LAYER = layer->tio.object->tio.LAYER;
-        _currLayer = atoi( (char*)LAYER->entry_name );
+        string strLayer = string( (char*)LAYER->entry_name );
+        strLayer = strLayer.substr( 0, strLayer.length() - 1 );
+        _currLayer = _userParams->getTipoElemento( strLayer );
     }
     else
         _currLayer = -1;
@@ -227,12 +229,13 @@ void DwgLoader::print_obj(Dwg_Object *obj)
 }
 
 
-DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados ) :
+DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados, UserParams *userParams ) :
     _dados( dados ),
     _currCell( NULL ),
     _objDepth( 0 ),
     _insideModelSpace( false ),
-    _currLayer( -1 )
+    _currLayer( -1 ),
+    _userParams( userParams )
 {
     unsigned int i;
     int success;

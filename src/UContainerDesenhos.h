@@ -7,7 +7,6 @@
 #include "UInfoCircuitos.h"
 //#include "UfrmDesenho.h"
 #include "TDesenho.h"
-#include "UNiveisProjeto.h"
 #include "UConfig.h"
 #include "UTCallbackStatusCarregamento.h"
 #include "UCallbacks.h"
@@ -28,13 +27,12 @@ class CContainerDesenhos
 private:
   std::vector<TDesenho*> ListaDesenhos;
   TParamsInfoCircuitos ParamsInfoCircuitos;
-  TNiveisProjetoTransfer *Niveis;
   static bool verificaTextoWrap(void* PonteiroThis, const char *str);
   bool verificaTexto(string str);
   void GeraListaAdjacencias();
   void buscaEmProfundidadeOsVertices(bool *VerticesVisitados, int indice, bool arestazerada, TArestaReduzida arestaRed);
 public:
-  CContainerDesenhos(TNiveisProjetoTransfer *niveis);
+  CContainerDesenhos();
 //  CContainerDesenhos(TInterfaceMainPar *imp);
   ~CContainerDesenhos();
   CInfoCircuitos *InfoCircuitos;

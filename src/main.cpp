@@ -1,31 +1,28 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <string>
+#include <vector>
 
-#include "UParamsStructs.h"
-#include "UGrafoDesenho.h"
-#include "UNiveisProjeto.h"
-#include "TDesenho.h"
-#include "UContainerDesenhos.h"
-#include "UListaCelulas.h"
 #include "DwgLoader.h"
+#include "UContainerDesenhos.h"
+#include "UDadosGenerico.h"
+#include "UDefines.h"
+#include "UInfoCelula.h"
+#include "UInfoCircuitos.h"
+#include "UItemCelula.h"
+#include "UListaCelulas.h"
+#include "UListaItensCelula.h"
+#include "UListaV.h"
+#include "UserParams/UserParams.h"
+#include "UTCallbackStatusCarregamento.h"
 
 int main (int argc, char *argv[])
 {
     string fileName = "drawing2.dwg";//TestsUtil::getExePath() + "/../data/tests/drawing2.dwg";
 
-	int cableLevel = 5;
-	int equipLevel = 7;
-	int tagEquipLevel = 10;
-
-	TNiveisProjetoTransfer niveisProjetoTransfer;
-	niveisProjetoTransfer.ListaCabo.push_back( "5" );
-	niveisProjetoTransfer.ListaInstrumento.push_back( "7" );
-	niveisProjetoTransfer.ListaTag.push_back( "10" );
-	
-	CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
+	CContainerDesenhos containerDesenhos;
 	CDadosGenerico dados;
-    DwgLoader *loader = new DwgLoader( fileName, &dados );
+
+	UserParams userParams;
+    DwgLoader *loader = new DwgLoader( fileName, &dados, &userParams );
 
 	{
 		TMultipoint equip1;

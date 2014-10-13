@@ -1,14 +1,20 @@
 
 #include <gtest/gtest.h>
 #include <gtest/internal/gtest-internal.h>
+#include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "../DwgLoader.h"
 #include "../UDadosGenerico.h"
+#include "../UDefines.h"
 #include "../UInfoCelula.h"
+#include "../UItemCelula.h"
 #include "../UListaCelulas.h"
+#include "../UListaItensCelula.h"
 #include "../UListaV.h"
+#include "../UserParams/UserParams.h"
 
 using namespace std;
 
@@ -20,19 +26,24 @@ class DrawingLoaderTests : public ::testing::Test
 
 TEST_F(DrawingLoaderTests, basic)
 {
+    UserParams userParams;
+    userParams.equipmentLevels.insert( "25" );
+    userParams.tagLevels.insert( "15" );
+    userParams.cableLevels.insert( "51" );
+
     CDadosGenerico dados;
     string fileName = "../data/tests/drawing2.dwg";//TestsUtil::getExePath() + "/../data/tests/drawing2.dwg";
-    DwgLoader *loader = new DwgLoader( fileName, &dados );
+    DwgLoader *loader = new DwgLoader( fileName, &dados, &userParams );
 
     ASSERT_EQ( 0, (int) dados.Arcos.size() );
     ASSERT_EQ( 3, (int) dados.Multipoint.size() );
     ASSERT_EQ( 2, (int) dados.Textos.size() );
 
-    EXPECT_EQ( 15, dados.Textos[0].Nivel );
-    EXPECT_EQ( 15, dados.Textos[1].Nivel );
-    EXPECT_EQ( 25, dados.Multipoint[0].Nivel );
-    EXPECT_EQ( 25, dados.Multipoint[1].Nivel );
-    EXPECT_EQ( 51, dados.Multipoint[2].Nivel );
+    EXPECT_EQ( TAG, dados.Textos[0].Nivel );
+    EXPECT_EQ( TAG, dados.Textos[1].Nivel );
+    EXPECT_EQ( INSTRUMENTO, dados.Multipoint[0].Nivel );
+    EXPECT_EQ( INSTRUMENTO, dados.Multipoint[1].Nivel );
+    EXPECT_EQ( CABO, dados.Multipoint[2].Nivel );
 
     ASSERT_EQ( 4, (int) dados.Multipoint[0].pontos.size() );
     EXPECT_FLOAT_EQ( 2250.0, dados.Multipoint[0].pontos[0].x );

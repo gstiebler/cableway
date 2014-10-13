@@ -31,7 +31,8 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/DrawingLoader.cpp
 				${SRC_BASE}/DwgLoader.cpp
-				${SRC_BASE}/UserParams/LoadUserParams.cpp )
+				${SRC_BASE}/UserParams/LoadUserParams.cpp
+				${SRC_BASE}/UserParams/UserParams.cpp  )
 				
 set(LIB_DIRS ../lib/dxflib/src
              ../lib/libredwg/src
