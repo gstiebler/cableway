@@ -28,6 +28,12 @@ TEST_F(DrawingLoaderTests, basic)
     ASSERT_EQ( 3, (int) dados.Multipoint.size() );
     ASSERT_EQ( 2, (int) dados.Textos.size() );
 
+    EXPECT_EQ( 15, dados.Textos[0].Nivel );
+    EXPECT_EQ( 15, dados.Textos[1].Nivel );
+    EXPECT_EQ( 25, dados.Multipoint[0].Nivel );
+    EXPECT_EQ( 25, dados.Multipoint[1].Nivel );
+    EXPECT_EQ( 51, dados.Multipoint[2].Nivel );
+
     ASSERT_EQ( 4, (int) dados.Multipoint[0].pontos.size() );
     EXPECT_FLOAT_EQ( 2250.0, dados.Multipoint[0].pontos[0].x );
     EXPECT_FLOAT_EQ( 2750.0, dados.Multipoint[0].pontos[1].x );

@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <vector>
+#include <stdlib.h>
 
 #include "UDadosGenerico.h"
 #include "UDefines.h"
@@ -37,8 +38,9 @@ void DwgLoader::add_line(Dwg_Entity_LINE *line)
             return;
 
         TMultipoint multipoint;
-         multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
-         multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
+        multipoint.Nivel = _currLayer;
+        multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
+        multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
         _dados->Multipoint.push_back( multipoint );
 
         _pointerToMultipointIndex[line] = _dados->Multipoint.size() - 1;
@@ -73,6 +75,7 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
             return;
 
         TTexto texto;
+        texto.Nivel = _currLayer;
         texto.origem.x = text->insertion_pt.x;
         texto.origem.y = text->insertion_pt.y;
         texto.texto = textStr;
@@ -133,6 +136,7 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
             return;
 
         TMultipoint multipoint;
+        multipoint.Nivel = _currLayer;
         for(int i(0); i < lwpline->num_points; ++i)
         {
             multipoint.pontos.push_back( TPonto(lwpline->points[i].x, lwpline->points[i].y) );
@@ -172,6 +176,17 @@ void DwgLoader::print_obj(Dwg_Object *obj)
     if(!obj)
         return;
 
+    //obj->tio.object->tio.LAYER->values
+    if(obj->supertype == DWG_SUPERTYPE_ENTITY && obj->tio.entity->layer)
+    {
+        Dwg_Object *layer = obj->tio.entity->layer->obj;
+        Dwg_Object_LAYER *LAYER = layer->tio.object->tio.LAYER;
+        printf( "layer: %s\n", LAYER->entry_name );
+        _currLayer = atoi( (char*)LAYER->entry_name );
+    }
+    else
+        _currLayer = -1;
+
     Dwg_Entity_LINE *line;
     Dwg_Entity_CIRCLE *circle;
     Dwg_Entity_TEXT *text;
@@ -208,7 +223,7 @@ void DwgLoader::print_obj(Dwg_Object *obj)
         case DWG_TYPE_BLOCK_HEADER:
             add_block_header(obj->tio.object->tio.BLOCK_HEADER);
             break;
-        default: printf( "%x\n", obj->type );
+        //default: printf( "%x\n", obj->type );
    }
 }
 
@@ -217,7 +232,8 @@ DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados ) :
     _dados( dados ),
     _currCell( NULL ),
     _objDepth( 0 ),
-    _insideModelSpace( false )
+    _insideModelSpace( false ),
+    _currLayer( -1 )
 {
     unsigned int i;
     int success;

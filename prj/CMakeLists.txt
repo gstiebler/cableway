@@ -51,9 +51,9 @@ set(CW_LIBRARIES redwg dxflib xlsreader iconv)
 target_link_libraries(cableway ${CW_LIBRARIES})
 
 # Tests
-set(CMAKE_CXX_FLAGS_DEBUG  "-fprofile-arcs -ftest-coverage")
+#set(CMAKE_CXX_FLAGS_DEBUG  "-fprofile-arcs -ftest-coverage")
 
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-lgcov")
+#set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-lgcov")
 
 set(GTEST_PATH ../lib/gtest-1.7.0)
 

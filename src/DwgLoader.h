@@ -42,6 +42,7 @@ private:
     /** Converts the DWG pointer to a index in the CDadosGenerico list */
     std::map<void*, int> _pointerToMultipointIndex;
     std::map<void*, int> _pointerToTextIndex;
+    int _currLayer;
 };
 
 #endif /* DWGLOADER_H_ */
