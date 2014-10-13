@@ -1,12 +1,24 @@
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
+#include <gtest/internal/gtest-internal.h>
+#include <string>
+#include <vector>
 
-#include "UParamsStructs.h"
-#include "UGrafoDesenho.h"
-#include "UNiveisProjeto.h"
-#include "TDesenho.h"
-#include "UContainerDesenhos.h"
-#include "UListaCelulas.h"
+#include "../DwgLoader.h"
+#include "../UContainerDesenhos.h"
+#include "../UDadosGenerico.h"
+#include "../UDefines.h"
+#include "../UInfoCelula.h"
+#include "../UInfoCircuitos.h"
+#include "../UItemCelula.h"
+#include "../UListaCelulas.h"
+#include "../UListaItensCelula.h"
+#include "../UListaV.h"
+#include "../UNiveisProjeto.h"
+#include "../UserParams/LoadUserParams.h"
+#include "../UserParams/UserParams.h"
+#include "../UTCallbackStatusCarregamento.h"
+#include "TestsUtil.h"
 
 namespace {
 
@@ -240,6 +252,42 @@ TEST_F(BasicTest, multipleDrawings)
 	// 70 = 20 + 50 + (126.0 - 100.0)
 	EXPECT_FLOAT_EQ( 96.0, tam );
 	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2/Equipamento 3", rota.c_str() );
+}
+
+
+
+TEST_F(BasicTest, complete)
+{
+    CDadosGenerico dados;
+    string fileName = "../data/tests/drawing2.dwg";
+    DwgLoader *loader = new DwgLoader( fileName, &dados );
+
+    UserParams userParams;
+    string xlsFileName = TestsUtil::getExePath() + "/../data/tests/user_params.xls";
+    loadUserParams( xlsFileName, &userParams );
+
+    TNiveisProjetoTransfer niveisProjetoTransfer;
+    niveisProjetoTransfer.ListaCabo = userParams.cableLevels;
+    niveisProjetoTransfer.ListaInstrumento = userParams.equipmentLevels;
+    niveisProjetoTransfer.ListaTag = userParams.tagLevels;
+    CContainerDesenhos containerDesenhos( &niveisProjetoTransfer );
+
+    containerDesenhos.addDrawing( dados, 100.0 );
+    callbackStatusCarregamento sc;
+    containerDesenhos.Conclui( sc );
+
+    double tam;
+    string rota;
+    TArestasCircuito *ArestasCircuito = NULL;
+    vector<int> ListaBandeirolas;
+    vector<string> DEBUG_arestas;
+    string SubRotas;
+    TCircuitoAreas *CircuitoAreas = NULL;
+    containerDesenhos.InfoCircuitos->GeraRota("Equipamento 1", "Equipamento 2", tam, rota, ArestasCircuito, &ListaBandeirolas,
+        &DEBUG_arestas, SubRotas, CircuitoAreas);
+
+    EXPECT_FLOAT_EQ( 96.0, tam );
+    EXPECT_STREQ( "Equipamento 1/Equipamento 2", rota.c_str() );
 }
 
 }  // namespace

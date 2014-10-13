@@ -12,10 +12,10 @@ struct DrawingParams
 
 struct UserParams
 {
-	std::vector<int> equipmentLevels;
-	std::vector<int> bandeirolaLevels;
-	std::vector<int> tagLevels;
-	std::vector<int> cableLevels;
+	std::vector<std::string> equipmentLevels;
+	std::vector<std::string> bandeirolaLevels;
+	std::vector<std::string> tagLevels;
+	std::vector<std::string> cableLevels;
 	
 	std::vector<DrawingParams> drawingsParams;
 };

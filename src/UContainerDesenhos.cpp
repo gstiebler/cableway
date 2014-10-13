@@ -30,7 +30,6 @@ void CContainerDesenhos::MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto)
 {
   liberaTNiveisProjetoTransfer(Niveis);
   delete Niveis;
-  CConfig::CarregaBanco(NiveisProjeto);
   // Depois cria um TNiveisProjetoTransfer, carrega o NiveisProjeto nele e apaga o NiveisProjeto.
   Niveis = new TNiveisProjetoTransfer();
   NiveisProjeto->exportaTransfer(Niveis);
@@ -38,7 +37,7 @@ void CContainerDesenhos::MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto)
 
 CContainerDesenhos::~CContainerDesenhos()
 {
-//  // Se o InfoCircuitos já não for nulo, então o apaga
+//  // Se o InfoCircuitos jï¿½ nï¿½o for nulo, entï¿½o o apaga
 //  if (InfoCircuitos)
 //  {
 //    delete InfoCircuitos;
@@ -67,7 +66,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   ParamsGrafoDesenho.AlturaTeto=2.0;
   ParamsGrafoDesenho.AlturaInterrup=0.7;
   ParamsGrafoDesenho.Altura = altura;
-  // Preenche o índice do desenho
+  // Preenche o ï¿½ndice do desenho
   ParamsGrafoDesenho.IndiceDesenho=ListaDesenhos.size();
   // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
   ParamsGrafoDesenho.VerticesGerais=ParamsInfoCircuitos.VerticesGerais;
@@ -79,7 +78,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   {
 	  //TODO carregar a estrutura TDadosTransfer
 	CDadosGenerico dados;
-    // Tenta criar um grafodesenho com os parâmetros passados
+    // Tenta criar um grafodesenho com os parï¿½metros passados
     Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, &dados);
     // E adicionar o desenho na lista de desenhos
     ListaDesenhos.push_back(Desenho);
@@ -87,7 +86,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   catch (...)
   {
     // Algo deu errado ao criar/adicionar o desenho.
-    ShowMessage("Erro ao criar desenho na memória.");
+    ShowMessage("Erro ao criar desenho na memï¿½ria.");
   }
 }
 //---------------------------------------------------------------------------
@@ -104,7 +103,7 @@ void CContainerDesenhos::addDrawing( CDadosGenerico dados, double altura )
     paramsGrafoDesenho.AlturaTeto=2.0;
     paramsGrafoDesenho.AlturaInterrup=0.7;
     paramsGrafoDesenho.Altura = 30.0;
-    // Preenche o índice do desenho
+    // Preenche o ï¿½ndice do desenho
     paramsGrafoDesenho.IndiceDesenho = 0;
     // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
     paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
@@ -199,7 +198,7 @@ void CContainerDesenhos::ReduzGrafo()
   for ( i = 1 ; i < ParamsInfoCircuitos.VerticesGerais->Tamanho() ; i++ )
   {
     TVerticeGeral *vertice = ParamsInfoCircuitos.VerticesGerais->getItem(i);
-    // Pega o primeiro vértice que não tenha chance de ser eliminado para começar a busca.
+    // Pega o primeiro vï¿½rtice que nï¿½o tenha chance de ser eliminado para comeï¿½ar a busca.
     if ( !VerticesVisitados[i] )
     if ( vertice->ListaVerticesEArestas->list.size() != 2 || vertice->texto != "" )
     {
@@ -207,7 +206,7 @@ void CContainerDesenhos::ReduzGrafo()
       break;
     }
   }
-  // i é o primeiro vértice da busca.
+  // i ï¿½ o primeiro vï¿½rtice da busca.
   if ( visitouTudo )
     break;
 
@@ -244,8 +243,8 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
   if ( !arestazerada )
   {
-    // Se a aresta não está zerada, então já tem uma redução em efeito..
-    // Mas como estamos falando de um vértice que não tem tamanho 2, ou que é nomeado, então ele é o fim da redução, por isso:
+    // Se a aresta nï¿½o estï¿½ zerada, entï¿½o jï¿½ tem uma reduï¿½ï¿½o em efeito..
+    // Mas como estamos falando de um vï¿½rtice que nï¿½o tem tamanho 2, ou que ï¿½ nomeado, entï¿½o ele ï¿½ o fim da reduï¿½ï¿½o, por isso:
     if ( verticesArestas->list.size() != 2
       || vertice->texto != "" )
     {
@@ -259,12 +258,12 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
     else if ( verticesArestas->list.size() == 2 && vertice->texto == "" )
     {
-      // então, segue removendo...
+      // entï¿½o, segue removendo...
 
       for ( int j = 0 ; j < verticesArestas->list.size() ; j++ )
       {
         TVerticeEAresta *VeA = verticesArestas->getVerticeEAresta(j);
-        if ( !VerticesVisitados[VeA->Vertice] ) // Em teoria, isso só vai entrar uma vez.
+        if ( !VerticesVisitados[VeA->Vertice] ) // Em teoria, isso sï¿½ vai entrar uma vez.
         {
           VerticesVisitados[VeA->Vertice] = true;
           arestaRed.ArestasRetiradas->push_back(VeA->Aresta);
@@ -296,7 +295,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
         arestaRed.limpa();
         //arestazerada = false;
       }//if ( !VerticesVisitados[VeA->Vertice] )
-      // Senão, o vértice já foi visitado. Então não há ação a ser tomada.
+      // Senï¿½o, o vï¿½rtice jï¿½ foi visitado. Entï¿½o nï¿½o hï¿½ aï¿½ï¿½o a ser tomada.
     }//for ( int j = 0 ; j < verticesArestas->Tamanho() ; j++ )
   }
   delete vertice;
@@ -320,9 +319,9 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
         grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
         grafoDesenho->GeraColares( ListaDesenhos );
     }
-    // Vê o número de desenhos
+    // Vï¿½ o nï¿½mero de desenhos
     ParamsInfoCircuitos.NumDesenhos = NumDesenhos();
-    // Cria um novo InfoCircuitos baseado nos parâmetros
+    // Cria um novo InfoCircuitos baseado nos parï¿½metros
     callbackVerificaTexto callVT;
     callVT.PonteiroProThis = this;
     callVT.ponteiroFuncao = CContainerDesenhos::verificaTextoWrap;
@@ -339,7 +338,7 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
 
 void CContainerDesenhos::CriaFormDesenho(int Indice)
 {
-  //// Se não form de abas, então faz umnovo
+  //// Se nï¿½o form de abas, entï¿½o faz umnovo
   //if (!frmDesenhoAbas)
   //  frmDesenhoAbas=new TfrmDesenhoAbas(NULL, &frmDesenhoAbas, ListaDesenhos->Count);
   //// Adiciona uma aba
@@ -377,7 +376,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
     else
     {
       string erro;
-      erro = "Não foi encontrado caminho.";
+      erro = "Nï¿½o foi encontrado caminho.";
       bool exists, equips;
       equips = true;
       if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Origem) < 0 )
@@ -400,9 +399,9 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         }
 
         if ( exists )
-          erro += "\nO texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola.";
+          erro += "\nO texto de origem estï¿½ nos desenhos, porï¿½m nï¿½o estï¿½ associado a um equipamento ou bandeirola.";
         else
-          erro += "\nO texto de origem não existe nos desenhos";
+          erro += "\nO texto de origem nï¿½o existe nos desenhos";
       }
 
       /***/
@@ -426,9 +425,9 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         }
 
         if ( exists )
-          erro += "\nO texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola.";
+          erro += "\nO texto de destino estï¿½ nos desenhos, porï¿½m nï¿½o estï¿½ associado a um equipamento ou bandeirola.";
         else
-          erro += "\nO texto de destino não existe nos desenhos";
+          erro += "\nO texto de destino nï¿½o existe nos desenhos";
       }
 
       /***/

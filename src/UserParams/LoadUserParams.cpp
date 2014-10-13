@@ -6,6 +6,7 @@
 #include <cstring>
 #include <string>
 #include <vector>
+#include <cmath>
 
 #include "UserParams.h"
 
@@ -46,15 +47,22 @@ void loadDrawingParams( xlsWorkSheet *pWS, vector<DrawingParams> &drawingsParams
 
 
 
-void loadLevelsParams(xlsWorkSheet *pWS, int col, vector<int> &levels )
+void loadLevelsParams(xlsWorkSheet *pWS, int col, vector<string> &levels )
 {
+    const int STRING_FORMAT = 253;
+    const int NUMBER_FORMAT = 638;
     for (int cellRow = 1; cellRow <= pWS->rows.lastrow; cellRow++)
     {
         xlsCell *cell = xls_cell(pWS, cellRow, col);
-        if( cell->d < 1.0 )
-            return;
-
-        levels.push_back( (int) cell->d );
+        if( cell->id == STRING_FORMAT )
+            levels.push_back( string((char*)cell->str) );
+        else if ( cell->id == NUMBER_FORMAT )
+        {
+            int value = floor( cell->d );
+            char temp[256] = {};
+            sprintf( temp, "%d", value );
+            levels.push_back( string(temp) );
+        }
     }
 }
 

@@ -24,7 +24,7 @@ using namespace std;
 
 void DwgLoader::add_line(Dwg_Entity_LINE *line)
 {
-    printf( "line: %f %f %f %f\n", line->start.x, line->end.x, line->start.y, line->end.y );
+    //printf( "line: %f %f %f %f\n", line->start.x, line->end.x, line->start.y, line->end.y );
     if( _currCell )
     {
         TItemCelula itemCelula;
@@ -49,7 +49,7 @@ void DwgLoader::add_line(Dwg_Entity_LINE *line)
 
 void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
 {
-    printf( "circle: %f %f %f\n", circle->center.x, circle->center.y, circle->radius );
+    //printf( "circle: %f %f %f\n", circle->center.x, circle->center.y, circle->radius );
 
     TArco arco;
     arco.EixoPrimario = circle->radius;
@@ -63,7 +63,7 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 {
     string textStr = string( (char*) text->text_value );
     textStr = textStr.substr( 0, textStr.length() - 1 );
-    printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, textStr.c_str() );
+    //printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, textStr.c_str() );
     if( _currCell )
     {
         int textIndex = _pointerToTextIndex[text];
@@ -86,7 +86,7 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 
 void DwgLoader::add_group( Dwg_Object_GROUP *group )
 {
-    printf( "group: %d, %s, depth: %d\n", group->num_handles, group->str, _objDepth );
+    //printf( "group: %d, %s, depth: %d\n", group->num_handles, group->str, _objDepth );
 
     _objDepth++;
     _currCell = new TListaItensCelula();
@@ -97,12 +97,12 @@ void DwgLoader::add_group( Dwg_Object_GROUP *group )
     _currCell = NULL;
     _objDepth--;
 
-    printf("end group %s, depth: %d\n", group->str, _objDepth);
+    //printf("end group %s, depth: %d\n", group->str, _objDepth);
 }
 
 void DwgLoader::add_insert(Dwg_Entity_INSERT *insert)
 {
-    printf( "insert: %d, depth: %d\n", insert->owned_obj_count, _objDepth );
+    //printf( "insert: %d, depth: %d\n", insert->owned_obj_count, _objDepth );
 
     _objDepth++;
     if(insert->block_header)
@@ -113,15 +113,15 @@ void DwgLoader::add_insert(Dwg_Entity_INSERT *insert)
         print_obj( insert->seqend->obj );
     _objDepth--;
 
-    printf("pointer: %p\n", insert->attrib_handles);
-    printf( "end insert, depth: %d\n", _objDepth );
+    //printf("pointer: %p\n", insert->attrib_handles);
+    //printf( "end insert, depth: %d\n", _objDepth );
 }
 
 void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
 {
-    printf( "lwpline: %d\n", lwpline->num_points );
-    for(int i(0); i < lwpline->num_points; ++i)
-        printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
+    //printf( "lwpline: %d\n", lwpline->num_points );
+    //for(int i(0); i < lwpline->num_points; ++i)
+    //    printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
 
     if( _currCell )
     {
@@ -144,7 +144,7 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
         }
         _dados->Multipoint.push_back( multipoint );
 
-        printf( "end lwpline\n" );
+        //printf( "end lwpline\n" );
 
         _pointerToMultipointIndex[lwpline] = _dados->Multipoint.size() - 1;
     }
@@ -152,7 +152,7 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
 
 void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
-    printf("block header: %s, %d, %d, depth: %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count, _objDepth);
+    //printf("block header: %s, %d, %d, depth: %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count, _objDepth);
 
     bool isModelSpace = !strcmp( "*Model_Space*", (char*) block_header->entry_name );
 
@@ -167,7 +167,7 @@ void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
     if( isModelSpace )
         _insideModelSpace = false;
 
-    printf("end block header %s, depth: %d\n", block_header->entry_name, _objDepth);
+    //printf("end block header %s, depth: %d\n", block_header->entry_name, _objDepth);
 }
 
 
@@ -181,7 +181,6 @@ void DwgLoader::print_obj(Dwg_Object *obj)
     {
         Dwg_Object *layer = obj->tio.entity->layer->obj;
         Dwg_Object_LAYER *LAYER = layer->tio.object->tio.LAYER;
-        printf( "layer: %s\n", LAYER->entry_name );
         _currLayer = atoi( (char*)LAYER->entry_name );
     }
     else
