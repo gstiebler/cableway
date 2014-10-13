@@ -13,7 +13,9 @@
 
 #include "UDadosGenerico.h"
 #include "UDefines.h"
+#include "UInfoCelula.h"
 #include "UItemCelula.h"
+#include "UListaCelulas.h"
 #include "UListaItensCelula.h"
 #include "UListaV.h"
 
@@ -22,12 +24,6 @@ using namespace std;
 void DwgLoader::add_line(Dwg_Entity_LINE *line)
 {
     printf( "line: %f %f %f %f\n", line->start.x, line->end.x, line->start.y, line->end.y );
-
-    TMultipoint multipoint;
-     multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
-     multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
-    _dados->Multipoint.push_back( multipoint );
-
     if( _currCell )
     {
         TItemCelula itemCelula;
@@ -36,7 +32,17 @@ void DwgLoader::add_line(Dwg_Entity_LINE *line)
         _currCell->Adiciona( itemCelula );
     }
     else
+    {
+        if(!_insideModelSpace)
+            return;
+
+        TMultipoint multipoint;
+         multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
+         multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
+        _dados->Multipoint.push_back( multipoint );
+
         _pointerToMultipointIndex[line] = _dados->Multipoint.size() - 1;
+    }
 }
 
 void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
@@ -54,53 +60,63 @@ void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
 void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 {
     printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, text->text_value );
-    TTexto texto;
-    texto.origem.x = text->insertion_pt.x;
-    texto.origem.y = text->insertion_pt.y;
-    texto.texto = string( (char*) text->text_value );
-    _dados->Textos.push_back( texto );
-
     if( _currCell )
     {
         int textIndex = _pointerToTextIndex[text];
         _currCell->iTextos.push_back( textIndex );
     }
     else
+    {
+        if(!_insideModelSpace)
+            return;
+
+        TTexto texto;
+        texto.origem.x = text->insertion_pt.x;
+        texto.origem.y = text->insertion_pt.y;
+        texto.texto = string( (char*) text->text_value );
+        _dados->Textos.push_back( texto );
         _pointerToTextIndex[text] = _dados->Textos.size() - 1;
+    }
 }
 
 void DwgLoader::add_group( Dwg_Object_GROUP *group )
 {
-    printf( "group: %d, %s\n", group->num_handles, group->str );
+    printf( "group: %d, %s, depth: %d\n", group->num_handles, group->str, _objDepth );
+
+    _objDepth++;
+    _currCell = new TListaItensCelula();
     for(int i(0); i < group->num_handles; ++i)
         print_obj(group->group_entries[i]->obj);
-    printf("end group\n");
+    _dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( *_currCell );
+    delete _currCell;
+    _currCell = NULL;
+    _objDepth--;
+
+    printf("end group %s, depth: %d\n", group->str, _objDepth);
 }
 
 void DwgLoader::add_insert(Dwg_Entity_INSERT *insert)
 {
-    printf( "insert: %d\n", insert->owned_obj_count );
+    printf( "insert: %d, depth: %d\n", insert->owned_obj_count, _objDepth );
+
+    _objDepth++;
     if(insert->block_header)
         print_obj( insert->block_header->obj );
     if(insert->first_attrib)
         print_obj( insert->first_attrib->obj );
     if(insert->seqend)
         print_obj( insert->seqend->obj );
+    _objDepth--;
+
     printf("pointer: %p\n", insert->attrib_handles);
-    printf( "end insert\n" );
+    printf( "end insert, depth: %d\n", _objDepth );
 }
 
 void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
 {
     printf( "lwpline: %d\n", lwpline->num_points );
-    TMultipoint multipoint;
     for(int i(0); i < lwpline->num_points; ++i)
-    {
-        multipoint.pontos.push_back( TPonto(lwpline->points[i].x, lwpline->points[i].y) );
         printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
-    }
-    _dados->Multipoint.push_back( multipoint );
-
 
     if( _currCell )
     {
@@ -110,23 +126,42 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
         _currCell->Adiciona( itemCelula );
     }
     else
-        _pointerToMultipointIndex[lwpline] = _dados->Multipoint.size() - 1;
+    {
+        if(!_insideModelSpace)
+            return;
 
-    printf( "end lwpline\n" );
+        TMultipoint multipoint;
+        for(int i(0); i < lwpline->num_points; ++i)
+        {
+            multipoint.pontos.push_back( TPonto(lwpline->points[i].x, lwpline->points[i].y) );
+            //printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
+        }
+        _dados->Multipoint.push_back( multipoint );
+
+        printf( "end lwpline\n" );
+
+        _pointerToMultipointIndex[lwpline] = _dados->Multipoint.size() - 1;
+    }
 }
 
 void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
-    printf("block header: %s, %d, %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count);
+    printf("block header: %s, %d, %d, depth: %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count, _objDepth);
 
-    _currCell = new TListaItensCelula();
+    bool isModelSpace = !strcmp( "*Model_Space*", (char*) block_header->entry_name );
+
+    if( isModelSpace )
+        _insideModelSpace = true;
+
+    _objDepth++;
     for(int i(0); i < block_header->owned_object_count; ++i)
         print_obj(block_header->entities[i]->obj);
-    delete _currCell;
-    _currCell = NULL;
+    _objDepth--;
 
+    if( isModelSpace )
+        _insideModelSpace = false;
 
-    printf("end block header\n");
+    printf("end block header %s, depth: %d\n", block_header->entry_name, _objDepth);
 }
 
 
@@ -143,8 +178,6 @@ void DwgLoader::print_obj(Dwg_Object *obj)
     Dwg_Entity_LWPLINE *lwpline;
     Dwg_Entity_BLOCK *block;
     Dwg_Object_BLOCK_HEADER *block_header;
-
-    //dwg_print_object(&dwg.object[i]);
 
     switch (obj->type)
     {
@@ -180,7 +213,9 @@ void DwgLoader::print_obj(Dwg_Object *obj)
 
 DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados ) :
     _dados( dados ),
-    _currCell( NULL )
+    _currCell( NULL ),
+    _objDepth( 0 ),
+    _insideModelSpace( false )
 {
     unsigned int i;
     int success;

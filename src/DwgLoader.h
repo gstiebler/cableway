@@ -36,6 +36,9 @@ private:
 
     TListaItensCelula *_currCell;
 
+    int _objDepth;
+    bool _insideModelSpace;
+
     /** Converts the DWG pointer to a index in the CDadosGenerico list */
     std::map<void*, int> _pointerToMultipointIndex;
     std::map<void*, int> _pointerToTextIndex;
