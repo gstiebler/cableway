@@ -30,7 +30,7 @@ void CContainerDesenhos::MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto)
 
 CContainerDesenhos::~CContainerDesenhos()
 {
-//  // Se o InfoCircuitos j� n�o for nulo, ent�o o apaga
+//  // Se o InfoCircuitos já não for nulo, então o apaga
 //  if (InfoCircuitos)
 //  {
 //    delete InfoCircuitos;
@@ -77,7 +77,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   catch (...)
   {
     // Algo deu errado ao criar/adicionar o desenho.
-    ShowMessage("Erro ao criar desenho na mem�ria.");
+    ShowMessage("Erro ao criar desenho na memória.");
   }
 }
 //---------------------------------------------------------------------------
@@ -187,7 +187,7 @@ void CContainerDesenhos::ReduzGrafo()
   for ( i = 1 ; i < ParamsInfoCircuitos.VerticesGerais->Tamanho() ; i++ )
   {
     TVerticeGeral *vertice = ParamsInfoCircuitos.VerticesGerais->getItem(i);
-    // Pega o primeiro v�rtice que n�o tenha chance de ser eliminado para come�ar a busca.
+    // Pega o primeiro vértice que não tenha chance de ser eliminado para come�ar a busca.
     if ( !VerticesVisitados[i] )
     if ( vertice->ListaVerticesEArestas->list.size() != 2 || vertice->texto != "" )
     {
@@ -195,7 +195,7 @@ void CContainerDesenhos::ReduzGrafo()
       break;
     }
   }
-  // i � o primeiro v�rtice da busca.
+  // i � o primeiro vértice da busca.
   if ( visitouTudo )
     break;
 
@@ -232,8 +232,8 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
   if ( !arestazerada )
   {
-    // Se a aresta n�o est� zerada, ent�o j� tem uma redu��o em efeito..
-    // Mas como estamos falando de um v�rtice que n�o tem tamanho 2, ou que � nomeado, ent�o ele � o fim da redu��o, por isso:
+    // Se a aresta não está zerada, então já tem uma redu��o em efeito..
+    // Mas como estamos falando de um vértice que não tem tamanho 2, ou que � nomeado, então ele � o fim da redu��o, por isso:
     if ( verticesArestas->list.size() != 2
       || vertice->texto != "" )
     {
@@ -247,7 +247,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
 
     else if ( verticesArestas->list.size() == 2 && vertice->texto == "" )
     {
-      // ent�o, segue removendo...
+      // então, segue removendo...
 
       for ( int j = 0 ; j < verticesArestas->list.size() ; j++ )
       {
@@ -284,7 +284,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
         arestaRed.limpa();
         //arestazerada = false;
       }//if ( !VerticesVisitados[VeA->Vertice] )
-      // Sen�o, o v�rtice j� foi visitado. Ent�o n�o h� a��o a ser tomada.
+      // Senão, o vértice já foi visitado. então não há a��o a ser tomada.
     }//for ( int j = 0 ; j < verticesArestas->Tamanho() ; j++ )
   }
   delete vertice;
@@ -327,7 +327,7 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
 
 void CContainerDesenhos::CriaFormDesenho(int Indice)
 {
-  //// Se n�o form de abas, ent�o faz umnovo
+  //// Se não form de abas, então faz umnovo
   //if (!frmDesenhoAbas)
   //  frmDesenhoAbas=new TfrmDesenhoAbas(NULL, &frmDesenhoAbas, ListaDesenhos->Count);
   //// Adiciona uma aba
@@ -365,7 +365,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
     else
     {
       string erro;
-      erro = "N�o foi encontrado caminho.";
+      erro = "não foi encontrado caminho.";
       bool exists, equips;
       equips = true;
       if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Origem) < 0 )
@@ -388,9 +388,9 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         }
 
         if ( exists )
-          erro += "\nO texto de origem est� nos desenhos, por�m n�o est� associado a um equipamento ou bandeirola.";
+          erro += "\nO texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola.";
         else
-          erro += "\nO texto de origem n�o existe nos desenhos";
+          erro += "\nO texto de origem não existe nos desenhos";
       }
 
       /***/
@@ -414,9 +414,9 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         }
 
         if ( exists )
-          erro += "\nO texto de destino est� nos desenhos, por�m n�o est� associado a um equipamento ou bandeirola.";
+          erro += "\nO texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola.";
         else
-          erro += "\nO texto de destino n�o existe nos desenhos";
+          erro += "\nO texto de destino não existe nos desenhos";
       }
 
       /***/

@@ -17,45 +17,45 @@ struct TInfoCelula
 	~TInfoCelula();
 	TInfoCelula &operator=( TInfoCelula &f );
 
-	/// <summary> Cria uma nova célula. Ou seja, faz DentroCelula ser verdade, 
-	/// cria uma nova ListaItensCelula, seta shared, e dá um ID a essa celula.</summary>
-	/// <param name="GrupoID">É um identificador único para esse grupamento.</param>
-	/// <param name="IsShared">Indica o valor da variável shared</param>
+	/// <summary> Cria uma nova cï¿½lula. Ou seja, faz DentroCelula ser verdade, 
+	/// cria uma nova ListaItensCelula, seta shared, e dï¿½ um ID a essa celula.</summary>
+	/// <param name="GrupoID">ï¿½ um identificador ï¿½nico para esse grupamento.</param>
+	/// <param name="IsShared">Indica o valor da variï¿½vel shared</param>
 	void EntraCelula(int GrupoID, bool IsShared);
 
-	/// <summary>Adiciona um texto a célula aberta no momento</summary>
-	/// <param name="iTexto">O índice do texto no vetor de textos</param>
+	/// <summary>Adiciona um texto a cï¿½lula aberta no momento</summary>
+	/// <param name="iTexto">O ï¿½ndice do texto no vetor de textos</param>
 	/// <param name="Texto">String contendo o texto propriamente dito (DEBUG)</param>
-	/// <param name="NivelTexto">Nível do texto sendo adicionado: NADA, TAG, EQUIPAMENTO,
+	/// <param name="NivelTexto">nÃ­vel do texto sendo adicionado: NADA, TAG, EQUIPAMENTO,
 	/// BANDEIROLA</param>
 	void AdicionaTexto(int iTexto, string Texto, int NivelTexto);
 
-	/// <summary>Fecha a célula aberta no momento. Ou seja, vê qual é o tipo do grupo
+	/// <summary>Fecha a cï¿½lula aberta no momento. Ou seja, vï¿½ qual ï¿½ o tipo do grupo
 	/// e toma a medida de acordo</summary>
 	void FechaCelula();
 
-	/// Lista de grupamentos em nível de Instrumento.
+	/// Lista de grupamentos em nÃ­vel de Instrumento.
 	TListaCelulas *ListaCelulasInstrumentos, 
-	/// Lista de grupamentos em nível de Bandeirolas.
+	/// Lista de grupamentos em nÃ­vel de Bandeirolas.
 				  *ListaCelulasBandeirolas;
 
-	/// Se DentroCelula é verdadeiro:
-	///	Indica qual é o tipo da célula atual: NADA, INSTRUMENTO, BANDEIROLA
+	/// Se DentroCelula ï¿½ verdadeiro:
+	///	Indica qual ï¿½ o tipo da cï¿½lula atual: NADA, INSTRUMENTO, BANDEIROLA
 	int TipoElementoCelulaAtual;
 
-	/// Indica se está dentro de uma célula
+	/// Indica se estÃ¡ dentro de uma cï¿½lula
 	bool DentroCelula;
 
-	/// Indica se a célula é shared, usado em DGNV7
+	/// Indica se a cï¿½lula ï¿½ shared, usado em DGNV7
 	bool shared;
 
-	/// Indica quando é o fim da célula, usado em DGNV7
+	/// Indica quando ï¿½ o fim da cï¿½lula, usado em DGNV7
 	int FimCelula;
 
-	/// Quantia a ser somada a cada item da célula
+	/// Quantia a ser somada a cada item da cï¿½lula
 	double somaX, somaY, somaZ;
 
-	/// Lista _TEMPORÁRIA_ de Itens da célula ATUAL
+	/// Lista _TEMPORï¿½RIA_ de Itens da cï¿½lula ATUAL
 	TListaItensCelula *ListaItensCelula;
 };
 //---------------------------------------------------------------------------

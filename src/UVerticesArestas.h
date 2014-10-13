@@ -9,7 +9,7 @@
 #include <algorithm>
 //---------------------------------------------------------------------------
 
-//só é usado no CCaboReta
+//sï¿½ ï¿½ usado no CCaboReta
 struct TVerticeReta
 {
   int ID;
@@ -27,14 +27,14 @@ struct TArestasCircuito
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();
   void Apaga();
-  TVectorInt *ArestasDesenho;//vetor de vectors, o tamanho do vetor é o número de desenhos
+  TVectorInt *ArestasDesenho;//vetor de vectors, o tamanho do vetor ï¿½ o nï¿½mero de desenhos
 };
 //---------------------------------------------------------------------------
 
 struct TVerticeEAresta
 {
   int Vertice;
-  int Aresta;//é a aresta que liga o vértice ao pai da lista de adjacência
+  int Aresta;//ï¿½ a aresta que liga o vÃ©rtice ao pai da lista de adjacï¿½ncia
 };
 //---------------------------------------------------------------------------  
 
@@ -66,7 +66,7 @@ struct TVerticeGeral
   int iDesenho;
   int IDArquivo;
   TTipoVertice TipoVertice;
-  int IndiceOriginal;//usado somente na geração dos colares
+  int IndiceOriginal;//usado somente na geraï¿½ï¿½o dos colares
   bool EhPrensaCabo;
   bool EhColar;
 };

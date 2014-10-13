@@ -32,7 +32,7 @@ void CConfig::CarregaBanco(TNiveisProjeto* NiveisProjeto)
 //  // ID do projeto aberto
 //  projeto_id = DM_oRetorno->tbProjetoID->AsInteger;
 //
-//  // Pega o registro de configuração de instrumento e transforma o seu valor numa lista.
+//  // Pega o registro de configuraï¿½ï¿½o de instrumento e transforma o seu valor numa lista.
 //  DM_oRetorno->qryGeral->SQL->Text="select * from configprojeto where nome='INSTRUMENTO' and projeto_id = " + IntToStr(projeto_id);
 //  DM_oRetorno->qryGeral->Open();
 //  GeraLista(DM_oRetorno->qryGeral->FieldByName("valor")->AsString.c_str(), ListaInstrumento);
@@ -78,7 +78,7 @@ bool CConfig::DentroEquipamento()
 //---------------------------------------------------------------------------
 int CConfig::NumReg()
 {
-  // Retorna o número de registros de configuração
+  // Retorna o nï¿½mero de registros de configuraï¿½ï¿½o
   //return DM_oRetorno->NumReg("configprojeto");
     return 0;
 }
@@ -90,38 +90,38 @@ void CConfig::GeraLista(string ListaValores, TVectorString *lista)
 //  string temp;
 //  while (true)
 //  {
-//    // Encontra a primeira ocorrência de '/' na Lista de valores..
+//    // Encontra a primeira ocorrï¿½ncia de '/' na Lista de valores..
 //    pos=ListaValores.find("/");
 //
-//    // Se não for encontrado '/', então pára
+//    // Se nÃ£o for encontrado '/', entÃ£o pï¿½ra
 //    if (pos==string::npos)
 //      break;
 //
 //    // Pega o primeiro nome da lista
 //    temp = ListaValores.substr(0, pos);
 //
-//    // Bota tudo em maiúsculo
+//    // Bota tudo em maiï¿½sculo
 //    transform(temp.begin(), temp.end(), temp.begin(), toupper);
 //
 //    // E guarda no fim da lista
 //    lista->push_back(temp);
 //
-//    // Daí coloca a lista sem o primeiro nome e a '/'
+//    // Daï¿½ coloca a lista sem o primeiro nome e a '/'
 //    ListaValores=ListaValores.substr(pos+1);
 //  }
 //  if ( ListaValores != "" )
 //  {
 //    temp = ListaValores;
 ////    temp = ListaValores.substr(0, ListaValores.size());
-//    // Bota tudo em maiúsculo
+//    // Bota tudo em maiï¿½sculo
 //    transform(temp.begin(), temp.end(), temp.begin(), toupper);
 //    // E bota a palavra pro fim da lista
 //    lista->push_back(temp);
 //  }
 //  else
 //  {
-//    // Só chega aqui se tiver um problema no formato em que foi escrito na configuração
-//    int x = 5;//ShowMessage("Por favor, verifique a sua configuração de níveis.");
+//    // Sï¿½ chega aqui se tiver um problema no formato em que foi escrito na configuraï¿½ï¿½o
+//    int x = 5;//ShowMessage("Por favor, verifique a sua configuraï¿½ï¿½o de nï¿½veis.");
 //  }
 }
 //---------------------------------------------------------------------------

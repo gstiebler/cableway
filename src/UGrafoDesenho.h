@@ -30,7 +30,7 @@ struct CCaboArco
   }
 };
 
-//Número de CCaboReta = NumMultipoint
+//Nï¿½mero de CCaboReta = NumMultipoint
 struct CCaboReta
 {
 public:
@@ -39,7 +39,7 @@ public:
   bool EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo);
   bool EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo);
   void AdicionaVertice(int ID, TPonto &ponto);
-  int Indice;//índice do vetor de Multipoint
+  int Indice;//ï¿½ndice do vetor de Multipoint
   int NumVertices;
   bool ponta[2];
   TTipoOrientacao TipoOrientacao;
@@ -74,26 +74,26 @@ private:
   TTipoElemento TipoElementoCor[NUM_CORES];
   void AlocaElementos();
   void GeraListaCabos();
-  //dado um ponto pega o cabo reta mais próximo do ponto
+  //dado um ponto pega o cabo reta mais prï¿½ximo do ponto
   void CaboMaisProximo(TPonto &ponto, int &IndiceCabo,
                   double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel);
   void GeraVerticesBandeirola();
   void GeraVerticesArcos();
   void GeraVerticesPontaCabos();
-  //dado um ponto (de ponta de arco) pega o cabo arco cuja ponta é a mais próxima ao ponto dado
+  //dado um ponto (de ponta de arco) pega o cabo arco cuja ponta ï¿½ a mais prï¿½xima ao ponto dado
   void DistPontoParaPontaCaboArco(TPonto ponto,
              int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, int &IndiceVertice, int IndiceMax,
              int &pontaCabo);
-  //dada uma reta (de instrumento) pega o cabo reta cuja ponta é a mais próxima da reta dada
+  //dada uma reta (de instrumento) pega o cabo reta cuja ponta ï¿½ a mais prï¿½xima da reta dada
   void DistRetaParaPontaCaboReta(TPonto Reta[2],
                         int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice);
-  //dada uma reta (de instrumento) pega todos os cabos reta cuja ponta está tão próxima quanto a distância mínima da reta dada
+  //dada uma reta (de instrumento) pega todos os cabos reta cuja ponta estÃ¡ tï¿½o prï¿½xima quanto a DistÃ¢ncia mï¿½nima da reta dada
   void DistRetaParaTodasPontasCaboReta(TPonto Reta[2],
                         TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo);
-  //dada uma reta (de instrumento) pega o cabo arco cuja ponta é a mais próxima da reta dada
+  //dada uma reta (de instrumento) pega o cabo arco cuja ponta ï¿½ a mais prï¿½xima da reta dada
   void DistRetaParaPontaCaboArco(TPonto Reta[2],
                         int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, int &IndiceVertice);
-  //dada uma reta (de instrumento) pega todos os cabos arco cuja ponta está tão próxima quanto a distância mínima da reta dada
+  //dada uma reta (de instrumento) pega todos os cabos arco cuja ponta estÃ¡ tï¿½o prï¿½xima quanto a DistÃ¢ncia mï¿½nima da reta dada
   void DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
                         TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo);
   void DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, double &DistMaisPerto,
@@ -108,7 +108,7 @@ private:
   bool EhCabo(TElemento &Elemento);
   bool EhInstrumento(TElemento &Elemento);
   bool EhBandeirola(TElemento &Elemento);
-  //índices referentes ao vetor Multipoint que contém CabosArco
+  //ï¿½ndices referentes ao vetor Multipoint que contï¿½m CabosArco
 //  int *iCabosArco;
   int *iLinhasBandeirola;
   int *iCirculosBandeirola;
@@ -126,10 +126,10 @@ private:
 protected:
 
 public:
-  //índices referentes ao vetor Multipoint que contém CabosArco
+  //ï¿½ndices referentes ao vetor Multipoint que contï¿½m CabosArco
   CCaboArco **CabosArco;
-  //armazena informações das retas que compoem um cabo. Armazena
-  //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
+  //armazena informaï¿½ï¿½es das retas que compoem um cabo. Armazena
+  //diversos vÃ©rtices do grafo, ou seja, os outros elementos q se ligam ao cabo
   CCaboReta **CabosReta;
   void GeraColares(const std::vector<TDesenho*> &ListaDesenhos);
   void ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos);
@@ -138,7 +138,7 @@ public:
 //  TVectorPonto PontosBandeirolas[2];
   TVectorPontosBandeirola PontosPraMostrarBandeirola;
 //  int nPontosBandeirolas;
-  //média do raio dos cabos arcos, para se ter uma idéia da dimensão dos elementos
+  //mï¿½dia do raio dos cabos arcos, para se ter uma idï¿½ia da dimensÃ£o dos elementos
   //para por exemplo ter um limiar do quanto uma ponta de cabo pode ser separada da outra
   double MediaRaioCaboArco;
   double DistMinElemCaboPraOpenGL;

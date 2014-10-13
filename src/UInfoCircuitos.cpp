@@ -65,13 +65,13 @@ string CInfoCircuitos::ErrosDoCircuito(string Origem, string Destino, string rot
         if (exists)
         {
             erro +=
-                    "O texto de origem est� nos desenhos, por�m n�o est� associado a um equipamento ou bandeirola, ou ainda, est� fora do n�vel; ";
-//			erroShow +="O texto de origem est� nos desenhos, por�m n�o est� associado a um equipamento ou bandeirola, ou ainda, est� fora do n�vel;\n";
+                    "O texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível; ";
+//			erroShow +="O texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível;\n";
         }
         else
         {
-            erro += "O texto de origem n�o existe nos desenhos; ";
-//			erroShow += "O texto de origem n�o existe nos desenhos;\n";
+            erro += "O texto de origem não existe nos desenhos; ";
+//			erroShow += "O texto de origem não existe nos desenhos;\n";
         }
     }
     if (VerticesGerais->AchaVerticePeloTexto( Destino ) < 0)
@@ -97,19 +97,19 @@ string CInfoCircuitos::ErrosDoCircuito(string Origem, string Destino, string rot
         if (exists)
         {
             erro +=
-                    "O texto de destino est� nos desenhos, por�m n�o est� associado a um equipamento ou bandeirola, ou ainda, est� fora do n�vel.";
-//			erroShow += "O texto de destino est� nos desenhos, por�m n�o est� associado a um equipamento ou bandeirola, ou ainda, est� fora do n�vel.\n";
+                    "O texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível.";
+//			erroShow += "O texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível.\n";
         }
         else
         {
-            erro += "O texto de destino n�o existe nos desenhos.";
-//			erroShow += "O texto de destino n�o existe nos desenhos.\n";
+            erro += "O texto de destino não existe nos desenhos.";
+//			erroShow += "O texto de destino não existe nos desenhos.\n";
         }
     }
     if (erro == "" && rota == "")
     {
-        erro = "N�o foi encontrado caminho.";
-//		erroShow = "N�o foi encontrado caminho.";
+        erro = "não foi encontrado caminho.";
+//		erroShow = "não foi encontrado caminho.";
     }
     return erro;
 }
@@ -182,7 +182,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 //	string rota, SubRotas;
 //	TVectorInt Bandeirolas;
 //	ArestasDoCircuito->Adicionar(NumDesenhos);
-//	// O item est� em branco
+//	// O item está em branco
 //	ArestasCircuito=ArestasDoCircuito->Ultimo();
 //	TStringList *DebugArestas=NULL;
 //	bool erro, erro_interno;
@@ -197,7 +197,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 //  erro_interno = false;
 //  try
 //  {
-//	  // Chama desse jeito se n�o tiver rota do usu�rio
+//	  // Chama desse jeito se não tiver rota do usuário
 //	  if (stringTrim(Circuito.RotaUsuario) == "" )
 //	  {
 //      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, SubRotas, CircuitoAreas);
@@ -241,7 +241,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 //	}
 //  else if ( erro && stringTrim(Circuito.RotaUsuario) != "" && Circuito.rota != "" )
 //  {
-//    // Se deu erro, mas era rota de usu�rio e conseguiu completar alguma parte...
+//    // Se deu erro, mas era rota de usuário e conseguiu completar alguma parte...
 //		ArestasCircuito->Circuito=Circuito.NomeCircuito;
 //		ArestasCircuito->idCircuito=Circuito.ID;
 //		//Adiciona o circuito na lista da aresta
@@ -415,7 +415,7 @@ void CInfoCircuitos::SeparaRota(string ListaPontos, vector<string> *ListaRota)
     {
         // Procura uma barra na lista..
         pos = ListaPontos.find( "/" );
-        // Se n�o achar, ent�o sai.
+        // Se não achar, então sai.
         if (pos == string::npos)
             break;
         // Adiciona a substring sem a "/" na lista..
@@ -433,18 +433,18 @@ void CInfoCircuitos::MergeRota(string &rota, string NovaParte)
 {
     size_t pos = 0;
 
-    // Se n�o tiver rota
+    // Se não tiver rota
     if (rota.size() == 0)
     {
-        // ent�o a rota � s� a nova parte..
+        // então a rota � s� a nova parte..
         rota = NovaParte;
         return;
     }
 
-    // sen�o, procura a �ltima barra (porque a gente quer tirar o destino, da rota atual e substituir pela nova parte)
+    // senão, procura a última barra (porque a gente quer tirar o destino, da rota atual e substituir pela nova parte)
     pos = rota.find_last_of( "/" );
 
-    // se n�o encontrou, retorna. Algum problema aconteceu! (ERRO)
+    // se não encontrou, retorna. Algum problema aconteceu! (ERRO)
     if (pos == string::npos)
         return;
 
@@ -453,7 +453,7 @@ void CInfoCircuitos::MergeRota(string &rota, string NovaParte)
 }
 //---------------------------------------------------------------------------
 
-//Recebe a origem e o destino, e toda a rota do usu�rio
+//Recebe a origem e o destino, e toda a rota do usuário
 bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, string &rota,
         TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
         TStringList*DEBUG_arestas, TCircuitoAreas *CircuitoAreas)
@@ -524,17 +524,17 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
         /*
          * ArestasCircuito � um vetor que vai guardar o caminho feito, em termos de aresta, para encontrar o menor caminho.
          * ListaArestas guarda todas as arestas, enquanto ArestasDesenho guarda as arestas espec�ficas de cada desenho
-         * A grande diferen�a � que no ListaArestas tamb�m est�o as arestas entre desenhos.
+         * A grande diferen�a � que no ListaArestas tamb�m estáo as arestas entre desenhos.
          */
         ListaArestas=&ArestasCircuito->Arestas;
         ArestasDesenho=ArestasCircuito->ArestasDesenho;
     }
 
-    //tempo->MarcaTempo("Vai achar v�rtices");
+    //tempo->MarcaTempo("Vai achar vértices");
     for (m=0; m<2; m++)
     {
         /*
-         * vertice[] guarda os �ndices dos v�rtices, j� que eles s�o passados pelo nome.
+         * vertice[] guarda os índices dos vértices, já que eles são passados pelo nome.
          */
         vertice[m] = VerticesGerais->AchaVerticePeloTexto(V[m]);
         if (vertice[m] < 0)
@@ -546,24 +546,24 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
         tam = 0.0;
         return 1;
     }
-    //tempo->MarcaTempo("Vai alocar mem�ria");
+    //tempo->MarcaTempo("Vai alocar memória");
     // Djikstra
     double *DistanciaDjikstra;
     int *anterior;
 
-//  tempo->MarcaTempo("Marca��o de tempo antes de alocar as coisas do InfoCircuitos");
-    int *PaisVertices=new int [VerticesGerais->Tamanho()];//armazena os pais de cada v�rtice na �rvore
-    int *vArestas=new int [VerticesGerais->Tamanho()];//armazena a aresta de cada v�rtice referente em PaisVertices
+//  tempo->MarcaTempo("Marcação de tempo antes de alocar as coisas do InfoCircuitos");
+    int *PaisVertices=new int [VerticesGerais->Tamanho()];//armazena os pais de cada vértice na �rvore
+    int *vArestas=new int [VerticesGerais->Tamanho()];//armazena a aresta de cada vértice referente em PaisVertices
     DistanciaDjikstra = new double[VerticesGerais->Tamanho()];
     anterior = new int[VerticesGerais->Tamanho()];
-//  tempo->MarcaTempo("Fim da Marca��o de tempo.");
+//  tempo->MarcaTempo("Fim da Marcação de tempo.");
 //  tempo->MostraTempo((string)"Tempo InfoCircuitos.txt");
     TListaVerticesEArestas *ListaVerticesEArestasT;
     priority_queue<VerticesDjikstra> heap;
 
     heap.empty();
 
-    //tempo->MarcaTempo("Alocou mem�ria");
+    //tempo->MarcaTempo("Alocou memória");
 
     /* initialize single source */
     for ( int n = 0; n < VerticesGerais->Tamanho(); n++ )
@@ -572,7 +572,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
         anterior[n] = -1;
     }
 
-    DistanciaDjikstra[vertice[0]] = 0; // Dist�ncia do v�rtice pra ele mesmo � zero.
+    DistanciaDjikstra[vertice[0]] = 0; // Distância do vértice pra ele mesmo � zero.
 
     //  for (m=0; ArestasCircuito && m<(int)ArestasCircuito->Arestas.size(); m++)
     //  {
@@ -704,7 +704,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
             //if (DEBUG_arestas)
             //{
             //	TAresta *Aresta=Arestas->getItem(vArestas[vatual]);
-            //	DEBUG_arestas->Add("V�rtices: "+IntToStr(Aresta->Vertice1)+", "+IntToStr(Aresta->Vertice2));
+            //	DEBUG_arestas->Add("vértices: "+IntToStr(Aresta->Vertice1)+", "+IntToStr(Aresta->Vertice2));
             //	//        DEBUG_arestas->push_back((string)"Tamanho Aresta: "+FormatFloat("0.00", Aresta->Tam));
             //	DEBUG_arestas->Add("Tamanho Aresta: "+FormatFloat("0.00",Aresta->Tam));
             //	DEBUG_arestas->Add(FormatFloat("0.00",VerticesGerais->getItem(Aresta->Vertice1)->pos.x)+", "+
@@ -712,9 +712,9 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
             //	DEBUG_arestas->Add(FormatFloat("0.00",VerticesGerais->getItem(Aresta->Vertice2)->pos.x)+", "+
             //			FormatFloat("0.00",VerticesGerais->getItem(Aresta->Vertice2)->pos.y));
             //if ( VerticesGerais->getItem(Aresta->Vertice1)->texto!="" )
-            //	DEBUG_arestas->Add("Texto do V�rtice 1:" +(AnsiString)VerticesGerais->getItem(Aresta->Vertice1)->texto.c_str());
+            //	DEBUG_arestas->Add("Texto do vértice 1:" +(AnsiString)VerticesGerais->getItem(Aresta->Vertice1)->texto.c_str());
             //if ( VerticesGerais->getItem(Aresta->Vertice2)->texto!="" )
-            //DEBUG_arestas->Add("Texto do v�rtice 2:"+ (AnsiString)VerticesGerais->getItem(Aresta->Vertice2)->texto.c_str());
+            //DEBUG_arestas->Add("Texto do vértice 2:"+ (AnsiString)VerticesGerais->getItem(Aresta->Vertice2)->texto.c_str());
             //	DEBUG_arestas->Add("");
             //}
             if (VerticesGerais->getItem(vatual)->texto!="")
@@ -788,8 +788,8 @@ void CInfoCircuitos::Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDes
         ListaVerticesEArestas = VerticesGerais->getItem( vfila )->ListaVerticesEArestas;
         for (n = 0; n < ListaVerticesEArestas->list.size(); n++)
         {
-            //vfila � o v�rtice que queremos a lista de adjac�ncia
-            //n � o en�simo v�rtice na lista de adjac�ncia de vfila
+            //vfila � o vértice que queremos a lista de adjac�ncia
+            //n � o en�simo vértice na lista de adjac�ncia de vfila
             //.Vertice � pq podemos pegar tamb�m .Aresta
             vatual = ListaVerticesEArestas->getVerticeEAresta( n )->Vertice;
             iArestaTemp = ListaVerticesEArestas->getVerticeEAresta( n )->Aresta;

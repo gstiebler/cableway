@@ -19,27 +19,27 @@ struct TNiveisProjeto
   ~TNiveisProjeto();
 
   TVectorString *ListaInstrumento, *ListaBandeirola, *ListaCabo, *ListaTag;
-  ///<summary>Como entrada tem o nome de um nível, usa essa string para buscar em todas 
-  ///as listas e retorna qual é o tipo de elemento associado a esse nível.</summary>
-  ///<param name="nivel">String que dá nome a um nível.</param>
+  ///<summary>Como entrada tem o nome de um nÃ­vel, usa essa string para buscar em todas 
+  ///as listas e retorna qual ï¿½ o tipo de elemento associado a esse nÃ­vel.</summary>
+  ///<param name="nivel">String que dï¿½ nome a um nÃ­vel.</param>
   ///<returns>Um elemento do tipo TTipoElemento que pode ser Cabo, Bandeirola, Equipamento,
   ///tag ou Nada.</returns>
   TTipoElemento buscaListas(string nivel);
-  ///<summary>Exporta o conteúdo do objeto TNiveisProjeto para um objeto de 
-  ///transferência</summary>
-  ///<param name"Niveis">Objeto do tipo TNiveisProjetoTransfer para o qual será transferido
-  ///os dados contidos na instância.</param>
+  ///<summary>Exporta o conteï¿½do do objeto TNiveisProjeto para um objeto de 
+  ///transferï¿½ncia</summary>
+  ///<param name"Niveis">Objeto do tipo TNiveisProjetoTransfer para o qual serÃ¡ transferido
+  ///os dados contidos na instï¿½ncia.</param>
   void exportaTransfer(TNiveisProjetoTransfer *Niveis);
-  ///<summary>Importa o conteúdo do objeto de transferência para a instância atual de 
+  ///<summary>Importa o conteï¿½do do objeto de transferï¿½ncia para a instï¿½ncia atual de 
   ///TNiveisProjeto</summary>
-  ///<param name"Niveis">Objeto do tipo TNiveisProjetoTransfer de onde será transferido os 
-  ///dados para a instância.</param>
+  ///<param name"Niveis">Objeto do tipo TNiveisProjetoTransfer de onde serÃ¡ transferido os 
+  ///dados para a instï¿½ncia.</param>
   void importaTransfer(TNiveisProjetoTransfer *Niveis);
 };
 //---------------------------------------------------------------------------
-///<summary>Função que serve para liberar os elementos contidos em um objeto do tipo 
+///<summary>Funï¿½ï¿½o que serve para liberar os elementos contidos em um objeto do tipo 
 ///TNiveisProjetoTransfer</summary>
-///<param name"Niveis">Objeto do tipo TNiveisProjetoTransfer que terá seu conteúdo 
+///<param name"Niveis">Objeto do tipo TNiveisProjetoTransfer que terï¿½ seu conteï¿½do 
 ///liberado.</param>
 void liberaTNiveisProjetoTransfer(TNiveisProjetoTransfer *Niveis);
 //---------------------------------------------------------------------------

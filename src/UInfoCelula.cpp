@@ -15,7 +15,7 @@ TInfoCelula::TInfoCelula()
 	shared = false;
 	FimCelula = -1;
 	somaX = somaY = somaZ = 0;
-  // É temporário!
+  // ï¿½ temporï¿½rio!
 	ListaItensCelula = NULL;
 }
 //---------------------------------------------------------------------------
@@ -48,15 +48,15 @@ TInfoCelula& TInfoCelula::operator=( TInfoCelula &f )
 
 void TInfoCelula::EntraCelula(int GrupoID, bool IsShared)
 {
-	// Tipo do elemento inicialmente é NADA
+	// Tipo do elemento inicialmente ï¿½ NADA
 	TipoElementoCelulaAtual = NADA;
-	// Mostra que tá dentro da Célula
+	// Mostra que tï¿½ dentro da Cï¿½lula
 	DentroCelula = true;
 	// Seta o shared
 	shared = IsShared;
 	// Zera as somas
 	somaX = somaY = somaZ = 0;
-	// Cria um novo ItemCelula temporário
+	// Cria um novo ItemCelula temporï¿½rio
 	ListaItensCelula=new TListaItensCelula;
 	// E seta o ID dele
 	ListaItensCelula->id = GrupoID;
@@ -64,16 +64,16 @@ void TInfoCelula::EntraCelula(int GrupoID, bool IsShared)
 
 void TInfoCelula::AdicionaTexto(int iTexto, string Texto, int NivelTexto)
 {
-	// Se o texto está em nível de tag, então ele é adicionado ao vetor de textos
-	// da célula.
+	// Se o texto estÃ¡ em nÃ­vel de tag, entÃ£o ele ï¿½ adicionado ao vetor de textos
+	// da cï¿½lula.
 	if ( NivelTexto == TAG )
 	{
 		ListaItensCelula->iTextos.push_back(iTexto);
 	}
-	// Caso ele esteja em nível de bandeirola, ele é adicionado ao vetor de bandeirolas
-	// da célula. 
-	// Isso é necessário pois textos de bandeirola ficam em níveis de bandeirola
-	// enquanto os textos de Equipamento ficam em nível de tag.
+	// Caso ele esteja em nÃ­vel de bandeirola, ele ï¿½ adicionado ao vetor de bandeirolas
+	// da cï¿½lula. 
+	// Isso ï¿½ necessï¿½rio pois textos de bandeirola ficam em nï¿½veis de bandeirola
+	// enquanto os textos de Equipamento ficam em nÃ­vel de tag.
 	else if ( NivelTexto == BANDEIROLA )
 	{
 		ListaItensCelula->iTextosBandeirola.push_back(iTexto);
@@ -92,7 +92,7 @@ void TInfoCelula::FechaCelula()
 		return;
 	}
 
-	// Vê o tipo da célula atual
+	// Vï¿½ o tipo da cï¿½lula atual
 	switch (TipoElementoCelulaAtual)
 	{
 	// Caso esteja em grupamento de instrumento, ele adiciona na lista de intrumentos
@@ -100,12 +100,12 @@ void TInfoCelula::FechaCelula()
 		ListaCelulasInstrumentos->Adiciona(ListaItensCelula);
 		break;
 	// Caso esteja em grupamento de bandeirola, ele adiciona na lista de bandeirolas
-	// e bota os textos que estavam em nível de bandeirola como os textos do grupo
+	// e bota os textos que estavam em nÃ­vel de bandeirola como os textos do grupo
 	case BANDEIROLA:
 		ListaItensCelula->iTextos.assign(ListaItensCelula->iTextosBandeirola.begin(), ListaItensCelula->iTextosBandeirola.end());
 		ListaCelulasBandeirolas->Adiciona(ListaItensCelula);
 		break;
-	// Caso não esteja em um desses níveis, ele apaga o grupo e seta ListaItensCelula
+	// Caso nÃ£o esteja em um desses nï¿½veis, ele apaga o grupo e seta ListaItensCelula
 	// como NULL.
 	default:
 		delete ListaItensCelula;

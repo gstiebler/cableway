@@ -47,12 +47,12 @@ struct TMultipoint: public TElemento
 	TMultipoint() : TElemento() {
 		tipo = 0;
 	}
-  // Construtor de cópia
+  // Construtor de cï¿½pia
 	TMultipoint(const TMultipoint& TMulti) : TElemento(TMulti)
 	{
 		*this = TMulti;
 	}
-  // Operador de atribuição
+  // Operador de atribuiï¿½ï¿½o
 	TMultipoint& operator=( const TMultipoint &TMulti )
 	{
 		ID = TMulti.ID;
@@ -80,9 +80,9 @@ struct TArco: public TElemento
 	double AngIni;
 	// Sweep angle (degrees)
 	double AngTam;
-	// Índice dos vertices 
+	// ï¿½ndice dos vertices 
 	int iV[2];
-  ///<summary>Função que calcula as duas pontas de um arco.</summary>
+  ///<summary>Funï¿½ï¿½o que calcula as duas pontas de um arco.</summary>
   ///<param name"Arco">O Arco.</param>
   ///<param name"pontas">O ponteiro para o vetor de pontas</param>
   void PontasArco(TPonto pontas[2]);
@@ -139,7 +139,7 @@ struct TTexto: public TElemento
 		origem.x = origem.y = rotacao = FatorAltura = 0.0;
 	};
 	///<summary>Cria um objeto TTexto usando um objeto TTextoTransfer como base.</summary>
-	///<param name"Texto">Objeto do tipo TTextoTransfer que será usado como base.</param>
+	///<param name"Texto">Objeto do tipo TTextoTransfer que serÃ¡ usado como base.</param>
 	TTexto(const TTextoTransfer &Texto);
 	TTexto& operator=( const TTextoTransfer &Texto );
 };
@@ -160,7 +160,7 @@ struct TTextoTransfer: public TElemento
 // Estrutura para troca de dados entre o principal e a dll
 struct TDadosTransfer
 {
-  // São preenchidos na dll
+  // sÃ£o preenchidos na dll
 	TInfoCelula InfoCelula;
 	int NumMultipoint;
 	int NumArcos;
@@ -168,7 +168,7 @@ struct TDadosTransfer
 	TMultipoint *Multipoint;
 	TArco *Arcos;
 	TTextoTransfer *Textos;
-  // Já vem preenchidos do Builder;
+  // jÃ¡ vem preenchidos do Builder;
 	int IndiceDesenho;
 	int IDArquivo;
 	char *NomeArq;
@@ -191,13 +191,13 @@ public:
 	vector<TTexto> Textos;
 	CDadosGenerico();
 	~CDadosGenerico ();
-	///<summary>Função que preenche um objeto do tipo TDadosTransfer com base na instância
+	///<summary>Funï¿½ï¿½o que preenche um objeto do tipo TDadosTransfer com base na instï¿½ncia
 	///do objeto CDadosGenerico.</summary>
-	///<param name"dados">Objeto do tipo TDadosTransfer que será preenchido.</param>
+	///<param name"dados">Objeto do tipo TDadosTransfer que serÃ¡ preenchido.</param>
 	void convertePraTransfer(TDadosTransfer *dados);
-	///<summary>Função que preenche a instância de CDadosGenerico com base num objeto 
-	///TDadosTransfer que será passado a função.</summary>
-	///<param name"dados">Objeto do tipo TDadosTransfer que será usado como base.</param>
+	///<summary>Funï¿½ï¿½o que preenche a instï¿½ncia de CDadosGenerico com base num objeto 
+	///TDadosTransfer que serÃ¡ passado a funï¿½ï¿½o.</summary>
+	///<param name"dados">Objeto do tipo TDadosTransfer que serÃ¡ usado como base.</param>
 	void importaTransfer(TDadosTransfer *dados);
 };
 

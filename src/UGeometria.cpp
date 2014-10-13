@@ -36,11 +36,11 @@ void PontoMaisDistante(TPonto ponto, vector<TPonto> pontos,
 	{
 			//CErrosMsg *erros = CErrosMsg::getInstance();
       // resolver NOMEARQ!
-			//erros->novoErro("AtenÁ„o: Existem arquivos que n„o possuem cabos.");
+			//erros->novoErro("Aten√ß√£o: Existem arquivos que n√£o possuem cabos.");
       		/*    if ( Dados->IMP )
 					{
-		//ShowMessage("Erro: N„o h· cabo.");
-		Dados->IMP->ListErros->Lines->Add("AtenÁ„o: " + ExtractFileName(Dados->NomeArq.c_str()).c_str() + " n„o possui cabos.");
+		//ShowMessage("Erro: n√£o h√° cabo.");
+		Dados->IMP->ListErros->Lines->Add("Aten√ß√£o: " + ExtractFileName(Dados->NomeArq.c_str()).c_str() + " n√£o possui cabos.");
 		}
 		*/
 	}
@@ -55,13 +55,13 @@ double DistPontosManhattan(TPonto &p1, TPonto &p2)
 }
 //---------------------------------------------------------------------------
 
-//caso a reta n„o seja horizontal, o coenficiente "a" da reta ser· o inverso.
-//ou seja, ao invÈs de ser x/y, ser· y/x
+//caso a reta n√£o seja horizontal, o coenficiente "a" da reta ser√° o inverso.
+//ou seja, ao inv√©s de ser x/y, ser√° y/x
 double DistPontoParaSegmentoReta(TPonto Reta[2], TPonto &Ponto, TPonto &PontoNoSegmento)
 {
   double DifX, DifY, aDifX, aDifY;
   double a, b;//coeficientes da reta
-  double m;//equivalente ao "b" da primeira reta, mas È da reta perpedicular que passa por Ponto
+  double m;//equivalente ao "b" da primeira reta, mas ÔøΩ da reta perpedicular que passa por Ponto
   double x, y;//encontro entre as retas
   int iMenorX, iMenorY, iMaiorX, iMaiorY;
 
