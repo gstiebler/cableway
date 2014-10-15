@@ -18,6 +18,7 @@
 #include "../UserParams/LoadUserParams.h"
 #include "../UserParams/UserParams.h"
 #include "../UTCallbackStatusCarregamento.h"
+#include "MainExecution.h"
 #include "TestsUtil.h"
 
 namespace {
@@ -274,6 +275,24 @@ TEST_F(BasicTest, complete)
 
     EXPECT_FLOAT_EQ( 500.0, tam );
     EXPECT_STREQ( "Equipamento 2/Equipamento 1", rota.c_str() );
+}
+
+
+
+TEST_F(BasicTest, complete2)
+{
+    string xlsFileName = TestsUtil::getExePath() + "/../data/tests/user_params2.xls";
+    string inputCircuitsFileName = TestsUtil::getExePath() + "/../data/tests/input_circuits2.xls";
+
+    MainExecution mainExecution( xlsFileName );
+    vector<CircuitResult> circuitResults = mainExecution.execute( inputCircuitsFileName );
+
+    ASSERT_EQ( 2, (int) circuitResults.size() );
+
+    EXPECT_STREQ( "Equipamento 2/Equipamento 1", circuitResults[0].route.c_str() );
+    EXPECT_FLOAT_EQ( 500.0, circuitResults[0].length );
+    EXPECT_STREQ( "Equipamento 1/Equipamento 2", circuitResults[1].route.c_str() );
+    EXPECT_FLOAT_EQ( 500.0, circuitResults[1].length );
 }
 
 }  // namespace

@@ -36,7 +36,10 @@ void loadDrawingParams( xlsWorkSheet *pWS, vector<DrawingParams> &drawingsParams
         DrawingParams drawingParams;
 
         xlsCell *cell = xls_cell(pWS, cellRow, 0);
-        drawingParams.fileName = string( (char*) cell->str );
+        if( cell->str )
+            drawingParams.fileName = string( (char*) cell->str );
+        else
+            break;
 
         cell = xls_cell(pWS, cellRow, 1);
         drawingParams.elevation = cell->d;

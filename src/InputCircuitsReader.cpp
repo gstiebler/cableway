@@ -46,15 +46,18 @@ void loadCircuits( xlsWorkSheet *circuitsSheet, vector< InputCircuit > &circuits
         InputCircuit circuit;
 
         xlsCell *cell = xls_cell(circuitsSheet, cellRow, 0);
-        circuit.source = readString( cell );
+        circuit.name = readString( cell );
 
         cell = xls_cell(circuitsSheet, cellRow, 1);
-        circuit.dest = readString( cell );
+        circuit.source = readString( cell );
 
         cell = xls_cell(circuitsSheet, cellRow, 2);
-        circuit.route = processRoute( readString( cell ) );
+        circuit.dest = readString( cell );
 
         cell = xls_cell(circuitsSheet, cellRow, 3);
+        circuit.route = processRoute( readString( cell ) );
+
+        cell = xls_cell(circuitsSheet, cellRow, 4);
         circuit.cable = readString( cell );
 
         circuits.push_back( circuit );

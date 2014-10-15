@@ -13,6 +13,7 @@
 
 struct InputCircuit
 {
+    std::string name;
     std::string source;
     std::string dest;
     std::vector<std::string> route;
