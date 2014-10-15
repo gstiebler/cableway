@@ -245,7 +245,7 @@ DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados, UserParams *userPa
     char filename[256];
     strcpy( filename, fileName.c_str() );
     success = dwg_read_file(filename, &dwg);
-    printf( "%d %s\n", success, filename );
+   // printf( "%d %s\n", success, filename );
     for (i = 0; i < dwg.num_objects; i++)
     {
         print_obj(&(dwg.object[i]));

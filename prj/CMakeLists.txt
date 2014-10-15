@@ -31,6 +31,7 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/DrawingLoader.cpp
 				${SRC_BASE}/DwgLoader.cpp
+				${SRC_BASE}/InputCircuitsReader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
 				
@@ -66,7 +67,8 @@ set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
                   ${SRC_BASE}/tests/basic_tests.cpp
                   ${SRC_BASE}/tests/TestsUtil.cpp
                   ${SRC_BASE}/tests/UserParamsLoadingTests.cpp
-                  ${SRC_BASE}/tests/DrawingLoaderTests.cpp)
+                  ${SRC_BASE}/tests/DrawingLoaderTests.cpp
+                  ${SRC_BASE}/tests/InputCircuitsReaderTests.cpp)
 
 add_executable(cableway_tests ${ALL_SOURCES} ${TESTS_SOURCES}) 
 target_link_libraries(cableway_tests  ${CW_LIBRARIES} gtest)
