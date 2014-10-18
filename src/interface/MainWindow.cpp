@@ -7,10 +7,9 @@
 
 #include "MainWindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QDialog(parent)
+MainWindow::MainWindow(QWidget *parent)
 {
-    // TODO Auto-generated constructor stub
-
+    setupUi(this);
 }
 
 MainWindow::~MainWindow()

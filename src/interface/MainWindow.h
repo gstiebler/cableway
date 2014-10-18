@@ -8,9 +8,11 @@
 #ifndef MAINWINDOW_H_
 #define MAINWINDOW_H_
 
-#include <QtGui/QDialog>
+#include <QtGui/QMainWindow>
 
-class MainWindow : public QDialog
+#include "ui_MainWindow.h"
+
+class MainWindow : public QMainWindow, private Ui::MainWindow
 {
     Q_OBJECT
 

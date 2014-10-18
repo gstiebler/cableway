@@ -7,6 +7,7 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 set(EXECUTABLE_OUTPUT_PATH ../bin)
 set(SRC_BASE ../src)
+set(QT_UI_BASE_PATH ../data/qt)
 
 set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UCallbacks.cpp
@@ -41,13 +42,18 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
                 
+SET( QT_UIS
+     ${QT_UI_BASE_PATH}/MainWindow.ui
+)
+                
 QT4_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h)
+QT4_WRAP_UI(QTTEST_GEN_UIS ${QT_UIS} )
 				
 set(LIB_DIRS ../lib/dxflib/src
              ../lib/libredwg/src
              ../lib/libxls/include)                
                 
-include_directories(${SRC_BASE} ${LIB_DIRS})
+include_directories(${SRC_BASE} ${LIB_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
 link_directories(../lib/dxflib/lib/
                  ../lib/libredwg/src/.libs
@@ -55,7 +61,8 @@ link_directories(../lib/dxflib/lib/
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES}
-                    ${cw_HEADERS_MOC})
+                    ${cw_HEADERS_MOC}
+                    ${QTTEST_GEN_UIS})
 
 set(CW_LIBRARIES redwg dxflib xlsreader iconv) 
                    
@@ -82,6 +89,8 @@ set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
 
 add_executable(cableway_tests ${ALL_SOURCES} 
                     ${TESTS_SOURCES}
-                    ${cw_HEADERS_MOC}) 
+                    ${cw_HEADERS_MOC}
+                    ${QTTEST_GEN_UIS}) 
+                    
 target_link_libraries(cableway_tests  ${CW_LIBRARIES} gtest)
 target_link_libraries(cableway_tests ${QT_LIBRARIES})
