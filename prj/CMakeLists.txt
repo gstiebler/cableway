@@ -1,5 +1,9 @@
 cmake_minimum_required (VERSION 2.8.4)
 project (cableway)
+FIND_PACKAGE(Qt4 REQUIRED)
+
+INCLUDE(${QT_USE_FILE})
+ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 set(EXECUTABLE_OUTPUT_PATH ../bin)
 set(SRC_BASE ../src)
@@ -32,9 +36,12 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/DrawingLoader.cpp
 				${SRC_BASE}/DwgLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
+				${SRC_BASE}/interface/MainWindow.cpp
 				${SRC_BASE}/InputCircuitsReader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
+                
+QT4_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h)
 				
 set(LIB_DIRS ../lib/dxflib/src
              ../lib/libredwg/src
@@ -47,11 +54,13 @@ link_directories(../lib/dxflib/lib/
                  ../lib/libxls/src/.libs)
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
-					${ALL_SOURCES})
+					${ALL_SOURCES}
+                    ${cw_HEADERS_MOC})
 
 set(CW_LIBRARIES redwg dxflib xlsreader iconv) 
                    
 target_link_libraries(cableway ${CW_LIBRARIES})
+target_link_libraries(cableway ${QT_LIBRARIES})
 
 # Tests
 #set(CMAKE_CXX_FLAGS_DEBUG  "-fprofile-arcs -ftest-coverage")
@@ -71,5 +80,8 @@ set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
                   ${SRC_BASE}/tests/DrawingLoaderTests.cpp
                   ${SRC_BASE}/tests/InputCircuitsReaderTests.cpp)
 
-add_executable(cableway_tests ${ALL_SOURCES} ${TESTS_SOURCES}) 
+add_executable(cableway_tests ${ALL_SOURCES} 
+                    ${TESTS_SOURCES}
+                    ${cw_HEADERS_MOC}) 
 target_link_libraries(cableway_tests  ${CW_LIBRARIES} gtest)
+target_link_libraries(cableway_tests ${QT_LIBRARIES})

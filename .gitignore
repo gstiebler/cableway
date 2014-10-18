@@ -17,3 +17,4 @@ CMakeFiles
 /src/.cproject
 /src/.project
 .settings
+*.bak
