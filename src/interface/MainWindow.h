@@ -12,6 +12,8 @@
 
 #include "ui_MainWindow.h"
 
+#include <string>
+
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
     Q_OBJECT
@@ -20,7 +22,17 @@ public:
     MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
 
+    std::string getUserParamsFileName();
+    std::string getInputCircuitsFileName();
+
+signals:
+
+    void executeButtonClicked();
+
+
 private slots:
+
+        void openUserParamsClicked();
 
 };
 

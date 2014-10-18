@@ -1,12 +1,11 @@
 #include <QtGui/QApplication>
 
-#include <interface/MainWindow.h>
+#include <presenters/MainPresenter.h>
 
 int main (int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    MainWindow *mainWindow = new MainWindow;
-    mainWindow->show();
+    MainPresenter mainPresenter;
     return app.exec();
 }

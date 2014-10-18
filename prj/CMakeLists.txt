@@ -38,6 +38,7 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/DwgLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
 				${SRC_BASE}/interface/MainWindow.cpp
+				${SRC_BASE}/presenters/MainPresenter.cpp
 				${SRC_BASE}/InputCircuitsReader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
@@ -46,7 +47,9 @@ SET( QT_UIS
      ${QT_UI_BASE_PATH}/MainWindow.ui
 )
                 
-QT4_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h)
+QT4_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h
+                            ${SRC_BASE}/presenters/MainPresenter.h)
+                            
 QT4_WRAP_UI(QTTEST_GEN_UIS ${QT_UIS} )
 				
 set(LIB_DIRS ../lib/dxflib/src

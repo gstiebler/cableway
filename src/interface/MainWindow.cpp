@@ -7,13 +7,42 @@
 
 #include "MainWindow.h"
 
+#include <QtGui/QFileDialog>
+#include <string>
+
+using namespace std;
+
 MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
+
+    connect( buttonOpenUserParams, SIGNAL(clicked()), this, SLOT(openUserParamsClicked() ) );
+    connect( buttonExecute, SIGNAL( clicked() ), this, SIGNAL( executeButtonClicked() ) );
 }
+
 
 MainWindow::~MainWindow()
 {
-    // TODO Auto-generated destructor stub
 }
 
+
+
+void MainWindow::openUserParamsClicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Selecionar o arquivo de configuração", "c:\\Projetos", tr("Excel (*.xls)"));
+    lineEditUserParams->setText( fileName );
+}
+
+
+
+std::string MainWindow::getUserParamsFileName()
+{
+    return lineEditUserParams->text().toStdString();
+}
+
+
+
+std::string MainWindow::getInputCircuitsFileName()
+{
+    return lineEditInputCircuits->text().toStdString();
+}

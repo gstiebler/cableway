@@ -66,7 +66,7 @@
      <string>input_circuits.xls</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="buttonOpenUserParams">
     <property name="geometry">
      <rect>
       <x>590</x>
