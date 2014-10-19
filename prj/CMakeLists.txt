@@ -27,7 +27,9 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UListaItensCelula.cpp
 				${SRC_BASE}/UListaPontoEIndiceCabo.cpp
 				${SRC_BASE}/UListaV.cpp
+				${SRC_BASE}/UMostraDesenho.cpp
 				${SRC_BASE}/UNiveisProjeto.cpp
+				${SRC_BASE}/UOpenGL.cpp
 				${SRC_BASE}/UParamsStructs.cpp
 				${SRC_BASE}/UStructs.cpp
 				${SRC_BASE}/UTCallbackStatusCarregamento.cpp
@@ -38,7 +40,9 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/DwgLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
 				${SRC_BASE}/interface/MainWindow.cpp
+				${SRC_BASE}/interface/DrawingWindow.cpp
 				${SRC_BASE}/presenters/MainPresenter.cpp
+				${SRC_BASE}/presenters/DrawingPresenter.cpp
 				${SRC_BASE}/InputCircuitsReader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
