@@ -1,12 +1,14 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "UMostraDesenho.h"
+#include <UGrafoDesenho.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-CMostraDesenho::CMostraDesenho(HWND *Handle, CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos,
-		int ClientWidth, int ClientHeight, void* ponteiroThis, void (*ponteiroFuncao)(void* ponteiroThis, AnsiString text, AnsiString text2))
-: COpenGL(Handle, ClientWidth, ClientHeight)
+using namespace std;
+
+CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, int ClientWidth, int ClientHeight, void* ponteiroThis)
+: COpenGL(ClientWidth, ClientHeight)
 {
   semCores = false;
 	apertado=false;
@@ -21,7 +23,6 @@ CMostraDesenho::CMostraDesenho(HWND *Handle, CGrafoDesenho *grafoDesenho, CInfoC
 	facilitarVerBandeirola = true;
 	mostraLigacaoEquipamento = false;
 	ponteiroProThis = ponteiroThis;
-	ponteiroPraFuncao = ponteiroFuncao;
 	MostrarPontasDeCaboDescon = true;
 }
 //---------------------------------------------------------------------------
@@ -47,11 +48,11 @@ void CMostraDesenho::DrawObjects()
 		maiorx=-Infinity;
 		maiory=-Infinity;
 
-		if (GrafoDesenho->ult>GrafoDesenho->Dados->NumMultipoint)
-			GrafoDesenho->ult=GrafoDesenho->Dados->NumMultipoint;
+		if (GrafoDesenho->ult > GrafoDesenho->Dados->Multipoint.size())
+			GrafoDesenho->ult = GrafoDesenho->Dados->Multipoint.size();
 		for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
 		{
-			for (int i=0; i<GrafoDesenho->Dados->Multipoint[n].tam; i++)
+			for (int i=0; i<GrafoDesenho->Dados->Multipoint[n].pontos.size(); i++)
 			{
 				x=GrafoDesenho->Dados->Multipoint[n].pontos[i].x;
 				y=GrafoDesenho->Dados->Multipoint[n].pontos[i].y;
@@ -66,7 +67,7 @@ void CMostraDesenho::DrawObjects()
 					menory=y;
 			}
 		}
-		for ( int i=0; i<GrafoDesenho->Dados->NumArcos; i++)
+		for ( int i=0; i<GrafoDesenho->Dados->Arcos.size(); i++)
 		{
 			if ( fabs(360.0 - GrafoDesenho->Dados->Arcos[i].AngTam) < 0.001 )
 			{
@@ -118,19 +119,19 @@ void CMostraDesenho::DrawObjects()
 			menorx -= (intervaloX - (maiorx - menorx))/2;
 			maiorx -= (intervaloX - (maiorx - menorx))/2;
 		}
-		FatorZoomX = intervaloX / 500; // 500 é o tamanho do slider
-		FatorZoomY = intervaloY / 500; // 500 é o tamanho do slider
+		FatorZoomX = intervaloX / 500; // 500 ï¿½ o tamanho do slider
+		FatorZoomY = intervaloY / 500; // 500 ï¿½ o tamanho do slider
 		oldZoom = 0;
 		initialized = true;
 	}
 
-	AjustaExibicao();//DESLOCA IMAGEM E DÁ ZOOM
+	AjustaExibicao();//DESLOCA IMAGEM E Dï¿½ ZOOM
 
 	if (primeiro)
 	{
 		glNewList(1, GL_COMPILE);
 		//LINHAS
-		for (int n=0; n<GrafoDesenho->Dados->NumMultipoint; n++)
+		for (int n=0; n<GrafoDesenho->Dados->Multipoint.size(); n++)
 			//    for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
 		{
 			//      byte cor=GrafoDesenho->Dados->Multipoint[n].Cor;
@@ -182,7 +183,7 @@ void CMostraDesenho::DrawObjects()
 			//glLineWidth((GLfloat)(1.0+GrafoDesenho->Multipoint[n].Peso));
 			//if (GrafoDesenho->Multipoint[n].tam<10)
 			{
-				for (int i=0; i<GrafoDesenho->Dados->Multipoint[n].tam; i++)
+				for (int i=0; i<GrafoDesenho->Dados->Multipoint[n].pontos.size(); i++)
 				{
 					x=GrafoDesenho->Dados->Multipoint[n].pontos[i].x;
 					y=GrafoDesenho->Dados->Multipoint[n].pontos[i].y;
@@ -195,7 +196,7 @@ void CMostraDesenho::DrawObjects()
 		//ARCOS
 		//TArco *Arcos=GrafoDesenho->Arcos;
 		vector<TArco> Arcos = GrafoDesenho->Dados->Arcos;
-		for (int n=0; n<GrafoDesenho->Dados->NumArcos; n++)
+		for (int n=0; n<GrafoDesenho->Dados->Arcos.size(); n++)
 		{
 			//      byte cor=GrafoDesenho->Dados->Arcos[n].Cor;
 			//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
@@ -265,8 +266,9 @@ void CMostraDesenho::DrawObjects()
 			// Laranja - Origem
 
 			//			glColor3f(1.0, 0.5, 0.0);
-			AnsiString origem = GrafoDesenho->VerticesGerais->getItem(VerticeArvore)->texto.c_str();
-			if ( !bMostraArvore2 && ponteiroPraFuncao)ponteiroPraFuncao(ponteiroProThis, origem , "");
+			string origem = GrafoDesenho->VerticesGerais->getItem(VerticeArvore)->texto.c_str();
+//			if ( !bMostraArvore2 && ponteiroPraFuncao)
+//			    ponteiroPraFuncao(ponteiroProThis, origem , "");
 			glColor3f(pegaVermelho(CORARVORE)/255.0, pegaVerde(CORARVORE)/255.0, pegaAzul(CORARVORE)/255.0);
 			glLineWidth((GLfloat)(3.0));
 			glPushMatrix();
@@ -305,8 +307,9 @@ void CMostraDesenho::DrawObjects()
 			if (bMostraArvore2)
 			{
 				// Roxo - Destino
-				AnsiString destino = GrafoDesenho->VerticesGerais->getItem(VerticeArvore2)->texto.c_str();
-				if ( ponteiroPraFuncao )ponteiroPraFuncao(ponteiroProThis, origem , destino);
+				string destino = GrafoDesenho->VerticesGerais->getItem(VerticeArvore2)->texto.c_str();
+//				if ( ponteiroPraFuncao )
+//				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
 				glColor3f(pegaVermelho(CORARVORE2)/255.0, pegaVerde(CORARVORE2)/255.0, pegaAzul(CORARVORE2)/255.0);
 				//			glColor3f(0.7, 0.0, 0.7);
 				glLineWidth((GLfloat)(3.0));
@@ -368,7 +371,7 @@ void CMostraDesenho::DrawObjects()
 				}
 				if ( !GrafoDesenho->CabosReta[i]->ponta[1] )
 				{
-					int tam = GrafoDesenho->Dados->Multipoint[GrafoDesenho->CabosReta[i]->Indice].tam;
+					int tam = GrafoDesenho->Dados->Multipoint[GrafoDesenho->CabosReta[i]->Indice].pontos.size();
 					TPonto pontos = GrafoDesenho->Dados->Multipoint[GrafoDesenho->CabosReta[i]->Indice].pontos[tam-1];
 					DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 #ifdef DEBUG_BUILDER
@@ -410,14 +413,14 @@ void CMostraDesenho::DrawObjects()
 			{
 				glColor3f(1.0, 1.0, 1.0);
 				glLineWidth((GLfloat)(4.0));
-				if (DistPontos(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo) > GrafoDesenho->DistMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
+				if (DistPontos(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo) > GrafoDesenho->DistMinElemCaboPraOpenGL) // Se a distï¿½ncia entre os pontos nï¿½o for muito pequena mostra uma reta
 				{
 					glBegin(GL_LINE_STRIP);
 					glVertex2f(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola.y);
 					glVertex2f(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.y);
 					glEnd();
 				}
-				else // Senão, faz um círculo em volta dos pontos
+				else // Senï¿½o, faz um cï¿½rculo em volta dos pontos
 				{
 					DesenhaArco(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.y,
 							GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
@@ -426,7 +429,7 @@ void CMostraDesenho::DrawObjects()
 			}
 
 		//TEXTOS
-		for (int n=0; n<GrafoDesenho->Dados->NumTextos; n++)
+		for (int n=0; n<GrafoDesenho->Dados->Textos.size(); n++)
 		{
 			//      byte cor=GrafoDesenho->Dados->Textos[n].Cor;
 			//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
@@ -474,30 +477,30 @@ void CMostraDesenho::DrawObjects()
 			glPopMatrix();
 		}
 
-		if (bMostraNumVerticesDEBUG)
-		{
-			randomize();
-			for (int n=1; n<GrafoDesenho->VerticesGerais->Tamanho(); n++)
-			{
-				int IndiceDesenho=GrafoDesenho->Dados->IndiceDesenho;
-
-				if ( GrafoDesenho->VerticesGerais->getItem(n)->iDesenho == IndiceDesenho )
-				{
-
-					glColor3f(GeraCor(), GeraCor(), GeraCor());
-					glPushMatrix();
-					char texto[10]={0};
-					sprintf(texto, "%d", n);
-          TPonto ponto_debug=GrafoDesenho->VerticesGerais->getItem(n)->pos;
-          ponto_debug.x+=random(5);
-          ponto_debug.y+=random(5);
-					EscreveTexto(texto, GrafoDesenho->VerticesGerais->getItem(n)->pos, 0,
-							GrafoDesenho->Dados->Textos[0].FatorAltura/2);
-					//                          FATOR_TEXTO_NUM_VERTICES/fator);
-					glPopMatrix();
-				}
-			}
-		}
+//		if (bMostraNumVerticesDEBUG)
+//		{
+//			randomize();
+//			for (int n=1; n<GrafoDesenho->VerticesGerais->Tamanho(); n++)
+//			{
+//				int IndiceDesenho=GrafoDesenho->Dados->IndiceDesenho;
+//
+//				if ( GrafoDesenho->VerticesGerais->getItem(n)->iDesenho == IndiceDesenho )
+//				{
+//
+//					glColor3f(GeraCor(), GeraCor(), GeraCor());
+//					glPushMatrix();
+//					char texto[10]={0};
+//					sprintf(texto, "%d", n);
+//          TPonto ponto_debug=GrafoDesenho->VerticesGerais->getItem(n)->pos;
+//          ponto_debug.x += random(5);
+//          ponto_debug.y += random(5);
+//					EscreveTexto(texto, GrafoDesenho->VerticesGerais->getItem(n)->pos, 0,
+//							GrafoDesenho->Dados->Textos[0].FatorAltura/2);
+//					//                          FATOR_TEXTO_NUM_VERTICES/fator);
+//					glPopMatrix();
+//				}
+//			}
+//		}
 		if (bMostraBola)
 		{
 			glColor3f(0.0, 0.0, 1.0);

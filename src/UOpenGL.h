@@ -2,10 +2,12 @@
 #ifndef UOpenGLH
 #define UOpenGLH
 
+//#include <GL/glu.h>
+#include <w32api/GL/gl.h>
 #include <math.h>
 #include "UAuxString.h"
 #include "UDefines.h"
-#include <GL/glut.h>
+
 
 #define FATOR_TELA 0.162
 #define TAMANHO 50.0f
@@ -20,8 +22,6 @@
 class COpenGL
 {
 protected:
-  HDC hdc;
-  HGLRC hrc;
   int PixelFormat;
   GLuint startoflist;
   GLfloat x, y, xstep, ystep, w, h;
@@ -38,7 +38,7 @@ protected:
   double FatorZoomX, FatorZoomY;
   bool XEhMaior, initialized;
 public:
-  COpenGL(HWND *Handle, int ClientWidth, int ClientHeight);
+  COpenGL(int ClientWidth, int ClientHeight);
   ~COpenGL();
   void RenderGLScene();
   void SetPixelFormatDescriptor();

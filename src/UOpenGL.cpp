@@ -4,17 +4,12 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-COpenGL::COpenGL(HWND *Handle, int ClientWidth, int ClientHeight)
+COpenGL::COpenGL(int ClientWidth, int ClientHeight)
 {
   size = TAMANHO;
 
-  hdc = GetDC(Handle);
   SetPixelFormatDescriptor();
-  hrc = wglCreateContext(hdc);
-  if(hrc == NULL)
-    ShowMessage(":-)~ hrc == NULL");
-  if(wglMakeCurrent(hdc, hrc) == false)
-    ShowMessage("Could not MakeCurrent");
+
   w = ClientWidth;
   h = ClientHeight;
   x2=0;
@@ -37,32 +32,12 @@ COpenGL::COpenGL(HWND *Handle, int ClientWidth, int ClientHeight)
 
 COpenGL::~COpenGL()
 {
-  Application->OnIdle=NULL;
-  wglMakeCurrent(NULL, NULL);
-  wglDeleteContext(hrc);
 }
 //---------------------------------------------------------------------------
 
 void COpenGL::SetPixelFormatDescriptor()
 {
-    PIXELFORMATDESCRIPTOR pfd = {
-    	sizeof(PIXELFORMATDESCRIPTOR),
-        1,
-        PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-        PFD_TYPE_RGBA,
-        24,
-        0,0,0,0,0,0,
-        0,0,
-        0,0,0,0,0,
-        32,
-        0,
-        0,
-        PFD_MAIN_PLANE,
-        0,
-        0,0,
-    };
-    PixelFormat = ChoosePixelFormat(hdc, &pfd);
-    SetPixelFormat(hdc, PixelFormat, &pfd);
+
 }
 //---------------------------------------------------------------------------
 
@@ -93,9 +68,7 @@ void COpenGL::Resize(int ClientWidth, int ClientHeight)
 
 void COpenGL::Paint()
 {
-  wglMakeCurrent(hdc, hrc);
   RenderGLScene();
-  SwapBuffers(hdc);
 }
 //---------------------------------------------------------------------------
 
@@ -227,17 +200,17 @@ void COpenGL::EscreveTexto(string texto, TPonto origem, double rotacao, double F
     glTranslatef(origem.x, origem.y, 0);
     glScalef(FatorAltura*FATOR_FONTE, FatorAltura*FATOR_FONTE, 0);
     glRotatef(rotacao, 0, 0, 1);
-    YsDrawUglyFont(texto.c_str(), 0, 0);
+    //YsDrawUglyFont(texto.c_str(), 0, 0);
   glPopMatrix();
 }
 //---------------------------------------------------------------------------
 
 void COpenGL::AjustaExibicao()
 {
-  glMatrixMode(GL_PROJECTION); // Muda a pilha de transformações para a matriz de projeção
+  glMatrixMode(GL_PROJECTION); // Muda a pilha de transformaï¿½ï¿½es para a matriz de projeï¿½ï¿½o
   glLoadIdentity(); // Carrega a matriz identidade na matriz atual
   glOrtho (menorx + distX, menorx + distX + intervaloX, menory + distY, menory + distY + intervaloY, -50, 50);
-  // distX/distY servem pra enquanto o desenho está sendo deslocado
+  // distX/distY servem pra enquanto o desenho estï¿½ sendo deslocado
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 }
