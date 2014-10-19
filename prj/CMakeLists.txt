@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 2.8.4)
 project (cableway)
 FIND_PACKAGE(Qt4 REQUIRED)
+FIND_PACKAGE(OpenGL REQUIRED)
 
 INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
@@ -74,7 +75,7 @@ add_executable(cableway ${SRC_BASE}/main.cpp
                     ${cw_HEADERS_MOC}
                     ${QTTEST_GEN_UIS})
 
-set(CW_LIBRARIES redwg dxflib xlsreader iconv opengl32) 
+set(CW_LIBRARIES redwg dxflib xlsreader iconv opengl32 QtOpenGL ) 
                    
 target_link_libraries(cableway ${CW_LIBRARIES})
 target_link_libraries(cableway ${QT_LIBRARIES})

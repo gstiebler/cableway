@@ -16,6 +16,8 @@
 #include "UVerticesArestas.h"
 //#include "UErros.h"
 
+#include <boost/smart_ptr/shared_ptr.hpp>
+
 struct TDesenho;
 
 enum TTipoOrientacao {VERTICAL, HORIZONTAL};
@@ -142,7 +144,7 @@ public:
   //para por exemplo ter um limiar do quanto uma ponta de cabo pode ser separada da outra
   double MediaRaioCaboArco;
   double DistMinElemCaboPraOpenGL;
-  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, CDadosGenerico *Dados);
+  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, boost::shared_ptr<CDadosGenerico> Dados);
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
   int NumCabosReta;
@@ -154,7 +156,7 @@ public:
 
   TVerticesGerais *VerticesGerais;
   TListaArestas *Arestas;
-  CDadosGenerico *Dados;
+  boost::shared_ptr<CDadosGenerico> Dados;
 };
 //---------------------------------------------------------------------------
 

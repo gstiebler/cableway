@@ -39,10 +39,10 @@ protected:
   bool XEhMaior, initialized;
 public:
   COpenGL(int ClientWidth, int ClientHeight);
-  ~COpenGL();
+  virtual ~COpenGL();
   void RenderGLScene();
   void SetPixelFormatDescriptor();
-  virtual void DrawObjects();
+  virtual void DrawObjects() = 0;
   void Resize(int ClientWidth, int ClientHeight);
 //  void Ortho();
 

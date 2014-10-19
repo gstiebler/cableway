@@ -9,6 +9,8 @@
 #include <math.h>
 #include <time.h>
 
+#include <QtOpenGL/QGLWidget>
+
 class CGrafoDesenho;
 
 #define FATOR_FATORES 500
@@ -26,25 +28,12 @@ class CGrafoDesenho;
 #define CORARVORE 0xFF7F00 // Ab�bora
 #define CORARVORE2 0xB200B2 // Roxo
 
-
-unsigned char pegaAzul ( int cor )
-{
-  return ( cor % (0xFF+1) );
-}
-
-unsigned char pegaVerde ( int cor )
-{
-  return ( cor % (0xFFFF+1) ) >> ( 4 * 2 );
-}
-
-unsigned char pegaVermelho ( int cor )
-{
-  return ( cor % (0xFFFFFF+1) ) >> ( 4 * 4 );
-}
-
-class CMostraDesenho: public COpenGL
+class CMostraDesenho: public COpenGL, public QGLWidget
 {
 private:
+
+    void paintGL();
+
   bool ExibirCircuito;
   int CircuitoAExibir;
   double x, y, fator;//usadas em MostraDesenho
@@ -61,13 +50,12 @@ private:
   bool mostraLigacaoEquipamento;
   bool MostrarPontasDeCaboDescon;
   double xBola, yBola, tamBola;
-  void* ponteiroProThis;
 protected:
   void DrawObjects();
   bool semCores;
   bool primeiro;      
 public:
-  CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, int ClientWidth, int ClientHeight, void* ponteiroThis);
+  CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, QWidget *parent = 0);
   ~CMostraDesenho();
   void MostraCircuito(int Circuito);
   void ApagaCircuito();

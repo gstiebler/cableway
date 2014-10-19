@@ -229,7 +229,7 @@ void DwgLoader::print_obj(Dwg_Object *obj)
 }
 
 
-DwgLoader::DwgLoader( string fileName, CDadosGenerico* dados, UserParams *userParams ) :
+DwgLoader::DwgLoader( string fileName, boost::shared_ptr<CDadosGenerico> dados, UserParams *userParams ) :
     _dados( dados ),
     _currCell( NULL ),
     _objDepth( 0 ),

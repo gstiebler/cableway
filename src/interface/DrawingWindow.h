@@ -12,12 +12,15 @@
 
 #include "ui_DrawingWindow.h"
 
+class CGrafoDesenho;
+class CInfoCircuitos;
+
 class DrawingWindow : public QDialog, private Ui::Dialog
 {
     Q_OBJECT
 
 public:
-    DrawingWindow();
+    DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos);
     virtual ~DrawingWindow();
 };
 

@@ -7,9 +7,14 @@
 
 #include "DrawingWindow.h"
 
-DrawingWindow::DrawingWindow()
+#include <UMostraDesenho.h>
+
+DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos)
 {
     setupUi(this);
+
+    CMostraDesenho *mostraDesenho = new CMostraDesenho( grafoDesenho, infoCircuitos );
+    verticalLayout->addWidget(mostraDesenho);
 }
 
 DrawingWindow::~DrawingWindow()

@@ -36,8 +36,8 @@ MainExecution::MainExecution( const string &userParametersFileName )
 
     for(int i(0); i < (int) userParams.drawingsParams.size(); ++i)
     {
-        CDadosGenerico dados;
-        DwgLoader dwgLoader( userParams.drawingsParams[i].fileName, &dados, &userParams );
+        boost::shared_ptr<CDadosGenerico> dados(new CDadosGenerico);
+        DwgLoader dwgLoader( userParams.drawingsParams[i].fileName, dados, &userParams );
         _containerDesenhos->addDrawing( dados, userParams.drawingsParams[i].elevation );
     }
 

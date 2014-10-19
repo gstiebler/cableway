@@ -7,8 +7,36 @@
 
 using namespace std;
 
-CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, int ClientWidth, int ClientHeight, void* ponteiroThis)
-: COpenGL(ClientWidth, ClientHeight)
+
+unsigned char pegaAzul ( int cor )
+{
+  return ( cor % (0xFF+1) );
+}
+
+unsigned char pegaVerde ( int cor )
+{
+  return ( cor % (0xFFFF+1) ) >> ( 4 * 2 );
+}
+
+unsigned char pegaVermelho ( int cor )
+{
+  return ( cor % (0xFFFFFF+1) ) >> ( 4 * 4 );
+}
+
+
+CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, QWidget *parent) :
+        COpenGL(600, 600),
+        QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
+        bMostraArvore2( false ),
+        CircuitoAExibir( -1 ),
+        x( -1 ),
+        y( -1 ),
+        xBola( -1 ),
+        yBola( - 1),
+        tamBola( -1 ),
+        VerticeArvore( -1 ),
+        VerticeArvore2( -1 ),
+        fator( -1 )
 {
   semCores = false;
 	apertado=false;
@@ -22,7 +50,6 @@ CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *info
 	destacaCoresDeEquipamentos = true;
 	facilitarVerBandeirola = true;
 	mostraLigacaoEquipamento = false;
-	ponteiroProThis = ponteiroThis;
 	MostrarPontasDeCaboDescon = true;
 }
 //---------------------------------------------------------------------------
@@ -32,6 +59,14 @@ CMostraDesenho::~CMostraDesenho()
 
 }
 //---------------------------------------------------------------------------
+
+
+
+void CMostraDesenho::paintGL()
+{
+    Paint();
+}
+
 
 void CMostraDesenho::DrawObjects()
 {
@@ -52,10 +87,12 @@ void CMostraDesenho::DrawObjects()
 			GrafoDesenho->ult = GrafoDesenho->Dados->Multipoint.size();
 		for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
 		{
-			for (int i=0; i<GrafoDesenho->Dados->Multipoint[n].pontos.size(); i++)
+		    vector<TPonto> &points = GrafoDesenho->Dados->Multipoint[n].pontos;
+		    int numPoints = points.size();
+			for (int i=0; i < numPoints; i++)
 			{
-				x=GrafoDesenho->Dados->Multipoint[n].pontos[i].x;
-				y=GrafoDesenho->Dados->Multipoint[n].pontos[i].y;
+				x = points[i].x;
+				y = points[i].y;
 
 				if (x>maiorx)
 					maiorx=x;

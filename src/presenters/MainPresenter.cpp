@@ -11,10 +11,12 @@
 #include <vector>
 #include <MainExecution.h>
 #include "DrawingPresenter.h"
+#include <UContainerDesenhos.h>
 
 using namespace std;
 
-MainPresenter::MainPresenter()
+MainPresenter::MainPresenter() :
+        _mainExecution( NULL )
 {
     _window = new MainWindow;
     _window->show();
@@ -33,9 +35,12 @@ void MainPresenter::execute()
     string xlsFileName = MainExecution::getExePath() + "\\" + _window->getUserParamsFileName();
     string inputCircuitsFileName = MainExecution::getExePath() + "\\" + _window->getInputCircuitsFileName();
 
-    MainExecution mainExecution( xlsFileName );
-    vector<CircuitResult> circuitResults = mainExecution.execute( inputCircuitsFileName );
+    _mainExecution = new MainExecution( xlsFileName );
+    vector<CircuitResult> circuitResults = _mainExecution->execute( inputCircuitsFileName );
 
-    DrawingPresenter *drawingPresenter = new DrawingPresenter;
+    CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho(0)->GrafoDesenho;
+    CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
+
+    DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos );
 }
 

@@ -11,13 +11,15 @@
 #include <QtCore/QObject>
 
 class DrawingWindow;
+class CGrafoDesenho;
+class CInfoCircuitos;
 
 class DrawingPresenter : public QObject
 {
     Q_OBJECT
 
 public:
-    DrawingPresenter();
+    DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos);
     virtual ~DrawingPresenter();
 
 private:

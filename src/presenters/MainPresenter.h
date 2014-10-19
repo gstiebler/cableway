@@ -11,6 +11,7 @@
 #include <QtCore/QObject>
 
 class MainWindow;
+class MainExecution;
 
 class MainPresenter : public QObject
 {
@@ -22,6 +23,7 @@ public:
 
 private:
     MainWindow *_window;
+    MainExecution *_mainExecution;
 
 
 private slots:

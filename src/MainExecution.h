@@ -30,9 +30,9 @@ public:
 
     std::vector<CircuitResult> execute( std::string inputCircuitsFileName );
 
-private:
-
     CContainerDesenhos *_containerDesenhos;
+
+private:
 
 };
 

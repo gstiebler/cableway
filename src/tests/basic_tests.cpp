@@ -33,14 +33,14 @@ class BasicTest : public ::testing::Test {
 
   virtual void TearDown() {}
 
-  void createFloor1( CDadosGenerico &dados );
-  void createFloor2( CDadosGenerico &dados );
+  void createFloor1( boost::shared_ptr<CDadosGenerico> dados );
+  void createFloor2( boost::shared_ptr<CDadosGenerico> dados );
 };
 
-void BasicTest::createFloor1( CDadosGenerico &dados )
+void BasicTest::createFloor1( boost::shared_ptr<CDadosGenerico> dados )
 {
-    dados.IndiceDesenho = 0;
-    dados.IDArquivo = 0;
+    dados->IndiceDesenho = 0;
+    dados->IDArquivo = 0;
 	// equipment 1
 	{
 		TMultipoint equip1;
@@ -49,20 +49,20 @@ void BasicTest::createFloor1( CDadosGenerico &dados )
 		equip1.pontos.push_back( TPonto( 20.0, 20.0 ) );
 		equip1.pontos.push_back( TPonto( 10.0, 20.0 ) );
 		equip1.Nivel = INSTRUMENTO;
-		dados.Multipoint.push_back( equip1 );
+		dados->Multipoint.push_back( equip1 );
 
 		TTexto equip1Text;
 		equip1Text.texto = "Equipamento 1";
 		equip1Text.Nivel = TAG;
-		dados.Textos.push_back( equip1Text );
+		dados->Textos.push_back( equip1Text );
 		
 		TItemCelula itemCelula;
-		itemCelula.Indice = dados.Multipoint.size() - 1;
+		itemCelula.Indice = dados->Multipoint.size() - 1;
 		itemCelula.TipoVetorCW = VMULTIPOINT;
 		TListaItensCelula lista;
 		lista.Adiciona( itemCelula );
-		lista.iTextos.push_back( dados.Textos.size() - 1 );
-		dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+		lista.iTextos.push_back( dados->Textos.size() - 1 );
+		dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
 	}
 
 	// equipment 2
@@ -73,20 +73,20 @@ void BasicTest::createFloor1( CDadosGenerico &dados )
 		equip2.pontos.push_back( TPonto( 50.0, 10.0 ) );
 		equip2.pontos.push_back( TPonto( 50.0, 20.0 ) );
 		equip2.Nivel = INSTRUMENTO;
-		dados.Multipoint.push_back( equip2 );
+		dados->Multipoint.push_back( equip2 );
 
 		TTexto equip2Text;
 		equip2Text.texto = "Equipamento 2";
 		equip2Text.Nivel = TAG;
-		dados.Textos.push_back( equip2Text );
+		dados->Textos.push_back( equip2Text );
 
 		TItemCelula itemCelula;
-		itemCelula.Indice = dados.Multipoint.size() - 1;
+		itemCelula.Indice = dados->Multipoint.size() - 1;
 		itemCelula.TipoVetorCW = VMULTIPOINT;
 		TListaItensCelula lista;
 		lista.Adiciona( itemCelula );
-		lista.iTextos.push_back( dados.Textos.size() - 1 );
-		dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+		lista.iTextos.push_back( dados->Textos.size() - 1 );
+		dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
 	}
 
 	// cable
@@ -95,7 +95,7 @@ void BasicTest::createFloor1( CDadosGenerico &dados )
 		cable.Nivel = CABO;
 		cable.pontos.push_back( TPonto( 20.0, 15.0 ) );
 		cable.pontos.push_back( TPonto( 40.0, 15.0 ) );
-		dados.Multipoint.push_back( cable );
+		dados->Multipoint.push_back( cable );
 	}
 
 	
@@ -105,28 +105,28 @@ void BasicTest::createFloor1( CDadosGenerico &dados )
 		bandeirola.pontos.push_back( TPonto( 30.0, 5.0 ) );
 		bandeirola.pontos.push_back( TPonto( 30.0, 14.0 ) );
 		bandeirola.Nivel = BANDEIROLA;
-		dados.Multipoint.push_back( bandeirola );
+		dados->Multipoint.push_back( bandeirola );
 
 		TTexto bandeirolaText;
 		bandeirolaText.texto = "Bandeirola1";
 		bandeirolaText.Nivel = BANDEIROLA;
-		dados.Textos.push_back( bandeirolaText );
+		dados->Textos.push_back( bandeirolaText );
 
 		TItemCelula itemCelula;
-		itemCelula.Indice = dados.Multipoint.size() - 1;
+		itemCelula.Indice = dados->Multipoint.size() - 1;
 		itemCelula.TipoVetorCW = VMULTIPOINT;
 		TListaItensCelula lista;
 		lista.Adiciona( itemCelula );
-		lista.iTextos.push_back( dados.Textos.size() - 1 );
-		dados.InfoCelula.ListaCelulasBandeirolas->Adiciona( lista );
+		lista.iTextos.push_back( dados->Textos.size() - 1 );
+		dados->InfoCelula.ListaCelulasBandeirolas->Adiciona( lista );
 	}
 }
 
 
-void BasicTest::createFloor2( CDadosGenerico &dados )
+void BasicTest::createFloor2( boost::shared_ptr<CDadosGenerico> dados )
 {
-    dados.IndiceDesenho = 1;
-    dados.IDArquivo = 1;
+    dados->IndiceDesenho = 1;
+    dados->IDArquivo = 1;
     // equipment 3
     {
         TMultipoint equip3;
@@ -135,20 +135,20 @@ void BasicTest::createFloor2( CDadosGenerico &dados )
         equip3.pontos.push_back( TPonto( 60.0, 80.0 ) );
         equip3.pontos.push_back( TPonto( 40.0, 80.0 ) );
         equip3.Nivel = INSTRUMENTO;
-        dados.Multipoint.push_back( equip3 );
+        dados->Multipoint.push_back( equip3 );
 
         TTexto equip3Text;
         equip3Text.texto = "Equipamento 3";
         equip3Text.Nivel = TAG;
-        dados.Textos.push_back( equip3Text );
+        dados->Textos.push_back( equip3Text );
 
         TItemCelula itemCelula;
-        itemCelula.Indice = dados.Multipoint.size() - 1;
+        itemCelula.Indice = dados->Multipoint.size() - 1;
         itemCelula.TipoVetorCW = VMULTIPOINT;
         TListaItensCelula lista;
         lista.Adiciona( itemCelula );
-        lista.iTextos.push_back( dados.Textos.size() - 1 );
-        dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+        lista.iTextos.push_back( dados->Textos.size() - 1 );
+        dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
     }
 
     // equipment 2
@@ -159,20 +159,20 @@ void BasicTest::createFloor2( CDadosGenerico &dados )
         equip2.pontos.push_back( TPonto( 50.0, 10.0 ) );
         equip2.pontos.push_back( TPonto( 50.0, 20.0 ) );
         equip2.Nivel = INSTRUMENTO;
-        dados.Multipoint.push_back( equip2 );
+        dados->Multipoint.push_back( equip2 );
 
         TTexto equip2Text;
         equip2Text.texto = "Equipamento 2";
         equip2Text.Nivel = TAG;
-        dados.Textos.push_back( equip2Text );
+        dados->Textos.push_back( equip2Text );
 
         TItemCelula itemCelula;
-        itemCelula.Indice = dados.Multipoint.size() - 1;
+        itemCelula.Indice = dados->Multipoint.size() - 1;
         itemCelula.TipoVetorCW = VMULTIPOINT;
         TListaItensCelula lista;
         lista.Adiciona( itemCelula );
-        lista.iTextos.push_back( dados.Textos.size() - 1 );
-        dados.InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+        lista.iTextos.push_back( dados->Textos.size() - 1 );
+        dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
     }
 
     // cable
@@ -181,7 +181,7 @@ void BasicTest::createFloor2( CDadosGenerico &dados )
         cable.Nivel = CABO;
         cable.pontos.push_back( TPonto( 45.0, 20.0 ) );
         cable.pontos.push_back( TPonto( 45.0, 70.0 ) );
-        dados.Multipoint.push_back( cable );
+        dados->Multipoint.push_back( cable );
     }
 }
 
@@ -190,7 +190,7 @@ void BasicTest::createFloor2( CDadosGenerico &dados )
 TEST_F(BasicTest, singleDrawing) 
 {
 	CContainerDesenhos containerDesenhos;
-	CDadosGenerico dados;
+	boost::shared_ptr<CDadosGenerico> dados;
 
 	createFloor1( dados );
 
@@ -218,11 +218,11 @@ TEST_F(BasicTest, multipleDrawings)
 {
 	CContainerDesenhos containerDesenhos;
 
-	CDadosGenerico floor1Data;
+	boost::shared_ptr<CDadosGenerico> floor1Data;
 	createFloor1( floor1Data );
 	containerDesenhos.addDrawing( floor1Data, 100.0 );
 
-    CDadosGenerico floor2Data;
+	boost::shared_ptr<CDadosGenerico> floor2Data;
     createFloor2( floor2Data );
     containerDesenhos.addDrawing( floor2Data, 126.0 );
 
@@ -253,9 +253,9 @@ TEST_F(BasicTest, complete)
     string xlsFileName = TestsUtil::getExePath() + "/../data/tests/user_params.xls";
     loadUserParams( xlsFileName, &userParams );
 
-    CDadosGenerico dados;
+    boost::shared_ptr<CDadosGenerico> dados;
     string fileName = "../data/tests/drawing2.dwg";
-    DwgLoader *loader = new DwgLoader( fileName, &dados, &userParams );
+    DwgLoader *loader = new DwgLoader( fileName, dados, &userParams );
 
     CContainerDesenhos containerDesenhos;
 

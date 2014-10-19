@@ -68,9 +68,9 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   try
   {
 	  //TODO carregar a estrutura TDadosTransfer
-	CDadosGenerico dados;
+      boost::shared_ptr<CDadosGenerico> dados;
     // Tenta criar um grafodesenho com os par�metros passados
-    Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, &dados);
+    Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, dados);
     // E adicionar o desenho na lista de desenhos
     ListaDesenhos.push_back(Desenho);
   }
@@ -82,7 +82,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
 }
 //---------------------------------------------------------------------------
 
-void CContainerDesenhos::addDrawing( CDadosGenerico dados, double altura )
+void CContainerDesenhos::addDrawing( boost::shared_ptr<CDadosGenerico> dados, double altura )
 {
     // Cria um novo params
     TParamsGrafoDesenho paramsGrafoDesenho;
@@ -101,7 +101,7 @@ void CContainerDesenhos::addDrawing( CDadosGenerico dados, double altura )
     // E um ponteiro pro Arestas (TListaArestas)
     paramsGrafoDesenho.Arestas = ParamsInfoCircuitos.Arestas;
 
-    CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, &dados);
+    CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, dados);
 
     // Cria um novo desenho
     TDesenho *desenho = new TDesenho;
@@ -115,7 +115,7 @@ void CContainerDesenhos::addDrawing( CDadosGenerico dados, double altura )
 
 TDesenho * CContainerDesenhos::getDesenho(int Indice)
 {
-  return (TDesenho *)(ListaDesenhos[Indice]);
+  return ListaDesenhos[Indice];
 }
 //---------------------------------------------------------------------------
 

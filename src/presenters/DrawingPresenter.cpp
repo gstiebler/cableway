@@ -9,9 +9,9 @@
 
 #include <interface/DrawingWindow.h>
 
-DrawingPresenter::DrawingPresenter()
+DrawingPresenter::DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos)
 {
-    _window = new DrawingWindow;
+    _window = new DrawingWindow(grafoDesenho, infoCircuitos);
     _window->show();
 }
 

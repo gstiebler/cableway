@@ -49,9 +49,7 @@ void COpenGL::RenderGLScene()
 }
 //---------------------------------------------------------------------------
 
-void COpenGL::DrawObjects() {}
 
-//---------------------------------------------------------------------------
 
 void COpenGL::Resize(int ClientWidth, int ClientHeight)
 {
