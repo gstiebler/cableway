@@ -22,8 +22,11 @@ struct CircuitResult
 class MainExecution
 {
 public:
-    MainExecution( std::string userParametersFileName );
+    MainExecution( const std::string &userParametersFileName );
     virtual ~MainExecution();
+
+    static std::string exeFileName;
+    static std::string getExePath();
 
     std::vector<CircuitResult> execute( std::string inputCircuitsFileName );
 

@@ -16,7 +16,19 @@
 #include "UserParams/UserParams.h"
 #include "UTCallbackStatusCarregamento.h"
 
-MainExecution::MainExecution( std::string userParametersFileName )
+using namespace std;
+
+string MainExecution::exeFileName;
+
+string MainExecution::getExePath()
+{
+    int index = exeFileName.find_last_of( '/' );
+    return exeFileName.substr( 0, index );
+}
+
+
+
+MainExecution::MainExecution( const string &userParametersFileName )
 {
     _containerDesenhos = new CContainerDesenhos();
     UserParams userParams;

@@ -7,14 +7,16 @@
 
 #include "DrawingPresenter.h"
 
+#include <interface/DrawingWindow.h>
+
 DrawingPresenter::DrawingPresenter()
 {
-    // TODO Auto-generated constructor stub
-
+    _window = new DrawingWindow;
+    _window->show();
 }
 
 DrawingPresenter::~DrawingPresenter()
 {
-    // TODO Auto-generated destructor stub
+    delete _window;
 }
 

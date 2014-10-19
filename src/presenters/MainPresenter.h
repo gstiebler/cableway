@@ -21,7 +21,7 @@ public:
     virtual ~MainPresenter();
 
 private:
-    MainWindow *_mainWindow;
+    MainWindow *_window;
 
 
 private slots:

@@ -8,11 +8,20 @@
 #ifndef DRAWINGPRESENTER_H_
 #define DRAWINGPRESENTER_H_
 
-class DrawingPresenter
+#include <QtCore/QObject>
+
+class DrawingWindow;
+
+class DrawingPresenter : public QObject
 {
+    Q_OBJECT
+
 public:
     DrawingPresenter();
     virtual ~DrawingPresenter();
+
+private:
+    DrawingWindow *_window;
 };
 
 #endif /* DRAWINGPRESENTER_H_ */

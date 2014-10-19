@@ -9,8 +9,7 @@
 
 DrawingWindow::DrawingWindow()
 {
-    // TODO Auto-generated constructor stub
-
+    setupUi(this);
 }
 
 DrawingWindow::~DrawingWindow()

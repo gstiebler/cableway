@@ -10,15 +10,16 @@
 #include <interface/MainWindow.h>
 #include <vector>
 #include <MainExecution.h>
+#include "DrawingPresenter.h"
 
 using namespace std;
 
 MainPresenter::MainPresenter()
 {
-    _mainWindow = new MainWindow;
-    _mainWindow->show();
+    _window = new MainWindow;
+    _window->show();
 
-    connect( _mainWindow, SIGNAL( executeButtonClicked() ), this, SLOT( execute() ) );
+    connect( _window, SIGNAL( executeButtonClicked() ), this, SLOT( execute() ) );
 }
 
 MainPresenter::~MainPresenter()
@@ -29,10 +30,12 @@ MainPresenter::~MainPresenter()
 
 void MainPresenter::execute()
 {
-    string xlsFileName = _mainWindow->getUserParamsFileName();
-    string inputCircuitsFileName = _mainWindow->getUserParamsFileName();
+    string xlsFileName = MainExecution::getExePath() + "\\" + _window->getUserParamsFileName();
+    string inputCircuitsFileName = MainExecution::getExePath() + "\\" + _window->getInputCircuitsFileName();
 
     MainExecution mainExecution( xlsFileName );
     vector<CircuitResult> circuitResults = mainExecution.execute( inputCircuitsFileName );
+
+    DrawingPresenter *drawingPresenter = new DrawingPresenter;
 }
 

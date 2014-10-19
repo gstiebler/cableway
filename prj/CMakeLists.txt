@@ -49,10 +49,13 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
                 
 SET( QT_UIS
      ${QT_UI_BASE_PATH}/MainWindow.ui
+     ${QT_UI_BASE_PATH}/DrawingWindow.ui
 )
                 
 QT4_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h
-                            ${SRC_BASE}/presenters/MainPresenter.h)
+                            ${SRC_BASE}/presenters/MainPresenter.h 
+                            ${SRC_BASE}/interface/DrawingWindow.h
+                            ${SRC_BASE}/presenters/DrawingPresenter.h)
                             
 QT4_WRAP_UI(QTTEST_GEN_UIS ${QT_UIS} )
 				

@@ -8,8 +8,14 @@
 #ifndef DRAWINGWINDOW_H_
 #define DRAWINGWINDOW_H_
 
-class DrawingWindow
+#include <QtGui/QDialog>
+
+#include "ui_DrawingWindow.h"
+
+class DrawingWindow : public QDialog, private Ui::Dialog
 {
+    Q_OBJECT
+
 public:
     DrawingWindow();
     virtual ~DrawingWindow();
