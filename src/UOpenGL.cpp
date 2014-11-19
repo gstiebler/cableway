@@ -15,7 +15,7 @@ COpenGL::COpenGL(int ClientWidth, int ClientHeight)
   x2=0;
   y2=0;
 
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClearColor(0.0f, 1.0f, 0.0f, 0.5f);
   zoom=50 / 10000.0;
   FatorZoomX=FatorZoomY=0.0;
   oldZoom = 0;

@@ -77,7 +77,7 @@ bool CCaboReta::EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int
 
 //---------------------------------------------------------------------------
 
-CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, boost::shared_ptr<CDadosGenerico> Dados)
+CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados)
 //                                            : CDadosDGN(ParamsGrafoDesenho)
 {
     pri = 0;

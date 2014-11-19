@@ -8,7 +8,7 @@
 #ifndef MAINPRESENTER_H_
 #define MAINPRESENTER_H_
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class MainWindow;
 class MainExecution;

@@ -68,7 +68,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   try
   {
 	  //TODO carregar a estrutura TDadosTransfer
-      boost::shared_ptr<CDadosGenerico> dados;
+      std::shared_ptr<CDadosGenerico> dados;
     // Tenta criar um grafodesenho com os par�metros passados
     Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, dados);
     // E adicionar o desenho na lista de desenhos
@@ -82,7 +82,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
 }
 //---------------------------------------------------------------------------
 
-void CContainerDesenhos::addDrawing( boost::shared_ptr<CDadosGenerico> dados, double altura )
+void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura )
 {
     // Cria um novo params
     TParamsGrafoDesenho paramsGrafoDesenho;

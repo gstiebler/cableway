@@ -33,11 +33,11 @@ class BasicTest : public ::testing::Test {
 
   virtual void TearDown() {}
 
-  void createFloor1( boost::shared_ptr<CDadosGenerico> dados );
-  void createFloor2( boost::shared_ptr<CDadosGenerico> dados );
+  void createFloor1( std::shared_ptr<CDadosGenerico> dados );
+  void createFloor2( std::shared_ptr<CDadosGenerico> dados );
 };
 
-void BasicTest::createFloor1( boost::shared_ptr<CDadosGenerico> dados )
+void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 {
     dados->IndiceDesenho = 0;
     dados->IDArquivo = 0;
@@ -123,7 +123,7 @@ void BasicTest::createFloor1( boost::shared_ptr<CDadosGenerico> dados )
 }
 
 
-void BasicTest::createFloor2( boost::shared_ptr<CDadosGenerico> dados )
+void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
 {
     dados->IndiceDesenho = 1;
     dados->IDArquivo = 1;
@@ -190,7 +190,7 @@ void BasicTest::createFloor2( boost::shared_ptr<CDadosGenerico> dados )
 TEST_F(BasicTest, singleDrawing) 
 {
 	CContainerDesenhos containerDesenhos;
-	boost::shared_ptr<CDadosGenerico> dados;
+	std::shared_ptr<CDadosGenerico> dados;
 
 	createFloor1( dados );
 
@@ -218,11 +218,11 @@ TEST_F(BasicTest, multipleDrawings)
 {
 	CContainerDesenhos containerDesenhos;
 
-	boost::shared_ptr<CDadosGenerico> floor1Data;
+	std::shared_ptr<CDadosGenerico> floor1Data;
 	createFloor1( floor1Data );
 	containerDesenhos.addDrawing( floor1Data, 100.0 );
 
-	boost::shared_ptr<CDadosGenerico> floor2Data;
+	std::shared_ptr<CDadosGenerico> floor2Data;
     createFloor2( floor2Data );
     containerDesenhos.addDrawing( floor2Data, 126.0 );
 
@@ -253,7 +253,7 @@ TEST_F(BasicTest, complete)
     string xlsFileName = TestsUtil::getExePath() + "/../data/tests/user_params.xls";
     loadUserParams( xlsFileName, &userParams );
 
-    boost::shared_ptr<CDadosGenerico> dados;
+    std::shared_ptr<CDadosGenerico> dados;
     string fileName = "../data/tests/drawing2.dwg";
     DwgLoader *loader = new DwgLoader( fileName, dados, &userParams );
 

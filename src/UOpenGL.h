@@ -3,7 +3,7 @@
 #define UOpenGLH
 
 //#include <GL/glu.h>
-#include <w32api/GL/gl.h>
+#include <GL/gl.h>
 #include <math.h>
 #include "UAuxString.h"
 #include "UDefines.h"

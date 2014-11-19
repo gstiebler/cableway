@@ -67,6 +67,7 @@ public:
   void SetDestacaBandeirolas(bool facilita);
   void SetMostraChegaEquip(bool MostraEquip);
   void SetMostrarPontasDeCaboDescon(bool mostraPontas);
+  void initializeGL();
 };
 //---------------------------------------------------------------------------
 

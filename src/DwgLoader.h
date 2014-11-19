@@ -12,7 +12,7 @@
 #include <map>
 #include <dwg.h>
 
-#include <boost/smart_ptr/shared_ptr.hpp>
+#include <memory>
 
 class CDadosGenerico;
 class TListaItensCelula;
@@ -21,7 +21,7 @@ struct UserParams;
 class DwgLoader
 {
 public:
-    DwgLoader( std::string fileName, boost::shared_ptr<CDadosGenerico> dados, UserParams *userParams );
+    DwgLoader( std::string fileName, std::shared_ptr<CDadosGenerico> dados, UserParams *userParams );
     virtual ~DwgLoader();
 
 private:
@@ -35,7 +35,7 @@ private:
     void add_circle(Dwg_Entity_CIRCLE *circle);
     void add_line(Dwg_Entity_LINE *line);
 
-    boost::shared_ptr<CDadosGenerico> _dados;
+    std::shared_ptr<CDadosGenerico> _dados;
 
     TListaItensCelula *_currCell;
 

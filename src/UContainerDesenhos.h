@@ -12,7 +12,6 @@
 #include "UCallbacks.h"
 #include <stack>
 #include <vector>
-#include <boost/smart_ptr/shared_ptr.hpp>
 
 struct TDesenho;
 
@@ -40,7 +39,7 @@ public:
   //TfrmDesenho **frmDesenhos;
   void AdicionaDesenho(string NomeArquivo, int id, double altura, bool carregagrafo);
 
-  void addDrawing( boost::shared_ptr<CDadosGenerico> dados, double altura );
+  void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura );
 
   TDesenho * getDesenho(int Indice);
   void CriaFormDesenho(int Indice);

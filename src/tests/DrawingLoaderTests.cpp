@@ -31,7 +31,7 @@ TEST_F(DrawingLoaderTests, basic)
     userParams.tagLevels.insert( "15" );
     userParams.cableLevels.insert( "51" );
 
-    boost::shared_ptr<CDadosGenerico> dados;
+    std::shared_ptr<CDadosGenerico> dados;
     string fileName = "../data/tests/drawing2.dwg";//TestsUtil::getExePath() + "/../data/tests/drawing2.dwg";
     DwgLoader *loader = new DwgLoader( fileName, dados, &userParams );
 

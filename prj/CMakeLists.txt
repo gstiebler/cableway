@@ -1,10 +1,15 @@
 cmake_minimum_required (VERSION 2.8.4)
 project (cableway)
-FIND_PACKAGE(Qt4 REQUIRED)
+find_package(Qt5Widgets)
 FIND_PACKAGE(OpenGL REQUIRED)
 
-INCLUDE(${QT_USE_FILE})
+#INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
 
 set(EXECUTABLE_OUTPUT_PATH ../bin)
 set(SRC_BASE ../src)
@@ -53,21 +58,19 @@ SET( QT_UIS
      ${QT_UI_BASE_PATH}/DrawingWindow.ui
 )
                 
-QT4_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h
+QT5_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h
                             ${SRC_BASE}/presenters/MainPresenter.h 
                             ${SRC_BASE}/interface/DrawingWindow.h
                             ${SRC_BASE}/presenters/DrawingPresenter.h)
                             
-QT4_WRAP_UI(QTTEST_GEN_UIS ${QT_UIS} )
+QT5_WRAP_UI(QTTEST_GEN_UIS ${QT_UIS} )
 				
-set(LIB_DIRS ../lib/dxflib/src
-             ../lib/libredwg/src
+set(LIB_DIRS ../lib/libredwg/src
              ../lib/libxls/include)                
                 
 include_directories(${SRC_BASE} ${LIB_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
-link_directories(../lib/dxflib/lib/
-                 ../lib/libredwg/src/.libs
+link_directories(../lib/libredwg/build_vs2012
                  ../lib/libxls/src/.libs)
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
@@ -75,7 +78,7 @@ add_executable(cableway ${SRC_BASE}/main.cpp
                     ${cw_HEADERS_MOC}
                     ${QTTEST_GEN_UIS})
 
-set(CW_LIBRARIES redwg dxflib xlsreader iconv opengl32 QtOpenGL ) 
+set(CW_LIBRARIES liblibredwg xlsreader iconv opengl32 QtOpenGL ) 
                    
 target_link_libraries(cableway ${CW_LIBRARIES})
 target_link_libraries(cableway ${QT_LIBRARIES})
