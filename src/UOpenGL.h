@@ -3,7 +3,8 @@
 #define UOpenGLH
 
 //#include <GL/glu.h>
-#include <GL/gl.h>
+//#include <GL/gl.h>
+#include <QtOpenGL>
 #include <math.h>
 #include "UAuxString.h"
 #include "UDefines.h"

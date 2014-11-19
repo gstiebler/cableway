@@ -1,15 +1,19 @@
-cmake_minimum_required (VERSION 2.8.4)
+cmake_minimum_required (VERSION 2.8.11)
 project (cableway)
-find_package(Qt5Widgets)
-FIND_PACKAGE(OpenGL REQUIRED)
 
-#INCLUDE(${QT_USE_FILE})
-ADD_DEFINITIONS(${QT_DEFINITIONS})
+
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
+
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5OpenGL REQUIRED)
+#FIND_PACKAGE(OpenGL REQUIRED)
+
+#INCLUDE(${QT_USE_FILE})
+ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 set(EXECUTABLE_OUTPUT_PATH ../bin)
 set(SRC_BASE ../src)
@@ -42,7 +46,6 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTempoExec.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
-				${SRC_BASE}/DrawingLoader.cpp
 				${SRC_BASE}/DwgLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
 				${SRC_BASE}/interface/MainWindow.cpp
@@ -77,6 +80,9 @@ add_executable(cableway ${SRC_BASE}/main.cpp
 					${ALL_SOURCES}
                     ${cw_HEADERS_MOC}
                     ${QTTEST_GEN_UIS})
+                    
+                    
+qt5_use_modules(cableway Widgets OpenGL)
 
 set(CW_LIBRARIES liblibredwg xlsreader iconv opengl32 QtOpenGL ) 
                    

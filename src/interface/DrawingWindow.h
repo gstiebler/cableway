@@ -8,7 +8,7 @@
 #ifndef DRAWINGWINDOW_H_
 #define DRAWINGWINDOW_H_
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 #include "ui_DrawingWindow.h"
 

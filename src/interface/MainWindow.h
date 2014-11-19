@@ -8,7 +8,7 @@
 #ifndef MAINWINDOW_H_
 #define MAINWINDOW_H_
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 
 #include "ui_MainWindow.h"
 

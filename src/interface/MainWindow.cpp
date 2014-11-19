@@ -7,7 +7,7 @@
 
 #include "MainWindow.h"
 
-#include <QtGui/QFileDialog>
+#include <QFileDialog>
 #include <string>
 
 using namespace std;
