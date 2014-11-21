@@ -77,6 +77,12 @@ void loadUserParams( const std::string excelFileName, UserParams *userParams )
     struct st_row_data *row;
     pWB = xls_open(excelFileName.c_str(), encoding.c_str());
 
+	if( !pWB )
+	{
+		printf( "Error opening xls file %s\n", excelFileName.c_str() );
+        return;
+	}
+
     xlsWorkSheet *drawingsSheet = sheetByName( pWB, "desenhos" );
     xls_parseWorkSheet(drawingsSheet);
     loadDrawingParams( drawingsSheet, userParams->drawingsParams );

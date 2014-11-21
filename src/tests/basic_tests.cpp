@@ -190,7 +190,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
 TEST_F(BasicTest, singleDrawing) 
 {
 	CContainerDesenhos containerDesenhos;
-	std::shared_ptr<CDadosGenerico> dados;
+	std::shared_ptr<CDadosGenerico> dados( new CDadosGenerico() );
 
 	createFloor1( dados );
 
@@ -218,11 +218,11 @@ TEST_F(BasicTest, multipleDrawings)
 {
 	CContainerDesenhos containerDesenhos;
 
-	std::shared_ptr<CDadosGenerico> floor1Data;
+	std::shared_ptr<CDadosGenerico> floor1Data( new CDadosGenerico() );
 	createFloor1( floor1Data );
 	containerDesenhos.addDrawing( floor1Data, 100.0 );
 
-	std::shared_ptr<CDadosGenerico> floor2Data;
+	std::shared_ptr<CDadosGenerico> floor2Data( new CDadosGenerico() );
     createFloor2( floor2Data );
     containerDesenhos.addDrawing( floor2Data, 126.0 );
 
@@ -250,12 +250,12 @@ TEST_F(BasicTest, multipleDrawings)
 TEST_F(BasicTest, complete)
 {
     UserParams userParams;
-    string xlsFileName = TestsUtil::getExePath() + "/../data/tests/user_params.xls";
+    string xlsFileName = TestsUtil::getDataPath() + "/tests/user_params.xls";
     loadUserParams( xlsFileName, &userParams );
 
-    std::shared_ptr<CDadosGenerico> dados;
-    string fileName = "../data/tests/drawing2.dwg";
-    DwgLoader *loader = new DwgLoader( fileName, dados, &userParams );
+    std::shared_ptr<CDadosGenerico> dados( new CDadosGenerico() );
+    string dwgFileName = TestsUtil::getDataPath() + "\\tests\\drawing2.dwg";
+    DwgLoader *loader = new DwgLoader( dwgFileName, dados, &userParams );
 
     CContainerDesenhos containerDesenhos;
 
@@ -281,8 +281,8 @@ TEST_F(BasicTest, complete)
 
 TEST_F(BasicTest, complete2)
 {
-    string xlsFileName = TestsUtil::getExePath() + "/../data/tests/user_params2.xls";
-    string inputCircuitsFileName = TestsUtil::getExePath() + "/../data/tests/input_circuits2.xls";
+    string xlsFileName = TestsUtil::getDataPath() + "\\tests\\user_params2.xls";
+    string inputCircuitsFileName = TestsUtil::getDataPath() + "\\tests\\input_circuits2.xls";
 
     MainExecution mainExecution( xlsFileName );
     vector<CircuitResult> circuitResults = mainExecution.execute( inputCircuitsFileName );

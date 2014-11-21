@@ -74,7 +74,7 @@ set(LIB_DIRS ../lib/libredwg/src
 include_directories(${SRC_BASE} ${LIB_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
 link_directories(../lib/libredwg/build_vs2012
-                 ../lib/libxls/build_vs2012/Debug )
+                 ../lib/libxls/build_vs2012/Debug)
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES}
@@ -86,8 +86,7 @@ qt5_use_modules(cableway Widgets OpenGL)
 
 set(CW_LIBRARIES liblibredwg xlsReader ${QT_LIBRARIES} ${OPENGL_LIBRARIES} ) 
                    
-target_link_libraries(cableway ${CW_LIBRARIES})
-target_link_libraries(cableway ${QT_LIBRARIES})
+target_link_libraries(cableway ${CW_LIBRARIES} ${QT_LIBRARIES})
 
 # Tests
 #set(CMAKE_CXX_FLAGS_DEBUG  "-fprofile-arcs -ftest-coverage")
@@ -101,7 +100,7 @@ endif (WIN32)
 
 set(GTEST_PATH ../lib/gtest-1.7.0)
 
-link_directories(${GTEST_PATH})
+link_directories(${GTEST_PATH}/Debug)
                  
 include_directories(${GTEST_PATH}/include)
 

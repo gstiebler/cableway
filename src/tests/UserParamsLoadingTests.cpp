@@ -16,7 +16,7 @@ class UserParamsLoadingTests : public ::testing::Test
 TEST_F(UserParamsLoadingTests, basic)
 {
     UserParams userParams;
-    string fileName = TestsUtil::getExePath() + "/../data/tests/user_params.xls";
+    string fileName = TestsUtil::getDataPath() + "/tests/user_params.xls";
     loadUserParams( fileName, &userParams );
 
     ASSERT_EQ( 2, (int) userParams.drawingsParams.size() );

@@ -247,7 +247,10 @@ DwgLoader::DwgLoader( string fileName, std::shared_ptr<CDadosGenerico> dados, Us
     success = dwg_read_file(filename, &dwg);
 
     if ( success != 0 )
+	{
+		printf( "Error opening file %s\n", filename );
         return;
+	}
 
     for (i = 0; i < dwg.num_objects; i++)
         print_obj(&(dwg.object[i]));
