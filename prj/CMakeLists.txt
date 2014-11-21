@@ -74,7 +74,7 @@ set(LIB_DIRS ../lib/libredwg/src
 include_directories(${SRC_BASE} ${LIB_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
 link_directories(../lib/libredwg/build_vs2012
-                 ../lib/libxls/build_vs2012)
+                 ../lib/libxls/build_vs2012/Debug )
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES}
@@ -84,7 +84,7 @@ add_executable(cableway ${SRC_BASE}/main.cpp
                     
 qt5_use_modules(cableway Widgets OpenGL)
 
-set(CW_LIBRARIES liblibredwg cygxls ${QT_LIBRARIES} ${OPENGL_LIBRARIES} ) 
+set(CW_LIBRARIES liblibredwg xlsReader ${QT_LIBRARIES} ${OPENGL_LIBRARIES} ) 
                    
 target_link_libraries(cableway ${CW_LIBRARIES})
 target_link_libraries(cableway ${QT_LIBRARIES})
@@ -96,6 +96,7 @@ target_link_libraries(cableway ${QT_LIBRARIES})
 
 if (WIN32)
     set(CMAKE_CXX_FLAGS  "/MP")
+    add_definitions( -D_VARIADIC_MAX=10 )
 endif (WIN32)
 
 set(GTEST_PATH ../lib/gtest-1.7.0)
