@@ -6,11 +6,11 @@ project (cableway)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
-set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5OpenGL REQUIRED)
-#FIND_PACKAGE(OpenGL REQUIRED)
+FIND_PACKAGE(OpenGL REQUIRED)
 
 #INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
@@ -74,7 +74,7 @@ set(LIB_DIRS ../lib/libredwg/src
 include_directories(${SRC_BASE} ${LIB_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
 link_directories(../lib/libredwg/build_vs2012
-                 ../lib/libxls/src/.libs)
+                 ../lib/libxls/build_vs2012)
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES}
@@ -84,7 +84,7 @@ add_executable(cableway ${SRC_BASE}/main.cpp
                     
 qt5_use_modules(cableway Widgets OpenGL)
 
-set(CW_LIBRARIES liblibredwg xlsreader iconv opengl32 QtOpenGL ) 
+set(CW_LIBRARIES liblibredwg cygxls ${QT_LIBRARIES} ${OPENGL_LIBRARIES} ) 
                    
 target_link_libraries(cableway ${CW_LIBRARIES})
 target_link_libraries(cableway ${QT_LIBRARIES})
@@ -93,6 +93,10 @@ target_link_libraries(cableway ${QT_LIBRARIES})
 #set(CMAKE_CXX_FLAGS_DEBUG  "-fprofile-arcs -ftest-coverage")
 
 #set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-lgcov")
+
+if (WIN32)
+    set(CMAKE_CXX_FLAGS  "/MP")
+endif (WIN32)
 
 set(GTEST_PATH ../lib/gtest-1.7.0)
 
@@ -111,6 +115,8 @@ add_executable(cableway_tests ${ALL_SOURCES}
                     ${TESTS_SOURCES}
                     ${cw_HEADERS_MOC}
                     ${QTTEST_GEN_UIS}) 
+                    
+qt5_use_modules(cableway_tests Widgets OpenGL)
                     
 target_link_libraries(cableway_tests  ${CW_LIBRARIES} gtest)
 target_link_libraries(cableway_tests ${QT_LIBRARIES})
