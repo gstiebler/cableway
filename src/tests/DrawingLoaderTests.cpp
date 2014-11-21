@@ -15,6 +15,7 @@
 #include "../UListaItensCelula.h"
 #include "../UListaV.h"
 #include "../UserParams/UserParams.h"
+#include "TestsUtil.h"
 
 using namespace std;
 
@@ -31,8 +32,8 @@ TEST_F(DrawingLoaderTests, basic)
     userParams.tagLevels.insert( "15" );
     userParams.cableLevels.insert( "51" );
 
-    std::shared_ptr<CDadosGenerico> dados;
-    string fileName = "../data/tests/drawing2.dwg";//TestsUtil::getExePath() + "/../data/tests/drawing2.dwg";
+    std::shared_ptr<CDadosGenerico> dados( new CDadosGenerico() );
+    string fileName = TestsUtil::getDataPath() + "/tests/drawing2.dwg";
     DwgLoader *loader = new DwgLoader( fileName, dados, &userParams );
 
     ASSERT_EQ( 0, (int) dados->Arcos.size() );

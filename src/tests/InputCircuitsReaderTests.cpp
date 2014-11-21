@@ -14,7 +14,7 @@ class InputCircuitsReaderTests : public ::testing::Test
 TEST_F(InputCircuitsReaderTests, basic)
 {
     vector<InputCircuit> inputCircuits;
-    string fileName = TestsUtil::getExePath() + "/../data/tests/input_circuits.xls";
+    string fileName = TestsUtil::getDataPath() + "/tests/input_circuits.xls";
     readInputCircuits( fileName, inputCircuits );
 
     ASSERT_EQ( 2, (int)inputCircuits.size() );
