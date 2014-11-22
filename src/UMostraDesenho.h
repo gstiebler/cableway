@@ -69,6 +69,14 @@ public:
   void SetMostrarPontasDeCaboDescon(bool mostraPontas);
   void initializeGL();
   void resizeGL(int width, int height);
+  void initializeLimits();
+  void drawMultipoints();
+  void drawArcs();
+  void showCircuit();
+  void showTree();
+  void showDisconnectedCircuitEndings();
+  void showBandeirolaEndings();
+  void drawTexts();
 };
 //---------------------------------------------------------------------------
 
