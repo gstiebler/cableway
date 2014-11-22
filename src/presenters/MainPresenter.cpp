@@ -36,11 +36,24 @@ void MainPresenter::execute()
     string inputCircuitsFileName = MainExecution::getExePath() + "\\" + _window->getInputCircuitsFileName();
 
     _mainExecution = new MainExecution( xlsFileName );
-    vector<CircuitResult> circuitResults = _mainExecution->execute( inputCircuitsFileName );
+    _mainExecution->execute( inputCircuitsFileName );
 
     CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho(0)->GrafoDesenho;
     CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
 
     DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos );
+
+	fillWindowGrid( _mainExecution->_inputCircuits );
+}
+
+
+
+void MainPresenter::fillWindowGrid( std::vector<InputCircuit> inputCircuits )
+{
+	for( int i(0); i < (int) inputCircuits.size(); ++i)
+	{
+		InputCircuit &circuit = inputCircuits[i];
+		_window->setCircuit( i, circuit.name, circuit.source, circuit.dest, circuit.getFormatedRoute(), circuit.cable );
+	}
 }
 

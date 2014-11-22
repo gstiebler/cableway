@@ -17,6 +17,17 @@ using namespace xls;
 using namespace std;
 
 
+std::string InputCircuit::getFormatedRoute()
+{
+	string result;
+	for( string routeItem : route )
+		result += routeItem + " / ";
+
+	return result;
+}
+
+
+
 std::vector<std::string> processRoute(string s) {
     std::stringstream ss(s);
     std::string item;

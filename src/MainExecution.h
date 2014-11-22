@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include "InputCircuitsReader.h"
 
 class CContainerDesenhos;
 
@@ -28,9 +29,13 @@ public:
     static std::string exeFileName;
     static std::string getExePath();
 
-    std::vector<CircuitResult> execute( std::string inputCircuitsFileName );
+    void execute( std::string inputCircuitsFileName );
 
     CContainerDesenhos *_containerDesenhos;
+
+	
+   std::vector<InputCircuit> _inputCircuits;
+   std::vector<CircuitResult> _resultCircuits;
 
 private:
 

@@ -54,23 +54,21 @@ MainExecution::~MainExecution()
 
 
 
-vector<CircuitResult> MainExecution::execute( std::string inputCircuitsFileName )
+void MainExecution::execute( std::string inputCircuitsFileName )
 {
-    vector<InputCircuit> inputCircuits;
-    readInputCircuits( inputCircuitsFileName, inputCircuits );
+	_inputCircuits.clear();
+    readInputCircuits( inputCircuitsFileName, _inputCircuits );
 
-    vector<CircuitResult> result( inputCircuits.size() );
+	_resultCircuits.resize( _inputCircuits.size() );
 
-    for(int i(0); i < (int) inputCircuits.size(); ++i)
+    for(int i(0); i < (int) _inputCircuits.size(); ++i)
     {
         TArestasCircuito *ArestasCircuito = NULL;
         vector<int> ListaBandeirolas;
         vector<string> DEBUG_arestas;
         string SubRotas;
         TCircuitoAreas *CircuitoAreas = NULL;
-        _containerDesenhos->InfoCircuitos->GeraRota(inputCircuits[i].source, inputCircuits[i].dest, result[i].length, result[i].route,
+        _containerDesenhos->InfoCircuitos->GeraRota(_inputCircuits[i].source, _inputCircuits[i].dest, _resultCircuits[i].length, _resultCircuits[i].route,
                 ArestasCircuito, &ListaBandeirolas, &DEBUG_arestas, SubRotas, CircuitoAreas);
     }
-
-    return result;
 }

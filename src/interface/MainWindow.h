@@ -9,10 +9,10 @@
 #define MAINWINDOW_H_
 
 #include <QMainWindow>
-
 #include "ui_MainWindow.h"
-
 #include <string>
+
+class QStandardItemModel;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -24,6 +24,7 @@ public:
 
     std::string getUserParamsFileName();
     std::string getInputCircuitsFileName();
+	void setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string route, std::string cable );
 
 signals:
 
@@ -32,7 +33,10 @@ signals:
 
 private slots:
 
-        void openUserParamsClicked();
+	void openUserParamsClicked();
+
+private:
+	QStandardItemModel *_model;
 
 };
 

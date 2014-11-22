@@ -6,6 +6,7 @@
  */
 
 #include "MainWindow.h"
+#include <QStandardItemModel>
 
 #include <QFileDialog>
 #include <string>
@@ -18,6 +19,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect( buttonOpenUserParams, SIGNAL(clicked()), this, SLOT(openUserParamsClicked() ) );
     connect( buttonExecute, SIGNAL( clicked() ), this, SIGNAL( executeButtonClicked() ) );
+
+	
+    _model = new QStandardItemModel();
+	QStringList list;
+	list.append( "Circuito" );
+	list.append( "Origem" );
+	list.append( "Destino" );
+	list.append( "Rota" );
+	list.append( "Cabo" );
+
+	_model->setHorizontalHeaderLabels(list);
+	tableView->setModel( _model );
 }
 
 
@@ -45,4 +58,15 @@ std::string MainWindow::getUserParamsFileName()
 std::string MainWindow::getInputCircuitsFileName()
 {
     return lineEditInputCircuits->text().toStdString();
+}
+
+
+
+void MainWindow::setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string route, std::string cable )
+{
+	_model->setItem( circuitIndex, 0, new QStandardItem( name.c_str() ) );
+	_model->setItem( circuitIndex, 1, new QStandardItem( source.c_str() ) );
+	_model->setItem( circuitIndex, 2, new QStandardItem( dest.c_str() ) );
+	_model->setItem( circuitIndex, 3, new QStandardItem( route.c_str() ) );
+	_model->setItem( circuitIndex, 4, new QStandardItem( cable.c_str() ) );
 }

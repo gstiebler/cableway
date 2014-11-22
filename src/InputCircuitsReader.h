@@ -18,6 +18,8 @@ struct InputCircuit
     std::string dest;
     std::vector<std::string> route;
     std::string cable;
+
+	std::string getFormatedRoute();
 };
 
 

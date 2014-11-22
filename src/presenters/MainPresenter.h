@@ -9,6 +9,7 @@
 #define MAINPRESENTER_H_
 
 #include <QObject>
+#include "InputCircuitsReader.h"
 
 class MainWindow;
 class MainExecution;
@@ -25,6 +26,7 @@ private:
     MainWindow *_window;
     MainExecution *_mainExecution;
 
+	void fillWindowGrid( std::vector<InputCircuit> inputCircuits );
 
 private slots:
     void execute();
