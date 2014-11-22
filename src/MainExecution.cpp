@@ -22,7 +22,7 @@ string MainExecution::exeFileName;
 
 string MainExecution::getExePath()
 {
-    int index = exeFileName.find_last_of( '/' );
+    int index = exeFileName.find_last_of( '\\' );
     return exeFileName.substr( 0, index );
 }
 
