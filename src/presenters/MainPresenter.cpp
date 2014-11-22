@@ -43,17 +43,18 @@ void MainPresenter::execute()
 
     DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos );
 
-	fillWindowGrid( _mainExecution->_inputCircuits );
+	fillWindowGrid( _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
 }
 
 
 
-void MainPresenter::fillWindowGrid( std::vector<InputCircuit> inputCircuits )
+void MainPresenter::fillWindowGrid( const vector<InputCircuit> &inputCircuits, const vector<CircuitResult> &resultCircuits )
 {
 	for( int i(0); i < (int) inputCircuits.size(); ++i)
 	{
-		InputCircuit &circuit = inputCircuits[i];
+		const InputCircuit &circuit = inputCircuits[i];
 		_window->setCircuit( i, circuit.name, circuit.source, circuit.dest, circuit.getFormatedRoute(), circuit.cable );
+		_window->setCircuitLength( i, resultCircuits[i].length );
 	}
 }
 

@@ -17,7 +17,7 @@ using namespace xls;
 using namespace std;
 
 
-std::string InputCircuit::getFormatedRoute()
+std::string InputCircuit::getFormatedRoute() const
 {
 	string result;
 	for( string routeItem : route )

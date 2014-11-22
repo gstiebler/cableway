@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
 	list.append( "Destino" );
 	list.append( "Rota" );
 	list.append( "Cabo" );
+	list.append( "Comprimento" );
 
 	_model->setHorizontalHeaderLabels(list);
 	tableView->setModel( _model );
@@ -69,4 +70,11 @@ void MainWindow::setCircuit( int circuitIndex, std::string name, std::string sou
 	_model->setItem( circuitIndex, 2, new QStandardItem( dest.c_str() ) );
 	_model->setItem( circuitIndex, 3, new QStandardItem( route.c_str() ) );
 	_model->setItem( circuitIndex, 4, new QStandardItem( cable.c_str() ) );
+}
+
+
+
+void MainWindow::setCircuitLength( int circuitIndex, double length )
+{
+	_model->setItem( circuitIndex, 5, new QStandardItem( QString::number( length ) ) );
 }

@@ -25,6 +25,7 @@ public:
     std::string getUserParamsFileName();
     std::string getInputCircuitsFileName();
 	void setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string route, std::string cable );
+	void setCircuitLength( int circuitIndex, double length );
 
 signals:
 

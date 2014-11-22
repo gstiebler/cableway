@@ -10,6 +10,7 @@
 
 #include <QObject>
 #include "InputCircuitsReader.h"
+#include "MainExecution.h"
 
 class MainWindow;
 class MainExecution;
@@ -26,7 +27,7 @@ private:
     MainWindow *_window;
     MainExecution *_mainExecution;
 
-	void fillWindowGrid( std::vector<InputCircuit> inputCircuits );
+	void fillWindowGrid( const std::vector<InputCircuit> &inputCircuits, const std::vector<CircuitResult> &resultCircuits );
 
 private slots:
     void execute();
