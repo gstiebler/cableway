@@ -68,6 +68,7 @@ public:
   void SetMostraChegaEquip(bool MostraEquip);
   void SetMostrarPontasDeCaboDescon(bool mostraPontas);
   void initializeGL();
+  void resizeGL(int width, int height);
 };
 //---------------------------------------------------------------------------
 

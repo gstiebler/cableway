@@ -63,14 +63,14 @@ CMostraDesenho::~CMostraDesenho()
 
 
 void CMostraDesenho::paintGL()
-{
-    Paint();
+{  
+    Paint();    
 }
 
 
 void CMostraDesenho::DrawObjects()
 {
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	//glClearColor(0.0, 0.0, 0.0, 0.0);
 	glColor3f(1.0, 1.0, 1.0);
 	glPushMatrix();
 
@@ -626,15 +626,13 @@ void CMostraDesenho::SetMostrarPontasDeCaboDescon(bool mostraPontas)
 
 void CMostraDesenho::initializeGL()
 {
-    glClearColor(0.0f, 1.0f, 0.0f, 0.5f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+}
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    //glEnable(GL_MULTISAMPLE);
-    static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+
+
+void CMostraDesenho::resizeGL(int width, int height)
+{
+	Resize( width, height );
 }
 
