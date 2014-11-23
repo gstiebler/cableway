@@ -18,6 +18,7 @@ struct CircuitResult
 {
     std::string route;
     double length;
+	std::string errorMessage;
 };
 
 class MainExecution
@@ -38,6 +39,8 @@ public:
    std::vector<CircuitResult> _resultCircuits;
 
 private:
+
+	std::string ErrosDoCircuito( std::string Origem, std::string Destino, std::string route );
 
 };
 

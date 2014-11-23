@@ -70,5 +70,70 @@ void MainExecution::execute( std::string inputCircuitsFileName )
         TCircuitoAreas *CircuitoAreas = NULL;
         _containerDesenhos->InfoCircuitos->GeraRota(_inputCircuits[i].source, _inputCircuits[i].dest, _resultCircuits[i].length, _resultCircuits[i].route,
                 ArestasCircuito, &ListaBandeirolas, &DEBUG_arestas, SubRotas, CircuitoAreas);
+
+		_resultCircuits[i].errorMessage = ErrosDoCircuito( _inputCircuits[i].source, _inputCircuits[i].dest, _resultCircuits[i].route );
     }
+}
+
+
+
+string MainExecution::ErrosDoCircuito( string Origem, string Destino, string route )
+{
+	string erro;
+	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Origem) < 0 )
+	{
+		bool exists;
+		exists = false;
+		for ( int j = 0 ; j < _containerDesenhos->NumDesenhos() ; j++ )
+		{
+			TDesenho *pnt = _containerDesenhos->getDesenho(j);
+			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->Dados->Textos.size() ; i++ )
+			{
+				if ( pnt->GrafoDesenho->Dados->Textos[i].texto == Origem )
+				{
+					exists = true;
+					break;
+				}
+			}
+			if ( exists )
+				break;
+		}
+
+		if ( exists )
+		{
+			erro += "O texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível; ";
+		}
+		else
+		{
+			erro += "O texto de origem não existe nos desenhos; ";
+		}
+	}
+	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Destino) < 0 )
+	{
+		bool exists;
+		exists = false;
+		for ( int j = 0 ; j < _containerDesenhos->NumDesenhos() ; j++ )
+		{
+			TDesenho *pnt = _containerDesenhos->getDesenho(j);
+			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->Dados->Textos.size() ; i++ )
+			{
+				if ( pnt->GrafoDesenho->Dados->Textos[i].texto == Destino )
+				{
+					exists = true;
+					break;
+				}
+			}
+			if ( exists )
+				break;
+		}
+
+		if ( exists )
+			erro += "O texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível.";
+		else
+			erro += "O texto de destino não existe nos desenhos.";
+	}
+	if ( erro == "" && route == "" )
+		erro = "Não foi encontrado caminho.";
+
+	return erro;
 }

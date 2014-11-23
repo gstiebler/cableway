@@ -285,14 +285,19 @@ TEST_F(BasicTest, complete2)
     string inputCircuitsFileName = TestsUtil::getDataPath() + "\\tests\\input_circuits2.xls";
 
     MainExecution mainExecution( xlsFileName );
-    vector<CircuitResult> circuitResults = mainExecution.execute( inputCircuitsFileName );
+    mainExecution.execute( inputCircuitsFileName );
 
-    ASSERT_EQ( 2, (int) circuitResults.size() );
+    ASSERT_EQ( 3, (int) mainExecution._resultCircuits.size() );
 
-    EXPECT_STREQ( "Equipamento 2/Equipamento 1", circuitResults[0].route.c_str() );
-    EXPECT_FLOAT_EQ( 500.0, circuitResults[0].length );
-    EXPECT_STREQ( "Equipamento 1/Equipamento 2", circuitResults[1].route.c_str() );
-    EXPECT_FLOAT_EQ( 500.0, circuitResults[1].length );
+    EXPECT_STREQ( "Equipamento 2/Equipamento 1", mainExecution._resultCircuits[0].route.c_str() );
+    EXPECT_FLOAT_EQ( 500.0, mainExecution._resultCircuits[0].length );
+	EXPECT_STREQ( "", mainExecution._resultCircuits[0].errorMessage.c_str() );
+
+    EXPECT_STREQ( "Equipamento 1/Equipamento 2", mainExecution._resultCircuits[1].route.c_str() );
+    EXPECT_FLOAT_EQ( 500.0, mainExecution._resultCircuits[1].length );
+	EXPECT_STREQ( "", mainExecution._resultCircuits[1].errorMessage.c_str() );
+
+	EXPECT_STREQ( "O texto de origem não existe nos desenhos; O texto de destino não existe nos desenhos.", mainExecution._resultCircuits[2].errorMessage.c_str() );
 }
 
 }  // namespace
