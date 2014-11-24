@@ -20,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect( buttonOpenUserParams, SIGNAL(clicked()), this, SLOT(openUserParamsClicked() ) );
     connect( buttonExecute, SIGNAL( clicked() ), this, SIGNAL( executeButtonClicked() ) );
 
-	
     _model = new QStandardItemModel();
 	QStringList list;
 	list.append( "Circuito" );
@@ -31,8 +30,10 @@ MainWindow::MainWindow(QWidget *parent)
 	list.append( "Comprimento" );
 	list.append( "Erros" );
 
-	_model->setHorizontalHeaderLabels(list);
+	_model->setHorizontalHeaderLabels( list );
 	tableView->setModel( _model );
+
+	tableView->setColumnWidth( 6, 800 );
 }
 
 
