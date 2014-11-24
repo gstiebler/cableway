@@ -73,5 +73,5 @@ void MainWindow::setCircuit( int circuitIndex, std::string name, std::string sou
 	_model->setItem( circuitIndex, 3, new QStandardItem( route.c_str() ) );
 	_model->setItem( circuitIndex, 4, new QStandardItem( cable.c_str() ) );
 	_model->setItem( circuitIndex, 5, new QStandardItem( QString::number( length ) ) );
-	_model->setItem( circuitIndex, 6, new QStandardItem( errors.c_str() ) );
+	_model->setItem( circuitIndex, 6, new QStandardItem( QString::fromLatin1( errors.c_str() ) ) );
 }
