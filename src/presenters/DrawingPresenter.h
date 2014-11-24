@@ -24,6 +24,10 @@ public:
 
 private:
     DrawingWindow *_window;
+
+	
+private slots:
+    void windowClosed();
 };
 
 #endif /* DRAWINGPRESENTER_H_ */

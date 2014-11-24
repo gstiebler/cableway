@@ -13,10 +13,20 @@ DrawingPresenter::DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *
 {
     _window = new DrawingWindow(grafoDesenho, infoCircuitos);
     _window->show();
+
+    connect( _window, SIGNAL( dialogClose() ), this, SLOT( windowClosed() ) );
 }
+
+
 
 DrawingPresenter::~DrawingPresenter()
 {
-    delete _window;
+}
+
+
+
+void DrawingPresenter::windowClosed()
+{
+	delete this;
 }
 

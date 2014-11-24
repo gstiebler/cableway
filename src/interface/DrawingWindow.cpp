@@ -15,10 +15,20 @@ DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCi
 
     CMostraDesenho *mostraDesenho = new CMostraDesenho( grafoDesenho, infoCircuitos );
     verticalLayout->addWidget(mostraDesenho);
+
+	setAttribute( Qt::WA_DeleteOnClose );
 }
+
+
 
 DrawingWindow::~DrawingWindow()
 {
     // TODO Auto-generated destructor stub
+}
+
+
+void DrawingWindow::closeEvent( QCloseEvent * event )
+{
+	emit dialogClose();
 }
 

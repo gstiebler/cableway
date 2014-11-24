@@ -13,7 +13,7 @@
 #include "ui_DrawingWindow.h"
 
 class CGrafoDesenho;
-class CInfoCircuitos;
+class CInfoCircuitos;	
 
 class DrawingWindow : public QDialog, private Ui::Dialog
 {
@@ -22,6 +22,12 @@ class DrawingWindow : public QDialog, private Ui::Dialog
 public:
     DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos);
     virtual ~DrawingWindow();
+
+signals:
+	void dialogClose();
+
+private:
+	void closeEvent( QCloseEvent * event );
 };
 
 #endif /* DRAWINGWINDOW_H_ */
