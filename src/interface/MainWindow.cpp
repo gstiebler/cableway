@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 	list.append( "Rota" );
 	list.append( "Cabo" );
 	list.append( "Comprimento" );
+	list.append( "Erros" );
 
 	_model->setHorizontalHeaderLabels(list);
 	tableView->setModel( _model );
@@ -63,18 +64,14 @@ std::string MainWindow::getInputCircuitsFileName()
 
 
 
-void MainWindow::setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string route, std::string cable )
+void MainWindow::setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string route, std::string cable, 
+								double length, std::string errors )
 {
 	_model->setItem( circuitIndex, 0, new QStandardItem( name.c_str() ) );
 	_model->setItem( circuitIndex, 1, new QStandardItem( source.c_str() ) );
 	_model->setItem( circuitIndex, 2, new QStandardItem( dest.c_str() ) );
 	_model->setItem( circuitIndex, 3, new QStandardItem( route.c_str() ) );
 	_model->setItem( circuitIndex, 4, new QStandardItem( cable.c_str() ) );
-}
-
-
-
-void MainWindow::setCircuitLength( int circuitIndex, double length )
-{
 	_model->setItem( circuitIndex, 5, new QStandardItem( QString::number( length ) ) );
+	_model->setItem( circuitIndex, 6, new QStandardItem( errors.c_str() ) );
 }
