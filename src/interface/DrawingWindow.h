@@ -14,6 +14,7 @@
 
 class CGrafoDesenho;
 class CInfoCircuitos;	
+class CMostraDesenho;
 
 class DrawingWindow : public QDialog, private Ui::Dialog
 {
@@ -22,6 +23,8 @@ class DrawingWindow : public QDialog, private Ui::Dialog
 public:
     DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos);
     virtual ~DrawingWindow();
+
+	CMostraDesenho *_mostraDesenho;
 
 signals:
 	void dialogClose();

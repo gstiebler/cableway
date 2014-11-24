@@ -19,7 +19,7 @@ class DrawingPresenter : public QObject
     Q_OBJECT
 
 public:
-    DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos);
+    DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, int circuitIndex = -1 );
     virtual ~DrawingPresenter();
 
 private:

@@ -6,13 +6,17 @@
  */
 
 #include "DrawingPresenter.h"
+#include "UMostraDesenho.h"
 
 #include <interface/DrawingWindow.h>
 
-DrawingPresenter::DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos)
+DrawingPresenter::DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, int circuitIndex )
 {
     _window = new DrawingWindow(grafoDesenho, infoCircuitos);
     _window->show();
+
+	if( circuitIndex >= 0 )
+		_window->_mostraDesenho->MostraCircuito( circuitIndex );
 
     connect( _window, SIGNAL( dialogClose() ), this, SLOT( windowClosed() ) );
 }

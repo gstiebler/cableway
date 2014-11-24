@@ -152,6 +152,8 @@ CInfoCircuitos::~CInfoCircuitos()
 }
 //---------------------------------------------------------------------------
 
+
+
 void CInfoCircuitos::GeraInfoCircuitos(callbackStatusCarregamento &call)
 {
     //// Pega o n�mero de circuitos
@@ -161,7 +163,7 @@ void CInfoCircuitos::GeraInfoCircuitos(callbackStatusCarregamento &call)
     //// Coloca os circuitos num vetor
     //CArmazenamentoCircuitos::VetorCircuitos(Circuitos);
     //// ???
-    //CArmazenamentoBandeirola::ApagaBandeirolas();
+    ////CArmazenamentoBandeirola::ApagaBandeirolas();
     //for (int n=0; n<NumReg; n++)
     // {
     //   if ( call.ponteiroFuncao ) call.ponteiroFuncao(call.PonteiroProThis, "Circuito ", n+1, NumReg);
@@ -170,118 +172,99 @@ void CInfoCircuitos::GeraInfoCircuitos(callbackStatusCarregamento &call)
     ////DM->Transaction->Commit();
     //delete [] Circuitos;
 }
-//---------------------------------------------------------------------------
+
+
 
 void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 {
-//	int m;
-//	int Aresta;
-//	TCircuitoAreas *CircuitoAreas;
-//	CircuitoAreas = new TCircuitoAreas[NumDesenhos];
-//	TArestasCircuito *ArestasCircuito;
-//	string rota, SubRotas;
-//	TVectorInt Bandeirolas;
-//	ArestasDoCircuito->Adicionar(NumDesenhos);
-//	// O item está em branco
-//	ArestasCircuito=ArestasDoCircuito->Ultimo();
-//	TStringList *DebugArestas=NULL;
-//	bool erro, erro_interno;
-//#ifdef DEBUG_BUILDER
-//  DebugArestas = new TStringList();
-////	DebugArestas=new vector<string>;
-//#endif
-//
-//  CTempoExec *tempo = CTempoExec::getInstance();
-//  tempo->MarcaTempo("Circuito: "+Circuito.NomeCircuito);
-//
-//  erro_interno = false;
-//  try
-//  {
-//	  // Chama desse jeito se não tiver rota do usuário
-//	  if (stringTrim(Circuito.RotaUsuario) == "" )
-//	  {
-//      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, SubRotas, CircuitoAreas);
-//    }
-//	  // E assim caso tenha..
-//	  else
-//	  {
-//		  erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, CircuitoAreas);
-//	  }
-//  }
-//  catch(...)
-//  {
-//    erro_interno = true;
-//  }
-//  tempo->MarcaTempo((string)"Fim da Gera��o" + (erro?" Nao achou":" Achou"));
-//
-//	if ( !erro )
-//	{
-//		ArestasCircuito->Circuito=Circuito.NomeCircuito;
-//		ArestasCircuito->idCircuito=Circuito.ID;
-//		//Adiciona o circuito na lista da aresta
-//		for (m=0; m<(int)ArestasCircuito->Arestas.size(); m++)
-//		{
-//			Aresta=ArestasCircuito->Arestas[m];
-//			ListaCircuitosArestas[Aresta].AdicionaCircuito(Circuito.NomeCircuito);
-//		}
-//		CArmazenamentoCircuitos::AtualizaRotaMetragem(Circuito);
-//		CArmazenamentoBandeirola::AdicionaBandeirolas(Circuito.ID, Bandeirolas, VerticesGerais);
-//		for ( int i = 0 ; i < NumDesenhos ; i++ )
-//		{
-//			if ( !CircuitoAreas[i].ativo )
-//				continue;
-//			DM_oRetorno->qryGeral->SQL->Clear();
-//			DM_oRetorno->qryGeral->SQL->Add("INSERT INTO ARQUIVOSPROJETOCIRCUITO (PROJETO_ID, ARQUIVOSPROJETO_ID, CIRCUITO_ID, ROTA) VALUES (" + DM_oRetorno->tbProjeto->FieldByName("ID")->AsString + ", " + CircuitoAreas[i].IDArquivo + ", " + Circuito.ID + ", '" +CircuitoAreas[i].rota.c_str()+ "')" );
-//			DM_oRetorno->qryGeral->ExecSQL();
-//		}
-//#ifdef DEBUG_BUILDER
-//		DebugArestas->SaveToFile(ExtractFilePath(Application->ExeName)+"Vertices\\"+Circuito.NomeCircuito.c_str()+".txt");
-//		delete DebugArestas;
-//#endif
-//	}
-//  else if ( erro && stringTrim(Circuito.RotaUsuario) != "" && Circuito.rota != "" )
-//  {
-//    // Se deu erro, mas era rota de usuário e conseguiu completar alguma parte...
-//		ArestasCircuito->Circuito=Circuito.NomeCircuito;
-//		ArestasCircuito->idCircuito=Circuito.ID;
-//		//Adiciona o circuito na lista da aresta
-//		for (m=0; m<(int)ArestasCircuito->Arestas.size(); m++)
-//		{
-//			Aresta=ArestasCircuito->Arestas[m];
-//			ListaCircuitosArestas[Aresta].AdicionaCircuito(Circuito.NomeCircuito);
-//		}
-//		CArmazenamentoCircuitos::AtualizaRotaMetragem(Circuito);
-//		CArmazenamentoBandeirola::AdicionaBandeirolas(Circuito.ID, Bandeirolas, VerticesGerais);
-//		for ( int i = 0 ; i < NumDesenhos ; i++ )
-//		{
-//			if ( !CircuitoAreas[i].ativo )
-//				continue;
-//			DM_oRetorno->qryGeral->SQL->Clear();
-//			DM_oRetorno->qryGeral->SQL->Add("INSERT INTO ARQUIVOSPROJETOCIRCUITO (PROJETO_ID, ARQUIVOSPROJETO_ID, CIRCUITO_ID, ROTA) VALUES (" + DM_oRetorno->tbProjeto->FieldByName("ID")->AsString + ", " + CircuitoAreas[i].IDArquivo + ", " + Circuito.ID + ", '" +CircuitoAreas[i].rota.c_str()+ "')" );
-//			DM_oRetorno->qryGeral->ExecSQL();
-//		}
-//#ifdef DEBUG_BUILDER
-//		DebugArestas->SaveToFile(ExtractFilePath(Application->ExeName)+"\\Vertices\\"+Circuito.NomeCircuito.c_str()+".txt");
-//		delete DebugArestas;
-//#endif
-//		//CArmazenamentoCircuitos::DeuErro(Circuito);
-//  }
-//	else
-//	{
-//    if(erro_interno)
-//    {        
-//		  CArmazenamentoCircuitos::DeuErro(Circuito, "Erro interno. Favor contactar o administrador.");
-//    }
-//    else
-//    {          
-//		  ArestasDoCircuito->Remove(ArestasDoCircuito->Tamanho()-1);
-//      string erros = ErrosDoCircuito(Circuito.Origem, Circuito.Destino, Circuito.rota);
-//		  CArmazenamentoCircuitos::DeuErro(Circuito, erros);
-//    }
-//	}
-//
-//	//delete Bandeirolas;
-//	delete[] CircuitoAreas;
+	int m;
+	int Aresta;
+	TCircuitoAreas *CircuitoAreas;
+	CircuitoAreas = new TCircuitoAreas[NumDesenhos];
+	TArestasCircuito *ArestasCircuito;
+	string rota, SubRotas;
+	TVectorInt Bandeirolas;
+	ArestasDoCircuito.push_back( NumDesenhos );
+	// O item está em branco
+	ArestasCircuito = &ArestasDoCircuito.back();
+	TStringList *DebugArestas=NULL;
+	bool erro, erro_interno;
+#ifdef DEBUG_BUILDER
+  DebugArestas = new TStringList();
+//	DebugArestas=new vector<string>;
+#endif
+
+  //CTempoExec *tempo = CTempoExec::getInstance();
+  //tempo->MarcaTempo("Circuito: "+Circuito.NomeCircuito);
+
+  erro_interno = false;
+  try
+  {
+	  // Chama desse jeito se não tiver rota do usuário
+	  if (stringTrim(Circuito.RotaUsuario) == "" )
+	  {
+      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, SubRotas, CircuitoAreas);
+    }
+	  // E assim caso tenha..
+	  else
+	  {
+		  erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, CircuitoAreas);
+	  }
+  }
+  catch(...)
+  {
+    erro_interno = true;
+  }
+  //tempo->MarcaTempo((string)"Fim da Gera��o" + (erro?" Nao achou":" Achou"));
+
+	if ( !erro )
+	{
+		ArestasCircuito->Circuito=Circuito.NomeCircuito;
+		ArestasCircuito->idCircuito=Circuito.ID;
+		//Adiciona o circuito na lista da aresta
+		for (m=0; m<(int)ArestasCircuito->Arestas.size(); m++)
+		{
+			Aresta=ArestasCircuito->Arestas[m];
+			ListaCircuitosArestas[Aresta].AdicionaCircuito(Circuito.NomeCircuito);
+		}
+		//CArmazenamentoCircuitos::AtualizaRotaMetragem(Circuito);
+
+#ifdef DEBUG_BUILDER
+		DebugArestas->SaveToFile(ExtractFilePath(Application->ExeName)+"Vertices\\"+Circuito.NomeCircuito.c_str()+".txt");
+		delete DebugArestas;
+#endif
+	}
+  else if ( erro && stringTrim(Circuito.RotaUsuario) != "" && Circuito.rota != "" )
+  {
+    // Se deu erro, mas era rota de usuário e conseguiu completar alguma parte...
+		ArestasCircuito->Circuito=Circuito.NomeCircuito;
+		ArestasCircuito->idCircuito=Circuito.ID;
+		//Adiciona o circuito na lista da aresta
+		for (m=0; m<(int)ArestasCircuito->Arestas.size(); m++)
+		{
+			Aresta=ArestasCircuito->Arestas[m];
+			ListaCircuitosArestas[Aresta].AdicionaCircuito(Circuito.NomeCircuito);
+		}
+		//CArmazenamentoCircuitos::AtualizaRotaMetragem(Circuito);
+
+		//CArmazenamentoCircuitos::DeuErro(Circuito);
+	}
+	else
+	{
+		if(erro_interno)
+		{        
+		  //CArmazenamentoCircuitos::DeuErro(Circuito, "Erro interno. Favor contactar o administrador.");
+		}
+		else
+		{          
+			ArestasDoCircuito.pop_back();
+			string erros = ErrosDoCircuito(Circuito.Origem, Circuito.Destino, Circuito.rota);
+		  //CArmazenamentoCircuitos::DeuErro(Circuito, erros);
+		}
+	}
+
+	//delete Bandeirolas;
+	delete[] CircuitoAreas;
 }
 //---------------------------------------------------------------------------
 

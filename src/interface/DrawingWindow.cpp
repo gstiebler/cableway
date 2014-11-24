@@ -13,8 +13,8 @@ DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCi
 {
     setupUi(this);
 
-    CMostraDesenho *mostraDesenho = new CMostraDesenho( grafoDesenho, infoCircuitos );
-    verticalLayout->addWidget(mostraDesenho);
+    _mostraDesenho = new CMostraDesenho( grafoDesenho, infoCircuitos );
+    verticalLayout->addWidget( _mostraDesenho );
 
 	setAttribute( Qt::WA_DeleteOnClose );
 }
