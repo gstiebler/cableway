@@ -22,6 +22,7 @@ MainPresenter::MainPresenter() :
     _window->show();
 
     connect( _window, SIGNAL( executeButtonClicked() ), this, SLOT( execute() ) );
+    connect( _window, SIGNAL( circuitGridClicked(QModelIndex) ), this, SLOT( showCircuit(QModelIndex) ) );
 }
 
 MainPresenter::~MainPresenter()
@@ -38,11 +39,6 @@ void MainPresenter::execute()
     _mainExecution = new MainExecution( xlsFileName );
     _mainExecution->execute( inputCircuitsFileName );
 
-    CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho(0)->GrafoDesenho;
-    CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
-
-    DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos );
-
 	fillWindowGrid( _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
 }
 
@@ -55,5 +51,16 @@ void MainPresenter::fillWindowGrid( const vector<InputCircuit> &inputCircuits, c
 		const InputCircuit &circuit = inputCircuits[i];
 		_window->setCircuit( i, circuit.name, circuit.source, circuit.dest, circuit.getFormatedRoute(), circuit.cable, resultCircuits[i].length, resultCircuits[i].errorMessage );
 	}
+}
+
+
+
+void MainPresenter::showCircuit( const QModelIndex &index )
+{
+	printf( "Index: %d\n", index.row() );
+
+    CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho(0)->GrafoDesenho;
+    CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
+    DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos );
 }
 

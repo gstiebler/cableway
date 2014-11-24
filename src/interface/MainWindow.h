@@ -30,6 +30,7 @@ public:
 signals:
 
     void executeButtonClicked();
+	void circuitGridClicked( const QModelIndex &index );
 
 
 private slots:

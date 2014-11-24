@@ -31,6 +31,7 @@ private:
 
 private slots:
     void execute();
+	void showCircuit( const QModelIndex &index );
 
 };
 

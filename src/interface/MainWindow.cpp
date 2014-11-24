@@ -34,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
 	tableView->setModel( _model );
 
 	tableView->setColumnWidth( 6, 800 );
+	
+    connect( tableView, SIGNAL( clicked(QModelIndex) ), this, SIGNAL( circuitGridClicked(QModelIndex) ) );
 }
 
 
