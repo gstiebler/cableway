@@ -61,6 +61,6 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 
     CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho(0)->GrafoDesenho;
     CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
-	DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos /*, index.row() */ );
+	DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, index.row() );
 }
 
