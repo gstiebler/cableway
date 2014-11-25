@@ -106,7 +106,6 @@ public:
              TStringList *DEBUG_arestas, string &SubRotas, TCircuitoAreas *CircuitoAreas);
   void Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho);        
   int ApagaArestasDoCircuito(string circuito, int idCircuito);
-  string ErrosDoCircuito ( string Origem, string Destino, string rota  );
   TVerticesGerais *VerticesGerais;
 };                                     
 //---------------------------------------------------------------------------

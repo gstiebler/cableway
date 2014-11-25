@@ -38,81 +38,7 @@ TListaCircuitos::~TListaCircuitos()
 }
 //---------------------------------------------------------------------------
 
-string CInfoCircuitos::ErrosDoCircuito(string Origem, string Destino, string rota)
-{
-    string erro;
-    erro = "";
-    if (VerticesGerais->AchaVerticePeloTexto( Origem ) < 0)
-    {
-        bool exists;
-        exists = false;
-        exists = CallVT.ponteiroFuncao( CallVT.PonteiroProThis, Origem.c_str() );
-//		for ( int j = 0 ; j < ContainerDesenhos->NumDesenhos() ; j++ )
-//		{
-//			TDesenho *pnt = ContainerDesenhos->getDesenho(j);
-//			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->Dados->Textos.size() ; i++ )
-//			{
-//				if ( pnt->GrafoDesenho->Dados->Textos[i].texto == Origem )
-//				{
-//					exists = true;
-//					break;
-//				}
-//			}
-//			if ( exists )
-//				break;
-//		}
 
-        if (exists)
-        {
-            erro +=
-                    "O texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível; ";
-//			erroShow +="O texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível;\n";
-        }
-        else
-        {
-            erro += "O texto de origem não existe nos desenhos; ";
-//			erroShow += "O texto de origem não existe nos desenhos;\n";
-        }
-    }
-    if (VerticesGerais->AchaVerticePeloTexto( Destino ) < 0)
-    {
-        bool exists;
-        exists = false;
-        exists = CallVT.ponteiroFuncao( CallVT.PonteiroProThis, Destino.c_str() );
-//		for ( int j = 0 ; j < ContainerDesenhos->NumDesenhos() ; j++ )
-//		{
-//			TDesenho *pnt = ContainerDesenhos->getDesenho(j);
-//			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->Dados->Textos.size() ; i++ )
-//			{
-//				if ( pnt->GrafoDesenho->Dados->Textos[i].texto == Destino )
-//				{
-//					exists = true;
-//					break;
-//				}
-//			}
-//			if ( exists )
-//				break;
-//		}
-
-        if (exists)
-        {
-            erro +=
-                    "O texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível.";
-//			erroShow += "O texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível.\n";
-        }
-        else
-        {
-            erro += "O texto de destino não existe nos desenhos.";
-//			erroShow += "O texto de destino não existe nos desenhos.\n";
-        }
-    }
-    if (erro == "" && rota == "")
-    {
-        erro = "não foi encontrado caminho.";
-//		erroShow = "não foi encontrado caminho.";
-    }
-    return erro;
-}
 
 CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackStatusCarregamento& call, callbackVerificaTexto &callVT) :
         VerticesGerais( NULL )
@@ -157,7 +83,7 @@ CInfoCircuitos::~CInfoCircuitos()
 void CInfoCircuitos::GeraInfoCircuitos(callbackStatusCarregamento &call)
 {
     //// Pega o n�mero de circuitos
-    //int NumReg=CArmazenamentoCircuitos::NumReg();
+    //int NumReg = CArmazenamentoCircuitos::NumReg();
     //// Cria um vetor de TCircuito com o n�mero de circuitos
     //TCircuito *Circuitos=new TCircuito [NumReg];
     //// Coloca os circuitos num vetor
@@ -258,7 +184,6 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 		else
 		{          
 			ArestasDoCircuito.pop_back();
-			string erros = ErrosDoCircuito(Circuito.Origem, Circuito.Destino, Circuito.rota);
 		  //CArmazenamentoCircuitos::DeuErro(Circuito, erros);
 		}
 	}

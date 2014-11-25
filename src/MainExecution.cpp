@@ -63,13 +63,14 @@ void MainExecution::execute( std::string inputCircuitsFileName )
 
     for(int i(0); i < (int) _inputCircuits.size(); ++i)
     {
-        TArestasCircuito *ArestasCircuito = NULL;
-        vector<int> ListaBandeirolas;
-        vector<string> DEBUG_arestas;
-        string SubRotas;
-        TCircuitoAreas *CircuitoAreas = NULL;
-        _containerDesenhos->InfoCircuitos->GeraRota(_inputCircuits[i].source, _inputCircuits[i].dest, _resultCircuits[i].length, _resultCircuits[i].route,
-                ArestasCircuito, &ListaBandeirolas, &DEBUG_arestas, SubRotas, CircuitoAreas);
+		TCircuito circuito;
+		circuito.Origem = _inputCircuits[i].source;
+		circuito.Destino = _inputCircuits[i].dest;
+		circuito.RotaUsuario = _inputCircuits[i].getFormatedRoute();
+		circuito.NomeCircuito = _inputCircuits[i].name;
+		_containerDesenhos->InfoCircuitos->AdicionaCircuito( circuito );
+		_resultCircuits[i].route = circuito.rota;
+		_resultCircuits[i].length = circuito.metragem;
 
 		_resultCircuits[i].errorMessage = ErrosDoCircuito( _inputCircuits[i].source, _inputCircuits[i].dest, _resultCircuits[i].route );
     }
