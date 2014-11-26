@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
 	list.append( "Circuito" );
 	list.append( "Origem" );
 	list.append( "Destino" );
+	list.append( "Rota desejada" );
 	list.append( "Rota" );
 	list.append( "Cabo" );
 	list.append( "Comprimento" );
@@ -67,14 +68,15 @@ std::string MainWindow::getInputCircuitsFileName()
 
 
 
-void MainWindow::setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string route, std::string cable, 
+void MainWindow::setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string userRoute, std::string route, std::string cable, 
 								double length, std::string errors )
 {
 	_model->setItem( circuitIndex, 0, new QStandardItem( name.c_str() ) );
 	_model->setItem( circuitIndex, 1, new QStandardItem( source.c_str() ) );
 	_model->setItem( circuitIndex, 2, new QStandardItem( dest.c_str() ) );
-	_model->setItem( circuitIndex, 3, new QStandardItem( route.c_str() ) );
-	_model->setItem( circuitIndex, 4, new QStandardItem( cable.c_str() ) );
-	_model->setItem( circuitIndex, 5, new QStandardItem( QString::number( length ) ) );
-	_model->setItem( circuitIndex, 6, new QStandardItem( QString::fromLatin1( errors.c_str() ) ) );
+	_model->setItem( circuitIndex, 3, new QStandardItem( userRoute.c_str() ) );
+	_model->setItem( circuitIndex, 4, new QStandardItem( route.c_str() ) );
+	_model->setItem( circuitIndex, 5, new QStandardItem( cable.c_str() ) );
+	_model->setItem( circuitIndex, 6, new QStandardItem( QString::number( length ) ) );
+	_model->setItem( circuitIndex, 7, new QStandardItem( QString::fromLatin1( errors.c_str() ) ) );
 }
