@@ -4,7 +4,8 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-COpenGL::COpenGL(int ClientWidth, int ClientHeight)
+COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent) : 
+        QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
   size = TAMANHO;
 
@@ -195,10 +196,11 @@ void COpenGL::DesenhaBolaFechada(float x_center, float y_center, float w,
 void COpenGL::EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura)
 {
   glPushMatrix();
-    glTranslatef(origem.x, origem.y, 0);
+    //glTranslatef(origem.x, origem.y, 0);
     glScalef(FatorAltura*FATOR_FONTE, FatorAltura*FATOR_FONTE, 0);
     glRotatef(rotacao, 0, 0, 1);
-    //YsDrawUglyFont(texto.c_str(), 0, 0);
+	QString txt( texto.c_str() );
+	renderText(origem.x, origem.y, 0.0, txt, QFont("Arial", 12, QFont::Bold, false) );
   glPopMatrix();
 }
 //---------------------------------------------------------------------------

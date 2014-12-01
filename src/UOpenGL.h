@@ -9,6 +9,8 @@
 #include "UAuxString.h"
 #include "UDefines.h"
 
+#include <QtOpenGL/QGLWidget>
+
 
 #define FATOR_TELA 0.162
 #define TAMANHO 50.0f
@@ -20,7 +22,7 @@
 
 //---------------------------------------------------------------------------
 
-class COpenGL
+class COpenGL : public QGLWidget
 {
 protected:
   int PixelFormat;
@@ -39,7 +41,7 @@ protected:
   double FatorZoomX, FatorZoomY;
   bool XEhMaior, initialized;
 public:
-  COpenGL(int ClientWidth, int ClientHeight);
+  COpenGL(int ClientWidth, int ClientHeight, QWidget *parent);
   virtual ~COpenGL();
   void RenderGLScene();
   void SetPixelFormatDescriptor();

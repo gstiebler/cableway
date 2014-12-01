@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
 	_model->setHorizontalHeaderLabels( list );
 	tableView->setModel( _model );
 
-	tableView->setColumnWidth( 6, 800 );
+	tableView->setColumnWidth( 7, 800 );
 	
     connect( tableView, SIGNAL( clicked(QModelIndex) ), this, SIGNAL( circuitGridClicked(QModelIndex) ) );
 }

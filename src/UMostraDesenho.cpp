@@ -25,8 +25,7 @@ unsigned char pegaVermelho ( int cor )
 
 
 CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, QWidget *parent) :
-        COpenGL(600, 600),
-        QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
+        COpenGL(600, 600, parent),
         bMostraArvore2( false ),
         CircuitoAExibir( -1 ),
         x( -1 ),

@@ -9,8 +9,6 @@
 #include <math.h>
 #include <time.h>
 
-#include <QtOpenGL/QGLWidget>
-
 class CGrafoDesenho;
 
 #define FATOR_FATORES 500
@@ -28,7 +26,7 @@ class CGrafoDesenho;
 #define CORARVORE 0xFF7F00 // Ab�bora
 #define CORARVORE2 0xB200B2 // Roxo
 
-class CMostraDesenho: public COpenGL, public QGLWidget
+class CMostraDesenho: public COpenGL
 {
 private:
 
