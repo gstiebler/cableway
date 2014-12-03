@@ -28,6 +28,8 @@ private:
 	
 private slots:
     void windowClosed();
+
+	void optionsChanged();
 };
 
 #endif /* DRAWINGPRESENTER_H_ */

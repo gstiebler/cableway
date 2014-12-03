@@ -17,6 +17,11 @@ DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCi
     verticalLayout->addWidget( _mostraDesenho );
 
 	setAttribute( Qt::WA_DeleteOnClose );
+
+	connect( cbShowOriginalColors, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
+	connect( cbShowDisconnectedCableEndings, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
+	connect( cbShowBandeirolas, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
+	connect( cbShowEquipmentEnding, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
 }
 
 
@@ -30,5 +35,15 @@ DrawingWindow::~DrawingWindow()
 void DrawingWindow::closeEvent( QCloseEvent * event )
 {
 	emit dialogClose();
+}
+
+
+
+void DrawingWindow::getOptions( bool &showOriginalColors, bool &showDisconnectedCables, bool &showBandeirolas, bool &showEquipmentEnding )
+{
+	showOriginalColors = cbShowOriginalColors->isChecked();
+	showDisconnectedCables = cbShowDisconnectedCableEndings->isChecked();
+	showBandeirolas = cbShowBandeirolas->isChecked();
+	showEquipmentEnding = cbShowEquipmentEnding->isChecked();
 }
 

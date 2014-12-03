@@ -24,10 +24,13 @@ public:
     DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos);
     virtual ~DrawingWindow();
 
+	void getOptions( bool &showOriginalColors, bool &showDisconnectedCables, bool &showBandeirolas, bool &showEquipmentEnding );
+
 	CMostraDesenho *_mostraDesenho;
 
 signals:
 	void dialogClose();
+	void optionsChanged();
 
 private:
 	void closeEvent( QCloseEvent * event );
