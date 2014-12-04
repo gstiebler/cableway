@@ -5,28 +5,15 @@
 #pragma package(smart_init)
 
 COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent) : 
-        QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+        QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
+		_glCoords( ClientWidth, ClientHeight )
 {
-  size = TAMANHO;
-
   SetPixelFormatDescriptor();
 
-  w = ClientWidth;
-  h = ClientHeight;
-  x2=0;
-  y2=0;
-
   glClearColor(0.0f, 1.0f, 0.0f, 0.5f);
-  zoom=50 / 10000.0;
-  FatorZoomX=FatorZoomY=0.0;
-  oldZoom = 0;
   static int CONTADOR=0;
   DEBUG=CONTADOR;
   CONTADOR++;
-  menorx = maiorx = 0.0;
-  menory = maiory = 0.0;
-  distX = distY = 0.0;
-  intervaloX = intervaloY = 0.0;
   initialized = false;
 }
 //---------------------------------------------------------------------------
@@ -54,71 +41,18 @@ void COpenGL::RenderGLScene()
 
 void COpenGL::Resize(int ClientWidth, int ClientHeight)
 {
-  w = ClientWidth;
-  h = ClientHeight;
-  if(h == 0)
-    h = 1;
-  glViewport(0, 0, w, h);
-  AjustaExibicao();
-  xMeioTela=w/2;
-  yMeioTela=h/2;
+	_glCoords.resize( ClientWidth, ClientHeight );
+	glViewport(0, 0, _glCoords.w, _glCoords.h);
+	AjustaExibicao();
 }
 //---------------------------------------------------------------------------
 
 void COpenGL::Paint()
 {
-  RenderGLScene();
+	RenderGLScene();
 }
-//---------------------------------------------------------------------------
 
-void COpenGL::MouseMove(int X, int Y)
-{
-  if (apertado)
-  {
-    x2=X-x1;
-    y2=y1-Y;
-    distX = - intervaloX/w * x2;
-    distY = - intervaloY/h * y2;
-  }
-}
-//---------------------------------------------------------------------------
 
-void COpenGL::MouseUp()
-{
-  apertado=false;
-  mediax-=x2*FATOR_TELA/zoom;
-  mediay-=y2*FATOR_TELA/zoom;
-  maiorx += distX;
-  menorx += distX;
-  menory += distY;
-  maiory += distY;
-  x2=0;
-  y2=0;
-  distX = distY = 0;
-}
-//---------------------------------------------------------------------------
-
-void COpenGL::DeslocaDesenho(int X, int Y)
-{
-  apertado=true;
-  x1=X;
-  y1=Y;
-}
-//---------------------------------------------------------------------------
-
-void COpenGL::SetZoom(int Zoom)
-{
-  int difZoom;
-  difZoom = Zoom - oldZoom;
-  menorx += (FatorZoomX * difZoom) /2;
-  maiorx -= (FatorZoomX * difZoom) /2;
-  menory += (FatorZoomY * difZoom) /2;
-  maiory -= (FatorZoomY * difZoom) /2;
-  intervaloX -= (FatorZoomX * difZoom);
-  intervaloY -= (FatorZoomY * difZoom);
-  oldZoom = Zoom;
-}
-//---------------------------------------------------------------------------
 
 void COpenGL::DesenhaArco(float x_center, float y_center, float w,
           float h, float startAngle, float arcAngle, int n)
@@ -207,22 +141,11 @@ void COpenGL::EscreveTexto(string texto, TPonto origem, double rotacao, double F
 
 void COpenGL::AjustaExibicao()
 {
-  glMatrixMode(GL_PROJECTION); // Muda a pilha de transforma��es para a matriz de proje��o
-  glLoadIdentity(); // Carrega a matriz identidade na matriz atual
-  glOrtho (menorx + distX, menorx + distX + intervaloX, menory + distY, menory + distY + intervaloY, -50, 50);
-  // distX/distY servem pra enquanto o desenho est� sendo deslocado
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-}
-//---------------------------------------------------------------------------
-
-TPonto COpenGL::ConvertePonto(int X, int Y)
-{
-  TPonto retorno;
-
-  retorno.x = intervaloX/w * X + menorx + distX;
-  retorno.y = intervaloY/h * (h-Y) + menory + distY;
-
-  return retorno;
+	glMatrixMode(GL_PROJECTION); // Muda a pilha de transforma��es para a matriz de proje��o
+	glLoadIdentity(); // Carrega a matriz identidade na matriz atual
+	glOrtho( _glCoords.getLeft(), _glCoords.getRight(), _glCoords.getBottom(), _glCoords.getTop(), -50, 50);
+	// distX/distY servem pra enquanto o desenho est� sendo deslocado
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 //---------------------------------------------------------------------------

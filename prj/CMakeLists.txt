@@ -40,6 +40,7 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UMostraDesenho.cpp
 				${SRC_BASE}/UNiveisProjeto.cpp
 				${SRC_BASE}/UOpenGL.cpp
+				${SRC_BASE}/GLCoords.cpp
 				${SRC_BASE}/UParamsStructs.cpp
 				${SRC_BASE}/UStructs.cpp
 				${SRC_BASE}/UTCallbackStatusCarregamento.cpp

@@ -28,17 +28,13 @@ CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *info
         COpenGL(600, 600, parent),
         bMostraArvore2( false ),
         CircuitoAExibir( -1 ),
-        x( -1 ),
-        y( -1 ),
         xBola( -1 ),
         yBola( - 1),
         tamBola( -1 ),
         VerticeArvore( -1 ),
-        VerticeArvore2( -1 ),
-        fator( -1 )
+        VerticeArvore2( -1 )
 {
   semCores = false;
-	apertado=false;
 	primeiro=true;
 	GrafoDesenho=grafoDesenho;
 	InfoCircuitos=infoCircuitos;
@@ -70,13 +66,8 @@ void CMostraDesenho::paintGL()
 
 void CMostraDesenho::initializeLimits()
 {	
-	mediax=0;
-	mediay=0;
-	menorx=Infinity;
-	menory=Infinity;
-	maiorx=-Infinity;
-	maiory=-Infinity;
-
+	float x, y;
+	_glCoords.initializeLimits();
 	if (GrafoDesenho->ult > GrafoDesenho->Dados->Multipoint.size())
 		GrafoDesenho->ult = GrafoDesenho->Dados->Multipoint.size();
 	for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
@@ -88,14 +79,7 @@ void CMostraDesenho::initializeLimits()
 			x = points[i].x;
 			y = points[i].y;
 
-			if (x>maiorx)
-				maiorx=x;
-			if (y>maiory)
-				maiory=y;
-			if (x<menorx)
-				menorx=x;
-			if (y<menory)
-				menory=y;
+			_glCoords.updateLimits( x, y );
 		}
 	}
 	for ( int i=0; i<GrafoDesenho->Dados->Arcos.size(); i++)
@@ -107,52 +91,13 @@ void CMostraDesenho::initializeLimits()
 
 			double raio = GrafoDesenho->Dados->Arcos[i].EixoPrimario;
 
-			if (x+raio>maiorx)
-				maiorx=x+raio;
-			if (y+raio>maiory)
-				maiory=y+raio;
-			if (x-raio<menorx)
-				menorx=x-raio;
-			if (y-raio<menory)
-				menory=y-raio;
+			_glCoords.updateLimits( x + raio, y + raio );
 		}
 	}
 	if (GrafoDesenho->Dados->NumElementos>0.00001)
-	{
-		mediax=(menorx+maiorx)/2;
-		mediay=(menory+maiory)/2;
-		if ((maiory-menory)>0.0001)
-			fator=1.0/(maiory-menory);
-		else if ((maiorx-menorx)>0.0001)
-			fator=1.0/(maiorx-menorx);
-		else
-			fator=1;
-		//FatorZoom=fator*FATOR_FATORES;
-	}
-	double diferenca;
-	intervaloX = maiorx - menorx;
-	intervaloY = maiory - menory;
-	if ( intervaloX > intervaloY )
-	{
-		intervaloX *= 1.05;
-		menorx -= intervaloX * 0.025;
-		maiorx -= intervaloX * 0.025;
-		intervaloY = intervaloX * (h / w);
-		menory -= (intervaloY - (maiory - menory))/2;
-		maiory -= (intervaloY - (maiory - menory))/2;
-	}
-	else
-	{
-		intervaloY *= 1.05;
-		menory -= intervaloY * 0.025;
-		maiory -= intervaloY * 0.025;
-		intervaloX = intervaloY * (w / h);
-		menorx -= (intervaloX - (maiorx - menorx))/2;
-		maiorx -= (intervaloX - (maiorx - menorx))/2;
-	}
-	FatorZoomX = intervaloX / 500; // 500 � o tamanho do slider
-	FatorZoomY = intervaloY / 500; // 500 � o tamanho do slider
-	oldZoom = 0;
+		_glCoords.updateMean();
+
+	_glCoords.updateProportion();
 	initialized = true;
 }
 
@@ -214,8 +159,8 @@ void CMostraDesenho::drawMultipoints()
 		{
 			for (int i=0; i<GrafoDesenho->Dados->Multipoint[n].pontos.size(); i++)
 			{
-				x=GrafoDesenho->Dados->Multipoint[n].pontos[i].x;
-				y=GrafoDesenho->Dados->Multipoint[n].pontos[i].y;
+				double x = GrafoDesenho->Dados->Multipoint[n].pontos[i].x;
+				double y = GrafoDesenho->Dados->Multipoint[n].pontos[i].y;
 				glVertex2f(x, y);
 			}
 		}
@@ -310,9 +255,6 @@ void CMostraDesenho::showTree()
 	glColor3f(pegaVermelho(CORARVORE)/255.0, pegaVerde(CORARVORE)/255.0, pegaAzul(CORARVORE)/255.0);
 	glLineWidth((GLfloat)(3.0));
 	glPushMatrix();
-	TPonto pos;
-	pos.x = menorx;
-	pos.y = menory;
 	//			EscreveTexto(("Origem: "+ GrafoDesenho->VerticesGerais->getItem(VerticeArvore)->texto).c_str(), pos, 0,
 	//					GrafoDesenho->Dados->Textos[0].FatorAltura*10);
 	glPopMatrix();
@@ -334,11 +276,11 @@ void CMostraDesenho::showTree()
 #define TAMBOLACOLAR (1000)
 		if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, intervaloX/TAMBOLACOLAR, intervaloX/TAMBOLACOLAR, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWidthLimits() / TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
 		if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, intervaloX/TAMBOLACOLAR, intervaloX/TAMBOLACOLAR, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWidthLimits()/TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
 	}
 	glLineWidth((GLfloat)(1.0));
@@ -353,9 +295,6 @@ void CMostraDesenho::showTree()
 		glLineWidth((GLfloat)(3.0));
 
 		glPushMatrix();
-		TPonto pos;
-		pos.x = menorx;
-		pos.y = menory-GrafoDesenho->Dados->Textos[0].FatorAltura*15;
 		//				EscreveTexto(("Destino: "+ GrafoDesenho->VerticesGerais->getItem(VerticeArvore2)->texto).c_str(), pos, 0,
 		//						GrafoDesenho->Dados->Textos[0].FatorAltura*10);
 		glPopMatrix();
@@ -376,11 +315,11 @@ void CMostraDesenho::showTree()
 			glEnd();
 			if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->EhColar )
 			{
-				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, intervaloX/TAMBOLACOLAR, intervaloX/TAMBOLACOLAR, 0, 2*M_PI, 20);
+				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWidthLimits()/TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
 			if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->EhColar )
 			{
-				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, intervaloX/TAMBOLACOLAR, intervaloX/TAMBOLACOLAR, 0, 2*M_PI, 20);
+				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWidthLimits()/TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
 		}
 		glLineWidth((GLfloat)(1.0));
@@ -645,7 +584,7 @@ void CMostraDesenho::MostraBola(double x, double y, double tam)
 	bMostraBola=true;
 	xBola=x;
 	yBola=y;
-	tamBola=tam * (intervaloX /100);
+	tamBola=tam * (_glCoords.getWidthLimits() /100);
 }
 //---------------------------------------------------------------------------
 void CMostraDesenho::SetDestacaCores(bool DestacaCores)
@@ -683,3 +622,11 @@ void CMostraDesenho::resizeGL(int width, int height)
 	Resize( width, height );
 }
 
+
+
+void CMostraDesenho::mouseMoveEvent( QMouseEvent * event )
+{
+	_glCoords.mouseMove( event->x(), event->y() );
+	_glCoords.mouseUp();
+	Paint();
+}

@@ -44,6 +44,6 @@ void DrawingPresenter::optionsChanged()
 	_window->_mostraDesenho->SetMostrarPontasDeCaboDescon( showDisconnectedCables );
 	_window->_mostraDesenho->SetDestacaBandeirolas( showBandeirolas );
 	_window->_mostraDesenho->SetMostraChegaEquip( showEquipmentEnding );
-	_window->_mostraDesenho->repaint();
+	_window->_mostraDesenho->Paint();
 }
 

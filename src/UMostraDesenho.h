@@ -34,7 +34,6 @@ private:
 
   bool ExibirCircuito;
   int CircuitoAExibir;
-  double x, y, fator;//usadas em MostraDesenho
   CGrafoDesenho *GrafoDesenho;
   CInfoCircuitos *InfoCircuitos;
   bool bMostraNumVerticesDEBUG;
@@ -48,6 +47,7 @@ private:
   bool mostraLigacaoEquipamento;
   bool MostrarPontasDeCaboDescon;
   double xBola, yBola, tamBola;
+  void mouseMoveEvent( QMouseEvent * event );
 protected:
   void DrawObjects();
   bool semCores;
