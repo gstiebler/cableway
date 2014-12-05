@@ -36,8 +36,13 @@ void GLCoords::mousePress(int X, int Y)
 
 void GLCoords::mouseMove(int X, int Y)
 {
-	xViewCenter = xViewCenterOnMousePress + ( xMousePress - X ) * getScreenToWorldRatio();
-	yViewCenter = yViewCenterOnMousePress + ( yMousePress - Y ) * getScreenToWorldRatio();
+	int deltaXScreen = xMousePress - X;
+	int deltaYScreen = yMousePress - Y;
+	double deltaX = deltaXScreen / getScreenToWorldRatio();
+	double deltaY = deltaYScreen / getScreenToWorldRatio();
+	xViewCenter = xViewCenterOnMousePress + deltaX;
+	yViewCenter = yViewCenterOnMousePress + deltaY;
+	//printf( "deltaXScreen %d, deltaX %f, ratio %f\n", deltaXScreen, deltaX, getScreenToWorldRatio() );
 }
 
 
@@ -126,5 +131,5 @@ double GLCoords::getTop() const
 
 double GLCoords::getScreenToWorldRatio() const
 {
-	return canvasWidth/ ( getWorldWidth() * zoom ) ;
+	return canvasWidth / ( getRight() - getLeft() ) ;
 }
