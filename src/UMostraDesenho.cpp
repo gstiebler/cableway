@@ -634,3 +634,12 @@ void CMostraDesenho::mouseMoveEvent( QMouseEvent *event )
 	_glCoords.mouseMove( event->x(), event->y() );
 	repaint();
 }
+
+
+
+void CMostraDesenho::wheelEvent(QWheelEvent * event)
+{
+	double increase = 1.0 + (event->angleDelta().y() / 1200.0);
+	_glCoords.incZoom( increase );
+	repaint();
+}

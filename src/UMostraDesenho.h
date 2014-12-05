@@ -49,6 +49,7 @@ private:
   double xBola, yBola, tamBola;
   void mousePressEvent( QMouseEvent *event );
   void mouseMoveEvent( QMouseEvent *event );
+  void wheelEvent(QWheelEvent * event);
 protected:
   void DrawObjects();
   bool semCores;

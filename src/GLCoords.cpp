@@ -98,33 +98,33 @@ double GLCoords::getWorldHeight() const
 
 double GLCoords::getLeft() const
 {
-	return xViewCenter - getWorldWidth() / 2;
+	return xViewCenter - getWorldWidth() / ( 2 * zoom );
 }
 
 
 
 double GLCoords::getRight() const
 {
-	return xViewCenter + getWorldWidth() / 2;
+	return xViewCenter + getWorldWidth() / ( 2 * zoom );
 }
 
 
 
 double GLCoords::getBottom() const
 {
-	return yViewCenter + getWorldHeight() / 2;
+	return yViewCenter + getWorldHeight() / ( 2 * zoom );
 }
 
 
 
 double GLCoords::getTop() const
 {
-	return yViewCenter - getWorldHeight() / 2;
+	return yViewCenter - getWorldHeight() / ( 2 * zoom );
 }
 
 
 
 double GLCoords::getScreenToWorldRatio() const
 {
-	return canvasWidth * zoom / getWorldWidth();
+	return canvasWidth/ ( getWorldWidth() * zoom ) ;
 }
