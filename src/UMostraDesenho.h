@@ -47,7 +47,8 @@ private:
   bool mostraLigacaoEquipamento;
   bool MostrarPontasDeCaboDescon;
   double xBola, yBola, tamBola;
-  void mouseMoveEvent( QMouseEvent * event );
+  void mousePressEvent( QMouseEvent *event );
+  void mouseMoveEvent( QMouseEvent *event );
 protected:
   void DrawObjects();
   bool semCores;

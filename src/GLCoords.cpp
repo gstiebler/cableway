@@ -1,136 +1,61 @@
 ﻿
 #include "GLCoords.h"
 
-GLCoords::GLCoords( int clientWidth, int clientHeight )
+GLCoords::GLCoords( int clientWidth, int clientHeight ) :
+	xMousePress( -1 ),
+	yMousePress( -1 ),
+	zoom( 0.9 ),
+	canvasWidth( clientWidth ),
+	canvasHeight( clientHeight )
 {
-	x = -1;
-	y = -1;
-	fator = -1;
-	w = clientWidth;
-	h = clientHeight;
-	x2=0;
-	y2=0;
-	
-	zoom=50 / 10000.0;
-	FatorZoomX=FatorZoomY=0.0;
-	oldZoom = 0;
-	
-	menorx = maiorx = 0.0;
-	menory = maiory = 0.0;
-	distX = distY = 0.0;
-	intervaloX = intervaloY = 0.0;
+	initializeLimits();
 }
 
 
 
 void GLCoords::resize( int clientWidth, int clientHeight )
 {
-	w = clientWidth;
-	h = clientHeight;
-	if(h == 0)
-		h = 1;
-	xMeioTela = w / 2;
-	yMeioTela = h / 2;
+	canvasWidth = clientWidth;
+	canvasHeight = clientHeight;
+
+	if(canvasHeight == 0)
+		canvasHeight = 1;
+}
+
+
+
+void GLCoords::mousePress(int X, int Y)
+{
+	xMousePress = X;
+	yMousePress = Y;
+	xViewCenterOnMousePress = xViewCenter;
+	yViewCenterOnMousePress = yViewCenter;
 }
 
 
 
 void GLCoords::mouseMove(int X, int Y)
 {
-    x2=X-x1;
-    y2=y1-Y;
-    distX = - intervaloX / w * x2;
-    distY = - intervaloY / h * y2;
+	xViewCenter = xViewCenterOnMousePress + ( xMousePress - X ) * getScreenToWorldRatio();
+	yViewCenter = yViewCenterOnMousePress + ( yMousePress - Y ) * getScreenToWorldRatio();
 }
 
 
 
-void GLCoords::mouseUp()
+
+void GLCoords::incZoom( double increase )
 {
-	mediax-=x2*FATOR_TELA/zoom;
-	mediay-=y2*FATOR_TELA/zoom;
-	maiorx += distX;
-	menorx += distX;
-	menory += distY;
-	maiory += distY;
-	x2=0;
-	y2=0;
-	distX = distY = 0;
-}
-
-
-
-void GLCoords::DeslocaDesenho(int X, int Y)
-{
-	x1=X;
-	y1=Y;
-}
-
-
-
-void GLCoords::SetZoom(int Zoom)
-{
-	int difZoom;
-	difZoom = Zoom - oldZoom;
-	menorx += (FatorZoomX * difZoom) /2;
-	maiorx -= (FatorZoomX * difZoom) /2;
-	menory += (FatorZoomY * difZoom) /2;
-	maiory -= (FatorZoomY * difZoom) /2;
-	intervaloX -= (FatorZoomX * difZoom);
-	intervaloY -= (FatorZoomY * difZoom);
-	oldZoom = Zoom;
-}
-
-
-
-double GLCoords::getLeft()
-{
-	return menorx + distX;
-}
-
-
-
-double GLCoords::getRight()
-{
-	return menorx + distX + intervaloX;
-}
-
-
-
-double GLCoords::getBottom()
-{
-	return menory + distY;
-}
-
-
-
-double GLCoords::getTop()
-{
-	return menory + distY + intervaloY;
-}
-
-
-
-TPonto GLCoords::ConvertePonto(int X, int Y)
-{
-  TPonto retorno;
-
-  retorno.x = intervaloX/w * X + menorx + distX;
-  retorno.y = intervaloY/h * (h-Y) + menory + distY;
-
-  return retorno;
+	zoom *= increase;
 }
 
 
 
 void GLCoords::initializeLimits()
 {
-	mediax=0;
-	mediay=0;
-	menorx=Infinity;
-	menory=Infinity;
-	maiorx=-Infinity;
-	maiory=-Infinity;
+	menorx = Infinity;
+	menory = Infinity;
+	maiorx = -Infinity;
+	maiory = -Infinity;
 }
 
 
@@ -149,57 +74,57 @@ void GLCoords::updateLimits( double x, double y )
 
 
 
-void GLCoords::updateMean()
-{	
-	mediax = (menorx + maiorx) / 2;
-	mediay = (menory + maiory) / 2;
-	if ((maiory-menory)>0.0001)
-		fator=1.0/(maiory-menory);
-	else if ((maiorx-menorx)>0.0001)
-		fator=1.0/(maiorx-menorx);
-	else
-		fator=1;
+void GLCoords::updateProportion()
+{
+	xViewCenter = menorx + getWorldWidth() / 2;
+	yViewCenter = menory + getWorldHeight() / 2;
 }
 
 
 
-double GLCoords::getWidthLimits()
+double GLCoords::getWorldWidth() const
 {
 	return maiorx - menorx;
 }
 
 
 
-double GLCoords::getHeightLimits()
+double GLCoords::getWorldHeight() const
 {
 	return maiory - menory;
 }
 
 
 
-void GLCoords::updateProportion()
+double GLCoords::getLeft() const
 {
-	intervaloX = maiorx - menorx;
-	intervaloY = maiory - menory;
-	if ( intervaloX > intervaloY )
-	{
-		intervaloX *= 1.05;
-		menorx -= intervaloX * 0.025;
-		maiorx -= intervaloX * 0.025;
-		intervaloY = intervaloX * (h / w);
-		menory -= (intervaloY - (maiory - menory))/2;
-		maiory -= (intervaloY - (maiory - menory))/2;
-	}
-	else
-	{
-		intervaloY *= 1.05;
-		menory -= intervaloY * 0.025;
-		maiory -= intervaloY * 0.025;
-		intervaloX = intervaloY * (w / h);
-		menorx -= (intervaloX - (maiorx - menorx))/2;
-		maiorx -= (intervaloX - (maiorx - menorx))/2;
-	}
-	FatorZoomX = intervaloX / 500; // 500 � o tamanho do slider
-	FatorZoomY = intervaloY / 500; // 500 � o tamanho do slider
-	oldZoom = 0;
+	return xViewCenter - getWorldWidth() / 2;
+}
+
+
+
+double GLCoords::getRight() const
+{
+	return xViewCenter + getWorldWidth() / 2;
+}
+
+
+
+double GLCoords::getBottom() const
+{
+	return yViewCenter + getWorldHeight() / 2;
+}
+
+
+
+double GLCoords::getTop() const
+{
+	return yViewCenter - getWorldHeight() / 2;
+}
+
+
+
+double GLCoords::getScreenToWorldRatio() const
+{
+	return canvasWidth * zoom / getWorldWidth();
 }

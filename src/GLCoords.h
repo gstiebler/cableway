@@ -15,41 +15,31 @@ public:
 	GLCoords( int clientWidth, int clientHeight );
 
 	void resize( int clientWidth, int clientHeight );
-
+	
+	void mousePress(int X, int Y);
 	void mouseMove(int X, int Y);
 
-	void mouseUp();
+	void incZoom( double increase );
 
-	void DeslocaDesenho(int X, int Y);
-
-	void SetZoom(int Zoom);
-
-	double getLeft();
-	double getRight();
-	double getBottom();
-	double getTop();
-
+	void updateProportion();
 	void initializeLimits();
 	void updateLimits( double x, double y );
 
-	TPonto ConvertePonto(int X, int Y);
+	double getLeft() const;
+	double getRight() const;
+	double getBottom() const;
+	double getTop() const;
 
-	void updateMean();
-	void updateProportion();
+	double getScreenToWorldRatio() const;
 	
-	double getWidthLimits();
-	double getHeightLimits();
+	double getWorldWidth() const;
+	double getWorldHeight() const;
 
-	float x, y, xstep, ystep, w, h;
-	int size;
-	float x1, y1, x2, y2, distX, distY;
+	int xMousePress, yMousePress;
+	double xViewCenterOnMousePress, yViewCenterOnMousePress;
+	double xViewCenter, yViewCenter;
+	int canvasWidth, canvasHeight;
 	float zoom;
-	double fator;//usadas em MostraDesenho
 	
-	double mediax, mediay;
-	double menorx, menory, maiorx, maiory, intervaloX, intervaloY;
-	int xMeioTela, yMeioTela;
-	int oldZoom;
-	
-	double FatorZoomX, FatorZoomY;
+	double menorx, menory, maiorx, maiory;
 };

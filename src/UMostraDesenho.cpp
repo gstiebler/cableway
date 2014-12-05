@@ -94,8 +94,6 @@ void CMostraDesenho::initializeLimits()
 			_glCoords.updateLimits( x + raio, y + raio );
 		}
 	}
-	if (GrafoDesenho->Dados->NumElementos>0.00001)
-		_glCoords.updateMean();
 
 	_glCoords.updateProportion();
 	initialized = true;
@@ -276,11 +274,11 @@ void CMostraDesenho::showTree()
 #define TAMBOLACOLAR (1000)
 		if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWidthLimits() / TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
 		if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWidthLimits()/TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
 	}
 	glLineWidth((GLfloat)(1.0));
@@ -315,11 +313,11 @@ void CMostraDesenho::showTree()
 			glEnd();
 			if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->EhColar )
 			{
-				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWidthLimits()/TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
 			if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->EhColar )
 			{
-				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWidthLimits()/TAMBOLACOLAR, _glCoords.getWidthLimits()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
 		}
 		glLineWidth((GLfloat)(1.0));
@@ -584,7 +582,7 @@ void CMostraDesenho::MostraBola(double x, double y, double tam)
 	bMostraBola=true;
 	xBola=x;
 	yBola=y;
-	tamBola=tam * (_glCoords.getWidthLimits() /100);
+	tamBola=tam * (_glCoords.getWorldWidth() /100);
 }
 //---------------------------------------------------------------------------
 void CMostraDesenho::SetDestacaCores(bool DestacaCores)
@@ -624,9 +622,15 @@ void CMostraDesenho::resizeGL(int width, int height)
 
 
 
-void CMostraDesenho::mouseMoveEvent( QMouseEvent * event )
+void CMostraDesenho::mousePressEvent( QMouseEvent *event )
+{
+	_glCoords.mousePress( event->x(), event->y() );
+}
+
+
+
+void CMostraDesenho::mouseMoveEvent( QMouseEvent *event )
 {
 	_glCoords.mouseMove( event->x(), event->y() );
-	_glCoords.mouseUp();
-	Paint();
+	repaint();
 }

@@ -42,7 +42,7 @@ void COpenGL::RenderGLScene()
 void COpenGL::Resize(int ClientWidth, int ClientHeight)
 {
 	_glCoords.resize( ClientWidth, ClientHeight );
-	glViewport(0, 0, _glCoords.w, _glCoords.h);
+	glViewport(0, 0, _glCoords.canvasWidth, _glCoords.canvasHeight);
 	AjustaExibicao();
 }
 //---------------------------------------------------------------------------
