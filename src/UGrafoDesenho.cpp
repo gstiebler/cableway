@@ -903,9 +903,10 @@ TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCel
     for (i = 0; i < ListaItensCelula->Tamanho(); i++)
     {
         //se o item corrente da c�lula for multipoint, continua
-        if (ListaItensCelula->getItem( i )->TipoVetorCW == VMULTIPOINT)
+		TItemCelula *itemCelula = ListaItensCelula->getItem( i );
+        if (itemCelula->TipoVetorCW == VMULTIPOINT)
         {
-            for (j = 0; j < Dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos.size();
+            for (j = 0; j < Dados->Multipoint[itemCelula->Indice].pontos.size();
                     j++)
             {
                 if (first)

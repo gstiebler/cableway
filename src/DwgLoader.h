@@ -17,6 +17,7 @@
 class CDadosGenerico;
 class TListaItensCelula;
 struct UserParams;
+class TMultipoint;
 
 class DwgLoader
 {
@@ -34,6 +35,12 @@ private:
     void add_text( Dwg_Entity_TEXT *text );
     void add_circle(Dwg_Entity_CIRCLE *circle);
     void add_line(Dwg_Entity_LINE *line);
+
+	void addMultipoint(const TMultipoint *multipoint, void *line);
+	int getMultipointIndex(Dwg_Entity_LINE *line);
+	int getMultipointIndex(Dwg_Entity_LWPLINE *lwpline);
+
+	int geTextIndex(Dwg_Entity_TEXT *text);
 
     std::shared_ptr<CDadosGenerico> _dados;
 

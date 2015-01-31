@@ -28,7 +28,7 @@ void DwgLoader::add_line(Dwg_Entity_LINE *line)
     if( _currCell )
     {
         TItemCelula itemCelula;
-        itemCelula.Indice = _pointerToMultipointIndex[line];
+        itemCelula.Indice = getMultipointIndex( line );
         itemCelula.TipoVetorCW = VMULTIPOINT;
         _currCell->Adiciona( itemCelula );
     }
@@ -41,9 +41,8 @@ void DwgLoader::add_line(Dwg_Entity_LINE *line)
         multipoint.Nivel = _currLayer;
         multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
         multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
-        _dados->Multipoint.push_back( multipoint );
 
-        _pointerToMultipointIndex[line] = _dados->Multipoint.size() - 1;
+		addMultipoint( &multipoint, line );
     }
 }
 
@@ -66,7 +65,7 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
     //printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, textStr.c_str() );
     if( _currCell )
     {
-        int textIndex = _pointerToTextIndex[text];
+        int textIndex = geTextIndex( text );
         _currCell->iTextos.push_back( textIndex );
     }
     else
@@ -126,7 +125,7 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
     if( _currCell )
     {
         TItemCelula itemCelula;
-        itemCelula.Indice = _pointerToMultipointIndex[lwpline];
+        itemCelula.Indice = getMultipointIndex( lwpline );
         itemCelula.TipoVetorCW = VMULTIPOINT;
         _currCell->Adiciona( itemCelula );
     }
@@ -142,12 +141,74 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
             multipoint.pontos.push_back( TPonto(lwpline->points[i].x, lwpline->points[i].y) );
             //printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
         }
-        _dados->Multipoint.push_back( multipoint );
 
-        //printf( "end lwpline\n" );
-
-        _pointerToMultipointIndex[lwpline] = _dados->Multipoint.size() - 1;
+		addMultipoint( &multipoint, lwpline );
     }
+}
+
+void DwgLoader::addMultipoint(const TMultipoint *multipoint, void *line)
+{
+        _dados->Multipoint.push_back( *multipoint );
+        _pointerToMultipointIndex[line] = _dados->Multipoint.size() - 1;
+}
+
+int DwgLoader::getMultipointIndex(Dwg_Entity_LINE *line)
+{
+	map<void*, int>::iterator it = _pointerToMultipointIndex.find( line );
+	if( it != _pointerToMultipointIndex.end() )
+		return it->second;
+	else
+	{
+        TMultipoint multipoint;
+        multipoint.Nivel = _currLayer;
+        multipoint.pontos.push_back( TPonto(line->start.x, line->start.y) );
+        multipoint.pontos.push_back( TPonto(line->end.x, line->end.y) );
+
+		addMultipoint( &multipoint, line );
+
+		return _dados->Multipoint.size() - 1;
+	}
+}
+
+int DwgLoader::getMultipointIndex(Dwg_Entity_LWPLINE *lwpline)
+{
+	map<void*, int>::iterator it = _pointerToMultipointIndex.find( lwpline );
+	if( it != _pointerToMultipointIndex.end() )
+		return it->second;
+	else
+	{
+        TMultipoint multipoint;
+        multipoint.Nivel = _currLayer;
+        for(int i(0); i < lwpline->num_points; ++i)
+            multipoint.pontos.push_back( TPonto(lwpline->points[i].x, lwpline->points[i].y) );
+
+		addMultipoint( &multipoint, lwpline );
+
+		return _dados->Multipoint.size() - 1;
+	}
+}
+
+int DwgLoader::geTextIndex(Dwg_Entity_TEXT *text)
+{
+	map<void*, int>::iterator it = _pointerToTextIndex.find( text );
+	if( it != _pointerToTextIndex.end() )
+		return it->second;
+	else
+	{
+		
+		string textStr = string( (char*) text->text_value );
+		textStr = textStr.substr( 0, textStr.length() - 1 );
+
+        TTexto texto;
+        texto.Nivel = _currLayer;
+        texto.origem.x = text->insertion_pt.x;
+        texto.origem.y = text->insertion_pt.y;
+        texto.texto = textStr;
+        _dados->Textos.push_back( texto );
+        _pointerToTextIndex[text] = _dados->Textos.size() - 1;
+
+		return _dados->Textos.size() - 1;
+	}
 }
 
 void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
