@@ -130,8 +130,6 @@ void COpenGL::DesenhaBolaFechada(float x_center, float y_center, float w,
 void COpenGL::EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura)
 {
   glPushMatrix();
-    //glTranslatef(origem.x, origem.y, 0);
-    //glScalef(FatorAltura*FATOR_FONTE, FatorAltura*FATOR_FONTE, 0);
     glRotatef(rotacao, 0, 0, 1);
 	QString txt( texto.c_str() );
 	double canvasWidth = _glCoords.getRight() - _glCoords.getLeft();

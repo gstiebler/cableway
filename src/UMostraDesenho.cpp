@@ -366,14 +366,15 @@ void CMostraDesenho::showBandeirolaEndings()
 	{
 		glColor3f(1.0, 1.0, 1.0);
 		glLineWidth((GLfloat)(4.0));
-		if (DistPontos(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo) > GrafoDesenho->DistMinElemCaboPraOpenGL) // Se a dist�ncia entre os pontos n�o for muito pequena mostra uma reta
+		double dist = DistPontos(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo);
+		if (dist > GrafoDesenho->DistMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
 		{
 			glBegin(GL_LINE_STRIP);
 			glVertex2f(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola.y);
 			glVertex2f(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.y);
 			glEnd();
 		}
-		else // Sen�o, faz um c�rculo em volta dos pontos
+		else // Senão, faz um círculo em volta dos pontos
 		{
 			DesenhaArco(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.y,
 					GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);

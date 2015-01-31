@@ -69,6 +69,7 @@ void TInfoCelula::AdicionaTexto(int iTexto, string Texto, int NivelTexto)
 	if ( NivelTexto == TAG )
 	{
 		ListaItensCelula->iTextos.push_back(iTexto);
+		TipoElementoCelulaAtual = INSTRUMENTO;
 	}
 	// Caso ele esteja em nível de bandeirola, ele � adicionado ao vetor de bandeirolas
 	// da c�lula. 
@@ -77,6 +78,7 @@ void TInfoCelula::AdicionaTexto(int iTexto, string Texto, int NivelTexto)
 	else if ( NivelTexto == BANDEIROLA )
 	{
 		ListaItensCelula->iTextosBandeirola.push_back(iTexto);
+		TipoElementoCelulaAtual = BANDEIROLA;
 	}
 }
 
@@ -96,7 +98,7 @@ void TInfoCelula::FechaCelula()
 	switch (TipoElementoCelulaAtual)
 	{
 	// Caso esteja em grupamento de instrumento, ele adiciona na lista de intrumentos
-	case INSTRUMENTODESCON:
+	case INSTRUMENTO:
 		ListaCelulasInstrumentos->Adiciona(ListaItensCelula);
 		break;
 	// Caso esteja em grupamento de bandeirola, ele adiciona na lista de bandeirolas

@@ -47,8 +47,6 @@ private:
 
     std::shared_ptr<CDadosGenerico> _dados;
 
-    TListaItensCelula *_currCell;
-
     int _objDepth;
     bool _insideModelSpace;
 

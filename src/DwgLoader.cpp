@@ -25,12 +25,12 @@ using namespace std;
 void DwgLoader::add_line(Dwg_Entity_LINE *line)
 {
     //printf( "line: %f %f %f %f\n", line->start.x, line->end.x, line->start.y, line->end.y );
-    if( _currCell )
+	if( _dados->InfoCelula.DentroCelula )
     {
         TItemCelula itemCelula;
         itemCelula.Indice = getMultipointIndex( line );
         itemCelula.TipoVetorCW = VMULTIPOINT;
-        _currCell->Adiciona( itemCelula );
+		_dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
     }
     else
     {
@@ -60,10 +60,10 @@ void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
 
 void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 {
-    if( _currCell )
+    if( _dados->InfoCelula.DentroCelula )
     {
         int textIndex = geTextIndex( text );
-        _currCell->iTextos.push_back( textIndex );
+		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex].texto, _dados->Textos[textIndex].Nivel );
     }
     else
     {
@@ -82,12 +82,11 @@ void DwgLoader::add_group( Dwg_Object_GROUP *group )
     //printf( "group: %d, %s, depth: %d\n", group->num_handles, group->str, _objDepth );
 
     _objDepth++;
-    _currCell = new TListaItensCelula();
+	_ASSERT( !_dados->InfoCelula.DentroCelula );
+	_dados->InfoCelula.EntraCelula( 0, false );
     for(int i(0); i < group->num_handles; ++i)
         print_obj(group->group_entries[i]->obj);
-    _dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( *_currCell );
-    delete _currCell;
-    _currCell = NULL;
+	_dados->InfoCelula.FechaCelula();
     _objDepth--;
 
     //printf("end group %s, depth: %d\n", group->str, _objDepth);
@@ -116,12 +115,12 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
     //for(int i(0); i < lwpline->num_points; ++i)
     //    printf( "%f %f\n", lwpline->points[i].x, lwpline->points[i].y );
 
-    if( _currCell )
+    if( _dados->InfoCelula.DentroCelula )
     {
         TItemCelula itemCelula;
         itemCelula.Indice = getMultipointIndex( lwpline );
         itemCelula.TipoVetorCW = VMULTIPOINT;
-        _currCell->Adiciona( itemCelula );
+        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
     }
     else
     {
@@ -294,7 +293,6 @@ void DwgLoader::print_obj(Dwg_Object *obj)
 
 DwgLoader::DwgLoader( string fileName, std::shared_ptr<CDadosGenerico> dados, UserParams *userParams ) :
     _dados( dados ),
-    _currCell( NULL ),
     _objDepth( 0 ),
     _insideModelSpace( false ),
     _currLayer( -1 ),

@@ -16,6 +16,8 @@ DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCi
     _mostraDesenho = new CMostraDesenho( grafoDesenho, infoCircuitos );
     verticalLayout->addWidget( _mostraDesenho );
 
+	cbShowOriginalColors->setChecked( true );
+
 	setAttribute( Qt::WA_DeleteOnClose );
 
 	connect( cbShowOriginalColors, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
