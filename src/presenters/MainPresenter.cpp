@@ -57,10 +57,13 @@ void MainPresenter::fillWindowGrid( const vector<InputCircuit> &inputCircuits, c
 
 void MainPresenter::showCircuit( const QModelIndex &index )
 {
-	printf( "Index: %d\n", index.row() );
+	int indexOnGrid = index.row();
+	printf( "Index: %d\n", indexOnGrid );
 
     CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho(0)->GrafoDesenho;
     CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
-	DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, index.row() );
+
+	int circuitId = infoCircuitos->ListaArestasDoCircuito( indexOnGrid );
+	DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, circuitId );
 }
 
