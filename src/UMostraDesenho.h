@@ -50,6 +50,8 @@ private:
   void mousePressEvent( QMouseEvent *event );
   void mouseMoveEvent( QMouseEvent *event );
   void wheelEvent(QWheelEvent * event);
+  void setColorFromLevel( int level );
+
 protected:
   void DrawObjects();
   bool semCores;

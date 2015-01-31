@@ -99,7 +99,34 @@ void CMostraDesenho::initializeLimits()
 	initialized = true;
 }
 
-
+void CMostraDesenho::setColorFromLevel( int level )
+{
+	switch ( level )
+	{
+		case CALHA:
+			glColor3f(0.0, 1, 1);
+			break;
+		case CABO:
+			glColor3f(pegaVermelho(CORCABO)/255.0, pegaVerde(CORCABO)/255.0, pegaAzul(CORCABO)/255.0);
+			break;
+		case BANDEIROLA:
+			glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
+			break;
+		case TAG:
+			glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
+			break;
+		case INSTRUMENTO:
+			glColor3f(pegaVermelho(CORINSTRUMENTO)/255.0, pegaVerde(CORINSTRUMENTO)/255.0, pegaAzul(CORINSTRUMENTO)/255.0);
+			break;
+		case INSTRUMENTODESCON:
+			glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
+			break;
+		case NADA:
+		default:
+			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
+			break;
+	}
+}
 
 void CMostraDesenho::drawMultipoints()
 {
@@ -112,33 +139,7 @@ void CMostraDesenho::drawMultipoints()
 		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
 		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
 		if (destacaCoresDeEquipamentos)
-		{
-			switch ( GrafoDesenho->Dados->Multipoint[n].Nivel )
-			{
-				case CALHA:
-					glColor3f(0.0, 1, 1);
-					break;
-				case CABO:
-					glColor3f(pegaVermelho(CORCABO)/255.0, pegaVerde(CORCABO)/255.0, pegaAzul(CORCABO)/255.0);
-					break;
-				case BANDEIROLA:
-					glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
-					break;
-				case TAG:
-					glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
-					break;
-				case INSTRUMENTO:
-					glColor3f(pegaVermelho(CORINSTRUMENTO)/255.0, pegaVerde(CORINSTRUMENTO)/255.0, pegaAzul(CORINSTRUMENTO)/255.0);
-					break;
-				case INSTRUMENTODESCON:
-					glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
-					break;
-				case NADA:
-				default:
-					glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
-					break;
-			}
-		}
+			setColorFromLevel( GrafoDesenho->Dados->Multipoint[n].Nivel );
     if ( semCores )
     {
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
@@ -180,33 +181,7 @@ void CMostraDesenho::drawArcs()
 		glColor3f(GrafoDesenho->Dados->Arcos[n].CorR/255.0, GrafoDesenho->Dados->Arcos[n].CorG/255.0,
 				GrafoDesenho->Dados->Arcos[n].CorB/255.0);
 		if ( destacaCoresDeEquipamentos )
-		{
-			switch ( GrafoDesenho->Dados->Arcos[n].Nivel )
-			{
-				case CALHA:
-					glColor3f(0.0, 1, 1);
-					break;
-				case CABO:
-					glColor3f(pegaVermelho(CORCABO)/255.0, pegaVerde(CORCABO)/255.0, pegaAzul(CORCABO)/255.0);
-					break;
-				case BANDEIROLA:
-					glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
-					break;
-				case TAG:
-					glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
-					break;
-				case INSTRUMENTO:
-					glColor3f(pegaVermelho(CORINSTRUMENTO)/255.0, pegaVerde(CORINSTRUMENTO)/255.0, pegaAzul(CORINSTRUMENTO)/255.0);
-					break;
-				case INSTRUMENTODESCON:
-					glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
-					break;
-				case NADA:
-				default:
-					glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
-					break;
-			}
-		}
+			setColorFromLevel( GrafoDesenho->Dados->Arcos[n].Nivel );
     if ( semCores )
     {
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
@@ -420,33 +395,7 @@ void CMostraDesenho::drawTexts()
 				GrafoDesenho->Dados->Textos[n].CorB/255.0);
 
 		if ( destacaCoresDeEquipamentos )
-		{
-			switch ( GrafoDesenho->Dados->Textos[n].Nivel )
-			{
-				case CALHA:
-					glColor3f(0.0, 1, 1);
-					break;
-				case CABO:
-					glColor3f(pegaVermelho(CORCABO)/255.0, pegaVerde(CORCABO)/255.0, pegaAzul(CORCABO)/255.0);
-					break;
-				case BANDEIROLA:
-					glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
-					break;
-				case TAG:
-					glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
-					break;
-				case INSTRUMENTO:
-					glColor3f(pegaVermelho(CORINSTRUMENTO)/255.0, pegaVerde(CORINSTRUMENTO)/255.0, pegaAzul(CORINSTRUMENTO)/255.0);
-					break;
-				case INSTRUMENTODESCON:
-					glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
-					break;
-				case NADA:
-				default:
-					glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
-					break;
-			}
-		}
+			setColorFromLevel( GrafoDesenho->Dados->Textos[n].Nivel );
     if ( semCores )
     {
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
