@@ -417,9 +417,9 @@ void CMostraDesenho::DrawObjects()
 
 	AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
 
-	if (primeiro)
-	{
-		glNewList(1, GL_COMPILE);
+	//if (primeiro)
+	//{
+	//	glNewList(1, GL_COMPILE);
 		//LINHAS
 		drawMultipoints();
 
@@ -471,10 +471,10 @@ void CMostraDesenho::DrawObjects()
 			glColor3f(0.0, 0.0, 1.0);
 			DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI, 20);
 		}
-		glEndList();
-	}
-	else
-		glCallList(1);
+	//	glEndList();
+	//}
+	//else
+	//	glCallList(1);
 	primeiro=false;
 	glPopMatrix();   
 }

@@ -131,10 +131,14 @@ void COpenGL::EscreveTexto(string texto, TPonto origem, double rotacao, double F
 {
   glPushMatrix();
     //glTranslatef(origem.x, origem.y, 0);
-    glScalef(FatorAltura*FATOR_FONTE, FatorAltura*FATOR_FONTE, 0);
+    //glScalef(FatorAltura*FATOR_FONTE, FatorAltura*FATOR_FONTE, 0);
     glRotatef(rotacao, 0, 0, 1);
 	QString txt( texto.c_str() );
-	renderText(origem.x, origem.y, 0.0, txt, QFont("Arial", 12, QFont::Bold, false) );
+	double canvasWidth = _glCoords.getRight() - _glCoords.getLeft();
+	int fontSize = 300000 / canvasWidth;
+	if( fontSize < 1 )
+		fontSize = 1;
+	renderText(origem.x, origem.y, 0.0, txt, QFont("Arial", fontSize, QFont::Bold, false) );
   glPopMatrix();
 }
 //---------------------------------------------------------------------------
