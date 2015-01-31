@@ -388,23 +388,18 @@ void CMostraDesenho::drawTexts()
 {
 	for (int n=0; n<GrafoDesenho->Dados->Textos.size(); n++)
 	{
-		//      byte cor=GrafoDesenho->Dados->Textos[n].Cor;
-		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
-		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
-		glColor3f(GrafoDesenho->Dados->Textos[n].CorR/255.0, GrafoDesenho->Dados->Textos[n].CorG/255.0,
-				GrafoDesenho->Dados->Textos[n].CorB/255.0);
+		TTexto &texto = GrafoDesenho->Dados->Textos[n];
 
 		if ( destacaCoresDeEquipamentos )
-			setColorFromLevel( GrafoDesenho->Dados->Textos[n].Nivel );
-    if ( semCores )
-    {
+			setColorFromLevel( texto.Nivel );
+		else if ( semCores )
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
-    }
-
+		else
+			glColor3f( texto.CorR/255.0, texto.CorG/255.0, texto.CorB/255.0);
 
 		glPushMatrix();
-		EscreveTexto(GrafoDesenho->Dados->Textos[n].texto, GrafoDesenho->Dados->Textos[n].origem,
-				GrafoDesenho->Dados->Textos[n].rotacao, GrafoDesenho->Dados->Textos[n].FatorAltura);
+
+		EscreveTexto(texto.texto, texto.origem, texto.rotacao, texto.FatorAltura);
 		glPopMatrix();
 	}
 }
