@@ -18,6 +18,7 @@ class CDadosGenerico;
 class TListaItensCelula;
 struct UserParams;
 class TMultipoint;
+class TTexto;
 
 class DwgLoader
 {
@@ -41,6 +42,8 @@ private:
 	int getMultipointIndex(Dwg_Entity_LWPLINE *lwpline);
 
 	int geTextIndex(Dwg_Entity_TEXT *text);
+
+	void dwg2cwText( Dwg_Entity_TEXT *dwgText, TTexto *cwText );
 
     std::shared_ptr<CDadosGenerico> _dados;
 

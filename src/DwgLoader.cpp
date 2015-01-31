@@ -60,9 +60,6 @@ void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
 
 void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 {
-    string textStr = string( (char*) text->text_value );
-    textStr = textStr.substr( 0, textStr.length() - 1 );
-    //printf( "text: %f %f %s\n", text->insertion_pt.x, text->insertion_pt.y, textStr.c_str() );
     if( _currCell )
     {
         int textIndex = geTextIndex( text );
@@ -74,10 +71,7 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
             return;
 
         TTexto texto;
-        texto.Nivel = _currLayer;
-        texto.origem.x = text->insertion_pt.x;
-        texto.origem.y = text->insertion_pt.y;
-        texto.texto = textStr;
+		dwg2cwText( text, &texto );
         _dados->Textos.push_back( texto );
         _pointerToTextIndex[text] = _dados->Textos.size() - 1;
     }
@@ -195,21 +189,29 @@ int DwgLoader::geTextIndex(Dwg_Entity_TEXT *text)
 		return it->second;
 	else
 	{
-		
-		string textStr = string( (char*) text->text_value );
-		textStr = textStr.substr( 0, textStr.length() - 1 );
-
         TTexto texto;
-        texto.Nivel = _currLayer;
-        texto.origem.x = text->insertion_pt.x;
-        texto.origem.y = text->insertion_pt.y;
-        texto.texto = textStr;
+		dwg2cwText( text, &texto );
         _dados->Textos.push_back( texto );
         _pointerToTextIndex[text] = _dados->Textos.size() - 1;
 
 		return _dados->Textos.size() - 1;
 	}
 }
+
+
+
+void DwgLoader::dwg2cwText( Dwg_Entity_TEXT *dwgText, TTexto *cwText )
+{
+	string textStr = string( (char*) dwgText->text_value );
+	textStr = textStr.substr( 0, textStr.length() - 1 );
+
+    cwText->Nivel = _currLayer;
+    cwText->origem.x = dwgText->insertion_pt.x;
+    cwText->origem.y = dwgText->insertion_pt.y;
+    cwText->texto = textStr;
+}
+
+
 
 void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
