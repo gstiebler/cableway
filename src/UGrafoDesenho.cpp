@@ -244,7 +244,9 @@ void CGrafoDesenho::GeraListaCabos()
         }
     }
     MediaRaioCaboArco = NumCabosArco > 0 ? SomaRaios / NumCabosArco : 0;
-    DistMinElemCaboPraOpenGL = MediaRaioCaboArco * FATOR_DIST_MIN_ELEM_CABO;
+    //DistMinElemCaboPraOpenGL = MediaRaioCaboArco * FATOR_DIST_MIN_ELEM_CABO;
+	//temporary!
+	DistMinElemCaboPraOpenGL = 10.0;
 }
 //---------------------------------------------------------------------------
 

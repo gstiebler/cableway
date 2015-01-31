@@ -376,7 +376,8 @@ void CMostraDesenho::showBandeirolaEndings()
 		}
 		else // Senão, faz um círculo em volta dos pontos
 		{
-			DesenhaArco(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.y,
+			TPontosBandeirola &pontosBandeirola = GrafoDesenho->PontosPraMostrarBandeirola[n];
+			DesenhaArco( pontosBandeirola.NoCabo.x, pontosBandeirola.NoCabo.y,
 					GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 		}
 		glLineWidth((GLfloat)(1.0));

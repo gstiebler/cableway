@@ -17,6 +17,7 @@ DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCi
     verticalLayout->addWidget( _mostraDesenho );
 
 	cbShowOriginalColors->setChecked( true );
+	cbShowBandeirolas->setChecked( true );
 
 	setAttribute( Qt::WA_DeleteOnClose );
 
