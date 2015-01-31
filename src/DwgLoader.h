@@ -48,7 +48,7 @@ private:
     std::shared_ptr<CDadosGenerico> _dados;
 
     int _objDepth;
-    bool _insideModelSpace;
+    bool _insideUspace;
 
     /** Converts the DWG pointer to a index in the CDadosGenerico list */
     std::map<void*, int> _pointerToMultipointIndex;

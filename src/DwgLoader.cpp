@@ -24,7 +24,7 @@ using namespace std;
 
 void DwgLoader::add_line(Dwg_Entity_LINE *line)
 {
-    //printf( "line: %f %f %f %f\n", line->start.x, line->end.x, line->start.y, line->end.y );
+	//printf( "line: %f %f %f %f %d\n", line->start.x, line->end.x, line->start.y, line->end.y, _currLayer );
 	if( _dados->InfoCelula.DentroCelula )
     {
         TItemCelula itemCelula;
@@ -34,7 +34,7 @@ void DwgLoader::add_line(Dwg_Entity_LINE *line)
     }
     else
     {
-        if(!_insideModelSpace)
+        if(!_insideUspace)
             return;
 
         TMultipoint multipoint;
@@ -67,7 +67,7 @@ void DwgLoader::add_text( Dwg_Entity_TEXT *text )
     }
     else
     {
-        if(!_insideModelSpace)
+        if(!_insideUspace)
             return;
 
         TTexto texto;
@@ -124,7 +124,7 @@ void DwgLoader::add_lwpline(Dwg_Entity_LWPLINE *lwpline)
     }
     else
     {
-        if(!_insideModelSpace)
+        if(!_insideUspace)
             return;
 
         TMultipoint multipoint;
@@ -216,18 +216,19 @@ void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
     //printf("block header: %s, %d, %d, depth: %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count, _objDepth);
 
-    bool isModelSpace = !strcmp( "*Model_Space*", (char*) block_header->entry_name );
+	//printf( "Block name %s\n", (char*) block_header->entry_name );
+    bool isU_Space = strcmp( "*U*", (char*) block_header->entry_name );
 
-    if( isModelSpace )
-        _insideModelSpace = true;
+    if( isU_Space )
+        _insideUspace = true;
 
     _objDepth++;
     for(int i(0); i < block_header->owned_object_count; ++i)
         print_obj(block_header->entities[i]->obj);
     _objDepth--;
 
-    if( isModelSpace )
-        _insideModelSpace = false;
+    if( isU_Space )
+        _insideUspace = false;
 
     //printf("end block header %s, depth: %d\n", block_header->entry_name, _objDepth);
 }
@@ -294,7 +295,7 @@ void DwgLoader::print_obj(Dwg_Object *obj)
 DwgLoader::DwgLoader( string fileName, std::shared_ptr<CDadosGenerico> dados, UserParams *userParams ) :
     _dados( dados ),
     _objDepth( 0 ),
-    _insideModelSpace( false ),
+    _insideUspace( false ),
     _currLayer( -1 ),
     _userParams( userParams )
 {

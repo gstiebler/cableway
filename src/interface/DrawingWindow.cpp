@@ -18,6 +18,7 @@ DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCi
 
 	cbShowOriginalColors->setChecked( true );
 	cbShowBandeirolas->setChecked( true );
+	cbShowDisconnectedCableEndings->setChecked( true );
 
 	setAttribute( Qt::WA_DeleteOnClose );
 
