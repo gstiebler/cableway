@@ -551,10 +551,10 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
         {
             iArestaTemp=vArestas[vatual];
             if ( ListaArestas )
-            ListaArestas->push_back(iArestaTemp);
+				ListaArestas->push_back(iArestaTemp);
             ArestaTemp=Arestas->getItem(iArestaTemp);
             if (ArestasCircuito && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO)
-            ArestasDesenho[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
+				ArestasDesenho[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
             if ( CircuitoAreas )
             {
                 CircuitoAreas[VerticesGerais->getItem(vatual)->iDesenho].IDArquivo = VerticesGerais->getItem(vatual)->IDArquivo;

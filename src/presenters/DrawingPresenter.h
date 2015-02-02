@@ -23,6 +23,7 @@ public:
     virtual ~DrawingPresenter();
 
 private:
+
     DrawingWindow *_window;
 
 	

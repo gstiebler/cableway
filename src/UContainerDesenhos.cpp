@@ -95,7 +95,8 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     paramsGrafoDesenho.AlturaInterrup=0.7;
     paramsGrafoDesenho.Altura = 30.0;
     // Preenche o �ndice do desenho
-    paramsGrafoDesenho.IndiceDesenho = 0;
+    paramsGrafoDesenho.IndiceDesenho = ListaDesenhos.size();
+	dados->IndiceDesenho = ListaDesenhos.size();
     // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
     paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
     // E um ponteiro pro Arestas (TListaArestas)

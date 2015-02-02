@@ -15,6 +15,8 @@ DrawingPresenter::DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *
     _window = new DrawingWindow(grafoDesenho, infoCircuitos);
     _window->show();
 
+	//mostraCircuito( circuitIndex );
+	
 	if( circuitIndex >= 0 )
 		_window->_mostraDesenho->MostraCircuito( circuitIndex );
 

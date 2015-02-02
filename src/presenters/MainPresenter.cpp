@@ -59,11 +59,24 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 {
 	int indexOnGrid = index.row();
 	printf( "Index: %d\n", indexOnGrid );
-
-    CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho(0)->GrafoDesenho;
+	
     CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
 
-	int circuitId = infoCircuitos->ListaArestasDoCircuito( indexOnGrid );
-	DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, circuitId );
+	string circuit;
+	_window->getCircuit( indexOnGrid, circuit );
+	int IndiceCircuitoArestas = infoCircuitos->ListaArestasDoCircuito( circuit );
+    if (IndiceCircuitoArestas >= 0)
+    {
+		TArestasCircuito &arestasCircuito = infoCircuitos->ArestasDoCircuito[IndiceCircuitoArestas];
+		for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
+		{
+			vector<int> &arestasDesenho = arestasCircuito.ArestasDesenho[n];
+			if (arestasDesenho.size() > 0)
+			{
+				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
+			}
+		}
+	}
 }
 

@@ -80,3 +80,11 @@ void MainWindow::setCircuit( int circuitIndex, std::string name, std::string sou
 	_model->setItem( circuitIndex, 6, new QStandardItem( QString::number( length ) ) );
 	_model->setItem( circuitIndex, 7, new QStandardItem( QString::fromLatin1( errors.c_str() ) ) );
 }
+
+
+
+void MainWindow::getCircuit( int &circuitIndex, std::string &name )
+{
+	QStandardItem *si = _model->item( circuitIndex, 0 );
+	name = si->text().toStdString();
+}
