@@ -21,6 +21,8 @@ class TTexto;
 
 #include <memory>
 
+enum eReadElementResult { E_OK, E_CLOSE_GROUP, E_END_GROUPS, E_ERROR };
+
 class CweLoader
 {
 public:
@@ -32,14 +34,17 @@ private:
 	void readGroups();
 	void readElements();
 
-	bool readElement();
+	eReadElementResult readElement();
 	void readText();
 	void readDBText();
 	void readLine();
+	void readPolyLine();
+	void readCircle();
 
 	void writeError();
 
 	static void breakLine(std::string line, std::string &first, std::string &second );
+	void getKeyValue( std::string &key, std::string &value );
 
 	std::shared_ptr<CDadosGenerico> _dados;
     UserParams *_userParams;

@@ -32,7 +32,7 @@ CweLoader::CweLoader( std::string fileName, std::shared_ptr<CDadosGenerico> dado
 {
 	if (!_readFile.is_open())
 	{
-		printf( "Error reading file %s\n", fileName.c_str() );
+		CErrosMsg::getInstance()->novoErro( "Error reading file " + fileName );
 		return;
 	}
 
@@ -59,18 +59,29 @@ void CweLoader::breakLine( string line, string &first, string &second )
 
 
 
-bool CweLoader::readElement()
+void CweLoader::getKeyValue( std::string &key, std::string &value )
+{
+	string line;
+	getline(_readFile, line);
+	breakLine( line, key, value );
+}
+
+
+
+eReadElementResult CweLoader::readElement()
 {
 	string line, obj, type;
 	getline(_readFile, line);
 	if(line == "END_GROUPS")
-		return false;
+		return E_END_GROUPS;
+	else if(line == "CLOSE_GROUP")
+		return E_CLOSE_GROUP;
 
 	breakLine( line, obj, type );
 	if( obj != "OBJ" )
 	{
-		printf("Error reading obj\n");
-		return false;
+		CErrosMsg::getInstance()->novoErro( "Error reading obj" );
+		return E_ERROR;
 	}
 
 	if( type == "TEXT")
@@ -85,10 +96,18 @@ bool CweLoader::readElement()
 	{
 		readLine();
 	}
+	else if ( type == "PLINE" )
+	{
+		readPolyLine();
+	}
+	else if ( type == "CIRCLE" )
+	{
+		readCircle();
+	}
 	else
 		CErrosMsg::getInstance()->novoErro( "Unsupported type " + type );
 	
-	return true;
+	return E_OK;
 }
 
 
@@ -103,13 +122,26 @@ void CweLoader::readText()
 	{
 		getline(_readFile, line);
 		breakLine( line, key, value );
-		if( key == "X" )
+		if( key == "LAYER" )
 		{
-			sscanf( value.c_str(), "%f", texto.origem.x );
+			texto.Nivel = _userParams->getTipoElemento( value );
+		}
+		else if( key == "TEXT" )
+		{
+			texto.texto = value;
+		}
+		else if( key == "X" )
+		{
+			sscanf( value.c_str(), "%lf", &(texto.origem.x) );
 		}
 		else if ( key == "Y" )
 		{
-			sscanf( value.c_str(), "%f", texto.origem.y );
+			sscanf( value.c_str(), "%lf", &(texto.origem.y) );
+		}
+		else if ( key == "WIDTH" )
+		{
+			sscanf( value.c_str(), "%d", &(texto.FatorAltura) );
+			texto.FatorAltura /= 1000.0;
 		}
 		else if ( key == "END_OBJ" )
 			break;
@@ -160,6 +192,47 @@ void CweLoader::readDBText()
 	}
 	
     _dados->Textos.push_back( texto );
+}
+
+
+
+void CweLoader::readCircle()
+{
+	string line, key, value;
+    TArco arco; 
+
+	while (true)
+	{
+		getline(_readFile, line);
+		if ( line == "END_OBJ" )
+			break;
+
+		breakLine( line, key, value );
+		if( key == "LAYER" )
+		{
+			arco.Nivel = _userParams->getTipoElemento( value );
+		}
+		else if( key == "DIAMETER" )
+		{
+			sscanf( value.c_str(), "%lf", &(arco.EixoPrimario) );
+			arco.EixoSecundario = arco.EixoPrimario;
+		}
+		else if( key == "CENTER_X" )
+		{
+			sscanf( value.c_str(), "%lf", &(arco.Centro.x) );
+
+			getKeyValue( key, value );
+			
+			if( key != "CENTER_Y" )
+				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+			
+			sscanf( value.c_str(), "%lf", &(arco.Centro.y) );
+		}
+		else
+			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+	}
+	
+	_dados->Arcos.push_back( arco );
 }
 
 
@@ -222,6 +295,54 @@ void CweLoader::readLine()
 
 
 
+void CweLoader::readPolyLine()
+{
+	string line, key, value;
+	
+    TMultipoint multipoint;
+
+	while (true)
+	{
+		getline(_readFile, line);
+		if ( line == "END_OBJ" )
+			break;
+
+		breakLine( line, key, value );
+		if( key == "LAYER" )
+		{
+			multipoint.Nivel = _userParams->getTipoElemento( value );
+		}
+		else if ( key == "NUM_VERTEX" )
+		{
+			int numVertex;	
+			sscanf( value.c_str(), "%d", &numVertex );
+
+			for( int i = 0; i < numVertex; ++i )
+			{
+				TPonto point; 
+
+				getKeyValue( key, value );
+				if( key != "X" )
+					CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+				sscanf( value.c_str(), "%lf", &(point.x) );
+
+				getKeyValue( key, value );
+				if( key != "Y" )
+					CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+				sscanf( value.c_str(), "%lf", &(point.y) );
+
+				multipoint.pontos.push_back( point );
+			}
+		}
+		else
+			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+	}
+	
+    _dados->Multipoint.push_back( multipoint );
+}
+
+
+
 void CweLoader::readGroups()
 {
 	string line;
@@ -240,10 +361,18 @@ void CweLoader::readGroups()
 		
 		_dados->InfoCelula.EntraCelula( 0, false );
 
-		while (readElement());
-
+		eReadElementResult result;
+		while ( true )
+		{
+			result = readElement();
+			if (result == E_CLOSE_GROUP)
+				break;
+		}
+			
 		_dados->InfoCelula.FechaCelula();
 
+		if (result == E_END_GROUPS)
+			break;
     }
 }
 
@@ -251,7 +380,7 @@ void CweLoader::readGroups()
 
 void CweLoader::readElements()
 {
-	while (readElement());
+	while (readElement() == E_OK);
 }
 
 
