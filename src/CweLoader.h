@@ -21,7 +21,7 @@ class TTexto;
 
 #include <memory>
 
-enum eReadElementResult { E_OK, E_CLOSE_GROUP, E_END_GROUPS, E_ERROR };
+enum eReadElementResult { E_OK, E_CLOSE_GROUP, E_END_GROUPS, E_ERROR, E_END_FILE };
 
 class CweLoader
 {
@@ -40,6 +40,7 @@ private:
 	void readLine();
 	void readPolyLine();
 	void readCircle();
+	void readArc();
 
 	void writeError();
 

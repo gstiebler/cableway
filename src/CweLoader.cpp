@@ -76,12 +76,14 @@ eReadElementResult CweLoader::readElement()
 		return E_END_GROUPS;
 	else if(line == "CLOSE_GROUP")
 		return E_CLOSE_GROUP;
+	else if(line == "END_FILE")
+		return E_CLOSE_GROUP;
 
 	breakLine( line, obj, type );
 	if( obj != "OBJ" )
 	{
-		CErrosMsg::getInstance()->novoErro( "Error reading obj" );
-		return E_ERROR;
+		CErrosMsg::getInstance()->novoErro( "Error reading obj " + obj );
+		return E_OK;
 	}
 
 	if( type == "TEXT")
@@ -103,6 +105,10 @@ eReadElementResult CweLoader::readElement()
 	else if ( type == "CIRCLE" )
 	{
 		readCircle();
+	}
+	else if ( type == "ARC" )
+	{
+		readArc();
 	}
 	else
 		CErrosMsg::getInstance()->novoErro( "Unsupported type " + type );
@@ -248,6 +254,77 @@ void CweLoader::readCircle()
 	}
 	
 	_dados->Arcos.push_back( arco );
+
+	if( _dados->InfoCelula.DentroCelula )
+    {
+        TItemCelula itemCelula;
+		itemCelula.Indice = _dados->Arcos.size() - 1;
+		itemCelula.TipoVetorCW = VARCO;
+        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
+    }
+}
+
+
+void CweLoader::readArc()
+{
+	string line, key, value;
+    TArco arco; 
+
+	while (true)
+	{
+		getline(_readFile, line);
+		if ( line == "END_OBJ" )
+			break;
+
+		breakLine( line, key, value );
+		if( key == "LAYER" )
+		{
+			arco.Nivel = _userParams->getTipoElemento( value );
+		}
+		else if( key == "END_POINT_X" )
+		{
+			//TODO
+			double x, y;
+			sscanf( value.c_str(), "%lf", &x );
+
+			getKeyValue( key, value );
+			
+			if( key != "END_POINT_Y" )
+				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+			
+			//TODO
+			sscanf( value.c_str(), "%lf", &y );
+	
+			//TODO
+			arco.EixoPrimario = arco.Centro.x - x;
+			arco.EixoSecundario = arco.EixoPrimario;
+			_dados->Arcos.push_back( arco );
+		}
+		else if( key == "CENTER_X" )
+		{
+			sscanf( value.c_str(), "%lf", &(arco.Centro.x) );
+
+			getKeyValue( key, value );
+			
+			if( key != "CENTER_Y" )
+				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+			
+			sscanf( value.c_str(), "%lf", &(arco.Centro.y) );
+		}
+		else if( key == "START_ANGLE" )
+		{
+			sscanf( value.c_str(), "%lf", &(arco.AngIni) );
+
+			getKeyValue( key, value );
+			
+			if( key != "END_ANGLE" )
+				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+			
+			sscanf( value.c_str(), "%lf", &(arco.AngTam) );
+		}
+		else
+			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
+	}
 
 	if( _dados->InfoCelula.DentroCelula )
     {

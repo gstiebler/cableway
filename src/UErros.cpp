@@ -31,11 +31,6 @@ void CErrosMsg::destroi()
   instance = 0;
 }
 
-//void CErrosMsg::defineMemo(TMemo* memo)
-//{
-//  erros = memo;
-//}
-
 void CErrosMsg::novoErro(string novo)
 {
 	printf( "%s\n", novo.c_str() );
