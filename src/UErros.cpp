@@ -38,22 +38,7 @@ void CErrosMsg::destroi()
 
 void CErrosMsg::novoErro(string novo)
 {
-  //int pos;
-
-  //string temp, original;
-  //original = novo.c_str();
-  //while (1)
-  //{
-  //  pos=original.AnsiPos("\n");
-  //  if (!pos)
-  //    break;
-  //  temp=original.SubString(1, pos-1);
-  //  original.Delete(1, pos);
-  //  //erros->Lines->Add(temp);
-  //}
-  //erros->Lines->Add(original);
-
-//  tmp.
+	printf( "%s\n", novo.c_str() );
 }
 
 

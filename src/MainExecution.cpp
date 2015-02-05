@@ -7,7 +7,7 @@
 
 #include "MainExecution.h"
 
-#include "DwgLoader.h"
+#include "CweLoader.h"
 #include "InputCircuitsReader.h"
 #include "UContainerDesenhos.h"
 #include "UDadosGenerico.h"
@@ -40,7 +40,7 @@ MainExecution::MainExecution( const string &userParametersFileName )
     for(int i(0); i < (int) userParams.drawingsParams.size(); ++i)
     {
         std::shared_ptr<CDadosGenerico> dados(new CDadosGenerico);
-        DwgLoader dwgLoader( userParams.drawingsParams[i].fileName, dados, &userParams );
+        CweLoader dwgLoader( userParams.drawingsParams[i].fileName, dados, &userParams );
         _containerDesenhos->addDrawing( dados, userParams.drawingsParams[i].elevation );
     }
 

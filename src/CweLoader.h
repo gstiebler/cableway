@@ -34,6 +34,10 @@ private:
 
 	bool readElement();
 	void readText();
+	void readDBText();
+	void readLine();
+
+	void writeError();
 
 	static void breakLine(std::string line, std::string &first, std::string &second );
 
