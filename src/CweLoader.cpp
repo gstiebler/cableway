@@ -150,6 +150,12 @@ void CweLoader::readText()
 	}
 	
     _dados->Textos.push_back( texto );
+
+    if( _dados->InfoCelula.DentroCelula )
+    {
+		int textIndex = _dados->Textos.size() - 1;
+		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex].texto, _dados->Textos[textIndex].Nivel );
+    }
 }
 
 
@@ -181,17 +187,23 @@ void CweLoader::readDBText()
 		}
 		else if ( key == "Y" )
 		{
-			sscanf( value.c_str(), "%f", &(texto.origem.y) );
+			sscanf( value.c_str(), "%lf", &(texto.origem.y) );
 		}
 		else if ( key == "WIDTH_FACTOR" )
 		{
-			sscanf( value.c_str(), "%f", &(texto.FatorAltura) );
+			sscanf( value.c_str(), "%lf", &(texto.FatorAltura) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 	}
 	
     _dados->Textos.push_back( texto );
+
+    if( _dados->InfoCelula.DentroCelula )
+    {
+		int textIndex = _dados->Textos.size() - 1;
+		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex].texto, _dados->Textos[textIndex].Nivel );
+    }
 }
 
 
@@ -215,7 +227,10 @@ void CweLoader::readCircle()
 		else if( key == "DIAMETER" )
 		{
 			sscanf( value.c_str(), "%lf", &(arco.EixoPrimario) );
+			arco.EixoPrimario /= 2.0;
 			arco.EixoSecundario = arco.EixoPrimario;
+			arco.AngIni = 0.0;
+			arco.AngTam = M_PI;
 		}
 		else if( key == "CENTER_X" )
 		{
@@ -233,6 +248,14 @@ void CweLoader::readCircle()
 	}
 	
 	_dados->Arcos.push_back( arco );
+
+	if( _dados->InfoCelula.DentroCelula )
+    {
+        TItemCelula itemCelula;
+		itemCelula.Indice = _dados->Arcos.size() - 1;
+		itemCelula.TipoVetorCW = VARCO;
+        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
+    }
 }
 
 
@@ -291,6 +314,14 @@ void CweLoader::readLine()
 	}
 	
     _dados->Multipoint.push_back( multipoint );
+
+	if( _dados->InfoCelula.DentroCelula )
+    {
+        TItemCelula itemCelula;
+        itemCelula.Indice = _dados->Multipoint.size() - 1;
+        itemCelula.TipoVetorCW = VMULTIPOINT;
+        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
+    }
 }
 
 
@@ -339,6 +370,14 @@ void CweLoader::readPolyLine()
 	}
 	
     _dados->Multipoint.push_back( multipoint );
+
+	if( _dados->InfoCelula.DentroCelula )
+    {
+        TItemCelula itemCelula;
+        itemCelula.Indice = _dados->Multipoint.size() - 1;
+        itemCelula.TipoVetorCW = VMULTIPOINT;
+        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
+    }
 }
 
 

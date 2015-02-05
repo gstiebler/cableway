@@ -933,6 +933,8 @@ TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCel
         {
             TPonto Centro;
             double Raio;
+            Centro = Dados->Arcos[ListaItensCelula->getItem( i )->Indice].Centro;
+            Raio = Dados->Arcos[ListaItensCelula->getItem( i )->Indice].EixoPrimario;
             if (first)
             {
                 first = false;
@@ -941,8 +943,6 @@ TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCel
                 maiorY = Centro.y + Raio;
                 menorY = Centro.y - Raio;
             }
-            Centro = Dados->Arcos[ListaItensCelula->getItem( i )->Indice].Centro;
-            Raio = Dados->Arcos[ListaItensCelula->getItem( i )->Indice].EixoPrimario;
             if (Centro.x + Raio > maiorX)
                 maiorX = Centro.x + Raio;
             if (Centro.x + Raio > menorX)
