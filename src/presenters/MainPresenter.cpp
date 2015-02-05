@@ -11,6 +11,8 @@
 #include <vector>
 #include <MainExecution.h>
 #include "DrawingPresenter.h"
+#include "interface/DrawingWindow.h"
+#include "UMostraDesenho.h"
 #include <UContainerDesenhos.h>
 
 using namespace std;
@@ -62,8 +64,8 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 	
     CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
 
-	string circuit;
-	_window->getCircuit( indexOnGrid, circuit );
+	string circuit, source, dest;
+	_window->getCircuit( indexOnGrid, circuit, source, dest );
 	int IndiceCircuitoArestas = infoCircuitos->ListaArestasDoCircuito( circuit );
     if (IndiceCircuitoArestas >= 0)
     {
@@ -75,6 +77,21 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			{
 				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
 				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
+			}
+		}
+	}
+	else
+	{
+		int vertice = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( source );
+		int vertice2 = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( dest );
+
+		if( vertice >= 0 && vertice2 >= 0 )
+		{
+			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
+			{
+				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
+				drawingPresenter->_window->_mostraDesenho->MostraDoubleArvore(vertice, vertice2);
 			}
 		}
 	}

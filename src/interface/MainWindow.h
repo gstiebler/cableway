@@ -26,7 +26,7 @@ public:
     std::string getInputCircuitsFileName();
 	void setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string userRoute, std::string route, std::string cable, 
 								double length, std::string errors );
-	void getCircuit( int &circuitIndex, std::string &name );
+	void getCircuit( int &circuitIndex, std::string &name, std::string &source, std::string &dest );
 
 signals:
 

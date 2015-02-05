@@ -16,13 +16,16 @@
 #include "UserParams/UserParams.h"
 #include "UTCallbackStatusCarregamento.h"
 
+#include <QtCore>
+
 using namespace std;
 
 string MainExecution::exeFileName;
 
 string MainExecution::getExePath()
 {
-    int index = exeFileName.find_last_of( '\\' );
+	exeFileName = QCoreApplication::applicationFilePath().toStdString();
+    int index = exeFileName.find_last_of( '/' );
     return exeFileName.substr( 0, index );
 }
 

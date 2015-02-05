@@ -22,8 +22,6 @@ public:
     DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, int circuitIndex = -1 );
     virtual ~DrawingPresenter();
 
-private:
-
     DrawingWindow *_window;
 
 	

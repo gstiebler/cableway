@@ -48,6 +48,7 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/DwgLoader.cpp
+				${SRC_BASE}/CweLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
 				${SRC_BASE}/interface/MainWindow.cpp
 				${SRC_BASE}/interface/DrawingWindow.cpp

@@ -83,8 +83,9 @@ void MainWindow::setCircuit( int circuitIndex, std::string name, std::string sou
 
 
 
-void MainWindow::getCircuit( int &circuitIndex, std::string &name )
+void MainWindow::getCircuit( int &circuitIndex, string &name, string &source, string &dest )
 {
-	QStandardItem *si = _model->item( circuitIndex, 0 );
-	name = si->text().toStdString();
+	name = _model->item( circuitIndex, 0 )->text().toStdString();
+	source = _model->item( circuitIndex, 1 )->text().toStdString();
+	dest = _model->item( circuitIndex, 2 )->text().toStdString();
 }

@@ -60,6 +60,7 @@ void DwgLoader::add_circle(Dwg_Entity_CIRCLE *circle)
 
 void DwgLoader::add_text( Dwg_Entity_TEXT *text )
 {
+		printf("%s %d %p\n", text->text_value, _dados->InfoCelula.DentroCelula, text);
     if( _dados->InfoCelula.DentroCelula )
     {
         int textIndex = geTextIndex( text );
@@ -84,9 +85,11 @@ void DwgLoader::add_group( Dwg_Object_GROUP *group )
     _objDepth++;
 	_ASSERT( !_dados->InfoCelula.DentroCelula );
 	_dados->InfoCelula.EntraCelula( 0, false );
+	printf("entra célula\n");
     for(int i(0); i < group->num_handles; ++i)
         print_obj(group->group_entries[i]->obj);
 	_dados->InfoCelula.FechaCelula();
+	printf( "Fecha célula %d\n", _dados->InfoCelula.ListaCelulasInstrumentos->Tamanho() );
     _objDepth--;
 
     //printf("end group %s, depth: %d\n", group->str, _objDepth);
@@ -216,7 +219,7 @@ void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
     //printf("block header: %s, %d, %d, depth: %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count, _objDepth);
 
-	//printf( "Block name %s\n", (char*) block_header->entry_name );
+	printf( "Block name %s\n", (char*) block_header->entry_name );
     bool isU_Space = strcmp( "*U*", (char*) block_header->entry_name );
 
     if( isU_Space )
@@ -287,7 +290,7 @@ void DwgLoader::print_obj(Dwg_Object *obj)
         case DWG_TYPE_BLOCK_HEADER:
             add_block_header(obj->tio.object->tio.BLOCK_HEADER);
             break;
-        //default: printf( "%x\n", obj->type );
+        default: printf( "%x\n", obj->type );
    }
 }
 
