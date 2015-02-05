@@ -236,7 +236,7 @@ void CweLoader::readCircle()
 			arco.EixoPrimario /= 2.0;
 			arco.EixoSecundario = arco.EixoPrimario;
 			arco.AngIni = 0.0;
-			arco.AngTam = M_PI;
+			arco.AngTam = 360.0;
 		}
 		else if( key == "CENTER_X" )
 		{
@@ -321,6 +321,7 @@ void CweLoader::readArc()
 				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 			
 			sscanf( value.c_str(), "%lf", &(arco.AngTam) );
+			arco.AngTam *= 360.0 / M_PI;
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
