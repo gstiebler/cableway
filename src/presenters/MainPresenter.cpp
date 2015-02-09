@@ -67,6 +67,8 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 	string circuit, source, dest;
 	_window->getCircuit( indexOnGrid, circuit, source, dest );
 	int IndiceCircuitoArestas = infoCircuitos->ListaArestasDoCircuito( circuit );
+
+	// circuit is OK
     if (IndiceCircuitoArestas >= 0)
     {
 		TArestasCircuito &arestasCircuito = infoCircuitos->ArestasDoCircuito[IndiceCircuitoArestas];
@@ -80,7 +82,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			}
 		}
 	}
-	else
+	else // circuit has problems
 	{
 		int vertice = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( source );
 		int vertice2 = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( dest );

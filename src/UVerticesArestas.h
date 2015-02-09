@@ -27,7 +27,7 @@ struct TArestasCircuito
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();
   void Apaga();
-  TVectorInt *ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
+  vector< vector<int> > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
 };
 //---------------------------------------------------------------------------
 

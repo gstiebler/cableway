@@ -20,13 +20,12 @@ TAresta::TAresta()
 TArestasCircuito::TArestasCircuito(int numDesenhos)
 {
     NumDesenhos = numDesenhos;
-    ArestasDesenho = new TVectorInt[NumDesenhos];
+	ArestasDesenho.resize( NumDesenhos );
 }
 //---------------------------------------------------------------------------
 
 TArestasCircuito::~TArestasCircuito()
 {
-    delete[] ArestasDesenho;
 }
 //---------------------------------------------------------------------------
 TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
@@ -37,8 +36,8 @@ TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
     NumDesenhos = cpy.NumDesenhos;
 //    NumDesenhos=numDesenhos;
     idCircuito = cpy.idCircuito;
-    ArestasDesenho = new TVectorInt[NumDesenhos];
-    ArestasDesenho->assign( cpy.ArestasDesenho->begin(), cpy.ArestasDesenho->end() );
+	ArestasDesenho.resize( NumDesenhos );
+    ArestasDesenho.assign( cpy.ArestasDesenho.begin(), cpy.ArestasDesenho.end() );
 }
 //---------------------------------------------------------------------------
 

@@ -219,7 +219,7 @@ void DwgLoader::add_block_header( Dwg_Object_BLOCK_HEADER *block_header )
 {
     //printf("block header: %s, %d, %d, depth: %d\n", block_header->entry_name, block_header->insert_count, block_header->owned_object_count, _objDepth);
 
-	printf( "Block name %s\n", (char*) block_header->entry_name );
+	//printf( "Block name %s\n", (char*) block_header->entry_name );
     bool isU_Space = strcmp( "*U*", (char*) block_header->entry_name );
 
     if( isU_Space )
@@ -290,7 +290,7 @@ void DwgLoader::print_obj(Dwg_Object *obj)
         case DWG_TYPE_BLOCK_HEADER:
             add_block_header(obj->tio.object->tio.BLOCK_HEADER);
             break;
-        default: printf( "%x\n", obj->type );
+        //default: printf( "%x\n", obj->type );
    }
 }
 
