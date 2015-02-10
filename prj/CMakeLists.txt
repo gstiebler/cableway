@@ -55,6 +55,7 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/presenters/MainPresenter.cpp
 				${SRC_BASE}/presenters/DrawingPresenter.cpp
 				${SRC_BASE}/InputCircuitsReader.cpp
+				${SRC_BASE}/Reports.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
                 

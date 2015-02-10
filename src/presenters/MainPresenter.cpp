@@ -14,6 +14,7 @@
 #include "interface/DrawingWindow.h"
 #include "UMostraDesenho.h"
 #include <UContainerDesenhos.h>
+#include "Reports.h"
 
 using namespace std;
 
@@ -46,6 +47,9 @@ void MainPresenter::execute()
     _mainExecution->execute( inputCircuitsFileName );
 
 	fillWindowGrid( _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
+
+	string circuitsReportFileName = _window->getInputDirectory() + "/CircuitsReport.csv";
+	Reports::generateCirtuisReport( circuitsReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
 }
 
 
