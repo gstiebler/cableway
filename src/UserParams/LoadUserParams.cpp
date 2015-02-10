@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include "UErros.h"
 
 #include "UserParams.h"
 
@@ -79,16 +80,26 @@ void loadUserParams( const std::string excelFileName, UserParams *userParams )
 
 	if( !pWB )
 	{
-		printf( "Error opening xls file %s\n", excelFileName.c_str() );
+		CErrosMsg::getInstance()->novoErro( "Error opening xls file " + excelFileName );
         return;
 	}
 
     xlsWorkSheet *drawingsSheet = sheetByName( pWB, "desenhos" );
+	if(!drawingsSheet)
+	{
+		CErrosMsg::getInstance()->novoErro( "Aba \"desenhos\" não encontrada." );
+        return;
+	}
     xls_parseWorkSheet(drawingsSheet);
     loadDrawingParams( drawingsSheet, userParams->drawingsParams );
     xls_close_WS( drawingsSheet );
 
     xlsWorkSheet *levelsSheet = sheetByName( pWB, "niveis" );
+	if(!levelsSheet)
+	{
+		CErrosMsg::getInstance()->novoErro( "Aba \"níveis\" não encontrada." );
+        return;
+	}
     xls_parseWorkSheet(levelsSheet);
     loadLevelsParams( levelsSheet, 0, userParams->equipmentLevels );
     loadLevelsParams( levelsSheet, 1, userParams->cableLevels );

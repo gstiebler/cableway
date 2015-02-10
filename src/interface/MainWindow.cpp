@@ -17,8 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    connect( buttonOpenUserParams, SIGNAL(clicked()), this, SLOT(openUserParamsClicked() ) );
     connect( buttonExecute, SIGNAL( clicked() ), this, SIGNAL( executeButtonClicked() ) );
+    connect( btInputDirectory, SIGNAL( clicked() ), this, SLOT( selectFolder() ) );
 
     _model = new QStandardItemModel();
 	QStringList list;
@@ -46,24 +46,9 @@ MainWindow::~MainWindow()
 
 
 
-void MainWindow::openUserParamsClicked()
+std::string MainWindow::getInputDirectory()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Selecionar o arquivo de configuração", "c:\\Projetos", tr("Excel (*.xls)"));
-    lineEditUserParams->setText( fileName );
-}
-
-
-
-std::string MainWindow::getUserParamsFileName()
-{
-    return lineEditUserParams->text().toStdString();
-}
-
-
-
-std::string MainWindow::getInputCircuitsFileName()
-{
-    return lineEditInputCircuits->text().toStdString();
+	return lineEditInputDirectory->text().toStdString();
 }
 
 
@@ -88,4 +73,23 @@ void MainWindow::getCircuit( int &circuitIndex, string &name, string &source, st
 	name = _model->item( circuitIndex, 0 )->text().toStdString();
 	source = _model->item( circuitIndex, 1 )->text().toStdString();
 	dest = _model->item( circuitIndex, 2 )->text().toStdString();
+}
+
+ 
+
+void MainWindow::selectFolder()
+{
+	QFileDialog dialog(NULL);
+	dialog.setFileMode(QFileDialog::Directory);
+	dialog.setOption(QFileDialog::ShowDirsOnly);
+	dialog.setDirectory( lineEditInputDirectory->text() );
+	if ( dialog.exec() )
+		lineEditInputDirectory->setText( dialog.selectedFiles()[0] );
+}
+
+
+
+void MainWindow::setInputFolder( std::string inputFolder )
+{
+	lineEditInputDirectory->setText( QString::fromLatin1( inputFolder.c_str() ) );
 }

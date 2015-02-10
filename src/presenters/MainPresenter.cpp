@@ -21,11 +21,14 @@ MainPresenter::MainPresenter() :
         _mainExecution( NULL )
 {
     _window = new MainWindow;
+	_window->setInputFolder( MainExecution::getExePath() );
     _window->show();
 
     connect( _window, SIGNAL( executeButtonClicked() ), this, SLOT( execute() ) );
     connect( _window, SIGNAL( circuitGridClicked(QModelIndex) ), this, SLOT( showCircuit(QModelIndex) ) );
 }
+
+
 
 MainPresenter::~MainPresenter()
 {
@@ -33,10 +36,11 @@ MainPresenter::~MainPresenter()
 }
 
 
+
 void MainPresenter::execute()
 {
-    string xlsFileName = MainExecution::getExePath() + "\\" + _window->getUserParamsFileName();
-    string inputCircuitsFileName = MainExecution::getExePath() + "\\" + _window->getInputCircuitsFileName();
+	string xlsFileName = _window->getInputDirectory() + "/user_params.xls";
+    string inputCircuitsFileName = _window->getInputDirectory() + "/input_circuits.xls";
 
     _mainExecution = new MainExecution( xlsFileName );
     _mainExecution->execute( inputCircuitsFileName );

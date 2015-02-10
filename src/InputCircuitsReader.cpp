@@ -84,6 +84,8 @@ void readInputCircuits( string fileName, vector< InputCircuit > &circuits )
     xlsWorkBook *pWB;
     struct st_row_data *row;
     pWB = xls_open(fileName.c_str(), ENCODING.c_str());
+	if( !pWB )
+		return;
 
     xlsWorkSheet *circuitsSheet = xls_getWorkSheet(pWB, 0);
     xls_parseWorkSheet( circuitsSheet );

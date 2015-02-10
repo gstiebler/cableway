@@ -14,84 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEditUserParams">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>26</y>
-      <width>391</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>user_params.xls</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>161</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Arquivo de configurações:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>64</y>
-      <width>131</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Arquivo com circuitos:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEditInputCircuits">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>60</y>
-      <width>391</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>input_circuits.xls</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonOpenUserParams">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>23</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Abrir...</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>60</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Abrir...</string>
-    </property>
-   </widget>
    <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
@@ -119,6 +41,45 @@
     </property>
     <property name="text">
      <string>Executar</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditInputDirectory">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>30</y>
+      <width>531</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>pasta</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btInputDirectory">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>30</y>
+      <width>111</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Selecionar pasta</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>181</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pasta com arquivos de configuração:</string>
     </property>
    </widget>
   </widget>

@@ -5,7 +5,6 @@
 
 int main (int argc, char *argv[])
 {
-	printf("%s\n", argv[0]);
     MainExecution::exeFileName = argv[0];
 
     QApplication app(argc, argv);

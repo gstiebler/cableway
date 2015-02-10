@@ -22,21 +22,20 @@ public:
     MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
 
-    std::string getUserParamsFileName();
-    std::string getInputCircuitsFileName();
+    std::string getInputDirectory();
 	void setCircuit( int circuitIndex, std::string name, std::string source, std::string dest, std::string userRoute, std::string route, std::string cable, 
 								double length, std::string errors );
 	void getCircuit( int &circuitIndex, std::string &name, std::string &source, std::string &dest );
+	void setInputFolder( std::string inputFolder );
 
 signals:
 
     void executeButtonClicked();
 	void circuitGridClicked( const QModelIndex &index );
 
-
 private slots:
 
-	void openUserParamsClicked();
+	void selectFolder();
 
 private:
 	QStandardItemModel *_model;
