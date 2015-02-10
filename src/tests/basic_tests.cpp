@@ -199,7 +199,7 @@ TEST_F(BasicTest, singleDrawing)
 	containerDesenhos.Conclui( sc );
 
 	double tam;
-	string rota;
+	vector<string> rota;
 	TArestasCircuito *ArestasCircuito = NULL;
 	vector<int> ListaBandeirolas;
 	vector<string> DEBUG_arestas;
@@ -210,7 +210,7 @@ TEST_F(BasicTest, singleDrawing)
 		&DEBUG_arestas, SubRotas, CircuitoAreas);
 
 	EXPECT_FLOAT_EQ( 20.0, tam );
-	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2", rota.c_str() );
+	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2", InputCircuit::getFormatedRoute( rota ).c_str() );
 }
 
 
@@ -230,7 +230,7 @@ TEST_F(BasicTest, multipleDrawings)
 	containerDesenhos.Conclui( sc );
 
 	double tam;
-	string rota;
+	vector<string> rota;
 	TArestasCircuito *ArestasCircuito = NULL;
 	vector<int> ListaBandeirolas;
 	vector<string> DEBUG_arestas;
@@ -242,7 +242,7 @@ TEST_F(BasicTest, multipleDrawings)
 
 	// 70 = 20 + 50 + (126.0 - 100.0)
 	EXPECT_FLOAT_EQ( 96.0, tam );
-	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2/Equipamento 3", rota.c_str() );
+	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2/Equipamento 3", InputCircuit::getFormatedRoute( rota ).c_str() );
 }
 
 
@@ -264,7 +264,7 @@ TEST_F(BasicTest, complete)
     containerDesenhos.Conclui( sc );
 
     double tam;
-    string rota;
+    vector<string> rota;
     TArestasCircuito *ArestasCircuito = NULL;
     vector<int> ListaBandeirolas;
     vector<string> DEBUG_arestas;
@@ -274,7 +274,7 @@ TEST_F(BasicTest, complete)
         &DEBUG_arestas, SubRotas, CircuitoAreas);
 
     EXPECT_FLOAT_EQ( 500.0, tam );
-    EXPECT_STREQ( "Equipamento 2/Equipamento 1", rota.c_str() );
+    EXPECT_STREQ( "Equipamento 2/Equipamento 1", InputCircuit::getFormatedRoute( rota ).c_str() );
 }
 
 
@@ -289,11 +289,11 @@ TEST_F(BasicTest, complete2)
 
     ASSERT_EQ( 3, (int) mainExecution._resultCircuits.size() );
 
-    EXPECT_STREQ( "Equipamento 1/Equipamento 2", mainExecution._resultCircuits[0].route.c_str() );
+    EXPECT_STREQ( "Equipamento 1/Equipamento 2", InputCircuit::getFormatedRoute( mainExecution._resultCircuits[0].route ).c_str() );
     EXPECT_FLOAT_EQ( 500.0, mainExecution._resultCircuits[0].length );
 	EXPECT_STREQ( "", mainExecution._resultCircuits[0].errorMessage.c_str() );
 
-    EXPECT_STREQ( "Equipamento 2/Equipamento 1", mainExecution._resultCircuits[1].route.c_str() );
+    EXPECT_STREQ( "Equipamento 2/Equipamento 1", InputCircuit::getFormatedRoute( mainExecution._resultCircuits[1].route ).c_str() );
     EXPECT_FLOAT_EQ( 500.0, mainExecution._resultCircuits[1].length );
 	EXPECT_STREQ( "", mainExecution._resultCircuits[1].errorMessage.c_str() );
 

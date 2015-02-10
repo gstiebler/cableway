@@ -19,10 +19,18 @@ using namespace std;
 
 std::string InputCircuit::getFormatedRoute() const
 {
-	string result;
-	for( string routeItem : route )
-		result += routeItem + " / ";
+	return getFormatedRoute( route );
+}
 
+
+
+std::string InputCircuit::getFormatedRoute( const vector<string> &routeVector )
+{
+	string result;
+	for( string routeItem : routeVector )
+		result += routeItem + "/";
+
+	result = result.substr( 0, result.length() - 1 );
 	return result;
 }
 

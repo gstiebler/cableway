@@ -55,7 +55,7 @@ void MainPresenter::fillWindowGrid( const vector<InputCircuit> &inputCircuits, c
 	for( int i(0); i < (int) inputCircuits.size(); ++i)
 	{
 		const InputCircuit &circuit = inputCircuits[i];
-		_window->setCircuit( i, circuit.name, circuit.source, circuit.dest, circuit.getFormatedRoute(), resultCircuits[i].route, circuit.cable, resultCircuits[i].length, resultCircuits[i].errorMessage );
+		_window->setCircuit( i, circuit.name, circuit.source, circuit.dest, circuit.getFormatedRoute(), InputCircuit::getFormatedRoute( resultCircuits[i].route ), circuit.cable, resultCircuits[i].length, resultCircuits[i].errorMessage );
 	}
 }
 

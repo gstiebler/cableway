@@ -160,7 +160,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 		delete DebugArestas;
 #endif
 	}
-  else if ( erro && stringTrim(Circuito.RotaUsuario) != "" && Circuito.rota != "" )
+	else if ( erro && stringTrim(Circuito.RotaUsuario) != "" && Circuito.rota.size() > 0 )
   {
     // Se deu erro, mas era rota de usuário e conseguiu completar alguma parte...
 		ArestasCircuito->Circuito=Circuito.NomeCircuito;
@@ -337,7 +337,7 @@ void CInfoCircuitos::SeparaRota(string ListaPontos, vector<string> *ListaRota)
 }
 //---------------------------------------------------------------------------
 
-void CInfoCircuitos::MergeRota(string &rota, string NovaParte)
+void CInfoCircuitos::MergeRota(vector<std::string> &rota, vector<std::string> NovaParte)
 {
     size_t pos = 0;
 
@@ -348,27 +348,22 @@ void CInfoCircuitos::MergeRota(string &rota, string NovaParte)
         rota = NovaParte;
         return;
     }
-
-    // senão, procura a última barra (porque a gente quer tirar o destino, da rota atual e substituir pela nova parte)
-    pos = rota.find_last_of( "/" );
-
-    // se não encontrou, retorna. Algum problema aconteceu! (ERRO)
-    if (pos == string::npos)
-        return;
+	rota.pop_back();
 
     // a rota agora � a rota com o destino substitu�do pela nova parte.
-    rota = rota.substr( 0, pos + 1 ) + NovaParte;
+    rota.insert( rota.end(), NovaParte.begin(), NovaParte.end() );
 }
 //---------------------------------------------------------------------------
 
 //Recebe a origem e o destino, e toda a rota do usuário
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, string &rota,
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, vector<string> &rota,
         TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
         TStringList*DEBUG_arestas, TCircuitoAreas *CircuitoAreas)
 {
     vector<string> * ListaRota = new vector<string>();
     int i;
-    string rotaTemp, SubRotasTemp;
+    vector<string> rotaTemp;
+	string SubRotasTemp;
     double tamTemp;
     bool erro = false;
 
@@ -376,7 +371,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
     SeparaRota(ListaPontos, ListaRota);
     ListaRota->push_back(Destino);
 
-    rota = "";
+	rota.clear();
     tam = 0;
 
     bool ultimo = true;
@@ -385,7 +380,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
     {
         bool erroNessaRota = false;
         tamTemp = 0;
-        rotaTemp = "";
+        rotaTemp.clear();
         if (GeraRota(ListaRota->at(i+1), ListaRota->at(i), tamTemp, rotaTemp, ArestasCircuito, ListaBandeirolas, DEBUG_arestas, SubRotasTemp, CircuitoAreas))
         {
             erroNessaRota = erro = true;
@@ -398,7 +393,12 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
         else
         {
             if ( ultimo )
-            MergeRota(rota, ".../...");
+			{
+				vector<string> rotaTemp( 2 );
+				rotaTemp[0] = "..";
+				rotaTemp[1] = "..";
+				MergeRota(rota, rotaTemp);
+			}
         }
         ultimo = erroNessaRota;
     }
@@ -409,7 +409,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
 }
 //---------------------------------------------------------------------------
 
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string &rota, TArestasCircuito *ArestasCircuito,
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, TArestasCircuito *ArestasCircuito,
         TVectorInt *ListaBandeirolas,
         TStringList*DEBUG_arestas, string &SubRotas, TCircuitoAreas *CircuitoAreas)
 {
@@ -450,7 +450,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
     }
     if(vertice[0] == vertice[1])
     {
-        rota = "";
+		rota.clear();
         tam = 0.0;
         return 1;
     }
@@ -542,9 +542,9 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
     //CAMINHO INVERSO NA �RVORE DE LARGURA
     vatual=vertice[1];
     tam= VerticesGerais->getItem(vertice[0])->dist + VerticesGerais->getItem(vertice[1])->dist;
-    string temp, sRota;
+    string temp;
+	vector<string> sRota;
     int UltDesenho = -1;
-    sRota="";
     if(achou_final)
     {
         while (anterior[vatual] > 0)
@@ -562,14 +562,14 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
 
                 if ( VerticesGerais->getItem(vatual)->iDesenho != UltDesenho && UltDesenho >= 0 )
                 {
-                    CircuitoAreas[UltDesenho].rota = CircuitoAreas[UltDesenho].rota.substr(0, CircuitoAreas[UltDesenho].rota.size()-1);
+                    CircuitoAreas[UltDesenho].rota = CircuitoAreas[UltDesenho].rota;
                 }
 
                 if (VerticesGerais->getItem(vatual)->texto!="")
                 {
-                    temp=VerticesGerais->getItem(vatual)->texto;
+                    temp = VerticesGerais->getItem(vatual)->texto;
                     if (UltTemp!=temp || VerticesGerais->getItem(vatual)->iDesenho != UltDesenho )
-                    CircuitoAreas[VerticesGerais->getItem(vatual)->iDesenho].rota+=temp+"/";
+						CircuitoAreas[VerticesGerais->getItem(vatual)->iDesenho].rota.push_back( temp );
                     //					UltTemp=temp;
                     UltDesenho = VerticesGerais->getItem(vatual)->iDesenho;
                 }
@@ -631,7 +631,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
                 {
                     temp=VerticesGerais->getItem(vatual)->texto;
                     if (UltTemp!=temp && temp != Destino)
-                    sRota+=temp+"/";
+						sRota.push_back( temp );
                     UltTemp=temp;
                     SubRotas+=to_string(TamSubRota)+"/";
                     TamSubRota=0;
@@ -649,10 +649,10 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
             }
             vatual=anterior[vatual];
         }
-        sRota+=V[0];
+        sRota.push_back( V[0] );
         if (CircuitoAreas && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO && ArestaTemp->IDArquivo!=I_DESENHO_NULO)
         {
-            CircuitoAreas[ArestaTemp->IndiceDesenho].rota += V[0];
+			CircuitoAreas[ArestaTemp->IndiceDesenho].rota.push_back( V[0] );
         }
     }
     else
@@ -660,16 +660,15 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, string
 
     //tempo->MarcaTempo("Fez caminho inverso");
 
-    rota=sRota;
+    rota = sRota;
 
     heap.empty();
     delete [] anterior;
     delete [] DistanciaDjikstra;
     delete [] PaisVertices;
     delete [] vArestas;
-    if ( rota == "" )
-    return 1;
-    return 0;
+	if ( rota.size() == 0 )
+		return 1;
 
     return 0;
 }

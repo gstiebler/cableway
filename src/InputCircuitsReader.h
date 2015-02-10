@@ -20,6 +20,7 @@ struct InputCircuit
     std::string cable;
 
 	std::string getFormatedRoute() const;
+	static std::string getFormatedRoute( const std::vector<std::string> &routeVector );
 };
 
 

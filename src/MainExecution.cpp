@@ -81,7 +81,7 @@ void MainExecution::execute( std::string inputCircuitsFileName )
 
 
 
-string MainExecution::ErrosDoCircuito( string Origem, string Destino, string route )
+string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std::string> &route )
 {
 	string erro;
 	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Origem) < 0 )
@@ -136,7 +136,7 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, string rou
 		else
 			erro += "O texto de destino não existe nos desenhos.";
 	}
-	if ( erro == "" && route == "" )
+	if ( erro == "" && route.size() == 0 )
 		erro = "Não foi encontrado caminho.";
 
 	return erro;

@@ -40,12 +40,11 @@ struct TCircuitoAreas
 {
   int IDArquivo;
   bool ativo;
-  std::string rota;
+  vector<std::string> rota;
   TCircuitoAreas()
   {
     ativo = false;
     IDArquivo = I_DESENHO_NULO;
-    rota = "";
   }
 };
 //---------------------------------------------------------------------------
@@ -75,7 +74,7 @@ private:
   TListaCircuitos *ListaCircuitosArestas;//lista de circuitos de uma determinada aresta
   TListaArestas *Arestas;
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
-  static void MergeRota(std::string &rota, std::string NovaParte);
+  static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   int NumDesenhos;
   bool dentroEquipamento;
   callbackVerificaTexto CallVT;
@@ -98,10 +97,10 @@ public:
   void AdicionaCircuito(TCircuito &Circuito);
   TVectorInt * ArestasCircuito(int circuito, int IndiceDesenho);
   void PontosAresta(TPonto Pontos[2], int iAresta);
-  bool GeraRota(string V1, string V2, string ListaPontos, double &tam, string &rota,
+  bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota,
               TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
               TStringList *DEBUG_arestas, TCircuitoAreas *CircuitoAreas);
-  bool GeraRota(string Destino, string Origem, double &tam, string &rota,
+  bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota,
              TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
              TStringList *DEBUG_arestas, string &SubRotas, TCircuitoAreas *CircuitoAreas);
   void Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho);        

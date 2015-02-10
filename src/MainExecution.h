@@ -16,7 +16,7 @@ class CContainerDesenhos;
 
 struct CircuitResult
 {
-    std::string route;
+    std::vector<std::string> route;
     double length;
 	std::string errorMessage;
 };
@@ -40,7 +40,7 @@ public:
 
 private:
 
-	std::string ErrosDoCircuito( std::string Origem, std::string Destino, std::string route );
+	std::string ErrosDoCircuito( std::string Origem, std::string Destino, std::vector<std::string> &route );
 
 };
 

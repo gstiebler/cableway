@@ -23,7 +23,7 @@ struct TCircuito
 
   //obtido do desenho
   double metragem;
-  string rota;
+  vector<string> rota;
 };
 //---------------------------------------------------------------------------
 
