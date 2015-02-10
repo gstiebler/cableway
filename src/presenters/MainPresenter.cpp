@@ -49,7 +49,10 @@ void MainPresenter::execute()
 	fillWindowGrid( _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
 
 	string circuitsReportFileName = _window->getInputDirectory() + "/CircuitsReport.csv";
-	Reports::generateCirtuisReport( circuitsReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
+	Reports::generateCirtuitsReport( circuitsReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
+
+	string bandeirolasReportFileName = _window->getInputDirectory() + "/BandeirolasReport.csv";
+	Reports::generateBandeirolaReport( bandeirolasReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
 }
 
 

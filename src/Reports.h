@@ -8,7 +8,8 @@
 class Reports
 {
 public:
-	static void generateCirtuisReport( std::string fileName, const std::vector<InputCircuit> &inputCircuits, const std::vector<CircuitResult> &resultCircuits );
+	static void generateCirtuitsReport( std::string fileName, const std::vector<InputCircuit> &inputCircuits, const std::vector<CircuitResult> &resultCircuits );
+	static void generateBandeirolaReport( std::string fileName, const std::vector<InputCircuit> &inputCircuits, const std::vector<CircuitResult> &resultCircuits );
 };
 
 #endif
