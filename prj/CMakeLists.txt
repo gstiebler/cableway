@@ -47,7 +47,6 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UTempoExec.cpp
 				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
-				${SRC_BASE}/DwgLoader.cpp
 				${SRC_BASE}/CweLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
 				${SRC_BASE}/interface/MainWindow.cpp
@@ -71,13 +70,11 @@ QT5_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h
                             
 QT5_WRAP_UI(QTTEST_GEN_UIS ${QT_UIS} )
 				
-set(LIB_DIRS ../lib/libredwg/src
-             ../lib/libxls/include)                
+set(LIB_DIRS ../lib/libxls/include)                
                 
 include_directories(${SRC_BASE} ${LIB_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
-link_directories(../lib/libredwg/build_vs2012
-                 ../lib/libxls/build_vs2012/Debug)
+link_directories(../lib/libxls/build_vs2012/Debug)
                      
 add_executable(cableway ${SRC_BASE}/main.cpp 
 					${ALL_SOURCES}
@@ -87,7 +84,7 @@ add_executable(cableway ${SRC_BASE}/main.cpp
                     
 qt5_use_modules(cableway Widgets OpenGL)
 
-set(CW_LIBRARIES liblibredwg xlsReader ${QT_LIBRARIES} ${OPENGL_LIBRARIES} ) 
+set(CW_LIBRARIES xlsReader ${QT_LIBRARIES} ${OPENGL_LIBRARIES} ) 
                    
 target_link_libraries(cableway ${CW_LIBRARIES} ${QT_LIBRARIES})
 
