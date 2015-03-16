@@ -173,7 +173,14 @@ namespace AutoCAD_CSharp_plug_in1
                 file.WriteLine("X: " + x);
                 file.WriteLine("Y: " + y);
             }
-        } 
+        }
+
+
+
+        public static string replaceBreakString( string input )
+        {
+            return input.Replace( "\r\n", " " );
+        }
 
 
 
@@ -181,7 +188,7 @@ namespace AutoCAD_CSharp_plug_in1
         {
             file.WriteLine("OBJ: TEXT");
             file.WriteLine("LAYER: " + text.Layer);
-            file.WriteLine("TEXT: " + text.Text);
+            file.WriteLine("TEXT: " + replaceBreakString( text.Text) );
             file.WriteLine("X: " + text.Location.X);
             file.WriteLine("Y: " + text.Location.Y);
             file.WriteLine("WIDTH: " + text.Width);
@@ -193,7 +200,7 @@ namespace AutoCAD_CSharp_plug_in1
         {
             file.WriteLine("OBJ: DBTEXT");
             file.WriteLine("LAYER: " + text.Layer);
-            file.WriteLine("TEXT: " + text.TextString);
+            file.WriteLine("TEXT: " + replaceBreakString( text.TextString) );
             file.WriteLine("X: " + text.Position.X);
             file.WriteLine("Y: " + text.Position.Y);
             file.WriteLine("WIDTH_FACTOR: " + text.WidthFactor);
