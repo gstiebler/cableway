@@ -107,6 +107,14 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 				drawingPresenter->_window->_mostraDesenho->MostraDoubleArvore(vertice, vertice2);
 			}
 		}
+		else // just showing all the drawings
+		{
+			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
+			{
+				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
+			}
+		}
 	}
 }
 
