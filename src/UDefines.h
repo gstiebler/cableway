@@ -9,7 +9,7 @@
 using namespace std;
 #define NUM_CORES 64
 
-#define FATOR_DIST_MIN_ELEM_CABO 0.05
+#define FATOR_DIST_MIN_ELEM_CABO 0.1
 #define I_DESENHO_NULO -123456
 #define NAO_INICIALIZADO -1
 //#define DIST_CONVESES 3

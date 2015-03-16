@@ -116,7 +116,6 @@ private:
   int *iCirculosBandeirola;
   int *iRetangulosInstrumento;
   int *iCirculosInstrumento;
-  double AlturaTeto, AlturaInterrup;
   void AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelula *ListaItens, double DistMinBandeirola);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt *iVerticesInstrumento, TPonto PosVertice, bool PrensaCabo);

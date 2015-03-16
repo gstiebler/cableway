@@ -23,8 +23,6 @@ struct TParamsDadosGenerico
 struct TParamsGrafoDesenho: public TParamsDadosGenerico
 {
   bool CarregaGrafo;
-  double AlturaTeto;
-  double AlturaInterrup;
   double Altura;
   TVerticesGerais *VerticesGerais;
   TListaArestas *Arestas;

@@ -55,9 +55,6 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   ParamsGrafoDesenho.IDArquivo = id;
   // Para carregar o grafo
   ParamsGrafoDesenho.CarregaGrafo=carregagrafo;
-  // Define as alturas -- HARDCODED?? :(
-  ParamsGrafoDesenho.AlturaTeto=2.0;
-  ParamsGrafoDesenho.AlturaInterrup=0.7;
   ParamsGrafoDesenho.Altura = altura;
   // Preenche o �ndice do desenho
   ParamsGrafoDesenho.IndiceDesenho=ListaDesenhos.size();
@@ -90,9 +87,6 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     paramsGrafoDesenho.IDArquivo = ListaDesenhos.size();
     // Para carregar o grafo
     paramsGrafoDesenho.CarregaGrafo = true;
-    // Define as alturas -- HARDCODED?? :(
-    paramsGrafoDesenho.AlturaTeto=2.0;
-    paramsGrafoDesenho.AlturaInterrup=0.7;
     paramsGrafoDesenho.Altura = 30.0;
     // Preenche o �ndice do desenho
     paramsGrafoDesenho.IndiceDesenho = ListaDesenhos.size();

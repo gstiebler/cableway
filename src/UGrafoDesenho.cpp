@@ -93,8 +93,6 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
     if (CarregaGrafo)
     {
         unsigned int n;
-        AlturaTeto = ParamsGrafoDesenho.AlturaTeto;
-        AlturaInterrup = ParamsGrafoDesenho.AlturaInterrup;
         memset( TipoElementoCor, 0, NUM_CORES * sizeof(TTipoElemento) );
         VerticesGerais = ParamsGrafoDesenho.VerticesGerais;
 
@@ -1030,11 +1028,7 @@ void CGrafoDesenho::GeraVerticesArcos()
         }
 
         TAresta Aresta;
-        if (Arco->Estilo == 0) //SE O ARCO FOR TRACEJADO, OU SEJA, está NO CháO, SOMA A ALTURA DO TETO
-            Aresta.AdicionaVertices( Arco->iV[0], Arco->iV[1], DistPontosManhattan( p[0], p[1] ) );
-        else
-            Aresta.AdicionaVertices( Arco->iV[0], Arco->iV[1],
-                    DistPontosManhattan( p[0], p[1] ) + AlturaTeto );
+        Aresta.AdicionaVertices( Arco->iV[0], Arco->iV[1], DistPontosManhattan( p[0], p[1] ) );
         Aresta.IndiceDesenho = Dados->IndiceDesenho;
         Aresta.IDArquivo = Dados->IDArquivo;
         Arestas->Adiciona( Aresta );
