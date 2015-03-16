@@ -20,7 +20,7 @@ void Reports::generateCirtuitsReport( std::string fileName, const std::vector<In
 		const InputCircuit &inputCircuit = inputCircuits[i];
 		const CircuitResult &resultCircuit = resultCircuits[i];
 		
-		char strLength[50];
+		char strLength[500];
 		sprintf( strLength, "%.2lf", resultCircuit.length );
 
 		string line;
@@ -49,6 +49,9 @@ void Reports::generateBandeirolaReport( std::string fileName, const std::vector<
 		const InputCircuit &inputCircuit = inputCircuits[i];
 		const CircuitResult &resultCircuit = resultCircuits[i];
 		
+		if ( resultCircuit.route.size() < 1 )
+			continue;
+
 		for(int j(1); j < resultCircuit.route.size() - 1; ++j)
 			circuitsOfBandeirola[ resultCircuit.route[j] ].push_back( inputCircuit.name );
 	}
