@@ -105,11 +105,11 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 
 		if ( exists )
 		{
-			erro += "O texto de origem estï¿½ nos desenhos, porï¿½m nï¿½o estï¿½ associado a um equipamento ou bandeirola, ou ainda, estï¿½ fora do nï¿½vel; ";
+			erro += "O texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível; ";
 		}
 		else
 		{
-			erro += "O texto de origem nï¿½o existe nos desenhos; ";
+			erro += "O texto de origem não existe nos desenhos; ";
 		}
 	}
 	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Destino) < 0 )
@@ -132,12 +132,12 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 		}
 
 		if ( exists )
-			erro += "O texto de destino estï¿½ nos desenhos, porï¿½m nï¿½o estï¿½ associado a um equipamento ou bandeirola, ou ainda, estï¿½ fora do nï¿½vel.";
+			erro += "O texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível.";
 		else
-			erro += "O texto de destino nï¿½o existe nos desenhos.";
+			erro += "O texto de destino não existe nos desenhos.";
 	}
 	if ( erro == "" && route.size() == 0 )
-		erro = "Nï¿½o foi encontrado caminho.";
+		erro = "Não foi encontrado caminho.";
 
 	return erro;
 }
