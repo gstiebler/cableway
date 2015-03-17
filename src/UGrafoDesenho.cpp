@@ -32,11 +32,11 @@ void CCaboReta::AdicionaVertice(int ID, TPonto &ponto)
 }
 //---------------------------------------------------------------------------
 
-//Retorna verdadeiro se o ponto recebido está pr�ximo ao primeiro ponto do vetor
+//Retorna verdadeiro se o ponto recebido está próximo ao primeiro ponto do vetor
 bool CCaboReta::EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo)
 {
     TPonto pontoM = Multipoint[Indice].pontos[0]; //primeiro ponto
-    TPonto pontoR = Multipoint[Indice].pontos[Multipoint[Indice].pontos.size() - 1]; //�ltimo ponto
+    TPonto pontoR = Multipoint[Indice].pontos[Multipoint[Indice].pontos.size() - 1]; //último ponto
     //pega Distância entre ponto inicial e final, pode ser a Distância em x ou em y, e joga em DistMin
     //essas linhas são utilizadas para se ter uma no��o de quanto � uma Distância pequena no desenho
     double DistMin = fabs( pontoM.x - pontoR.x ) * 0.1;
@@ -47,14 +47,14 @@ bool CCaboReta::EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, i
 //  distX = fabs(pontoM.x - ponto.x);
 //  distY = fabs(pontoM.y - ponto.y);
 
-    //retorna verdadeiro se o ponto recebido � pr�ximo tanto em x quanto em y do primeiro ponto
+    //retorna verdadeiro se o ponto recebido � próximo tanto em x quanto em y do primeiro ponto
     if (fabs( pontoM.x - ponto.x ) < DistMin && fabs( pontoM.y - ponto.y ) < DistMin)
         return true;
 
     return false;
 }
 
-//Retorna verdadeiro se o ponto recebido está pr�ximo ao �ltimo ponto do vetor
+//Retorna verdadeiro se o ponto recebido está próximo ao último ponto do vetor
 bool CCaboReta::EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo)
 {
     TPonto pontoM = Multipoint[Indice].pontos[Multipoint[Indice].pontos.size() - 1];
@@ -248,8 +248,8 @@ void CGrafoDesenho::GeraListaCabos()
 }
 //---------------------------------------------------------------------------
 
-//Acha o cabo mais pr�ximo a um ponto. Retorna o �ndice do cabo,
-//a Distância � este cabo, e o ponto do cabo que está mais pr�ximo ao ponto dado
+//Acha o cabo mais próximo a um ponto. Retorna o índice do cabo,
+//a Distância � este cabo, e o ponto do cabo que está mais próximo ao ponto dado
 void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &DistMaisProx,
         TPonto &PosVertice, int Diferente, int Nivel)
 {
@@ -422,7 +422,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 int IndiceNoVetorMultipoint = ListaItens->getItem( m )->Indice;
                 int NumPontos = Dados->Multipoint[IndiceNoVetorMultipoint].pontos.size();
                 int IndiceDoUltimoPonto = NumPontos - 1;
-                // Pega o primeiro e o �ltimo ponto do multipoint e p�e na lista de extremidades.
+                // Pega o primeiro e o último ponto do multipoint e p�e na lista de extremidades.
                 PontosExtremidadesElementosBandeirola.push_back(
                         Dados->Multipoint[IndiceNoVetorMultipoint].pontos[0] );
                 PontosExtremidadesElementosBandeirola.push_back(
@@ -549,7 +549,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 //verifica qual o ponto livre da bandeirola mais longe do centro do texto
                 PontoMaisDistante( origemTexto, PontosExtremidadesElementosBandeirola, MaisDist );
             }
-            //verifica qual o cabo mais pr�ximo da ponta da bandeirola
+            //verifica qual o cabo mais próximo da ponta da bandeirola
             CaboMaisProximo( MaisDist, iMenorDist, DistMaisProx, PontoNaReta, -1, -1 );
             if (iMenorDist >= 0)
             {
@@ -981,8 +981,8 @@ void CGrafoDesenho::GeraVerticesArcos()
 
         for (m = 0; m < 2; m++)
         {
-            // iV[m] � o �ndice do novo vértice que será criado, e como ele será o �ltimo vértice,
-            // o seu �ndice � igual ao total atual de vértices
+            // iV[m] � o índice do novo vértice que será criado, e como ele será o último vértice,
+            // o seu índice � igual ao total atual de vértices
             Arco->iV[m] = VerticesGerais->Tamanho();
 
             //verifica se a ponta deste cabo arco está ligada na ponta de outro cabo arco
@@ -997,13 +997,13 @@ void CGrafoDesenho::GeraVerticesArcos()
                 CabosArco[IndiceCabo]->ponta[PontaArco] = true;
 
             }
-            else //se o vértice não foi aproveitado de outro cabo arco, verifica se este vértice está pr�ximo a um cabo reta
+            else //se o vértice não foi aproveitado de outro cabo arco, verifica se este vértice está próximo a um cabo reta
             {
                 /* Olha cada ponta do arco */
                 CaboMaisProximo( p[m], iMenorDist, DistMaisProx, PontoNaReta, -1, Arco->Nivel );
                 if (DistMaisProx < DIST_MIN_ELEM_CABO)
                 {
-                    // Se a Distância for menor do que o limite, então esse vértice tamb�m será adicionado ao cabo mais pr�ximo
+                    // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
                     CabosReta[iMenorDist]->AdicionaVertice( Arco->iV[m], PontoNaReta );
                     VerticeGeral.pos = PontoNaReta;
                     CabosArco[n]->ponta[m] = true;
@@ -1059,7 +1059,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
                     tMultipoint->Nivel );
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
-                // Se a Distância for menor do que o limite, então esse vértice tamb�m será adicionado ao cabo mais pr�ximo
+                // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
                 CabosReta[iMenorDist]->AdicionaVertice( VerticesGerais->Tamanho(), PontoNaReta );
                 VerticeGeral.pos = PontoNaReta;
                 //        if ( CabosReta[iMenorDist]->EhOPrimeiroPonto(PontoNaReta, Dados->Multipoint, DistMinElemCabo) )

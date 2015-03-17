@@ -56,7 +56,7 @@ void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altu
   // Para carregar o grafo
   ParamsGrafoDesenho.CarregaGrafo=carregagrafo;
   ParamsGrafoDesenho.Altura = altura;
-  // Preenche o �ndice do desenho
+  // Preenche o índice do desenho
   ParamsGrafoDesenho.IndiceDesenho=ListaDesenhos.size();
   // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
   ParamsGrafoDesenho.VerticesGerais=ParamsInfoCircuitos.VerticesGerais;
@@ -88,7 +88,7 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     // Para carregar o grafo
     paramsGrafoDesenho.CarregaGrafo = true;
     paramsGrafoDesenho.Altura = 30.0;
-    // Preenche o �ndice do desenho
+    // Preenche o índice do desenho
     paramsGrafoDesenho.IndiceDesenho = ListaDesenhos.size();
 	dados->IndiceDesenho = ListaDesenhos.size();
     // Passa um ponteiro para o VerticesGerais (TVerticesGerais)

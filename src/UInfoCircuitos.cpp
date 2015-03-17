@@ -432,7 +432,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
         /*
          * ArestasCircuito � um vetor que vai guardar o caminho feito, em termos de aresta, para encontrar o menor caminho.
          * ListaArestas guarda todas as arestas, enquanto ArestasDesenho guarda as arestas espec�ficas de cada desenho
-         * A grande diferen�a � que no ListaArestas tamb�m estáo as arestas entre desenhos.
+         * A grande diferen�a � que no ListaArestas também estáo as arestas entre desenhos.
          */
         ListaArestas=&ArestasCircuito->Arestas;
         ArestasDesenho = &(ArestasCircuito->ArestasDesenho);
@@ -697,7 +697,7 @@ void CInfoCircuitos::Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDes
         {
             //vfila � o vértice que queremos a lista de adjac�ncia
             //n � o en�simo vértice na lista de adjac�ncia de vfila
-            //.Vertice � pq podemos pegar tamb�m .Aresta
+            //.Vertice � pq podemos pegar também .Aresta
             vatual = ListaVerticesEArestas->getVerticeEAresta( n )->Vertice;
             iArestaTemp = ListaVerticesEArestas->getVerticeEAresta( n )->Aresta;
             // ListaArestas � a lista de arestas da �rvore no desenho atual
