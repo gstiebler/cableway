@@ -104,10 +104,6 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
 
         _numCabosReta = 0;
         _numCabosArco = 0;
-        _numLinhasBandeirola = 0;
-        _numCirculosBandeirola = 0;
-        _numRetanguloInstrumento = 0;
-        _numCirculoInstrumento = 0;
 
         AlocaElementos();
 #ifdef DEBUG_BUILDER

@@ -145,10 +145,6 @@ public:
   ~CGrafoDesenho();
   int _numCabosReta;
   int _numCabosArco;
-  int _numLinhasBandeirola;
-  int _numCirculosBandeirola;
-  int _numRetanguloInstrumento;
-  int _numCirculoInstrumento;
 
   TVerticesGerais *VerticesGerais;
   TListaArestas *Arestas;
