@@ -109,10 +109,10 @@ private:
   void AchaTextoBandeirola(TPonto &pos, std::string &texto);
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
 //  int *iCabosArco;
-  int *iLinhasBandeirola;
-  int *iCirculosBandeirola;
-  int *iRetangulosInstrumento;
-  int *iCirculosInstrumento;
+  int *_iLinhasBandeirola;
+  int *_iCirculosBandeirola;
+  int *_iRetangulosInstrumento;
+  int *_iCirculosInstrumento;
   void AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelula *ListaItens, double DistMinBandeirola);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt *iVerticesInstrumento, TPonto PosVertice, bool PrensaCabo);
@@ -125,30 +125,30 @@ protected:
 
 public:
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
-  CCaboArco **CabosArco;
+  CCaboArco **_cabosArco;
   //armazena informa��es das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
-  CCaboReta **CabosReta;
+  CCaboReta **_cabosReta;
   void GeraColares(const std::vector<TDesenho*> &ListaDesenhos);
   void ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos);
-  int pri;
-  int ult;
+  int _pri;
+  int _ult;
 //  TVectorPonto PontosBandeirolas[2];
-  TVectorPontosBandeirola PontosPraMostrarBandeirola;
+  TVectorPontosBandeirola _pontosPraMostrarBandeirola;
 //  int nPontosBandeirolas;
   //m�dia do raio dos cabos arcos, para se ter uma id�ia da dimensão dos elementos
   //para por exemplo ter um limiar do quanto uma ponta de cabo pode ser separada da outra
-  double MediaRaioCaboArco;
-  double DistMinElemCaboPraOpenGL;
+  double _mediaRaioCaboArco;
+  double _distMinElemCaboPraOpenGL;
   CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados);
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
   int _numCabosReta;
   int _numCabosArco;
 
-  TVerticesGerais *VerticesGerais;
-  TListaArestas *Arestas;
-  std::shared_ptr<CDadosGenerico> Dados;
+  TVerticesGerais *_verticesGerais;
+  TListaArestas *_arestas;
+  std::shared_ptr<CDadosGenerico> _dados;
 };
 //---------------------------------------------------------------------------
 

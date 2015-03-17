@@ -68,11 +68,11 @@ void CMostraDesenho::initializeLimits()
 {	
 	float x, y;
 	_glCoords.initializeLimits();
-	if (GrafoDesenho->ult > GrafoDesenho->Dados->Multipoint.size())
-		GrafoDesenho->ult = GrafoDesenho->Dados->Multipoint.size();
-	for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
+	if (GrafoDesenho->_ult > GrafoDesenho->_dados->Multipoint.size())
+		GrafoDesenho->_ult = GrafoDesenho->_dados->Multipoint.size();
+	for (int n=GrafoDesenho->_pri; n<GrafoDesenho->_ult; n++)
 	{
-		vector<TPonto> &points = GrafoDesenho->Dados->Multipoint[n].pontos;
+		vector<TPonto> &points = GrafoDesenho->_dados->Multipoint[n].pontos;
 		int numPoints = points.size();
 		for (int i=0; i < numPoints; i++)
 		{
@@ -82,14 +82,14 @@ void CMostraDesenho::initializeLimits()
 			_glCoords.updateLimits( x, y );
 		}
 	}
-	for ( int i=0; i<GrafoDesenho->Dados->Arcos.size(); i++)
+	for ( int i=0; i<GrafoDesenho->_dados->Arcos.size(); i++)
 	{
-		if ( fabs(360.0 - GrafoDesenho->Dados->Arcos[i].AngTam) < 0.001 )
+		if ( fabs(360.0 - GrafoDesenho->_dados->Arcos[i].AngTam) < 0.001 )
 		{
-			x = GrafoDesenho->Dados->Arcos[i].Centro.x;
-			y = GrafoDesenho->Dados->Arcos[i].Centro.y;
+			x = GrafoDesenho->_dados->Arcos[i].Centro.x;
+			y = GrafoDesenho->_dados->Arcos[i].Centro.y;
 
-			double raio = GrafoDesenho->Dados->Arcos[i].EixoPrimario;
+			double raio = GrafoDesenho->_dados->Arcos[i].EixoPrimario;
 
 			_glCoords.updateLimits( x + raio, y + raio );
 		}
@@ -130,21 +130,21 @@ void CMostraDesenho::setColorFromLevel( int level )
 
 void CMostraDesenho::drawMultipoints()
 {
-	for (int n=0; n<GrafoDesenho->Dados->Multipoint.size(); n++)
+	for (int n=0; n<GrafoDesenho->_dados->Multipoint.size(); n++)
 			//    for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
 	{
 		//      byte cor=GrafoDesenho->Dados->Multipoint[n].Cor;
-		glColor3f(GrafoDesenho->Dados->Multipoint[n].CorR/255.0, GrafoDesenho->Dados->Multipoint[n].CorG/255.0,
-				GrafoDesenho->Dados->Multipoint[n].CorB/255.0);
+		glColor3f(GrafoDesenho->_dados->Multipoint[n].CorR/255.0, GrafoDesenho->_dados->Multipoint[n].CorG/255.0,
+				GrafoDesenho->_dados->Multipoint[n].CorB/255.0);
 		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
 		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
 		if (destacaCoresDeEquipamentos)
-			setColorFromLevel( GrafoDesenho->Dados->Multipoint[n].Nivel );
+			setColorFromLevel( GrafoDesenho->_dados->Multipoint[n].Nivel );
     if ( semCores )
     {
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
     }
-		switch (GrafoDesenho->Dados->Multipoint[n].tipo)
+		switch (GrafoDesenho->_dados->Multipoint[n].tipo)
 		{
 			case LINE_CLOSED:
 				glBegin(GL_LINE_LOOP);
@@ -156,10 +156,10 @@ void CMostraDesenho::drawMultipoints()
 		//glLineWidth((GLfloat)(1.0+GrafoDesenho->Multipoint[n].Peso));
 		//if (GrafoDesenho->Multipoint[n].tam<10)
 		{
-			for (int i=0; i<GrafoDesenho->Dados->Multipoint[n].pontos.size(); i++)
+			for (int i=0; i<GrafoDesenho->_dados->Multipoint[n].pontos.size(); i++)
 			{
-				double x = GrafoDesenho->Dados->Multipoint[n].pontos[i].x;
-				double y = GrafoDesenho->Dados->Multipoint[n].pontos[i].y;
+				double x = GrafoDesenho->_dados->Multipoint[n].pontos[i].x;
+				double y = GrafoDesenho->_dados->Multipoint[n].pontos[i].y;
 				glVertex2f(x, y);
 			}
 		}
@@ -172,16 +172,16 @@ void CMostraDesenho::drawMultipoints()
 void CMostraDesenho::drawArcs()
 {
 	//TArco *Arcos=GrafoDesenho->Arcos;
-	vector<TArco> Arcos = GrafoDesenho->Dados->Arcos;
-	for (int n=0; n<GrafoDesenho->Dados->Arcos.size(); n++)
+	vector<TArco> Arcos = GrafoDesenho->_dados->Arcos;
+	for (int n=0; n<GrafoDesenho->_dados->Arcos.size(); n++)
 	{
 		//      byte cor=GrafoDesenho->Dados->Arcos[n].Cor;
 		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
 		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
-		glColor3f(GrafoDesenho->Dados->Arcos[n].CorR/255.0, GrafoDesenho->Dados->Arcos[n].CorG/255.0,
-				GrafoDesenho->Dados->Arcos[n].CorB/255.0);
+		glColor3f(GrafoDesenho->_dados->Arcos[n].CorR/255.0, GrafoDesenho->_dados->Arcos[n].CorG/255.0,
+				GrafoDesenho->_dados->Arcos[n].CorB/255.0);
 		if ( destacaCoresDeEquipamentos )
-			setColorFromLevel( GrafoDesenho->Dados->Arcos[n].Nivel );
+			setColorFromLevel( GrafoDesenho->_dados->Arcos[n].Nivel );
     if ( semCores )
     {
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
@@ -195,7 +195,7 @@ void CMostraDesenho::drawArcs()
 
 void CMostraDesenho::showCircuit()
 {
-	int IndiceDesenho=GrafoDesenho->Dados->IndiceDesenho;
+	int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 	TVectorInt *iArestas;
 	TPonto Pontos[2];
 	glColor3f(pegaVermelho(CORCAMINHO)/255.0, pegaVerde(CORCAMINHO)/255.0, pegaAzul(CORCAMINHO)/255.0);
@@ -222,7 +222,7 @@ void CMostraDesenho::showTree()
 	// Laranja - Origem
 
 	//			glColor3f(1.0, 0.5, 0.0);
-	string origem = GrafoDesenho->VerticesGerais->getItem(VerticeArvore)->texto.c_str();
+	string origem = GrafoDesenho->_verticesGerais->getItem(VerticeArvore)->texto.c_str();
 //			if ( !bMostraArvore2 && ponteiroPraFuncao)
 //			    ponteiroPraFuncao(ponteiroProThis, origem , "");
 	glColor3f(pegaVermelho(CORARVORE)/255.0, pegaVerde(CORARVORE)/255.0, pegaAzul(CORARVORE)/255.0);
@@ -231,27 +231,27 @@ void CMostraDesenho::showTree()
 	//			EscreveTexto(("Origem: "+ GrafoDesenho->VerticesGerais->getItem(VerticeArvore)->texto).c_str(), pos, 0,
 	//					GrafoDesenho->Dados->Textos[0].FatorAltura*10);
 	glPopMatrix();
-	int IndiceDesenho=GrafoDesenho->Dados->IndiceDesenho;
+	int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 	TVectorInt iArestas;
 	InfoCircuitos->Arvore(VerticeArvore, iArestas, IndiceDesenho);
 	TAresta Aresta;
 	TPonto Pontos[2];
 	for (int n=0; n<(int)iArestas.size(); n++)
 	{
-		Aresta=*(GrafoDesenho->Arestas->getItem(iArestas[n]));
-		string debugTexto = GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->texto;
-		Pontos[0]=GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->pos;
-		Pontos[1]=GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->pos;
+		Aresta=*(GrafoDesenho->_arestas->getItem(iArestas[n]));
+		string debugTexto = GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->texto;
+		Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->pos;
+		Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->pos;
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(Pontos[0].x, Pontos[0].y);
 		glVertex2f(Pontos[1].x, Pontos[1].y);
 		glEnd();
 #define TAMBOLACOLAR (1000)
-		if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->EhColar )
+		if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
-		if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->EhColar )
+		if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
@@ -260,7 +260,7 @@ void CMostraDesenho::showTree()
 	if (bMostraArvore2)
 	{
 		// Roxo - Destino
-		string destino = GrafoDesenho->VerticesGerais->getItem(VerticeArvore2)->texto.c_str();
+		string destino = GrafoDesenho->_verticesGerais->getItem(VerticeArvore2)->texto.c_str();
 //				if ( ponteiroPraFuncao )
 //				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
 		glColor3f(pegaVermelho(CORARVORE2)/255.0, pegaVerde(CORARVORE2)/255.0, pegaAzul(CORARVORE2)/255.0);
@@ -272,25 +272,25 @@ void CMostraDesenho::showTree()
 		//						GrafoDesenho->Dados->Textos[0].FatorAltura*10);
 		glPopMatrix();
 
-		int IndiceDesenho=GrafoDesenho->Dados->IndiceDesenho;
+		int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 		TVectorInt iArestas;
 		InfoCircuitos->Arvore(VerticeArvore2, iArestas, IndiceDesenho);
 		TAresta Aresta;
 		TPonto Pontos[2];
 		for (int n=0; n<(int)iArestas.size(); n++)
 		{
-			Aresta=*(GrafoDesenho->Arestas->getItem(iArestas[n]));
-			Pontos[0]=GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->pos;
-			Pontos[1]=GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->pos;
+			Aresta=*(GrafoDesenho->_arestas->getItem(iArestas[n]));
+			Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->pos;
+			Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->pos;
 			glBegin(GL_LINE_STRIP);
 			glVertex2f(Pontos[0].x, Pontos[0].y);
 			glVertex2f(Pontos[1].x, Pontos[1].y);
 			glEnd();
-			if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice1)->EhColar )
+			if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->EhColar )
 			{
 				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
-			if ( GrafoDesenho->VerticesGerais->getItem(Aresta.Vertice2)->EhColar )
+			if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->EhColar )
 			{
 				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
@@ -310,20 +310,20 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 	glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
 	for ( int i = 0 ; i < GrafoDesenho->_numCabosReta ; i++ )
 	{
-		if ( !GrafoDesenho->CabosReta[i]->ponta[0] )
+		if ( !GrafoDesenho->_cabosReta[i]->ponta[0] )
 		{
-			TPonto pontos = GrafoDesenho->Dados->Multipoint[GrafoDesenho->CabosReta[i]->Indice].pontos[0];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			TPonto pontos = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos[0];
+			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 #ifdef DEBUG_BUILDER
 			vertices = "Multipoint 0 "+IntToStr(i)+" X:" + FormatFloat("###,###,###",pontos.x) + " Y:" + FormatFloat("###,###,###",pontos.y);
 			proArquivo->Add(vertices);
 #endif
 		}
-		if ( !GrafoDesenho->CabosReta[i]->ponta[1] )
+		if ( !GrafoDesenho->_cabosReta[i]->ponta[1] )
 		{
-			int tam = GrafoDesenho->Dados->Multipoint[GrafoDesenho->CabosReta[i]->Indice].pontos.size();
-			TPonto pontos = GrafoDesenho->Dados->Multipoint[GrafoDesenho->CabosReta[i]->Indice].pontos[tam-1];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			int tam = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos.size();
+			TPonto pontos = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos[tam-1];
+			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 #ifdef DEBUG_BUILDER
 			vertices = "Multipoint 1 "+IntToStr(i)+" X:" + FormatFloat("###,###,###",pontos.x) + " Y:" + FormatFloat("###,###,###",pontos.y);
 			proArquivo->Add(vertices);
@@ -334,18 +334,18 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 	for ( int i = 0 ; i < GrafoDesenho->_numCabosArco ; i++ )
 	{
 		TPonto pontos[2];
-		GrafoDesenho->Dados->Arcos[GrafoDesenho->CabosArco[i]->Indice].PontasArco(pontos);
-		if ( !GrafoDesenho->CabosArco[i]->ponta[0] )
+		GrafoDesenho->_dados->Arcos[GrafoDesenho->_cabosArco[i]->Indice].PontasArco(pontos);
+		if ( !GrafoDesenho->_cabosArco[i]->ponta[0] )
 		{
-			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 #ifdef DEBUG_BUILDER
 			vertices = "Arcos 0 " + IntToStr(i) +" X:" + FormatFloat("###,###,###",pontos[0].x) + " Y:" + FormatFloat("###,###,###",pontos[0].y);
 			proArquivo->Add(vertices);
 #endif
 		}
-		if ( !GrafoDesenho->CabosArco[i]->ponta[1] )
+		if ( !GrafoDesenho->_cabosArco[i]->ponta[1] )
 		{
-			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 #ifdef DEBUG_BUILDER
 			vertices = "Arcos 1 " + IntToStr(i) +" X:" + FormatFloat("###,###,###",pontos[1].x) + " Y:" + FormatFloat("###,###,###",pontos[1].y);
 			proArquivo->Add(vertices);
@@ -362,23 +362,23 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 
 void CMostraDesenho::showBandeirolaEndings()
 {
-	for (int n=0; n<(int)GrafoDesenho->PontosPraMostrarBandeirola.size();n++)
+	for (int n=0; n<(int)GrafoDesenho->_pontosPraMostrarBandeirola.size();n++)
 	{
 		glColor3f(1.0, 1.0, 1.0);
 		glLineWidth((GLfloat)(4.0));
-		double dist = DistPontos(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo);
-		if (dist > GrafoDesenho->DistMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
+		double dist = DistPontos(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo);
+		if (dist > GrafoDesenho->_distMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
 		{
 			glBegin(GL_LINE_STRIP);
-			glVertex2f(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NaBandeirola.y);
-			glVertex2f(GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->PontosPraMostrarBandeirola.at(n).NoCabo.y);
+			glVertex2f(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola.x, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola.y);
+			glVertex2f(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo.y);
 			glEnd();
 		}
 		else // Senão, faz um círculo em volta dos pontos
 		{
-			TPontosBandeirola &pontosBandeirola = GrafoDesenho->PontosPraMostrarBandeirola[n];
+			TPontosBandeirola &pontosBandeirola = GrafoDesenho->_pontosPraMostrarBandeirola[n];
 			DesenhaArco( pontosBandeirola.NoCabo.x, pontosBandeirola.NoCabo.y,
-					GrafoDesenho->DistMinElemCaboPraOpenGL*4, GrafoDesenho->DistMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+					GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 		}
 		glLineWidth((GLfloat)(1.0));
 	}
@@ -388,9 +388,9 @@ void CMostraDesenho::showBandeirolaEndings()
 
 void CMostraDesenho::drawTexts()
 {
-	for (int n=0; n<GrafoDesenho->Dados->Textos.size(); n++)
+	for (int n=0; n<GrafoDesenho->_dados->Textos.size(); n++)
 	{
-		TTexto &texto = GrafoDesenho->Dados->Textos[n];
+		TTexto &texto = GrafoDesenho->_dados->Textos[n];
 
 		if ( destacaCoresDeEquipamentos )
 			setColorFromLevel( texto.Nivel );

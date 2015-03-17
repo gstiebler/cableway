@@ -91,9 +91,9 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 		for ( int j = 0 ; j < _containerDesenhos->NumDesenhos() ; j++ )
 		{
 			TDesenho *pnt = _containerDesenhos->getDesenho(j);
-			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->Dados->Textos.size() ; i++ )
+			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
 			{
-				if ( pnt->GrafoDesenho->Dados->Textos[i].texto == Origem )
+				if ( pnt->GrafoDesenho->_dados->Textos[i].texto == Origem )
 				{
 					exists = true;
 					break;
@@ -105,11 +105,11 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 
 		if ( exists )
 		{
-			erro += "O texto de origem está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível; ";
+			erro += "O texto de origem estï¿½ nos desenhos, porï¿½m nï¿½o estï¿½ associado a um equipamento ou bandeirola, ou ainda, estï¿½ fora do nï¿½vel; ";
 		}
 		else
 		{
-			erro += "O texto de origem não existe nos desenhos; ";
+			erro += "O texto de origem nï¿½o existe nos desenhos; ";
 		}
 	}
 	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Destino) < 0 )
@@ -119,9 +119,9 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 		for ( int j = 0 ; j < _containerDesenhos->NumDesenhos() ; j++ )
 		{
 			TDesenho *pnt = _containerDesenhos->getDesenho(j);
-			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->Dados->Textos.size() ; i++ )
+			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
 			{
-				if ( pnt->GrafoDesenho->Dados->Textos[i].texto == Destino )
+				if ( pnt->GrafoDesenho->_dados->Textos[i].texto == Destino )
 				{
 					exists = true;
 					break;
@@ -132,12 +132,12 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 		}
 
 		if ( exists )
-			erro += "O texto de destino está nos desenhos, porém não está associado a um equipamento ou bandeirola, ou ainda, está fora do nível.";
+			erro += "O texto de destino estï¿½ nos desenhos, porï¿½m nï¿½o estï¿½ associado a um equipamento ou bandeirola, ou ainda, estï¿½ fora do nï¿½vel.";
 		else
-			erro += "O texto de destino não existe nos desenhos.";
+			erro += "O texto de destino nï¿½o existe nos desenhos.";
 	}
 	if ( erro == "" && route.size() == 0 )
-		erro = "Não foi encontrado caminho.";
+		erro = "Nï¿½o foi encontrado caminho.";
 
 	return erro;
 }
