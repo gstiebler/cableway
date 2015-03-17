@@ -5,7 +5,6 @@
 
 #include "UParamsStructs.h"
 
-#include "UNiveisProjeto.h"
 #include "UVerticesArestas.h"
 
 //---------------------------------------------------------------------------

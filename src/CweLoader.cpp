@@ -183,7 +183,7 @@ void CweLoader::readDBText()
 		{
 			texto.Nivel = _userParams->getTipoElemento( value );
 		}
-		else if( key == "TEXT" )
+		else if( key == "TEXT" ) 
 		{
 			texto.texto = value;
 		}

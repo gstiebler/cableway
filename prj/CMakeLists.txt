@@ -38,7 +38,6 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UListaPontoEIndiceCabo.cpp
 				${SRC_BASE}/UListaV.cpp
 				${SRC_BASE}/UMostraDesenho.cpp
-				${SRC_BASE}/UNiveisProjeto.cpp
 				${SRC_BASE}/UOpenGL.cpp
 				${SRC_BASE}/GLCoords.cpp
 				${SRC_BASE}/UParamsStructs.cpp
