@@ -787,9 +787,6 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
     TListaItensCelula *ListaItensCelula;
     TItemCelula *ItemCelula;
 
-    //  int indice2;
-    //  double DistMaisPerto;
-    bool PrensaCabo;
     TPonto PosVertice;
     //percorre c�lulas de instrumentos
     for (n = 0; n < _dados->InfoCelula.ListaCelulasInstrumentos->Tamanho(); n++) //percorre todas as c�lulas do desenho
@@ -798,7 +795,6 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
         ListaItensCelula = _dados->InfoCelula.ListaCelulasInstrumentos->getItem( n );
  
 		vector<int> iVerticesInstrumento;
-        PrensaCabo = ListaItensCelula->iTextos.size() > 2;
         if (ListaItensCelula->iTextos.size() == 0)
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
@@ -809,8 +805,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
         }
 
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
-        CriaVerticesEArestasInstrumento( ListaItensCelula, &iVerticesInstrumento, PosVertice,
-                PrensaCabo );
+        CriaVerticesEArestasInstrumento( ListaItensCelula, &iVerticesInstrumento, PosVertice );
 
         for (i = 0; i < ListaItensCelula->Tamanho(); i++)  //percorre todos os itens da c�lula atual
         {
@@ -855,7 +850,7 @@ bool CGrafoDesenho::ligaEquipamentoSeDesligado(TListaItensCelula *ListaItensCelu
 //---------------------------------------------------------------------------
 
 void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaItensCelula,
-        TVectorInt *iVerticesInstrumento, TPonto PosVertice, bool PrensaCabo)
+        TVectorInt *iVerticesInstrumento, TPonto PosVertice )
 {
     //para cada texto da c�lula cria um vértice
     for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
@@ -866,8 +861,6 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         VerticeInstrumento.IDArquivo = _dados->IDArquivo;
         VerticeInstrumento.texto = _dados->Textos[ListaItensCelula->iTextos[i]].texto;
         VerticeInstrumento.pos = PosVertice;
-        //      VerticeInstrumento.EhPrensaCabo = true;
-        VerticeInstrumento.EhPrensaCabo = PrensaCabo;
         iVerticesInstrumento->push_back( _verticesGerais->Tamanho() );
         VerticeInstrumento.TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
         _verticesGerais->Adiciona( VerticeInstrumento );
@@ -1360,16 +1353,16 @@ void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
     if (!CarregaGrafo)
         return;
     int n;
-    vector<TVerticeGeral*> *Lista = new vector<TVerticeGeral*>();
-    _verticesGerais->ListaOrd( Lista );  //gera lista ordenada
+    vector<TVerticeGeral*> Lista;
+    _verticesGerais->ListaOrd( &Lista );  //gera lista ordenada
     TVerticeGeral *V1, *V2;
-    for (n = 0; n < (int) (Lista->size() - 1); n++)
+    for (n = 0; n < (int) (Lista.size() - 1); n++)
     {
-        V1 = Lista->at( n );
-        if (V1->texto != "" && !V1->EhPrensaCabo)
+        V1 = Lista[n];
+        if ( V1->texto != "" )
         {
-            V2 = Lista->at( n + 1 );
-            if ((V1->texto == V2->texto && !V2->EhPrensaCabo) && (V1->iDesenho != V2->iDesenho)
+            V2 = Lista[n + 1];
+            if ((V1->texto == V2->texto) && (V1->iDesenho != V2->iDesenho)
                     && (V1->TipoElemento == INSTRUMENTO) && (V2->TipoElemento == INSTRUMENTO))
             {
                 double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura
@@ -1387,11 +1380,10 @@ void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
             }
         }
     }
-    for (int i = 0; i < (int) Lista->size(); i++)
+    for (int i = 0; i < (int) Lista.size(); i++)
     {
-        delete Lista->at( i );
+        delete Lista[i];
     }
-    delete Lista;
 }
 //---------------------------------------------------------------------------
 

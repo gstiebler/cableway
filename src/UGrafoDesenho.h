@@ -115,7 +115,7 @@ private:
   int *_iCirculosInstrumento;
   void AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelula *ListaItens, double DistMinBandeirola);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
-  void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt *iVerticesInstrumento, TPonto PosVertice, bool PrensaCabo);
+  void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt *iVerticesInstrumento, TPonto PosVertice );
   bool ligaEquipamentoSeDesligado (TListaItensCelula *ListaItensCelula, bool ligado);
   void GeraVerticesInstrumentosAdicionaMultipoint(int Indice, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaArco(int Indice, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);

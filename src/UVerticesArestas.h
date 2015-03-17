@@ -67,7 +67,6 @@ struct TVerticeGeral
   int IDArquivo;
   TTipoVertice TipoVertice;
   int IndiceOriginal;//usado somente na gera��o dos colares
-  bool EhPrensaCabo;
   bool EhColar;
 };
 //---------------------------------------------------------------------------

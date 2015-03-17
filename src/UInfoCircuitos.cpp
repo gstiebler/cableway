@@ -591,7 +591,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
             tam+=Arestas->getItem(vArestas[vatual])->Tam;
             TamSubRota+=Arestas->getItem(vArestas[vatual])->Tam;
 
-            if ( Arestas->getItem(vArestas[vatual])->Vertice1 > 0 && VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice1)->EhPrensaCabo )
+            if ( Arestas->getItem(vArestas[vatual])->Vertice1 > 0 )
             {
                 ListaVerticesEArestasT = VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice1)->ListaVerticesEArestas;
                 for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )
@@ -600,7 +600,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
                 }
             }
 
-            if ( Arestas->getItem(vArestas[vatual])->Vertice2 > 0 && VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice2)->EhPrensaCabo )
+            if ( Arestas->getItem(vArestas[vatual])->Vertice2 > 0 )
             {
                 ListaVerticesEArestasT = VerticesGerais->getItem(Arestas->getItem(vArestas[vatual])->Vertice2)->ListaVerticesEArestas;
                 for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )

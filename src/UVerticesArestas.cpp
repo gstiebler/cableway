@@ -61,7 +61,7 @@ TVerticeGeral::TVerticeGeral()
     dist = 0;
     texto = "";
     ListaVerticesEArestas = new TListaVerticesEArestas;
-    EhPrensaCabo = EhColar = false;
+    EhColar = false;
 }
 //---------------------------------------------------------------------------
 
@@ -81,7 +81,6 @@ TVerticeGeral::TVerticeGeral(const TVerticeGeral &cpy)
     iDesenho = cpy.iDesenho;
     IndiceOriginal = cpy.IndiceOriginal;
     EhColar = cpy.EhColar;
-    EhPrensaCabo = cpy.EhPrensaCabo;
     TipoVertice = cpy.TipoVertice;
     ListaVerticesEArestas = new TListaVerticesEArestas( *cpy.ListaVerticesEArestas );
 }
