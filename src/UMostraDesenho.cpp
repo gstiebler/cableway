@@ -393,7 +393,15 @@ void CMostraDesenho::drawTexts()
 		TTexto &texto = GrafoDesenho->_dados->Textos[n];
 
 		if ( destacaCoresDeEquipamentos )
-			setColorFromLevel( texto.Nivel );
+		{
+			if( texto.Nivel == INSTRUMENTO)
+				glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
+			else if( texto.Nivel == BANDEIROLA)
+				glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
+			else
+				glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
+
+		}
 		else if ( semCores )
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
 		else

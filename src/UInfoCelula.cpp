@@ -66,13 +66,13 @@ void TInfoCelula::AdicionaTexto(int iTexto, string Texto, int NivelTexto)
 {
 	// Se o texto está em nível de tag, então ele � adicionado ao vetor de textos
 	// da c�lula.
-	if ( NivelTexto == TAG )
+	if ( NivelTexto == INSTRUMENTO )
 	{
 		ListaItensCelula->iTextos.push_back(iTexto);
 		TipoElementoCelulaAtual = INSTRUMENTO;
 	}
 	// Caso ele esteja em nível de bandeirola, ele � adicionado ao vetor de bandeirolas
-	// da c�lula. 
+	// da c�lula.
 	// Isso � necess�rio pois textos de bandeirola ficam em n�veis de bandeirola
 	// enquanto os textos de Equipamento ficam em nível de tag.
 	else if ( NivelTexto == BANDEIROLA )
