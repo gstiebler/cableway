@@ -107,9 +107,6 @@ private:
   void OrdenaVerticesRetas();
   void GeraArestas();
   void AchaTextoBandeirola(TPonto &pos, std::string &texto);
-  bool EhCabo(TElemento &Elemento);
-  bool EhInstrumento(TElemento &Elemento);
-  bool EhBandeirola(TElemento &Elemento);
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
 //  int *iCabosArco;
   int *iLinhasBandeirola;

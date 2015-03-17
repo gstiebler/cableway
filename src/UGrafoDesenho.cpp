@@ -1512,21 +1512,3 @@ void CGrafoDesenho::GeraArestas()
 }
 //---------------------------------------------------------------------------
 
-bool CGrafoDesenho::EhCabo(TElemento &Elemento)
-{
-    return Elemento.Nivel == CABO;
-}
-//---------------------------------------------------------------------------
-
-bool CGrafoDesenho::EhInstrumento(TElemento &Elemento)
-{
-    return Elemento.Nivel == INSTRUMENTO;  // && Elemento.Tipo==DGNT_SHAPE;
-}
-//---------------------------------------------------------------------------
-
-bool CGrafoDesenho::EhBandeirola(TElemento &Elemento)
-{
-    return Elemento.Nivel == BANDEIROLA;  // && Elemento.tipo==DGNT_LINE_STRING;
-}
-//---------------------------------------------------------------------------
-
