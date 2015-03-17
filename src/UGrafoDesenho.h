@@ -143,12 +143,12 @@ public:
   CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados);
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
-  int NumCabosReta;
-  int NumCabosArco;
-  int NumLinhasBandeirola;
-  int NumCirculosBandeirola;
-  int NumRetanguloInstrumento;
-  int NumCirculoInstrumento;
+  int _numCabosReta;
+  int _numCabosArco;
+  int _numLinhasBandeirola;
+  int _numCirculosBandeirola;
+  int _numRetanguloInstrumento;
+  int _numCirculoInstrumento;
 
   TVerticesGerais *VerticesGerais;
   TListaArestas *Arestas;

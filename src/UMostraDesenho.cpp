@@ -308,7 +308,7 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 	AnsiString vertices = "";
 #endif
 	glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
-	for ( int i = 0 ; i < GrafoDesenho->NumCabosReta ; i++ )
+	for ( int i = 0 ; i < GrafoDesenho->_numCabosReta ; i++ )
 	{
 		if ( !GrafoDesenho->CabosReta[i]->ponta[0] )
 		{
@@ -331,7 +331,7 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 		}
 	}
 
-	for ( int i = 0 ; i < GrafoDesenho->NumCabosArco ; i++ )
+	for ( int i = 0 ; i < GrafoDesenho->_numCabosArco ; i++ )
 	{
 		TPonto pontos[2];
 		GrafoDesenho->Dados->Arcos[GrafoDesenho->CabosArco[i]->Indice].PontasArco(pontos);

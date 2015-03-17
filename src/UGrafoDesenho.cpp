@@ -102,12 +102,12 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
 
         Arestas = ParamsGrafoDesenho.Arestas;
 
-        NumCabosReta = 0;
-        NumCabosArco = 0;
-        NumLinhasBandeirola = 0;
-        NumCirculosBandeirola = 0;
-        NumRetanguloInstrumento = 0;
-        NumCirculoInstrumento = 0;
+        _numCabosReta = 0;
+        _numCabosArco = 0;
+        _numLinhasBandeirola = 0;
+        _numCirculosBandeirola = 0;
+        _numRetanguloInstrumento = 0;
+        _numCirculoInstrumento = 0;
 
         AlocaElementos();
 #ifdef DEBUG_BUILDER
@@ -219,13 +219,13 @@ void CGrafoDesenho::GeraListaCabos()
         if ((Dados->Multipoint[n].Nivel == CABO)/* &&
          (Multipoint[n].Estilo==0)*/)  //ESTILO S�LIDO
         {
-            CabosReta[NumCabosReta]->Indice = n;
+            CabosReta[_numCabosReta]->Indice = n;
             Pontos = Dados->Multipoint[n].pontos;
             DifX = fabs( Pontos[0].x - Pontos[1].x );
             DifY = fabs( Pontos[0].y - Pontos[1].y );
-            CabosReta[NumCabosReta]->TipoOrientacao = (DifY > DifX) ? VERTICAL : HORIZONTAL;
+            CabosReta[_numCabosReta]->TipoOrientacao = (DifY > DifX) ? VERTICAL : HORIZONTAL;
             //      CabosReta[NumCabosReta]->ponta[0] = CabosReta[NumCabosReta]->ponta[1] = false;
-            NumCabosReta++;
+            _numCabosReta++;
         }
     }
 
@@ -235,13 +235,13 @@ void CGrafoDesenho::GeraListaCabos()
         if ((Dados->Arcos[n].Nivel == CABO) && (Dados->Arcos[n].AngTam < 180.0)/* &&
          (Arcos[n].Estilo==0)*/)  //ESTILO S�LIDO
         {
-            CabosArco[NumCabosArco]->Indice = n;
+            CabosArco[_numCabosArco]->Indice = n;
             //			iCabosArco[NumCabosArco]=n;
-            NumCabosArco++;
+            _numCabosArco++;
             SomaRaios += Dados->Arcos[n].EixoPrimario;
         }
     }
-    MediaRaioCaboArco = NumCabosArco > 0 ? SomaRaios / NumCabosArco : 0;
+    MediaRaioCaboArco = _numCabosArco > 0 ? SomaRaios / _numCabosArco : 0;
     //DistMinElemCaboPraOpenGL = MediaRaioCaboArco * FATOR_DIST_MIN_ELEM_CABO;
 	//temporary!
 	DistMinElemCaboPraOpenGL = 10.0;
@@ -258,7 +258,7 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &Dist
     vector<TPonto> PontosCabo;
     IndiceCabo = -1;
     MenorDist = Infinity;
-    for (m = 0; m < NumCabosReta; m++)
+    for (m = 0; m < _numCabosReta; m++)
     {
         if ((Nivel != -1) && (Dados->Multipoint[CabosReta[m]->Indice].Nivel != Nivel))
             continue;
@@ -973,7 +973,7 @@ void CGrafoDesenho::GeraVerticesArcos()
     DistMaisProx = 0;
     PontoNaReta.x = PontoNaReta.y = PontoTemp.x = PontoTemp.y = p[0].x = p[0].y = p[1].x = p[1].y =
             0.0;
-    for (n = 0; n < NumCabosArco; n++)
+    for (n = 0; n < _numCabosArco; n++)
     {
         /* Olha todos os arcos do desenho */
         Arco = &Dados->Arcos[CabosArco[n]->Indice];
@@ -1045,7 +1045,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
     TMultipoint *tMultipoint;
     TVerticeGeral VerticeGeral;
     VerticeGeral.TipoVertice = VERTICE_PONTA_CABO;
-    for (n = 0; n < NumCabosReta; n++)
+    for (n = 0; n < _numCabosReta; n++)
     {
         /* Olha todos os cabos reta do desenho */
         tMultipoint = &Dados->Multipoint[CabosReta[n]->Indice];
@@ -1092,7 +1092,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboReta(TPonto Reta[2], int &IndiceCabo,
     TPonto PontoTemp;
     IndiceCabo = -1;
     MenorDist = Infinity;
-    for (m = 0; m < NumCabosReta; m++)
+    for (m = 0; m < _numCabosReta; m++)
     {
         // PontosCabo tem os pontos de in�cio e fim do cabo
         vector<TPonto> &PontosCabo = Dados->Multipoint[CabosReta[m]->Indice].pontos;
@@ -1119,7 +1119,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2],
     double Dist;
     TPonto PontoTemp;
     TPontoEIndiceCabo Cabo;
-    for (m = 0; m < NumCabosReta; m++)
+    for (m = 0; m < _numCabosReta; m++)
     {
         // PontosCabo tem os pontos de in�cio e fim do cabo
         vector<TPonto> &PontosCabo = Dados->Multipoint[CabosReta[m]->Indice].pontos;
@@ -1148,7 +1148,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
     TPonto PontosCabo[2], PontoTemp;
     IndiceCabo = -1;
     MenorDist = Infinity;
-    for (m = 0; m < NumCabosArco; m++)
+    for (m = 0; m < _numCabosArco; m++)
     {
         PontosCabo[0] = VerticesGerais->getItem( Dados->Arcos[CabosArco[m]->Indice].iV[0] )->pos;
         PontosCabo[1] = VerticesGerais->getItem( Dados->Arcos[CabosArco[m]->Indice].iV[1] )->pos;
@@ -1176,7 +1176,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
     double Dist;
     TPonto PontosCabo[2], PontoTemp;
     TPontoEIndiceCabo Cabo;
-    for (m = 0; m < NumCabosArco; m++)
+    for (m = 0; m < _numCabosArco; m++)
     {
         PontosCabo[0] = VerticesGerais->getItem( Dados->Arcos[CabosArco[m]->Indice].iV[0] )->pos;
         PontosCabo[1] = VerticesGerais->getItem( Dados->Arcos[CabosArco[m]->Indice].iV[1] )->pos;
@@ -1213,7 +1213,7 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco,
     //	IndiceCabo=-1;
     //	MenorDist=Infinity;
     TPontoEIndiceCabo Cabo;
-    for (m = 0; m < NumCabosReta; m++)
+    for (m = 0; m < _numCabosReta; m++)
     {
         vector<TPonto> &PontosCabo = Dados->Multipoint[CabosReta[m]->Indice].pontos;
         for (n = 0; n < 2; n++)
@@ -1253,7 +1253,7 @@ void CGrafoDesenho::DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, doub
     double MenorDist, Dist;
     IndiceCabo = -1;
     MenorDist = Infinity;
-    for (m = 0; m < NumCabosReta; m++)
+    for (m = 0; m < _numCabosReta; m++)
     {
         vector<TPonto> &PontosCabo = Dados->Multipoint[CabosReta[m]->Indice].pontos;
         for (n = 0; n < 2; n++)
@@ -1286,7 +1286,7 @@ void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo,
     TPonto PontosCabo[2];
     IndiceArcoCabo = -1;
     MenorDist = Infinity;
-    for (m = 0; m < NumCabosArco; m++)
+    for (m = 0; m < _numCabosArco; m++)
     {
         Dados->Arcos[CabosArco[m]->Indice].PontasArco( PontosCabo );
         for (n = 0; n < 2; n++)
@@ -1319,8 +1319,8 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, int &IndiceCabo, do
     IndiceCabo = -1;
     MenorDist = Infinity;
     int menor = IndiceMax;
-    if (menor > NumCabosArco)
-        menor = NumCabosArco;
+    if (menor > _numCabosArco)
+        menor = _numCabosArco;
     for (m = 0; m < menor; m++)
     {
         PontosCabo[0] = VerticesGerais->getItem( Dados->Arcos[CabosArco[m]->Indice].iV[0] )->pos;
@@ -1345,7 +1345,7 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, int &IndiceCabo, do
 void CGrafoDesenho::OrdenaVerticesRetas()
 {
     int n;
-    for (n = 0; n < NumCabosReta; n++)
+    for (n = 0; n < _numCabosReta; n++)
     {
         if (CabosReta[n]->TipoOrientacao == VERTICAL)
         {
@@ -1478,7 +1478,7 @@ void CGrafoDesenho::GeraArestas()
     TStringList *proArquivo = new TStringList();
     AnsiString vertices = "";
 #endif
-    for (n = 0; n < NumCabosReta; n++)
+    for (n = 0; n < _numCabosReta; n++)
     {
 #ifdef DEBUG_BUILDER
         vertices += IntToStr(n) + ": ";
