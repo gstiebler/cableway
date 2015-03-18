@@ -172,11 +172,6 @@ CGrafoDesenho::~CGrafoDesenho()
             delete _cabosReta[n];
         for (n = 0; n < _dados->Arcos.size(); n++)
             delete _cabosArco[n];
-        //		delete [] iCabosArco;
-        delete[] _iLinhasBandeirola;
-        delete[] _iCirculosBandeirola;
-        delete[] _iRetangulosInstrumento;
-        delete[] _iCirculosInstrumento;
         CarregaGrafo = false;
     }
 }
@@ -191,12 +186,6 @@ void CGrafoDesenho::AlocaElementos()
     _cabosArco.resize( _dados->Arcos.size() );
     for (n = 0; n < _dados->Arcos.size(); n++)
         _cabosArco[n] = new CCaboArco();
-
-    //	iCabosArco =             new int [Dados->NumArcos];
-    _iLinhasBandeirola = new int[_dados->Multipoint.size()];
-    _iCirculosBandeirola = new int[_dados->Arcos.size()];
-    _iRetangulosInstrumento = new int[_dados->Multipoint.size()];
-    _iCirculosInstrumento = new int[_dados->Multipoint.size()];
 }
 //---------------------------------------------------------------------------
 

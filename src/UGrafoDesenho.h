@@ -107,12 +107,6 @@ private:
   void OrdenaVerticesRetas();
   void GeraArestas();
   void AchaTextoBandeirola(TPonto &pos, std::string &texto);
-  //�ndices referentes ao vetor Multipoint que cont�m CabosArco
-//  int *iCabosArco;
-  int *_iLinhasBandeirola;
-  int *_iCirculosBandeirola;
-  int *_iRetangulosInstrumento;
-  int *_iCirculosInstrumento;
   void AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelula *ListaItens, double DistMinBandeirola);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt &iVerticesInstrumento, TPonto PosVertice );
