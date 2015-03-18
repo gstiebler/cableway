@@ -115,7 +115,7 @@ private:
   int *_iCirculosInstrumento;
   void AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelula *ListaItens, double DistMinBandeirola);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
-  void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt *iVerticesInstrumento, TPonto PosVertice );
+  void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt &iVerticesInstrumento, TPonto PosVertice );
   bool ligaEquipamentoSeDesligado (TListaItensCelula *ListaItensCelula, bool ligado);
   void GeraVerticesInstrumentosAdicionaMultipoint(int Indice, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaArco(int Indice, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
@@ -125,10 +125,10 @@ protected:
 
 public:
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
-  CCaboArco **_cabosArco;
+  std::vector<CCaboArco *> _cabosArco;
   //armazena informa��es das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
-  CCaboReta **_cabosReta;
+  std::vector<CCaboReta *> _cabosReta;
   void GeraColares(const std::vector<TDesenho*> &ListaDesenhos);
   void ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos);
   int _pri;

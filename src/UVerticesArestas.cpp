@@ -145,6 +145,7 @@ bool TVerticesGerais::VerticeEhBandeirola(int n)
 void TVerticesGerais::ListaOrd(vector<TVerticeGeral*> *ListaOrdenada)
 {
     int n;
+	//TODO não alocar nada aqui para não precisar desalocar em quem chamar essa função
     CopiaListaPara( ListaOrdenada );
 //  ListaOrdenada->Assign(lista);
     for (n = 0; n < (int) ListaOrdenada->size(); n++)

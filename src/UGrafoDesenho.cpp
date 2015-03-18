@@ -172,8 +172,6 @@ CGrafoDesenho::~CGrafoDesenho()
             delete _cabosReta[n];
         for (n = 0; n < _dados->Arcos.size(); n++)
             delete _cabosArco[n];
-        delete[] _cabosArco;
-        delete[] _cabosReta;
         //		delete [] iCabosArco;
         delete[] _iLinhasBandeirola;
         delete[] _iCirculosBandeirola;
@@ -187,10 +185,10 @@ CGrafoDesenho::~CGrafoDesenho()
 void CGrafoDesenho::AlocaElementos()
 {
     int n;
-    _cabosReta = new CCaboReta *[_dados->Multipoint.size()];
+    _cabosReta.resize( _dados->Multipoint.size() );
     for (n = 0; n < _dados->Multipoint.size(); n++)
         _cabosReta[n] = new CCaboReta();
-    _cabosArco = new CCaboArco *[_dados->Arcos.size()];
+    _cabosArco.resize( _dados->Arcos.size() );
     for (n = 0; n < _dados->Arcos.size(); n++)
         _cabosArco[n] = new CCaboArco();
 
@@ -805,7 +803,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
         }
 
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
-        CriaVerticesEArestasInstrumento( ListaItensCelula, &iVerticesInstrumento, PosVertice );
+        CriaVerticesEArestasInstrumento( ListaItensCelula, iVerticesInstrumento, PosVertice );
 
         for (i = 0; i < ListaItensCelula->Tamanho(); i++)  //percorre todos os itens da c�lula atual
         {
@@ -850,7 +848,7 @@ bool CGrafoDesenho::ligaEquipamentoSeDesligado(TListaItensCelula *ListaItensCelu
 //---------------------------------------------------------------------------
 
 void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaItensCelula,
-        TVectorInt *iVerticesInstrumento, TPonto PosVertice )
+        TVectorInt &iVerticesInstrumento, TPonto PosVertice )
 {
     //para cada texto da c�lula cria um vértice
     for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
@@ -861,7 +859,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         VerticeInstrumento.IDArquivo = _dados->IDArquivo;
         VerticeInstrumento.texto = _dados->Textos[ListaItensCelula->iTextos[i]].texto;
         VerticeInstrumento.pos = PosVertice;
-        iVerticesInstrumento->push_back( _verticesGerais->Tamanho() );
+        iVerticesInstrumento.push_back( _verticesGerais->Tamanho() );
         VerticeInstrumento.TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
         _verticesGerais->Adiciona( VerticeInstrumento );
     }
@@ -870,7 +868,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
     if (ListaItensCelula->iTextos.size() == 2)
     {
         TAresta Aresta;
-        Aresta.AdicionaVertices( iVerticesInstrumento->at( 0 ), iVerticesInstrumento->at( 1 ), 0 );
+        Aresta.AdicionaVertices( iVerticesInstrumento[0], iVerticesInstrumento[1], 0 );
         Aresta.IndiceDesenho = _dados->IndiceDesenho;
         Aresta.IDArquivo = _dados->IDArquivo;
         _arestas->Adiciona( Aresta );
