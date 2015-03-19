@@ -149,6 +149,10 @@ void CweLoader::readText()
 			sscanf( value.c_str(), "%d", &(texto.FatorAltura) );
 			texto.FatorAltura /= 1000.0;
 		}
+		else if ( key == "ID" )
+		{
+			sscanf( value.c_str(), "%d", &(texto.ID) );
+		}
 		else if ( key == "END_OBJ" )
 			break;
 		else
@@ -199,6 +203,10 @@ void CweLoader::readDBText()
 		{
 			sscanf( value.c_str(), "%lf", &(texto.FatorAltura) );
 		}
+		else if ( key == "ID" )
+		{
+			sscanf( value.c_str(), "%d", &(texto.ID) );
+		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 	}
@@ -236,7 +244,7 @@ void CweLoader::readCircle()
 			arco.EixoPrimario /= 2.0;
 			arco.EixoSecundario = arco.EixoPrimario;
 			arco.AngIni = 0.0;
-			arco.AngTam = 360.0;
+			arco.AngEnd = M_PI * 2;
 		}
 		else if( key == "CENTER_X" )
 		{
@@ -248,6 +256,10 @@ void CweLoader::readCircle()
 				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 			
 			sscanf( value.c_str(), "%lf", &(arco.Centro.y) );
+		}
+		else if ( key == "ID" )
+		{
+			sscanf( value.c_str(), "%d", &(arco.ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
@@ -296,9 +308,10 @@ void CweLoader::readArc()
 			sscanf( value.c_str(), "%lf", &y );
 	
 			//TODO
-			arco.EixoPrimario = arco.Centro.x - x;
+			double difX = arco.Centro.x - x;
+			double difY = arco.Centro.y - y;
+			arco.EixoPrimario = sqrt( difX * difX + difY * difY );
 			arco.EixoSecundario = arco.EixoPrimario;
-			_dados->Arcos.push_back( arco );
 		}
 		else if( key == "CENTER_X" )
 		{
@@ -320,12 +333,17 @@ void CweLoader::readArc()
 			if( key != "END_ANGLE" )
 				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 			
-			sscanf( value.c_str(), "%lf", &(arco.AngTam) );
-			arco.AngTam *= 360.0 / M_PI;
+			double angEnd;
+			sscanf( value.c_str(), "%lf", &(arco.AngEnd) );
+		}
+		else if ( key == "ID" )
+		{
+			sscanf( value.c_str(), "%d", &(arco.ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 	}
+	_dados->Arcos.push_back( arco );
 
 	if( _dados->InfoCelula.DentroCelula )
     {
@@ -387,6 +405,10 @@ void CweLoader::readLine()
 
 			multipoint.pontos.push_back( startPoint );
 		}
+		else if ( key == "ID" )
+		{
+			sscanf( value.c_str(), "%d", &(multipoint.ID) );
+		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 	}
@@ -442,6 +464,10 @@ void CweLoader::readPolyLine()
 
 				multipoint.pontos.push_back( point );
 			}
+		}
+		else if ( key == "ID" )
+		{
+			sscanf( value.c_str(), "%d", &(multipoint.ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );

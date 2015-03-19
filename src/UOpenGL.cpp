@@ -57,33 +57,33 @@ void COpenGL::Paint()
 void COpenGL::DesenhaArco(float x_center, float y_center, float w,
           float h, float startAngle, float arcAngle, int n)
 {
-  float pheta, angle_increment;
-  float x, y;
-  if (n <= 0)
-    n = 1;
-  if (arcAngle<0)
-  {
-    arcAngle*=-1;
-    startAngle-=arcAngle;
-  }
-  angle_increment = M_PI_2 / n;
-  glPushMatrix ();
-  //  center the oval at x_center, y_center
-  glTranslatef (x_center, y_center, 0);
-  //  draw the oval using line segments
-  glBegin (GL_LINE_STRIP);
-  for (pheta = startAngle; pheta - (startAngle + arcAngle)
-                        < 0.001; pheta += angle_increment)
-  {
-    x = w * cos (pheta);
-    y = h * sin (pheta);
-    glVertex2f (x, y);
-  }
-  x = w * cos (startAngle + arcAngle);
-  y = h * sin (startAngle + arcAngle);
-  glVertex2f (x, y);
-  glEnd ();
-  glPopMatrix ();
+	float pheta, angle_increment;
+	float x, y;
+	if (n <= 0)
+	n = 1;
+	if (arcAngle<0)
+	{
+		arcAngle*=-1;
+		startAngle-=arcAngle;
+	}
+	angle_increment = M_PI_2 / n;
+	glPushMatrix ();
+	//  center the oval at x_center, y_center
+	glTranslatef (x_center, y_center, 0);
+	//  draw the oval using line segments
+	glBegin (GL_LINE_STRIP);
+	for (pheta = startAngle; pheta - (startAngle + arcAngle)
+						< 0.001; pheta += angle_increment)
+	{
+		x = w * cos (pheta);
+		y = h * sin (pheta);
+		glVertex2f (x, y);
+	}
+	x = w * cos (startAngle + arcAngle);
+	y = h * sin (startAngle + arcAngle);
+	glVertex2f (x, y);
+	glEnd ();
+	glPopMatrix ();
 }
 //---------------------------------------------------------------------------
 

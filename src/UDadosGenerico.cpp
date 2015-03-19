@@ -47,14 +47,11 @@ bool pointInPolygon(double *polyX, double *polyY, int polySides, double x, doubl
 
 void TArco::PontasArco(TPonto pontas[2])
 {
-  double arc1, arc2;
-  arc1=LondDegToRad(AngIni+Rotacao);
-  arc2=arc1+LondDegToRad(AngTam);
-  pontas[0].x=Centro.x+EixoPrimario*cos(arc1);
-  pontas[0].y=Centro.y+EixoPrimario*sin(arc1);
+	pontas[0].x = Centro.x + EixoPrimario * cos(AngIni);
+	pontas[0].y = Centro.y + EixoPrimario * sin(AngIni);
 
-  pontas[1].x=Centro.x+EixoPrimario*cos(arc2);
-  pontas[1].y=Centro.y+EixoPrimario*sin(arc2);
+	pontas[1].x = Centro.x + EixoPrimario * cos(AngEnd);
+	pontas[1].y = Centro.y + EixoPrimario * sin(AngEnd);
 }       
 //---------------------------------------------------------------------------
 
@@ -127,6 +124,14 @@ CDadosGenerico::~CDadosGenerico ()
 
 }
 //---------------------------------------------------------------------------
+
+
+double TArco::getAng() const
+{
+	double dif = AngEnd - AngIni;
+	return fabs( dif );
+}
+
 
 void CDadosGenerico::convertePraTransfer(TDadosTransfer *dados)
 {

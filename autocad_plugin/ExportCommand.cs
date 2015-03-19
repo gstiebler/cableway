@@ -207,7 +207,7 @@ namespace AutoCAD_CSharp_plug_in1
         }
 
 
-        public static void writeObject(System.IO.StreamWriter file, DBObject dbo)
+        public static void writeObject(System.IO.StreamWriter file, DBObject dbo, int id)
         {
             if (dbo is Circle)
             {
@@ -241,6 +241,7 @@ namespace AutoCAD_CSharp_plug_in1
             }
             else
                 file.WriteLine("__type not processed: " + dbo.GetType());
+            file.WriteLine("ID: " + id);
             file.WriteLine("END_OBJ");
         }
 
@@ -284,6 +285,7 @@ namespace AutoCAD_CSharp_plug_in1
 
                     DBDictionary groups = acTrans.GetObject(acCurDb.GroupDictionaryId, OpenMode.ForRead) as DBDictionary;
 
+                    int id = 1;
                     System.Collections.Generic.HashSet<DBObject> usedObjects = new System.Collections.Generic.HashSet<DBObject>();
                     foreach (DBDictionaryEntry dictEntry in groups)
                     {
@@ -296,7 +298,7 @@ namespace AutoCAD_CSharp_plug_in1
                         {
                             ObjectId id2 = ids[i];
                             DBObject dboInG = acTrans.GetObject(id2, OpenMode.ForRead);
-                            writeObject(file, dboInG);
+                            writeObject(file, dboInG, id++);
                             usedObjects.Add(dboInG);
                         }
                         file.WriteLine("CLOSE_GROUP");
@@ -314,7 +316,7 @@ namespace AutoCAD_CSharp_plug_in1
                         if (usedObjects.Contains(dbo))
                             continue;
 
-                        writeObject(file, dbo);
+                        writeObject(file, dbo, id++);
 
                         nCnt = nCnt + 1;
                     }

@@ -84,15 +84,12 @@ void CMostraDesenho::initializeLimits()
 	}
 	for ( int i=0; i<GrafoDesenho->_dados->Arcos.size(); i++)
 	{
-		if ( fabs(360.0 - GrafoDesenho->_dados->Arcos[i].AngTam) < 0.001 )
-		{
 			x = GrafoDesenho->_dados->Arcos[i].Centro.x;
 			y = GrafoDesenho->_dados->Arcos[i].Centro.y;
 
 			double raio = GrafoDesenho->_dados->Arcos[i].EixoPrimario;
 
 			_glCoords.updateLimits( x + raio, y + raio );
-		}
 	}
 
 	_glCoords.updateProportion();
@@ -182,12 +179,12 @@ void CMostraDesenho::drawArcs()
 				GrafoDesenho->_dados->Arcos[n].CorB/255.0);
 		if ( destacaCoresDeEquipamentos )
 			setColorFromLevel( GrafoDesenho->_dados->Arcos[n].Nivel );
-    if ( semCores )
-    {
-			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
-    }
-		DesenhaArco(Arcos[n].Centro.x, Arcos[n].Centro.y, Arcos[n].EixoPrimario, Arcos[n].EixoSecundario,
-				LondDegToRad(Arcos[n].AngIni+Arcos[n].Rotacao), LondDegToRad(Arcos[n].AngTam), 20);
+		if ( semCores )
+		{
+				glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
+		}
+		TArco &arco = Arcos[n];
+		DesenhaArco( arco.Centro.x, arco.Centro.y, arco.EixoPrimario, arco.EixoSecundario, arco.AngIni + arco.Rotacao, arco.getAng(), 20);
 	}
 }
 

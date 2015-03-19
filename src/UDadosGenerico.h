@@ -79,7 +79,7 @@ struct TArco: public TElemento
 	// Start angle (degrees counterclockwise of primary axis)
 	double AngIni;
 	// Sweep angle (degrees)
-	double AngTam;
+	double AngEnd;
 	// �ndice dos vertices 
 	int iV[2];
   ///<summary>Fun��o que calcula as duas pontas de um arco.</summary>
@@ -89,7 +89,7 @@ struct TArco: public TElemento
 	TArco() : TElemento()
 	{
 		Centro.x = Centro.y = 0.0;
-		EixoPrimario = EixoSecundario = Rotacao = AngIni = AngTam = 0.0;
+		EixoPrimario = EixoSecundario = Rotacao = AngIni = AngEnd = 0.0;
 		iV[0] = iV[1] = -1;
 	}
   TArco(const TArco &arco) : TElemento(arco)
@@ -100,7 +100,7 @@ struct TArco: public TElemento
     EixoSecundario = arco.EixoSecundario;
     Rotacao = arco.Rotacao;
     AngIni = arco.AngIni;
-    AngTam = arco.AngTam;
+    AngEnd = arco.AngEnd;
     iV[0] = arco.iV[0];
     iV[1] = arco.iV[1];
   }
@@ -119,11 +119,12 @@ struct TArco: public TElemento
     EixoSecundario = arco.EixoSecundario;
     Rotacao = arco.Rotacao;
     AngIni = arco.AngIni;
-    AngTam = arco.AngTam;
+    AngEnd = arco.AngEnd;
     iV[0] = arco.iV[0];
     iV[1] = arco.iV[1];
   	return *this;
   }
+	double getAng() const;
 };
 //---------------------------------------------------------------------------
 struct TTextoTransfer;

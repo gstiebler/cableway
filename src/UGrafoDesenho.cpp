@@ -215,7 +215,7 @@ void CGrafoDesenho::GeraListaCabos()
     double SomaRaios = 0;
     for (n = 0; n < _dados->Arcos.size(); n++)
     {
-        if ((_dados->Arcos[n].Nivel == CABO) && (_dados->Arcos[n].AngTam < 180.0)/* &&
+		if ((_dados->Arcos[n].Nivel == CABO) && (_dados->Arcos[n].getAng() < M_PI / 2)/* &&
          (Arcos[n].Estilo==0)*/)  //ESTILO S�LIDO
         {
             _cabosArco[_numCabosArco]->Indice = n;

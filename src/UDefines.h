@@ -26,9 +26,6 @@ using namespace std;
 
 #define DIST_MIN_ELEM_CABO 0.001
 
-#define LondRadToDeg(a) (a)*(180.0 / M_PI)
-#define LondDegToRad(a) (a)*(M_PI / 180.0)
-
 #define LINE_CLOSED 0
 #define LINE_OPEN 1
 
