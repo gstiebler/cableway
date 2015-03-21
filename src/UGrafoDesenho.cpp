@@ -1097,55 +1097,48 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDese
     for (n = 0; n < (int) (Lista.size() - 1); n++)
     {
         V1 = Lista[ n ];
-        if (V1->texto != "")
+        if (V1->texto == "")
+			continue;
+
+        V2 = Lista[ n + 1 ];
+        if (V1->texto != V2->texto)
+			continue;
+
+        if (V1->iDesenho != V2->iDesenho
+                && (V1->TipoElemento == INSTRUMENTO && V2->TipoElemento == INSTRUMENTO)
+                && (n + 2 < (int) (Lista.size() - 1)
+                        && (Lista[ n + 1 ])->texto != V1->texto))
         {
-            V2 = Lista[ n + 1 ];
-            if (V1->texto == V2->texto)
-            {
-
-                if (V1->iDesenho != V2->iDesenho
-                        && (V1->TipoElemento == INSTRUMENTO && V2->TipoElemento == INSTRUMENTO)
-                        && (n + 2 < (int) (Lista.size() - 1)
-                                && (Lista[ n + 1 ])->texto != V1->texto))
-                {
-                    n++;
-                    break;
-                }
-
-                CErrosMsg *erros = CErrosMsg::getInstance();
-                erros->novoErro( "Elementos com o texto \"" + V1->texto + "\" repetido: " );
-
-                for (; n < (int) Lista.size(); n++)
-                {
-                    if ((Lista[ n ])->texto == V1->texto)
-                    {
-                        string tipo;
-                        if ( Lista[ n ]->TipoElemento == INSTRUMENTO)
-                        {
-                            tipo = "Equipamento";
-                        }
-                        else if ( Lista[ n ]->TipoElemento == CABO)
-                        {
-                            tipo = "Cabo";
-                        }
-                        else if ( Lista[ n ]->TipoElemento == BANDEIROLA)
-                        {
-                            tipo = "Bandeirola";
-                        }
-                        else
-                            tipo = "Desconhecido";
-
-                        erros->novoErro(
-                                "No desenho: "
-                                        + ListaDesenhos[(Lista[ n ])->iDesenho]->NomeArquivo + " em nível de "
-                                        + tipo );
-                    }
-                    else
-                        break;
-                }
-                erros->novoErro( "" );
-            }
+            n++;
+            break;
         }
+
+        CErrosMsg *erros = CErrosMsg::getInstance();
+        erros->novoErro( "Elementos com o texto \"" + V1->texto + "\" repetido: " );
+
+        for (; n < (int) Lista.size(); n++)
+        {
+            if ((Lista[ n ])->texto != V1->texto)
+				break;
+            string tipo;
+            if ( Lista[ n ]->TipoElemento == INSTRUMENTO)
+            {
+                tipo = "Equipamento";
+            }
+            else if ( Lista[ n ]->TipoElemento == CABO)
+            {
+                tipo = "Cabo";
+            }
+            else if ( Lista[ n ]->TipoElemento == BANDEIROLA)
+            {
+                tipo = "Bandeirola";
+            }
+            else
+                tipo = "Desconhecido";
+
+            erros->novoErro( "No desenho: " + ListaDesenhos[(Lista[ n ])->iDesenho]->NomeArquivo + " em nível de " + tipo );
+        }
+        erros->novoErro( "" );
     }
 }
 //---------------------------------------------------------------------------
