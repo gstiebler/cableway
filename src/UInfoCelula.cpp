@@ -117,4 +117,3 @@ void TInfoCelula::FechaCelula()
 	somaX = somaY = somaZ = 0;
 }
 
-#pragma package(smart_init)

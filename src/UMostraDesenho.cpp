@@ -2,8 +2,6 @@
 #pragma hdrstop
 #include "UMostraDesenho.h"
 #include <UGrafoDesenho.h>
-//---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 using namespace std;
 
@@ -219,7 +217,7 @@ void CMostraDesenho::showTree()
 	// Laranja - Origem
 
 	//			glColor3f(1.0, 0.5, 0.0);
-	string origem = GrafoDesenho->_verticesGerais->getItem(VerticeArvore)->texto.c_str();
+	string origem = GrafoDesenho->_verticesGerais->vertices[VerticeArvore]->texto.c_str();
 //			if ( !bMostraArvore2 && ponteiroPraFuncao)
 //			    ponteiroPraFuncao(ponteiroProThis, origem , "");
 	glColor3f(pegaVermelho(CORARVORE)/255.0, pegaVerde(CORARVORE)/255.0, pegaAzul(CORARVORE)/255.0);
@@ -236,19 +234,19 @@ void CMostraDesenho::showTree()
 	for (int n=0; n<(int)iArestas.size(); n++)
 	{
 		Aresta = GrafoDesenho->_arestas[iArestas[n]];
-		string debugTexto = GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->texto;
-		Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->pos;
-		Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->pos;
+		string debugTexto = GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->texto;
+		Pontos[0]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->pos;
+		Pontos[1]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->pos;
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(Pontos[0].x, Pontos[0].y);
 		glVertex2f(Pontos[1].x, Pontos[1].y);
 		glEnd();
 #define TAMBOLACOLAR (1000)
-		if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->EhColar )
+		if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
-		if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->EhColar )
+		if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
@@ -257,7 +255,7 @@ void CMostraDesenho::showTree()
 	if (bMostraArvore2)
 	{
 		// Roxo - Destino
-		string destino = GrafoDesenho->_verticesGerais->getItem(VerticeArvore2)->texto.c_str();
+		string destino = GrafoDesenho->_verticesGerais->vertices[VerticeArvore2]->texto.c_str();
 //				if ( ponteiroPraFuncao )
 //				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
 		glColor3f(pegaVermelho(CORARVORE2)/255.0, pegaVerde(CORARVORE2)/255.0, pegaAzul(CORARVORE2)/255.0);
@@ -276,17 +274,17 @@ void CMostraDesenho::showTree()
 		for (int n=0; n<(int)iArestas.size(); n++)
 		{
 			Aresta = GrafoDesenho->_arestas[ iArestas[n] ];
-			Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->pos;
-			Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->pos;
+			Pontos[0]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->pos;
+			Pontos[1]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->pos;
 			glBegin(GL_LINE_STRIP);
 			glVertex2f(Pontos[0].x, Pontos[0].y);
 			glVertex2f(Pontos[1].x, Pontos[1].y);
 			glEnd();
-			if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->EhColar )
+			if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->EhColar )
 			{
 				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
-			if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->EhColar )
+			if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->EhColar )
 			{
 				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}

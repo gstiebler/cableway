@@ -4,9 +4,9 @@
 #define UVerticesArestasH
 //---------------------------------------------------------------------------
 
-#include "UListaV.h"
 #include "UDefines.h"
 #include <algorithm>
+#include <memory>
 //---------------------------------------------------------------------------
 
 //s� � usado no CCaboReta
@@ -46,10 +46,7 @@ struct TListaVerticesEArestas
   void AdicionaVerticeEAresta(int vertice, int aresta);
   TListaVerticesEArestas(){}
   ~TListaVerticesEArestas() {}
-  TListaVerticesEArestas(const TListaVerticesEArestas &cpy)
-  {
-	  list = cpy.list;
-  }
+  TListaVerticesEArestas(const TListaVerticesEArestas &cpy);
 };
 //---------------------------------------------------------------------------
 
@@ -71,15 +68,15 @@ struct TVerticeGeral
 };
 //---------------------------------------------------------------------------
 
-struct TVerticesGerais: public TListaV<TVerticeGeral>
+struct TVerticesGerais
 {
 	TVerticesGerais();
-
+	vector<shared_ptr<TVerticeGeral> > vertices;
   void Adiciona(TVerticeGeral &Item);
   int AchaVerticePeloTexto(string Texto);
   bool VerticeEhEquipamento(int n);
   bool VerticeEhBandeirola(int n);
-  void ListaOrd(vector<TVerticeGeral*> *ListaOrdenada);
+  void ListaOrd( vector<shared_ptr<TVerticeGeral> > &ListaOrdenada);
   #ifdef _DEBUG_BUILDER
   void DEBUG_Grava();
   #endif
@@ -101,30 +98,21 @@ struct TArestaReduzida
   double Tam;
   int IndiceDesenho;
   int IDArquivo;
-  vector<int> *ArestasRetiradas;
+  vector<int> ArestasRetiradas;
   TArestaReduzida () 
   { 
-	  ArestasRetiradas = 0; limpa(); 
+	  limpa(); 
   }
 
-  TArestaReduzida(const TArestaReduzida &cpy)
-  {
-	  Vertice1 = cpy.Vertice1;
-	  Vertice2 = cpy.Vertice2;
-	  Tam = cpy.Tam;
-	  IndiceDesenho = cpy.IndiceDesenho;
-	  IDArquivo = cpy.IDArquivo;
-	  ArestasRetiradas = new vector<int>(*cpy.ArestasRetiradas);
-  }
-  ~TArestaReduzida () { if ( ArestasRetiradas ) delete ArestasRetiradas; ArestasRetiradas = 0; }
+  TArestaReduzida(const TArestaReduzida &cpy);
+
   void limpa()
   {
     Vertice1 = Vertice2 = -1;
     Tam = 0;
     IndiceDesenho = IDArquivo = I_DESENHO_NULO;
-    if ( ArestasRetiradas )
-      delete ArestasRetiradas;
-    ArestasRetiradas = new vector<int>;
+
+	ArestasRetiradas.clear();
   }
 };
 //---------------------------------------------------------------------------
@@ -132,7 +120,7 @@ struct TArestaReduzida
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-bool ComparaTVerticeGeral(TVerticeGeral * Item1, TVerticeGeral * Item2);
+bool ComparaTVerticeGeral(shared_ptr<TVerticeGeral> Item1, shared_ptr<TVerticeGeral> Item2);
 
 #endif
 

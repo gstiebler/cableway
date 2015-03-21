@@ -30,7 +30,6 @@ set(ALL_SOURCES ${SRC_BASE}/UContainerDesenhos.cpp
 				${SRC_BASE}/UInfoCircuitos.cpp
 				${SRC_BASE}/UListaItensCelula.cpp
 				${SRC_BASE}/UListaPontoEIndiceCabo.cpp
-				${SRC_BASE}/UListaV.cpp
 				${SRC_BASE}/UMostraDesenho.cpp
 				${SRC_BASE}/UOpenGL.cpp
 				${SRC_BASE}/GLCoords.cpp

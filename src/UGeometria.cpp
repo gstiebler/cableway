@@ -6,10 +6,6 @@
 #include "UGeometria.h"
 #include "UVerticesArestas.h"
 
-//---------------------------------------------------------------------------
-
-#pragma package(smart_init)
-
 
 void PontoMaisDistante(TPonto ponto, vector<TPonto> pontos,
 		TPonto &maisDist)
@@ -34,15 +30,7 @@ void PontoMaisDistante(TPonto ponto, vector<TPonto> pontos,
 	//DistMaisProx=MenorDist;
 	if (IndicePonto==-1)
 	{
-			//CErrosMsg *erros = CErrosMsg::getInstance();
-      // resolver NOMEARQ!
-			//erros->novoErro("Atenção: Existem arquivos que não possuem cabos.");
-      		/*    if ( Dados->IMP )
-					{
-		//ShowMessage("Erro: não há cabo.");
-		Dados->IMP->ListErros->Lines->Add("Atenção: " + ExtractFileName(Dados->NomeArq.c_str()).c_str() + " não possui cabos.");
-		}
-		*/
+			
 	}
   else
   {

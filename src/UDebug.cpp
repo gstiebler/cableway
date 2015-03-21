@@ -1,8 +1,6 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "UDebug.h"
-//---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 #ifdef _DEBUG_BUILDER
 void GravaArquivoDouble(void *pont, int tam, int shift)

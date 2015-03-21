@@ -3,8 +3,6 @@
 #include "UContainerDesenhos.h"
 #include "UStructs.h"
 #include "UErros.h"
-//---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 int ID_PROJETO;
 
@@ -109,8 +107,8 @@ void CContainerDesenhos::GeraListaAdjacencias()
   {
     v1=ParamsInfoCircuitos.Arestas[n]->Vertice1;
     v2=ParamsInfoCircuitos.Arestas[n]->Vertice2;
-    ParamsInfoCircuitos.VerticesGerais->getItem(v1)->ListaVerticesEArestas->AdicionaVerticeEAresta(v2, n);
-    ParamsInfoCircuitos.VerticesGerais->getItem(v2)->ListaVerticesEArestas->AdicionaVerticeEAresta(v1, n);
+    ParamsInfoCircuitos.VerticesGerais->vertices[v1]->ListaVerticesEArestas->AdicionaVerticeEAresta(v2, n);
+    ParamsInfoCircuitos.VerticesGerais->vertices[v2]->ListaVerticesEArestas->AdicionaVerticeEAresta(v1, n);
   }
 }
 
@@ -119,16 +117,16 @@ void CContainerDesenhos::ReduzGrafo()
 
   bool *VerticesVisitados;
 
-  VerticesVisitados = new bool [ParamsInfoCircuitos.VerticesGerais->Tamanho()];
-  memset(VerticesVisitados, 0, ParamsInfoCircuitos.VerticesGerais->Tamanho()*sizeof(bool));
+  VerticesVisitados = new bool [ParamsInfoCircuitos.VerticesGerais->vertices.size()];
+  memset(VerticesVisitados, 0, ParamsInfoCircuitos.VerticesGerais->vertices.size()*sizeof(bool));
   while ( 1 )
   {
   int i = 1;
   bool visitouTudo = true;
 
-  for ( i = 1 ; i < ParamsInfoCircuitos.VerticesGerais->Tamanho() ; i++ )
+  for ( i = 1 ; i < ParamsInfoCircuitos.VerticesGerais->vertices.size() ; i++ )
   {
-    TVerticeGeral *vertice = ParamsInfoCircuitos.VerticesGerais->getItem(i);
+    shared_ptr<TVerticeGeral> vertice = ParamsInfoCircuitos.VerticesGerais->vertices[i];
     // Pega o primeiro vértice que não tenha chance de ser eliminado para come�ar a busca.
     if ( !VerticesVisitados[i] )
     if ( vertice->ListaVerticesEArestas->list.size() != 2 || vertice->texto != "" )
@@ -151,7 +149,7 @@ void CContainerDesenhos::ReduzGrafo()
 void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, int indice, bool arestazerada, TArestaReduzida arestaRed)
 {
 
-  TVerticeGeral *vertice = new TVerticeGeral(*ParamsInfoCircuitos.VerticesGerais->getItem(indice));
+  TVerticeGeral *vertice = new TVerticeGeral(*ParamsInfoCircuitos.VerticesGerais->vertices[indice]);
   TListaVerticesEArestas *verticesArestas = vertice->ListaVerticesEArestas;
 //  delete vertice->ListaVerticesEArestas;
   vertice->ListaVerticesEArestas = new TListaVerticesEArestas;
@@ -164,8 +162,8 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
     if ( verticesArestas->list.size() != 2
       || vertice->texto != "" )
     {
-      arestaRed.Vertice2 = ParamsInfoCircuitos.VerticesReduzidos->Tamanho();
-      tamanho = ParamsInfoCircuitos.VerticesReduzidos->Tamanho();
+		arestaRed.Vertice2 = ParamsInfoCircuitos.VerticesReduzidos->vertices.size();
+      tamanho = ParamsInfoCircuitos.VerticesReduzidos->vertices.size();
       ParamsInfoCircuitos.VerticesReduzidos->Adiciona(*vertice);
       ParamsInfoCircuitos.ArestasReduzidas.push_back(arestaRed);
       arestaRed.limpa();
@@ -182,7 +180,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
         if ( !VerticesVisitados[VeA->Vertice] ) // Em teoria, isso s� vai entrar uma vez.
         {
           VerticesVisitados[VeA->Vertice] = true;
-          arestaRed.ArestasRetiradas->push_back(VeA->Aresta);
+          arestaRed.ArestasRetiradas.push_back(VeA->Aresta);
           arestaRed.Tam += ParamsInfoCircuitos.Arestas[VeA->Aresta]->Tam;
           buscaEmProfundidadeOsVertices(VerticesVisitados, VeA->Vertice, false, arestaRed);
         }//if ( !VerticesVisitados[VeA->Vertice] )
@@ -200,11 +198,11 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
         VerticesVisitados[VeA->Vertice] = true;
         if ( tamanho < 0 )
         {
-          tamanho = ParamsInfoCircuitos.VerticesReduzidos->Tamanho();
+          tamanho = ParamsInfoCircuitos.VerticesReduzidos->vertices.size();
           ParamsInfoCircuitos.VerticesReduzidos->Adiciona(*vertice);
         }
         arestaRed.Vertice1 = tamanho;
-        arestaRed.ArestasRetiradas->push_back(VeA->Aresta);
+        arestaRed.ArestasRetiradas.push_back(VeA->Aresta);
         arestaRed.Tam += ParamsInfoCircuitos.Arestas[VeA->Aresta]->Tam;
         //          busca.push(intVertices(VeA->Vertice, arestaRed.Vertice1)));
         buscaEmProfundidadeOsVertices(VerticesVisitados, VeA->Vertice, false, arestaRed);
@@ -258,12 +256,8 @@ void CContainerDesenhos::MostraCircuito(string circuito)
   int IndiceCircuitoArestas;
   bool AchouCircuito;
   TCircuito Circuito;
+  
 
-  //AchouCircuito diz se existe um circuito com o nome selecionado
-  //AchouCircuito=CArmazenamentoCircuitos::PegaCircuito(circuito, Circuito);
-
-  if (AchouCircuito)
-  {
     IndiceCircuitoArestas=InfoCircuitos->ListaArestasDoCircuito(circuito);
     if (IndiceCircuitoArestas>=0)
     {
@@ -335,9 +329,6 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       if ( equips )
         MostraDoubleArvore(Circuito.Origem, Circuito.Destino);
     }
-  }
-  else
-	CErrosMsg::getInstance()->novoErro( "Circuito desconhecido." );
 }
 //---------------------------------------------------------------------------
 

@@ -16,7 +16,6 @@
 #include "UDefines.h"
 #include "UInfoCelula.h"
 #include "UListaItensCelula.h"
-#include "UListaV.h"
 #include "UserParams/UserParams.h"
 #include "UErros.h"
 

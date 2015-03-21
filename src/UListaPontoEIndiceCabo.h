@@ -6,7 +6,6 @@
 #endif
 
 #include "UDefines.h"
-#include "UListaV.h"
 
 struct TPontoEIndiceCabo
 {

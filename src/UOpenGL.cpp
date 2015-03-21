@@ -1,8 +1,6 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "UOpenGL.h"
-//---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent) : 
         QGLWidget(QGLFormat(QGL::SampleBuffers), parent),

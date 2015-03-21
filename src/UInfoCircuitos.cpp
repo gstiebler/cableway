@@ -1,8 +1,6 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "UInfoCircuitos.h"
-//---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 #include <queue>
 
@@ -162,8 +160,8 @@ int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceD
     {
         if (Arestas[ m ]->IndiceDesenho != IndiceDesenho)
             continue;
-        Reta[0] = VerticesGerais->getItem( Arestas[ m ]->Vertice1 )->pos;
-        Reta[1] = VerticesGerais->getItem( Arestas[ m ]->Vertice2 )->pos;
+        Reta[0] = VerticesGerais->vertices[ Arestas[ m ]->Vertice1 ]->pos;
+        Reta[1] = VerticesGerais->vertices[ Arestas[ m ]->Vertice2 ]->pos;
 
         Dist = DistPontoParaSegmentoReta( Reta, ponto, retorno );
 
@@ -268,8 +266,8 @@ void CInfoCircuitos::PontosAresta(TPonto Pontos[2], int iAresta)
     vertices[0] = Arestas[ iAresta ]->Vertice1;
     vertices[1] = Arestas[ iAresta ]->Vertice2;
 
-    Pontos[0] = VerticesGerais->getItem( vertices[0] )->pos;
-    Pontos[1] = VerticesGerais->getItem( vertices[1] )->pos;
+	Pontos[0] = VerticesGerais->vertices[ vertices[0] ]->pos;
+    Pontos[1] = VerticesGerais->vertices[ vertices[1] ]->pos;
 }
 
 //---------------------------------------------------------------------------
@@ -418,10 +416,10 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
     int *anterior;
 
 //  tempo->MarcaTempo("Marcação de tempo antes de alocar as coisas do InfoCircuitos");
-    int *PaisVertices=new int [VerticesGerais->Tamanho()];//armazena os pais de cada vértice na �rvore
-    int *vArestas=new int [VerticesGerais->Tamanho()];//armazena a aresta de cada vértice referente em PaisVertices
-    DistanciaDjikstra = new double[VerticesGerais->Tamanho()];
-    anterior = new int[VerticesGerais->Tamanho()];
+	int *PaisVertices=new int [VerticesGerais->vertices.size()];//armazena os pais de cada vértice na �rvore
+    int *vArestas=new int [VerticesGerais->vertices.size()];//armazena a aresta de cada vértice referente em PaisVertices
+    DistanciaDjikstra = new double[VerticesGerais->vertices.size()];
+    anterior = new int[VerticesGerais->vertices.size()];
 //  tempo->MarcaTempo("Fim da Marcação de tempo.");
 //  tempo->MostraTempo((string)"Tempo InfoCircuitos.txt");
     TListaVerticesEArestas *ListaVerticesEArestasT;
@@ -432,7 +430,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
     //tempo->MarcaTempo("Alocou memória");
 
     /* initialize single source */
-    for ( int n = 0; n < VerticesGerais->Tamanho(); n++ )
+    for ( int n = 0; n < VerticesGerais->vertices.size(); n++ )
     {
         DistanciaDjikstra[n] = Infinity;
         anterior[n] = -1;
@@ -449,7 +447,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
     //  VerticesExplorados[vertice[1]]=false;
 
     //tempo->MarcaTempo("fez heap");
-    TVerticeGeral *VerticeTemp;
+    shared_ptr<TVerticeGeral> VerticeTemp;
     TVerticeEAresta *VerticeEArestaTemp;
     heap.push(VerticesDjikstra(vertice[0], 0));
     double dist;
@@ -467,7 +465,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
         if(dist > DistanciaDjikstra[vfila])
             continue;
 
-        ListaVerticesEArestasT = VerticesGerais->getItem(vfila)->ListaVerticesEArestas;
+        ListaVerticesEArestasT = VerticesGerais->vertices[vfila]->ListaVerticesEArestas;
         for(n = 0; n < ListaVerticesEArestasT->list.size(); n++)
         {
             VerticeEArestaTemp = ListaVerticesEArestasT->getVerticeEAresta(n);
@@ -475,7 +473,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
             int alt;
             if ( dentroEquipamento )
             {
-                VerticeTemp = VerticesGerais->getItem(vatual);
+                VerticeTemp = VerticesGerais->vertices[vatual];
                 if (VerticeTemp->TipoElemento == INSTRUMENTO && ( !VerticeTemp->EhColar ) ) //|| !VerticesGerais->getItem(vatual)->EhPrensaCabo ) )
                 {
                     if (!VerticeTemp->texto.empty() && vatual != vertice[0] && vatual != vertice[1])
@@ -499,7 +497,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
     double TamSubRota=0;
     //CAMINHO INVERSO NA �RVORE DE LARGURA
     vatual=vertice[1];
-    tam= VerticesGerais->getItem(vertice[0])->dist + VerticesGerais->getItem(vertice[1])->dist;
+    tam= VerticesGerais->vertices[vertice[0]]->dist + VerticesGerais->vertices[vertice[1]]->dist;
     string temp;
 	vector<string> sRota;
     int UltDesenho = -1;
@@ -515,43 +513,30 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 				(*ArestasDesenho)[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
             if ( CircuitoAreas )
             {
-                CircuitoAreas[VerticesGerais->getItem(vatual)->iDesenho].IDArquivo = VerticesGerais->getItem(vatual)->IDArquivo;
-                CircuitoAreas[VerticesGerais->getItem(vatual)->iDesenho].ativo = true;
+                CircuitoAreas[VerticesGerais->vertices[vatual]->iDesenho].IDArquivo = VerticesGerais->vertices[vatual]->IDArquivo;
+                CircuitoAreas[VerticesGerais->vertices[vatual]->iDesenho].ativo = true;
 
-                if ( VerticesGerais->getItem(vatual)->iDesenho != UltDesenho && UltDesenho >= 0 )
+                if ( VerticesGerais->vertices[vatual]->iDesenho != UltDesenho && UltDesenho >= 0 )
                 {
                     CircuitoAreas[UltDesenho].rota = CircuitoAreas[UltDesenho].rota;
                 }
 
-                if (VerticesGerais->getItem(vatual)->texto!="")
+                if (VerticesGerais->vertices[vatual]->texto!="")
                 {
-                    temp = VerticesGerais->getItem(vatual)->texto;
-                    if (UltTemp!=temp || VerticesGerais->getItem(vatual)->iDesenho != UltDesenho )
-						CircuitoAreas[VerticesGerais->getItem(vatual)->iDesenho].rota.push_back( temp );
+                    temp = VerticesGerais->vertices[vatual]->texto;
+                    if (UltTemp!=temp || VerticesGerais->vertices[vatual]->iDesenho != UltDesenho )
+						CircuitoAreas[VerticesGerais->vertices[vatual]->iDesenho].rota.push_back( temp );
                     //					UltTemp=temp;
-                    UltDesenho = VerticesGerais->getItem(vatual)->iDesenho;
+                    UltDesenho = VerticesGerais->vertices[vatual]->iDesenho;
                 }
             }
-            /*			if (CircuitoAreas && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO && ArestaTemp->IDArquivo!=I_DESENHO_NULO)
-             {
-             CircuitoAreas[ArestaTemp->IndiceDesenho].IDArquivo = ArestaTemp->IDArquivo;
-             CircuitoAreas[ArestaTemp->IndiceDesenho].ativo = true;
 
-
-             if (VerticesGerais->getItem(vatual)->texto!="")
-             {
-             temp=VerticesGerais->getItem(vatual)->texto;
-             if (UltTemp!=temp)
-             CircuitoAreas[ArestaTemp->IndiceDesenho].rota+=temp+"/";
-             UltTemp=temp;
-             }
-             }*/
             tam+=Arestas[vArestas[vatual]]->Tam;
             TamSubRota += Arestas[vArestas[vatual]]->Tam;
 
             if ( Arestas[vArestas[vatual]]->Vertice1 > 0 )
             {
-                ListaVerticesEArestasT = VerticesGerais->getItem(Arestas[vArestas[vatual]]->Vertice1)->ListaVerticesEArestas;
+                ListaVerticesEArestasT = VerticesGerais->vertices[Arestas[vArestas[vatual]]->Vertice1]->ListaVerticesEArestas;
                 for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )
                 {
                     //Arestas->getItem(ListaVerticesEArestasT->getVerticeEAresta(i)->Aresta)->Tam = Infinity;
@@ -560,45 +545,30 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 
             if ( Arestas[vArestas[vatual]]->Vertice2 > 0 )
             {
-                ListaVerticesEArestasT = VerticesGerais->getItem(Arestas[vArestas[vatual] ]->Vertice2)->ListaVerticesEArestas;
+                ListaVerticesEArestasT = VerticesGerais->vertices[Arestas[vArestas[vatual] ]->Vertice2]->ListaVerticesEArestas;
                 for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )
                 {
                     //Arestas->getItem(ListaVerticesEArestasT->getVerticeEAresta(i)->Aresta)->Tam = Infinity;
                 }
             }
 
-            //if (DEBUG_arestas)
-            //{
-            //	TAresta *Aresta=Arestas->getItem(vArestas[vatual]);
-            //	DEBUG_arestas->Add("vértices: "+IntToStr(Aresta->Vertice1)+", "+IntToStr(Aresta->Vertice2));
-            //	//        DEBUG_arestas->push_back((string)"Tamanho Aresta: "+FormatFloat("0.00", Aresta->Tam));
-            //	DEBUG_arestas->Add("Tamanho Aresta: "+FormatFloat("0.00",Aresta->Tam));
-            //	DEBUG_arestas->Add(FormatFloat("0.00",VerticesGerais->getItem(Aresta->Vertice1)->pos.x)+", "+
-            //			FormatFloat("0.00",VerticesGerais->getItem(Aresta->Vertice1)->pos.y));
-            //	DEBUG_arestas->Add(FormatFloat("0.00",VerticesGerais->getItem(Aresta->Vertice2)->pos.x)+", "+
-            //			FormatFloat("0.00",VerticesGerais->getItem(Aresta->Vertice2)->pos.y));
-            //if ( VerticesGerais->getItem(Aresta->Vertice1)->texto!="" )
-            //	DEBUG_arestas->Add("Texto do vértice 1:" +(AnsiString)VerticesGerais->getItem(Aresta->Vertice1)->texto.c_str());
-            //if ( VerticesGerais->getItem(Aresta->Vertice2)->texto!="" )
-            //DEBUG_arestas->Add("Texto do vértice 2:"+ (AnsiString)VerticesGerais->getItem(Aresta->Vertice2)->texto.c_str());
-            //	DEBUG_arestas->Add("");
-            //}
-            if (VerticesGerais->getItem(vatual)->texto!="")
+
+            if (VerticesGerais->vertices[vatual]->texto!="")
             {
                 //if ( VerticesGerais->getItem(vatual)->TipoElemento!=INSTRUMENTO || (VerticesGerais->getItem(vatual)->texto.UpperCase()==Origem.UpperCase() || VerticesGerais->getItem(vatual)->texto.UpperCase()==Destino.UpperCase()))
                 {
-                    temp=VerticesGerais->getItem(vatual)->texto;
+                    temp=VerticesGerais->vertices[vatual]->texto;
                     if (UltTemp!=temp && temp != Destino)
 						sRota.push_back( temp );
                     UltTemp=temp;
                     SubRotas+=to_string(TamSubRota)+"/";
                     TamSubRota=0;
-                    if (VerticesGerais->getItem(vatual)->TipoElemento==BANDEIROLA)
+                    if (VerticesGerais->vertices[vatual]->TipoElemento==BANDEIROLA)
                     {
                         if (ListaBandeirolas)
                         ListaBandeirolas->push_back(vatual);
                     }
-                    else if ( VerticesGerais->getItem(vatual)->EhColar )
+                    else if ( VerticesGerais->vertices[vatual]->EhColar )
                     {
                         if (ListaBandeirolas)
                         ListaBandeirolas->push_back(vatual);
@@ -640,8 +610,8 @@ void CInfoCircuitos::Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDes
     int vfila, vatual;
     int iArestaTemp;
     bool *VerticesVisitados;
-    VerticesVisitados = new bool[VerticesGerais->Tamanho()];
-    memset( VerticesVisitados, 0, VerticesGerais->Tamanho() * sizeof(bool) );
+	VerticesVisitados = new bool[VerticesGerais->vertices.size()];
+    memset( VerticesVisitados, 0, VerticesGerais->vertices.size() * sizeof(bool) );
     fila.push( Vertice );
     VerticesVisitados[Vertice] = true;
     //BUSCA EM LARGURA
@@ -650,7 +620,7 @@ void CInfoCircuitos::Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDes
     {
         vfila = fila.front();
         fila.pop();
-        ListaVerticesEArestas = VerticesGerais->getItem( vfila )->ListaVerticesEArestas;
+        ListaVerticesEArestas = VerticesGerais->vertices[ vfila ]->ListaVerticesEArestas;
         for (n = 0; n < ListaVerticesEArestas->list.size(); n++)
         {
             //vfila � o vértice que queremos a lista de adjac�ncia

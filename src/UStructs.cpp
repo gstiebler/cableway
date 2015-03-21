@@ -2,5 +2,5 @@
 #pragma hdrstop
 #include "UStructs.h"
 //---------------------------------------------------------------------------
-#pragma package(smart_init)
+
 

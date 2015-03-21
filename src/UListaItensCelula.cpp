@@ -35,14 +35,21 @@ TListaItensCelula::TListaItensCelula(const TListaItensCelula &cpy)
   enc = cpy.enc;
   dir = cpy.dir;
   id = cpy.id;
+  
+	try
+	{
+		iTextosBandeirola.assign(cpy.iTextosBandeirola.begin(), cpy.iTextosBandeirola.end());
+		iTextos.assign(cpy.iTextos.begin(), cpy.iTextos.end());
+		cabosRetaRelacionados.assign(cpy.cabosRetaRelacionados.begin(), cpy.cabosRetaRelacionados.end());
+		cabosArcoRelacionados.assign(cpy.cabosArcoRelacionados.begin(), cpy.cabosArcoRelacionados.end());
 
-  iTextosBandeirola.assign(cpy.iTextosBandeirola.begin(), cpy.iTextosBandeirola.end());
-  iTextos.assign(cpy.iTextos.begin(), cpy.iTextos.end());
-  cabosRetaRelacionados.assign(cpy.cabosRetaRelacionados.begin(), cpy.cabosRetaRelacionados.end());
-  cabosArcoRelacionados.assign(cpy.cabosArcoRelacionados.begin(), cpy.cabosArcoRelacionados.end());
-
-  _arcs.assign( cpy._arcs.begin(), cpy._arcs.end() );
-  _multipoints.assign( cpy._multipoints.begin(), cpy._multipoints.end() );
+		_arcs.assign( cpy._arcs.begin(), cpy._arcs.end() );
+		_multipoints.assign( cpy._multipoints.begin(), cpy._multipoints.end() );
+	}
+	catch(...)
+	{
+		printf( "Erro!" );
+	}
 }
 
 bool TListaItensCelula::VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int IndiceCabo)
@@ -78,4 +85,3 @@ bool TListaItensCelula::VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int IndiceCab
 
 //---------------------------------------------------------------------------
 
-#pragma package(smart_init)

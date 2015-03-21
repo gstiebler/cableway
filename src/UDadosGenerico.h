@@ -51,19 +51,7 @@ struct TMultipoint: public TElemento
 		*this = TMulti;
 	}
   // Operador de atribui��o
-	TMultipoint& operator=( const TMultipoint &TMulti )
-	{
-		ID = TMulti.ID;
-		CorR = TMulti.CorR;
-		CorG = TMulti.CorG;
-		CorB = TMulti.CorB;
-		Nivel = TMulti.Nivel;
-		Peso = TMulti.Peso;
-		Estilo = TMulti.Estilo;
-		tipo = TMulti.tipo;
-		pontos = TMulti.pontos;
-		return *this;
-	}
+	TMultipoint& operator=( const TMultipoint &TMulti );
 };
 //---------------------------------------------------------------------------
 

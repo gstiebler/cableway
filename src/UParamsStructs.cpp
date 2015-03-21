@@ -7,9 +7,6 @@
 
 #include "UVerticesArestas.h"
 
-//---------------------------------------------------------------------------
-
-#pragma package(smart_init)
 
 
 TParamsInfoCircuitos::TParamsInfoCircuitos()

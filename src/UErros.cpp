@@ -36,5 +36,3 @@ void CErrosMsg::novoErro(string novo)
 	printf( "%s\n", novo.c_str() );
 }
 
-
-#pragma package(smart_init)

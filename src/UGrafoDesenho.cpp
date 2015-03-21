@@ -6,8 +6,6 @@
 #include "UContainerDesenhos.h"
 #include "UListaItensCelula.h"
 
-//---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 CCaboReta::CCaboReta()
 {
@@ -160,8 +158,7 @@ void CGrafoDesenho::GeraListaCabos()
 
 //Acha o cabo mais próximo a um ponto. Retorna o índice do cabo,
 //a Distância � este cabo, e o ponto do cabo que está mais próximo ao ponto dado
-void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &DistMaisProx,
-        TPonto &PosVertice, int Diferente, int Nivel)
+void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel)
 {
     int m;
     double MenorDist, Dist;
@@ -186,9 +183,7 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &Dist
     if (IndiceCabo == -1)
     {
         CErrosMsg *erros = CErrosMsg::getInstance();
-        erros->novoErro(
-                (string) "Atenção: " + ExtractFileName( _dados->NomeArq.c_str() ).c_str()
-                        + " não possui cabos." );
+        erros->novoErro( "Atenção: " + _dados->NomeArq + " não possui cabos." );
         /*    if ( Dados->IMP )
          {
          //ShowMessage("Erro: não há cabo.");
@@ -347,7 +342,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             CaboMaisProximo( MaisDist, iMenorDist, DistMaisProx, PontoNaReta, -1, -1 );
             if (iMenorDist >= 0)
             {
-                _cabosReta[iMenorDist].AdicionaVertice( _verticesGerais->Tamanho(), PontoNaReta );
+                _cabosReta[iMenorDist].AdicionaVertice( _verticesGerais->vertices.size(), PontoNaReta );
                 VerticeGeral.pos = PontoNaReta;
 
                 TPontosBandeirola pontoTemp;
@@ -359,16 +354,13 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             else //avisa caso o desenhos não possuam nenhum cabo
             {
                 CErrosMsg *erros = CErrosMsg::getInstance();
-                erros->novoErro(
-                        (string) "Atenção: " + ExtractFileName( _dados->NomeArq.c_str() ).c_str()
-                                + " não possui cabos." );
+                erros->novoErro( "Atenção: " +  _dados->NomeArq + " não possui cabos." );
             }
         }
         else if (ListaItens->iTextos.size() > 1) //avisa caso a bandeirola tenha mais de um texto
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
-            erros->novoErro(
-                    (string) "No desenho " + ExtractFileName( _dados->NomeArq.c_str() ).c_str()
+            erros->novoErro("No desenho " + _dados->NomeArq
                             + " existe um grupamento em nível de bandeirola com mais de um texto associado. Textos: " );
             for (int i = 0; i < ListaItens->iTextos.size(); i++)
                 erros->novoErro( _dados->Textos[ListaItens->iTextos[i]]->texto );
@@ -378,7 +370,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
             erros->novoErro(
-                    (string) "No desenho " + ExtractFileName( _dados->NomeArq.c_str() ).c_str()
+                    (string) "No desenho " + _dados->NomeArq
                             + " existe um grupamento em nível de bandeirola sem textos associados.\n" );
         }
 
@@ -404,7 +396,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
         if (!isAdded)
         {
             //adiciona o vértice na lista de vértices do cabo
-            _cabosReta[pontoEIndiceCabo.IndiceCabo].AdicionaVertice( _verticesGerais->Tamanho(),
+            _cabosReta[pontoEIndiceCabo.IndiceCabo].AdicionaVertice( _verticesGerais->vertices.size(),
                     pontoEIndiceCabo.PosVertice );
 
             TVerticeGeral VerticeGeral;
@@ -430,7 +422,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
                 Aresta->AdicionaVertices( iVerticesInstrumento->at( i ),
-                        _verticesGerais->Tamanho() - 1,
+                        _verticesGerais->vertices.size() - 1,
                         DistPontosManhattan( PosVertice, PosVertice ) );
                 Aresta->IndiceDesenho = _dados->IndiceDesenho;
                 Aresta->IDArquivo = _dados->IDArquivo;
@@ -526,7 +518,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
         if (!isAdded)
         {
             //adiciona o vértice na lista de vértices do cabo
-            _cabosReta[IndiceCabo].AdicionaVertice( _verticesGerais->Tamanho(), PosVertice );
+            _cabosReta[IndiceCabo].AdicionaVertice( _verticesGerais->vertices.size(), PosVertice );
 
             TVerticeGeral VerticeGeral;
             VerticeGeral.pos = PosVertice;
@@ -549,7 +541,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
                 Aresta->AdicionaVertices( iVerticesInstrumento->at( i ),
-                        _verticesGerais->Tamanho() - 1,
+                        _verticesGerais->vertices.size() - 1,
                         //								DistPontosManhattan(PosVertice, PosVertice));
                         DistPontos( PosVertice, PosVertice ) );
                 Aresta->IndiceDesenho = _dados->IndiceDesenho;
@@ -577,9 +569,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
         if (ListaItensCelula->iTextos.size() == 0)
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
-            erros->novoErro(
-                    (string) "No desenho " + ExtractFileName( _dados->NomeArq.c_str() ).c_str()
-                            + " existe um grupamento em nível de equipamento sem textos associados.\n" );
+            erros->novoErro("No desenho " + _dados->NomeArq + " existe um grupamento em nível de equipamento sem textos associados.\n" );
             continue;
         }
 
@@ -607,7 +597,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         VerticeInstrumento.IDArquivo = _dados->IDArquivo;
         VerticeInstrumento.texto = _dados->Textos[ListaItensCelula->iTextos[i]]->texto;
         VerticeInstrumento.pos = PosVertice;
-        iVerticesInstrumento.push_back( _verticesGerais->Tamanho() );
+        iVerticesInstrumento.push_back( _verticesGerais->vertices.size() );
         VerticeInstrumento.TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
         _verticesGerais->Adiciona( VerticeInstrumento );
     }
@@ -698,7 +688,7 @@ void CGrafoDesenho::GeraVerticesArcos()
         {
             // iV[m] � o índice do novo vértice que será criado, e como ele será o último vértice,
             // o seu índice � igual ao total atual de vértices
-            Arco->iV[m] = _verticesGerais->Tamanho();
+            Arco->iV[m] = _verticesGerais->vertices.size();
 
             //verifica se a ponta deste cabo arco está ligada na ponta de outro cabo arco
             //se já estiver, não cria um vértice novo, aproveita o vértice que já existe
@@ -774,7 +764,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
                 // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
-                _cabosReta[iMenorDist].AdicionaVertice( _verticesGerais->Tamanho(), PontoNaReta );
+                _cabosReta[iMenorDist].AdicionaVertice( _verticesGerais->vertices.size(), PontoNaReta );
                 VerticeGeral.pos = PontoNaReta;
                 //        if ( CabosReta[iMenorDist]->EhOPrimeiroPonto(PontoNaReta, Dados->Multipoint, DistMinElemCabo) )
                 //          CabosReta[iMenorDist]->ponta[0] = true;
@@ -788,7 +778,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
             }
             else
                 VerticeGeral.pos = tMultipoint->pontos[m];
-            _cabosReta[n].AdicionaVertice( _verticesGerais->Tamanho(), tMultipoint->pontos[m] );
+            _cabosReta[n].AdicionaVertice( _verticesGerais->vertices.size(), tMultipoint->pontos[m] );
             VerticeGeral.iDesenho = _dados->IndiceDesenho;
             VerticeGeral.IDArquivo = _dados->IDArquivo;
             _verticesGerais->Adiciona( VerticeGeral );
@@ -867,7 +857,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
 		shared_ptr<TArco> arco = _cabosArco[m]._arco;
         for (n = 0; n < 2; n++)
         {
-			pontoCabo = _verticesGerais->getItem( arco->iV[n] )->pos;
+			pontoCabo = _verticesGerais->vertices[ arco->iV[n] ]->pos;
             Dist = DistPontoParaSegmentoReta( Reta, pontoCabo, PontoTemp );
             if (Dist < MenorDist)
             {
@@ -894,7 +884,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
     {
         for (n = 0; n < 2; n++)
         {
-			pontoCabo = _verticesGerais->getItem( _cabosArco[m]._arco->iV[n] )->pos;
+			pontoCabo = _verticesGerais->vertices[ _cabosArco[m]._arco->iV[n] ]->pos;
             Dist = DistPontoParaSegmentoReta( Reta, pontoCabo, PontoTemp );
             if (Dist < DistMinElemCabo)
             {
@@ -1034,7 +1024,7 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, int &IndiceCabo, do
     {
         for (n = 0; n < 2; n++)
         {
-			pontoCabo = _verticesGerais->getItem( _cabosArco[m]._arco->iV[n] )->pos;
+			pontoCabo = _verticesGerais->vertices[ _cabosArco[m]._arco->iV[n] ]->pos;
             Dist = DistPontos( ponto, pontoCabo );
             if (Dist < MenorDist)
             {
@@ -1072,9 +1062,9 @@ void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
     if (!CarregaGrafo)
         return;
     int n;
-    vector<TVerticeGeral*> Lista;
-    _verticesGerais->ListaOrd( &Lista );  //gera lista ordenada
-    TVerticeGeral *V1, *V2;
+    vector< shared_ptr<TVerticeGeral> > Lista;
+    _verticesGerais->ListaOrd( Lista );  //gera lista ordenada
+    shared_ptr<TVerticeGeral> V1, V2;
     for (n = 0; n < (int) (Lista.size() - 1); n++)
     {
         V1 = Lista[n];
@@ -1094,14 +1084,9 @@ void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
                 Aresta->IDArquivo = I_DESENHO_NULO;
 				_arestas.push_back( Aresta );
 
-                _verticesGerais->getItem( V1->IndiceOriginal )->EhColar = _verticesGerais->getItem(
-                        V2->IndiceOriginal )->EhColar = true;
+                _verticesGerais->vertices[ V1->IndiceOriginal ]->EhColar = _verticesGerais->vertices[ V2->IndiceOriginal ]->EhColar = true;
             }
         }
-    }
-    for (int i = 0; i < (int) Lista.size(); i++)
-    {
-        delete Lista[i];
     }
 }
 //---------------------------------------------------------------------------
@@ -1112,23 +1097,23 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDese
         return;
 
     int n;
-    vector<TVerticeGeral*> *Lista = new vector<TVerticeGeral*>();
+    vector< shared_ptr<TVerticeGeral> > Lista;
     _verticesGerais->ListaOrd( Lista );  //gera lista ordenada
-    TVerticeGeral *V1, *V2;
+    shared_ptr<TVerticeGeral> V1, V2;
     string Ultimo;
-    for (n = 0; n < (int) (Lista->size() - 1); n++)
+    for (n = 0; n < (int) (Lista.size() - 1); n++)
     {
-        V1 = Lista->at( n );
+        V1 = Lista[ n ];
         if (V1->texto != "")
         {
-            V2 = Lista->at( n + 1 );
+            V2 = Lista[ n + 1 ];
             if (V1->texto == V2->texto)
             {
 
                 if (V1->iDesenho != V2->iDesenho
                         && (V1->TipoElemento == INSTRUMENTO && V2->TipoElemento == INSTRUMENTO)
-                        && (n + 2 < (int) (Lista->size() - 1)
-                                && (Lista->at( n + 1 ))->texto != V1->texto))
+                        && (n + 2 < (int) (Lista.size() - 1)
+                                && (Lista[ n + 1 ])->texto != V1->texto))
                 {
                     n++;
                     break;
@@ -1137,20 +1122,20 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDese
                 CErrosMsg *erros = CErrosMsg::getInstance();
                 erros->novoErro( "Elementos com o texto \"" + V1->texto + "\" repetido: " );
 
-                for (; n < (int) Lista->size(); n++)
+                for (; n < (int) Lista.size(); n++)
                 {
-                    if ((Lista->at( n ))->texto == V1->texto)
+                    if ((Lista[ n ])->texto == V1->texto)
                     {
                         string tipo;
-                        if ((Lista->at( n ))->TipoElemento == INSTRUMENTO)
+                        if ( Lista[ n ]->TipoElemento == INSTRUMENTO)
                         {
                             tipo = "Equipamento";
                         }
-                        else if ((Lista->at( n ))->TipoElemento == CABO)
+                        else if ( Lista[ n ]->TipoElemento == CABO)
                         {
                             tipo = "Cabo";
                         }
-                        else if ((Lista->at( n ))->TipoElemento == BANDEIROLA)
+                        else if ( Lista[ n ]->TipoElemento == BANDEIROLA)
                         {
                             tipo = "Bandeirola";
                         }
@@ -1159,7 +1144,7 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDese
 
                         erros->novoErro(
                                 "No desenho: "
-                                        + ListaDesenhos[((TVerticeGeral *) (Lista->at( n )))->iDesenho]->NomeArquivo + " em nível de "
+                                        + ListaDesenhos[(Lista[ n ])->iDesenho]->NomeArquivo + " em nível de "
                                         + tipo );
                     }
                     else
@@ -1169,11 +1154,6 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDese
             }
         }
     }
-    for (int i = 0; i < (int) Lista->size(); i++)
-    {
-        delete Lista->at( i );
-    }
-    delete Lista;
 }
 //---------------------------------------------------------------------------
 

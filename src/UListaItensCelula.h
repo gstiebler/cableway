@@ -3,7 +3,7 @@
 #ifndef UListaItensCelulaH
 #define UListaItensCelulaH
 //---------------------------------------------------------------------------
-#include "UListaV.h"
+
 //#include "UVetor.h"
 #include <vector>
 #include <memory>

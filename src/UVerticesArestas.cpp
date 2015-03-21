@@ -6,9 +6,6 @@
 #include <algorithm>
 #include <string>
 
-//---------------------------------------------------------------------------
-
-#pragma package(smart_init)
 
 TAresta::TAresta()
 {
@@ -48,6 +45,20 @@ void TArestasCircuito::Apaga()
     Arestas.clear();
     Circuito = "";
     idCircuito = -1;
+}
+
+
+
+TListaVerticesEArestas::TListaVerticesEArestas(const TListaVerticesEArestas &cpy)
+{
+	try
+	{
+		list.assign( cpy.list.begin(), cpy.list.end() );
+	}
+	catch(...)
+	{
+		printf( "Erro!\n" );
+	}
 }
 
 
@@ -94,13 +105,12 @@ TVerticesGerais::TVerticesGerais()
 
 void TVerticesGerais::Adiciona(TVerticeGeral &Item)
 {
-    TVerticeGeral *temp = new TVerticeGeral;
+    shared_ptr<TVerticeGeral> temp( new TVerticeGeral() );
     TListaVerticesEArestas *ListaVerticesEArestasT = temp->ListaVerticesEArestas;
     *temp = Item;
     temp->ListaVerticesEArestas = ListaVerticesEArestasT;
 //  lista->Add((void *)temp);
-    TListaV<TVerticeGeral>::Adiciona( temp );
-    delete temp;
+	vertices.push_back( temp );
 }
 //---------------------------------------------------------------------------
 
@@ -111,10 +121,10 @@ int TVerticesGerais::AchaVerticePeloTexto(string Texto)
     texto1 = Texto;
     std::transform( Texto.begin(), Texto.end(), texto1.begin(), ::toupper );
 
-    for (n = 0; n < Tamanho(); n++)
+	for (n = 0; n < vertices.size(); n++)
     {
-        texto2 = getItem( n )->texto;
-        transform( getItem( n )->texto.begin(), getItem( n )->texto.end(), texto2.begin(),
+        texto2 = vertices[ n ]->texto;
+        transform( vertices[ n ]->texto.begin(), vertices[ n ]->texto.end(), texto2.begin(),
                 ::toupper );
 //    if (getItem(n)->texto==Texto)
         //    if (getItem(n)->texto.UpperCase()==Texto.UpperCase())
@@ -128,7 +138,7 @@ int TVerticesGerais::AchaVerticePeloTexto(string Texto)
 
 bool TVerticesGerais::VerticeEhEquipamento(int n)
 {
-    if (getItem( n )->TipoElemento == INSTRUMENTO)
+    if (vertices[ n ]->TipoElemento == INSTRUMENTO)
         return true;
     return false;
 }
@@ -136,22 +146,21 @@ bool TVerticesGerais::VerticeEhEquipamento(int n)
 
 bool TVerticesGerais::VerticeEhBandeirola(int n)
 {
-    if (getItem( n )->TipoElemento == BANDEIROLA)
+    if (vertices[ n ]->TipoElemento == BANDEIROLA)
         return true;
     return false;
 }
 //---------------------------------------------------------------------------
 
-void TVerticesGerais::ListaOrd(vector<TVerticeGeral*> *ListaOrdenada)
+void TVerticesGerais::ListaOrd(vector<shared_ptr<TVerticeGeral> > &ListaOrdenada)
 {
     int n;
 	//TODO não alocar nada aqui para não precisar desalocar em quem chamar essa função
-    CopiaListaPara( ListaOrdenada );
-//  ListaOrdenada->Assign(lista);
-    for (n = 0; n < (int) ListaOrdenada->size(); n++)
-        ListaOrdenada->at( n )->IndiceOriginal = n;
-    sort( ListaOrdenada->begin(), ListaOrdenada->end(), ComparaTVerticeGeral );
-//  ListaOrdenada->Sort(ComparaTVerticeGeral);
+	ListaOrdenada.assign( vertices.begin(), vertices.end() );
+
+    for (n = 0; n < (int) ListaOrdenada.size(); n++)
+        ListaOrdenada[ n ]->IndiceOriginal = n;
+    sort( ListaOrdenada.begin(), ListaOrdenada.end(), ComparaTVerticeGeral );
 }
 //---------------------------------------------------------------------------
 
@@ -182,8 +191,20 @@ TVerticeEAresta * TListaVerticesEArestas::getVerticeEAresta(int Indice)
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-bool ComparaTVerticeGeral(TVerticeGeral* Item1, TVerticeGeral* Item2)
+bool ComparaTVerticeGeral(shared_ptr<TVerticeGeral> Item1, shared_ptr<TVerticeGeral> Item2)
 {
     return (Item1->texto < Item2->texto);
 }
 //---------------------------------------------------------------------------
+
+
+
+TArestaReduzida::TArestaReduzida(const TArestaReduzida &cpy)
+{
+	Vertice1 = cpy.Vertice1;
+	Vertice2 = cpy.Vertice2;
+	Tam = cpy.Tam;
+	IndiceDesenho = cpy.IndiceDesenho;
+	IDArquivo = cpy.IDArquivo;
+	ArestasRetiradas.assign( cpy.ArestasRetiradas.begin(), cpy.ArestasRetiradas.end() );
+}
