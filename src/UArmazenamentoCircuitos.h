@@ -24,19 +24,5 @@ struct TCircuito
   vector<string> rota;
 };
 //---------------------------------------------------------------------------
-
-class CArmazenamentoCircuitos
-{
-private:
-public:
-  CArmazenamentoCircuitos();
-  ~CArmazenamentoCircuitos();
-  void static GeraExcelRelatorio(string NomeArq);
-  void static VetorCircuitos(TCircuito *Circuitos);
-  int static NumReg();
-  bool static PegaCircuito(string nome, TCircuito &Circuito);
-  void static AtualizaRotaMetragem(TCircuito &Circuito);
-  void static DeuErro(TCircuito &Circuito, string erro);
-};
-//--------------------------------------------------------------------------- 
+ 
 #endif
