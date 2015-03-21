@@ -22,19 +22,16 @@ set(QT_UI_BASE_PATH ../data/qt)
 set(ALL_SOURCES ${SRC_BASE}/UContainerDesenhos.cpp
 				${SRC_BASE}/UDadosGenerico.cpp
 				${SRC_BASE}/UDebug.cpp
-				${SRC_BASE}/UDefines.cpp
 				${SRC_BASE}/UErros.cpp
 				${SRC_BASE}/UGeometria.cpp
 				${SRC_BASE}/UGrafoDesenho.cpp
 				${SRC_BASE}/UInfoCelula.cpp
 				${SRC_BASE}/UInfoCircuitos.cpp
 				${SRC_BASE}/UListaItensCelula.cpp
-				${SRC_BASE}/UListaPontoEIndiceCabo.cpp
 				${SRC_BASE}/UMostraDesenho.cpp
 				${SRC_BASE}/UOpenGL.cpp
 				${SRC_BASE}/GLCoords.cpp
 				${SRC_BASE}/UParamsStructs.cpp
-				${SRC_BASE}/UStructs.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/CweLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
