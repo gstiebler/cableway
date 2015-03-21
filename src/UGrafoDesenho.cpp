@@ -1061,25 +1061,24 @@ void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
     for (n = 0; n < (int) (Lista.size() - 1); n++)
     {
         V1 = Lista[n];
-        if ( V1->texto != "" )
-        {
-            V2 = Lista[n + 1];
-            if ((V1->texto == V2->texto) && (V1->iDesenho != V2->iDesenho)
-                    && (V1->TipoElemento == INSTRUMENTO) && (V2->TipoElemento == INSTRUMENTO))
-            {
-                double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura
-                        - ListaDesenhos[V2->iDesenho]->Altura;
-                if (alturaDaAresta < 0)
-                    alturaDaAresta *= -1;
-                shared_ptr<TAresta> Aresta( new TAresta() );
-                Aresta->AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
-                Aresta->IndiceDesenho = I_DESENHO_NULO;
-                Aresta->IDArquivo = I_DESENHO_NULO;
-				_arestas.push_back( Aresta );
+        if ( V1->texto == "" )
+			continue;
 
-                _verticesGerais->vertices[ V1->IndiceOriginal ]->EhColar = _verticesGerais->vertices[ V2->IndiceOriginal ]->EhColar = true;
-            }
-        }
+        V2 = Lista[n + 1];
+        if ((V1->texto != V2->texto) || (V1->iDesenho == V2->iDesenho) || (V1->TipoElemento != INSTRUMENTO) || (V2->TipoElemento != INSTRUMENTO))
+			continue;
+
+        double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura
+                - ListaDesenhos[V2->iDesenho]->Altura;
+        if (alturaDaAresta < 0)
+            alturaDaAresta *= -1;
+        shared_ptr<TAresta> Aresta( new TAresta() );
+        Aresta->AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
+        Aresta->IndiceDesenho = I_DESENHO_NULO;
+        Aresta->IDArquivo = I_DESENHO_NULO;
+		_arestas.push_back( Aresta );
+
+        _verticesGerais->vertices[ V1->IndiceOriginal ]->EhColar = _verticesGerais->vertices[ V2->IndiceOriginal ]->EhColar = true;
     }
 }
 //---------------------------------------------------------------------------
