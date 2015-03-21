@@ -301,17 +301,17 @@ void CMostraDesenho::showTree()
 void CMostraDesenho::showDisconnectedCircuitEndings()
 {
 	glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
-	for ( int i = 0 ; i < GrafoDesenho->_numCabosReta ; i++ )
+	for ( int i = 0 ; i < GrafoDesenho->_cabosReta.size() ; i++ )
 	{
-		if ( !GrafoDesenho->_cabosReta[i]->ponta[0] )
+		if ( !GrafoDesenho->_cabosReta[i].ponta[0] )
 		{
-			TPonto pontos = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos[0];
+			TPonto pontos = GrafoDesenho->_cabosReta[i]._multipoint->pontos[0];
 			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 		}
-		if ( !GrafoDesenho->_cabosReta[i]->ponta[1] )
+		if ( !GrafoDesenho->_cabosReta[i].ponta[1] )
 		{
-			int tam = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos.size();
-			TPonto pontos = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos[tam-1];
+			int tam = GrafoDesenho->_cabosReta[i]._multipoint->pontos.size();
+			TPonto pontos = GrafoDesenho->_cabosReta[i]._multipoint->pontos[tam-1];
 			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 		}
 	}

@@ -20,6 +20,7 @@
 
 struct TDesenho;
 struct TArco;
+struct TMultipoint;
 
 enum TTipoOrientacao {VERTICAL, HORIZONTAL};
 
@@ -42,7 +43,7 @@ public:
   bool EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo);
   bool EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo);
   void AdicionaVertice(int ID, TPonto &ponto);
-  int Indice;//�ndice do vetor de Multipoint
+  TMultipoint *_multipoint;
   int NumVertices;
   bool ponta[2];
   TTipoOrientacao TipoOrientacao;
@@ -123,7 +124,7 @@ public:
   std::vector<CCaboArco> _cabosArco;
   //armazena informa��es das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
-  std::vector<CCaboReta *> _cabosReta;
+  std::vector<CCaboReta> _cabosReta;
   void GeraColares(const std::vector<TDesenho*> &ListaDesenhos);
   void ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos);
   int _pri;
@@ -138,7 +139,6 @@ public:
   CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados);
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
-  int _numCabosReta;
 
   TVerticesGerais *_verticesGerais;
   TListaArestas *_arestas;
