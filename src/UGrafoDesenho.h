@@ -119,7 +119,7 @@ protected:
 
 public:
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
-  std::vector<CCaboArco *> _cabosArco;
+  std::vector<CCaboArco> _cabosArco;
   //armazena informa��es das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
   std::vector<CCaboReta *> _cabosReta;
@@ -138,7 +138,6 @@ public:
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
   int _numCabosReta;
-  int _numCabosArco;
 
   TVerticesGerais *_verticesGerais;
   TListaArestas *_arestas;

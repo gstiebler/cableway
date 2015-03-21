@@ -103,7 +103,6 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
         _arestas = ParamsGrafoDesenho.Arestas;
 
         _numCabosReta = 0;
-        _numCabosArco = 0;
 
         AlocaElementos();
         GeraListaCabos();
@@ -123,10 +122,8 @@ CGrafoDesenho::~CGrafoDesenho()
     if (CarregaGrafo)
     {
         int n;
-        for (n = 0; n < _dados->Multipoint.size(); n++)
+        for (n = 0; n < _cabosReta.size(); n++)
             delete _cabosReta[n];
-        for (n = 0; n < _dados->Arcos.size(); n++)
-            delete _cabosArco[n];
         CarregaGrafo = false;
     }
 }
@@ -138,9 +135,7 @@ void CGrafoDesenho::AlocaElementos()
     _cabosReta.resize( _dados->Multipoint.size() );
     for (n = 0; n < _dados->Multipoint.size(); n++)
         _cabosReta[n] = new CCaboReta();
-    _cabosArco.resize( _dados->Arcos.size() );
-    for (n = 0; n < _dados->Arcos.size(); n++)
-        _cabosArco[n] = new CCaboArco();
+    _cabosArco.reserve( _dados->Arcos.size() );
 }
 //---------------------------------------------------------------------------
 
@@ -172,13 +167,13 @@ void CGrafoDesenho::GeraListaCabos()
     {
 		if ( _dados->Arcos[n].Nivel == CABO )
         {
-            _cabosArco[_numCabosArco]->Indice = n;
-            //			iCabosArco[NumCabosArco]=n;
-            _numCabosArco++;
+			_cabosArco.push_back( CCaboArco() );
+			_cabosArco.back().Indice = n;
+
             SomaRaios += _dados->Arcos[n].EixoPrimario;
         }
     }
-    _mediaRaioCaboArco = _numCabosArco > 0 ? SomaRaios / _numCabosArco : 0;
+    _mediaRaioCaboArco = _cabosArco.size() > 0 ? SomaRaios / _cabosArco.size() : 0;
     //DistMinElemCaboPraOpenGL = MediaRaioCaboArco * FATOR_DIST_MIN_ELEM_CABO;
 	//temporary!
 	_distMinElemCaboPraOpenGL = 10.0;
@@ -602,7 +597,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
             ListaItensCelula->cabosArcoRelacionados.push_back( ListaMenores.at( n ).IndiceCabo );
             TAresta Aresta;
 
-            _cabosArco[ListaMenores.at( n ).IndiceCabo]->ponta[ListaMenores.at( n ).IndiceArco] =
+            _cabosArco[ListaMenores.at( n ).IndiceCabo].ponta[ListaMenores.at( n ).IndiceArco] =
                     true;
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
@@ -897,10 +892,10 @@ void CGrafoDesenho::GeraVerticesArcos()
     DistMaisProx = 0;
     PontoNaReta.x = PontoNaReta.y = PontoTemp.x = PontoTemp.y = p[0].x = p[0].y = p[1].x = p[1].y =
             0.0;
-    for (n = 0; n < _numCabosArco; n++)
+    for (n = 0; n < _cabosArco.size(); n++)
     {
         /* Olha todos os arcos do desenho */
-        Arco = &_dados->Arcos[_cabosArco[n]->Indice];
+        Arco = &_dados->Arcos[_cabosArco[n].Indice];
         Arco->PontasArco( p );
 
         for (m = 0; m < 2; m++)
@@ -917,8 +912,8 @@ void CGrafoDesenho::GeraVerticesArcos()
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
                 Arco->iV[m] = IndiceVertice;
-                _cabosArco[n]->ponta[m] = true;
-                _cabosArco[IndiceCabo]->ponta[PontaArco] = true;
+                _cabosArco[n].ponta[m] = true;
+                _cabosArco[IndiceCabo].ponta[PontaArco] = true;
 
             }
             else //se o vértice não foi aproveitado de outro cabo arco, verifica se este vértice está próximo a um cabo reta
@@ -931,7 +926,7 @@ void CGrafoDesenho::GeraVerticesArcos()
                     // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
                     caboReta->AdicionaVertice( Arco->iV[m], PontoNaReta );
                     VerticeGeral.pos = PontoNaReta;
-                    _cabosArco[n]->ponta[m] = true;
+                    _cabosArco[n].ponta[m] = true;
                     if (_cabosReta[iMenorDist]->EhOPrimeiroPonto( PontoNaReta, _dados->Multipoint, iMenorDist ))
                     {
                         _cabosReta[iMenorDist]->ponta[0] = true;
@@ -1071,10 +1066,10 @@ void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
     TPonto PontosCabo[2], PontoTemp;
     IndiceCabo = -1;
     MenorDist = Infinity;
-    for (m = 0; m < _numCabosArco; m++)
+	for (m = 0; m < _cabosArco.size(); m++)
     {
-        PontosCabo[0] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m]->Indice].iV[0] )->pos;
-        PontosCabo[1] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m]->Indice].iV[1] )->pos;
+        PontosCabo[0] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m].Indice].iV[0] )->pos;
+        PontosCabo[1] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m].Indice].iV[1] )->pos;
         for (n = 0; n < 2; n++)
         {
             Dist = DistPontoParaSegmentoReta( Reta, PontosCabo[n], PontoTemp );
@@ -1083,7 +1078,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
                 MenorDist = Dist;
                 IndiceCabo = m;
                 PosVertice = PontosCabo[n];
-                IndiceVertice = _dados->Arcos[_cabosArco[m]->Indice].iV[n];
+                IndiceVertice = _dados->Arcos[_cabosArco[m].Indice].iV[n];
             }
         }        //for (n=0; n<2; n++)
     }        //for (m=0; m<NumCabosReta; m++)
@@ -1099,10 +1094,10 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
     double Dist;
     TPonto PontosCabo[2], PontoTemp;
     TPontoEIndiceCabo Cabo;
-    for (m = 0; m < _numCabosArco; m++)
+    for (m = 0; m < _cabosArco.size(); m++)
     {
-        PontosCabo[0] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m]->Indice].iV[0] )->pos;
-        PontosCabo[1] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m]->Indice].iV[1] )->pos;
+        PontosCabo[0] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m].Indice].iV[0] )->pos;
+        PontosCabo[1] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m].Indice].iV[1] )->pos;
         for (n = 0; n < 2; n++)
         {
             Dist = DistPontoParaSegmentoReta( Reta, PontosCabo[n], PontoTemp );
@@ -1110,7 +1105,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
             {
                 Cabo.IndiceCabo = m;
                 Cabo.PosVertice = PontosCabo[n];
-                Cabo.IndiceVertice = _dados->Arcos[_cabosArco[m]->Indice].iV[n];
+                Cabo.IndiceVertice = _dados->Arcos[_cabosArco[m].Indice].iV[n];
                 Cabo.IndiceArco = n;
                 ListaMenores.push_back( Cabo );
                 //        MenorDist=Dist;
@@ -1209,9 +1204,9 @@ void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo,
     TPonto PontosCabo[2];
     IndiceArcoCabo = -1;
     MenorDist = Infinity;
-    for (m = 0; m < _numCabosArco; m++)
+    for (m = 0; m < _cabosArco.size(); m++)
     {
-        _dados->Arcos[_cabosArco[m]->Indice].PontasArco( PontosCabo );
+        _dados->Arcos[_cabosArco[m].Indice].PontasArco( PontosCabo );
         for (n = 0; n < 2; n++)
         {
             //eixo prim�rio em um c�rculo � o raio
@@ -1242,12 +1237,12 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, int &IndiceCabo, do
     IndiceCabo = -1;
     MenorDist = Infinity;
     int menor = IndiceMax;
-    if (menor > _numCabosArco)
-        menor = _numCabosArco;
+    if (menor > _cabosArco.size())
+        menor = _cabosArco.size();
     for (m = 0; m < menor; m++)
     {
-        PontosCabo[0] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m]->Indice].iV[0] )->pos;
-        PontosCabo[1] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m]->Indice].iV[1] )->pos;
+        PontosCabo[0] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m].Indice].iV[0] )->pos;
+        PontosCabo[1] = _verticesGerais->getItem( _dados->Arcos[_cabosArco[m].Indice].iV[1] )->pos;
         for (n = 0; n < 2; n++)
         {
             Dist = DistPontos( ponto, PontosCabo[n] );
@@ -1257,7 +1252,7 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, int &IndiceCabo, do
                 IndiceCabo = m;
                 PosVertice = PontosCabo[n];
                 pontaCabo = n;
-                IndiceVertice = _dados->Arcos[_cabosArco[m]->Indice].iV[n];
+                IndiceVertice = _dados->Arcos[_cabosArco[m].Indice].iV[n];
             }
         }  //for (n=0; n<2; n++)
     }  //for (m=0; m<NumCabosReta; m++)
