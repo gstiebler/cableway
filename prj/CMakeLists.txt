@@ -26,7 +26,6 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UDebug.cpp
 				${SRC_BASE}/UDefines.cpp
 				${SRC_BASE}/UErros.cpp
-				${SRC_BASE}/UFila.cpp
 				${SRC_BASE}/UGeometria.cpp
 				${SRC_BASE}/UGrafoDesenho.cpp
 				${SRC_BASE}/UInfoCelula.cpp
