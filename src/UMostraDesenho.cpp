@@ -233,7 +233,7 @@ void CMostraDesenho::showTree()
 	TPonto Pontos[2];
 	for (int n=0; n<(int)iArestas.size(); n++)
 	{
-		Aresta = GrafoDesenho->_arestas[iArestas[n]];
+		Aresta = InfoCircuitos->Arestas[iArestas[n]];
 		string debugTexto = GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->texto;
 		Pontos[0]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->pos;
 		Pontos[1]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->pos;
@@ -273,7 +273,7 @@ void CMostraDesenho::showTree()
 		TPonto Pontos[2];
 		for (int n=0; n<(int)iArestas.size(); n++)
 		{
-			Aresta = GrafoDesenho->_arestas[ iArestas[n] ];
+			Aresta = InfoCircuitos->Arestas[ iArestas[n] ];
 			Pontos[0]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->pos;
 			Pontos[1]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->pos;
 			glBegin(GL_LINE_STRIP);

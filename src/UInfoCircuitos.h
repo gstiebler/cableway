@@ -63,7 +63,6 @@ class CInfoCircuitos
 {
 private:
   TListaCircuitos *ListaCircuitosArestas;//lista de circuitos de uma determinada aresta
-  vector< shared_ptr<TAresta> > Arestas;
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   int NumDesenhos;
@@ -96,6 +95,7 @@ public:
   void Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho);        
   int ApagaArestasDoCircuito(string circuito, int idCircuito);
   TVerticesGerais *VerticesGerais;
+  vector< shared_ptr<TAresta> > Arestas;
 };                                     
 //---------------------------------------------------------------------------
 
