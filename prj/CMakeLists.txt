@@ -41,7 +41,6 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UStructs.cpp
 				${SRC_BASE}/UTCallbackStatusCarregamento.cpp
 				${SRC_BASE}/UTempoExec.cpp
-				${SRC_BASE}/UTPilhaDesenhos.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/CweLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
