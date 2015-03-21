@@ -106,58 +106,13 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
         _numCabosArco = 0;
 
         AlocaElementos();
-#ifdef DEBUG_BUILDER
-        tempo->MarcaTempo("AlocaElementos");
-#endif
         GeraListaCabos();
-#ifdef DEBUG_BUILDER
-        tempo->MarcaTempo("GeraListaCabos");
-#endif
         GeraVerticesBandeirola();
-#ifdef DEBUG_BUILDER
-        tempo->MarcaTempo("GeraVerticesBandeirola");
-#endif
         GeraVerticesArcos();
-#ifdef DEBUG_BUILDER
-        tempo->MarcaTempo("GeraVerticesArcos");
-#endif
         GeraVerticesPontaCabos();
-#ifdef DEBUG_BUILDER
-        tempo->MarcaTempo("GeraVerticesPontaCabos");
-#endif
         GeraVerticesInstrumentos();
-#ifdef DEBUG_BUILDER
-        tempo->MarcaTempo("GeraVerticesInstrumentos");
-        TStringList *ListaVertices=new TStringList;
-        AnsiString texto;
-        AnsiString StrTipoVertice;
-        for (int p=0; p<_verticesGerais->Tamanho(); p++)
-        {
-            switch (_verticesGerais->getItem(p)->TipoVertice)
-            {
-                case VERTICE_BANDEIROLA: StrTipoVertice="VERTICE_BANDEIROLA"; break;
-                case VERTICE_ARCO: StrTipoVertice="VERTICE_ARCO"; break;
-                case VERTICE_PONTA_CABO: StrTipoVertice="VERTICE_PONTA_CABO"; break;
-                case VERTICE_INSTRUMENTO_RETA: StrTipoVertice="VERTICE_INSTRUMENTO_RETA"; break;
-                case VERTICE_INSTRUMENTO_ARCO: StrTipoVertice="VERTICE_INSTRUMENTO_ARCO"; break;
-                case VERTICE_CENTRO_INSTRUMENTO: StrTipoVertice="VERTICE_CENTRO_INSTRUMENTO "; break;
-            }
-            texto=_verticesGerais->getItem(p)->texto.c_str();
-            ListaVertices->Add("Vertice: "+IntToStr(p)+" Posi��o: ("+_verticesGerais->getItem(p)->pos.x+
-                    +", "+_verticesGerais->getItem(p)->pos.y+") Texto: "+texto+
-                    +" iDesenho: "+IntToStr(_verticesGerais->getItem(p)->iDesenho)+
-                    +" IDArquivo: "+IntToStr(_verticesGerais->getItem(p)->IDArquivo)+
-                    +" Tipo vértice: "+StrTipoVertice );
-        }
-        ListaVertices->SaveToFile("t:\\ListaVertices.txt");
-        delete ListaVertices;
-#endif
         OrdenaVerticesRetas();
         GeraArestas();
-//    ult = Dados->NumMultipoint;
-#ifdef DEBUG_BUILDER
-        tempo->MostraTempo((string)"Tempo " + ExtractFileName(_dados->NomeArq.c_str()).c_str() + ".txt");
-#endif
     }
     _ult = Dados->Multipoint.size();
 }
@@ -215,8 +170,7 @@ void CGrafoDesenho::GeraListaCabos()
     double SomaRaios = 0;
     for (n = 0; n < _dados->Arcos.size(); n++)
     {
-		if ((_dados->Arcos[n].Nivel == CABO) && (_dados->Arcos[n].getAng() < M_PI / 2)/* &&
-         (Arcos[n].Estilo==0)*/)  //ESTILO S�LIDO
+		if ( _dados->Arcos[n].Nivel == CABO )
         {
             _cabosArco[_numCabosArco]->Indice = n;
             //			iCabosArco[NumCabosArco]=n;
@@ -971,19 +925,18 @@ void CGrafoDesenho::GeraVerticesArcos()
             {
                 /* Olha cada ponta do arco */
                 CaboMaisProximo( p[m], iMenorDist, DistMaisProx, PontoNaReta, -1, Arco->Nivel );
+				CCaboReta *caboReta = _cabosReta[iMenorDist];
                 if (DistMaisProx < DIST_MIN_ELEM_CABO)
                 {
                     // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
-                    _cabosReta[iMenorDist]->AdicionaVertice( Arco->iV[m], PontoNaReta );
+                    caboReta->AdicionaVertice( Arco->iV[m], PontoNaReta );
                     VerticeGeral.pos = PontoNaReta;
                     _cabosArco[n]->ponta[m] = true;
-                    if (_cabosReta[iMenorDist]->EhOPrimeiroPonto( PontoNaReta, _dados->Multipoint,
-                            iMenorDist ))
+                    if (_cabosReta[iMenorDist]->EhOPrimeiroPonto( PontoNaReta, _dados->Multipoint, iMenorDist ))
                     {
                         _cabosReta[iMenorDist]->ponta[0] = true;
                     }
-                    else if (_cabosReta[iMenorDist]->EhOUltimoPonto( PontoNaReta, _dados->Multipoint,
-                            iMenorDist ))
+                    else if (_cabosReta[iMenorDist]->EhOUltimoPonto( PontoNaReta, _dados->Multipoint, iMenorDist ))
                     {
                         _cabosReta[iMenorDist]->ponta[1] = true;
                     }
