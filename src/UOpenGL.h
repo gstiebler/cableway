@@ -6,7 +6,6 @@
 //#include <GL/gl.h>
 #include <QtOpenGL>
 #include <math.h>
-#include "UAuxString.h"
 #include "UDefines.h"
 #include "GLCoords.h"
 

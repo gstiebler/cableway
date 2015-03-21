@@ -11,7 +11,6 @@
 
 #include "UGrafoDesenho.h"
 #include "UArmazenamentoCircuitos.h"
-#include "UAuxString.h"
 #include "UTCallbackStatusCarregamento.h"
 
 using namespace std;
@@ -87,7 +86,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
   try
   {
 	  // Chama desse jeito se não tiver rota do usuário
-	  if (stringTrim(Circuito.RotaUsuario) == "" )
+	  if ( Circuito.RotaUsuario == "" )
 	  {
       erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, SubRotas, CircuitoAreas);
     }
@@ -120,7 +119,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 		delete DebugArestas;
 #endif
 	}
-	else if ( erro && stringTrim(Circuito.RotaUsuario) != "" && Circuito.rota.size() > 0 )
+	else if ( erro && Circuito.RotaUsuario != "" && Circuito.rota.size() > 0 )
   {
     // Se deu erro, mas era rota de usuário e conseguiu completar alguma parte...
 		ArestasCircuito->Circuito=Circuito.NomeCircuito;

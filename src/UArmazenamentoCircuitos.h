@@ -3,9 +3,7 @@
 #ifndef UArmazenamentoCircuitosH
 #define UArmazenamentoCircuitosH
 //---------------------------------------------------------------------------
-#include "UAuxString.h"
-//#include "UdmCentral.h"
-//#include "UdmORetorno.h"
+
 #include <math.h>
 
 #define NUM_GRANDE 1000

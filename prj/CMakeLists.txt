@@ -19,8 +19,7 @@ set(EXECUTABLE_OUTPUT_PATH ../bin)
 set(SRC_BASE ../src)
 set(QT_UI_BASE_PATH ../data/qt)
 
-set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
-				${SRC_BASE}/UCallbacks.cpp
+set(ALL_SOURCES ${SRC_BASE}/UCallbacks.cpp
 				${SRC_BASE}/UContainerDesenhos.cpp
 				${SRC_BASE}/UDadosGenerico.cpp
 				${SRC_BASE}/UDebug.cpp
