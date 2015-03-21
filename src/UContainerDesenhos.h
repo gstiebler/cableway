@@ -5,9 +5,7 @@
 
 #include "UGrafoDesenho.h"
 #include "UInfoCircuitos.h"
-//#include "UfrmDesenho.h"
 #include "TDesenho.h"
-#include "UConfig.h"
 #include "UTCallbackStatusCarregamento.h"
 #include "UCallbacks.h"
 #include <stack>

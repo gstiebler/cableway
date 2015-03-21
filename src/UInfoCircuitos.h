@@ -71,7 +71,6 @@ class VerticesDjikstra
 class CInfoCircuitos
 {
 private:
-  void GeraInfoCircuitos(callbackStatusCarregamento &call);
   TListaCircuitos *ListaCircuitosArestas;//lista de circuitos de uma determinada aresta
   vector< shared_ptr<TAresta> > Arestas;
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);

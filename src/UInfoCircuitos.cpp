@@ -12,7 +12,6 @@
 #include "UGrafoDesenho.h"
 #include "UArmazenamentoCircuitos.h"
 #include "UAuxString.h"
-#include "UConfig.h"
 #include "UTCallbackStatusCarregamento.h"
 
 using namespace std;
@@ -49,55 +48,16 @@ CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callba
     VerticesGerais = ParamsInfoCircuitos->VerticesGerais;
     Arestas = ParamsInfoCircuitos->Arestas;
 
-    //DM_oRetorno->qryGeral->SQL->Clear();
-    //DM_oRetorno->qryGeral->SQL->Add("DELETE FROM ARQUIVOSPROJETOCIRCUITO WHERE PROJETO_ID = " + DM_oRetorno->tbProjeto->FieldByName("ID")->AsString);
-    //DM_oRetorno->qryGeral->ExecSQL();
-    //CTempoExec *tempo = CTempoExec::getInstance();
-    //tempo->MarcaTempo("Inicio da marcacao de tempo no InfoCircuitos");
-
-    dentroEquipamento = CConfig::DentroEquipamento();
-
     ListaCircuitosArestas = new TListaCircuitos[Arestas.size()];
     for (int n = 0; n < Arestas.size(); n++)
         ListaCircuitosArestas[n].NumCircuitos = 0;
-    GeraInfoCircuitos( call );
 }
 //---------------------------------------------------------------------------
 
 CInfoCircuitos::~CInfoCircuitos()
 {
-    // if ( !CTempoExec::isNull() )
-    // {
-    //   CTempoExec *tempo = CTempoExec::getInstance();
-    //   #ifdef DEBUG_BUILDER
-    //     tempo->MostraTempo((string)"Tempo\\InfoCircuitos.txt");
-    //   #endif
-    // }
-    //delete [] ListaCircuitosArestas;
-    //delete ArestasDoCircuito;
 }
 //---------------------------------------------------------------------------
-
-
-
-void CInfoCircuitos::GeraInfoCircuitos(callbackStatusCarregamento &call)
-{
-    //// Pega o n�mero de circuitos
-    //int NumReg = CArmazenamentoCircuitos::NumReg();
-    //// Cria um vetor de TCircuito com o n�mero de circuitos
-    //TCircuito *Circuitos=new TCircuito [NumReg];
-    //// Coloca os circuitos num vetor
-    //CArmazenamentoCircuitos::VetorCircuitos(Circuitos);
-    //// ???
-    ////CArmazenamentoBandeirola::ApagaBandeirolas();
-    //for (int n=0; n<NumReg; n++)
-    // {
-    //   if ( call.ponteiroFuncao ) call.ponteiroFuncao(call.PonteiroProThis, "Circuito ", n+1, NumReg);
-    //	AdicionaCircuito(Circuitos[n]);
-    // }
-    ////DM->Transaction->Commit();
-    //delete [] Circuitos;
-}
 
 
 

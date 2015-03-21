@@ -2,6 +2,7 @@
 #pragma hdrstop
 #include "UContainerDesenhos.h"
 #include "UStructs.h"
+#include "UErros.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
@@ -115,17 +116,7 @@ void CContainerDesenhos::GeraListaAdjacencias()
 
 void CContainerDesenhos::ReduzGrafo()
 {
-#ifdef DEBUG_BUILDER
-  FILE *arq=fopen("t:\\debug antes reducao.txt", "w");
-//  fprintf(arq, " Indice: %d     Circuito: %s   metragem: %f\n",  CONTADOR_DEBUG, Circuito.NomeCircuito.c_str(), Circuito.metragem);
-  for ( int k = 0 ; k < ParamsInfoCircuitos.Arestas->Tamanho() ; k++ )
-  {
-    TAresta *dbgAr;
-    dbgAr = ParamsInfoCircuitos.Arestas->getItem(k);
-    fprintf(arq, "%d:\nV1: %d\nV2: %d\nTam: %f\n\n", k, dbgAr->Vertice1, dbgAr->Vertice2, dbgAr->Tam);
-  }
-  fclose(arq);
-#endif
+
   bool *VerticesVisitados;
 
   VerticesVisitados = new bool [ParamsInfoCircuitos.VerticesGerais->Tamanho()];
@@ -155,21 +146,6 @@ void CContainerDesenhos::ReduzGrafo()
   VerticesVisitados[i] = true;
   buscaEmProfundidadeOsVertices(VerticesVisitados, i, true, arestaRed);
   }
-#ifdef DEBUG_BUILDER
-  FILE *arq2=fopen("t:\\debug depois reducao.txt", "w");
-  for ( int k = 0 ; k < ParamsInfoCircuitos.ArestasReduzidas->Tamanho() ; k++ )
-  {
-    TArestaReduzida *dbgArRed;
-    dbgArRed = ParamsInfoCircuitos.ArestasReduzidas->getItem(k);
-    fprintf(arq2, "%d:\nV1: %d\nV2: %d\nTam: %f\nArestas Retiradas:\n", k, dbgArRed->Vertice1, dbgArRed->Vertice2, dbgArRed->Tam);
-    for ( int m = 0; m < dbgArRed->ArestasRetiradas->size() ; m++ )
-    {
-      fprintf(arq2, "%d ", dbgArRed->ArestasRetiradas->at(m));
-    }
-    fprintf(arq2, "\n\n");
-  }
-  fclose(arq2);
-#endif
 }
 
 void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, int indice, bool arestazerada, TArestaReduzida arestaRed)
@@ -354,8 +330,8 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       }
 
       /***/
-
-      ShowMessage(erro);
+	  
+	CErrosMsg::getInstance()->novoErro( erro );
 
       /***/
 
@@ -364,7 +340,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
     }
   }
   else
-    ShowMessage("Circuito desconhecido.");
+	CErrosMsg::getInstance()->novoErro( "Circuito desconhecido." );
 }
 //---------------------------------------------------------------------------
 
