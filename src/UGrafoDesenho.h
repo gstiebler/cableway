@@ -76,7 +76,6 @@ class CGrafoDesenho
 private:
   bool CarregaGrafo;
   TTipoElemento TipoElementoCor[NUM_CORES];
-  void AlocaElementos();
   void GeraListaCabos();
   //dado um ponto pega o cabo reta mais pr�ximo do ponto
   void CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel);

@@ -92,7 +92,6 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
         TVerticeGeral temp;
         _verticesGerais->Adiciona( temp );
 
-        AlocaElementos();
         GeraListaCabos();
         GeraVerticesBandeirola();
         GeraVerticesArcos();
@@ -107,13 +106,6 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
 
 CGrafoDesenho::~CGrafoDesenho()
 {
-}
-//---------------------------------------------------------------------------
-
-void CGrafoDesenho::AlocaElementos()
-{
-    _cabosReta.reserve( _dados->Multipoint.size() );
-    _cabosArco.reserve( _dados->Arcos.size() );
 }
 //---------------------------------------------------------------------------
 
