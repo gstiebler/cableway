@@ -129,12 +129,13 @@ void CGrafoDesenho::GeraListaCabos()
         //verifica o tipo de elemento pela cor
         if ( _dados->Multipoint[n]->Nivel == CABO )
         {
-			_cabosReta.push_back( CCaboReta() );
-			_cabosReta.back()._multipoint = _dados->Multipoint[n];
+			shared_ptr<CCaboReta> caboReta( new CCaboReta );
+			_cabosReta.push_back( caboReta );
+			caboReta->_multipoint = _dados->Multipoint[n];
             Pontos = _dados->Multipoint[n]->pontos;
             DifX = fabs( Pontos[0].x - Pontos[1].x );
             DifY = fabs( Pontos[0].y - Pontos[1].y );
-            _cabosReta.back().TipoOrientacao = (DifY > DifX) ? VERTICAL : HORIZONTAL;
+            caboReta->TipoOrientacao = (DifY > DifX) ? VERTICAL : HORIZONTAL;
         }
     }
 
@@ -166,7 +167,7 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &Dist
     MenorDist = Infinity;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
-		shared_ptr<TMultipoint> multipoint = _cabosReta[m]._multipoint;
+		shared_ptr<TMultipoint> multipoint = _cabosReta[m]->_multipoint;
         if ((Nivel != -1) && (multipoint->Nivel != Nivel))
             continue;
 		vector<TPonto> &pontosCabo = multipoint->pontos;
@@ -342,7 +343,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             CaboMaisProximo( MaisDist, iMenorDist, DistMaisProx, PontoNaReta, -1, -1 );
             if (iMenorDist >= 0)
             {
-                _cabosReta[iMenorDist].AdicionaVertice( _verticesGerais->vertices.size(), PontoNaReta );
+                _cabosReta[iMenorDist]->AdicionaVertice( _verticesGerais->vertices.size(), PontoNaReta );
                 VerticeGeral.pos = PontoNaReta;
 
                 TPontosBandeirola pontoTemp;
@@ -396,7 +397,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
         if (!isAdded)
         {
             //adiciona o vértice na lista de vértices do cabo
-            _cabosReta[pontoEIndiceCabo.IndiceCabo].AdicionaVertice( _verticesGerais->vertices.size(),
+            _cabosReta[pontoEIndiceCabo.IndiceCabo]->AdicionaVertice( _verticesGerais->vertices.size(),
                     pontoEIndiceCabo.PosVertice );
 
             TVerticeGeral VerticeGeral;
@@ -409,13 +410,13 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 			
             ListaItensCelula->cabosRetaRelacionados.push_back( pontoEIndiceCabo.IndiceCabo );
 
-            if (_cabosReta[pontoEIndiceCabo.IndiceCabo].EhOPrimeiroPonto( pontoEIndiceCabo.PosVertice  ))
+            if (_cabosReta[pontoEIndiceCabo.IndiceCabo]->EhOPrimeiroPonto( pontoEIndiceCabo.PosVertice  ))
             {
-                _cabosReta[pontoEIndiceCabo.IndiceCabo].ponta[0] = true;
+                _cabosReta[pontoEIndiceCabo.IndiceCabo]->ponta[0] = true;
             }
-            else if (_cabosReta[pontoEIndiceCabo.IndiceCabo].EhOUltimoPonto( pontoEIndiceCabo.PosVertice ))
+            else if (_cabosReta[pontoEIndiceCabo.IndiceCabo]->EhOUltimoPonto( pontoEIndiceCabo.PosVertice ))
             {
-                _cabosReta[pontoEIndiceCabo.IndiceCabo].ponta[1] = true;
+                _cabosReta[pontoEIndiceCabo.IndiceCabo]->ponta[1] = true;
             }
 
             shared_ptr<TAresta> Aresta( new TAresta() );
@@ -518,7 +519,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
         if (!isAdded)
         {
             //adiciona o vértice na lista de vértices do cabo
-            _cabosReta[IndiceCabo].AdicionaVertice( _verticesGerais->vertices.size(), PosVertice );
+            _cabosReta[IndiceCabo]->AdicionaVertice( _verticesGerais->vertices.size(), PosVertice );
 
             TVerticeGeral VerticeGeral;
             VerticeGeral.pos = PosVertice;
@@ -529,13 +530,13 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             _verticesGerais->Adiciona( VerticeGeral );
 
             ListaItensCelula->cabosRetaRelacionados.push_back( IndiceCabo );
-            if (_cabosReta[IndiceCabo].EhOPrimeiroPonto( PosVertice ))
+            if (_cabosReta[IndiceCabo]->EhOPrimeiroPonto( PosVertice ))
             {
-                _cabosReta[IndiceCabo].ponta[0] = true;
+                _cabosReta[IndiceCabo]->ponta[0] = true;
             }
-            else if (_cabosReta[IndiceCabo].EhOUltimoPonto( PosVertice ))
+            else if (_cabosReta[IndiceCabo]->EhOUltimoPonto( PosVertice ))
             {
-                _cabosReta[IndiceCabo].ponta[1] = true;
+                _cabosReta[IndiceCabo]->ponta[1] = true;
             }
             shared_ptr<TAresta> Aresta( new TAresta() );
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
@@ -706,7 +707,7 @@ void CGrafoDesenho::GeraVerticesArcos()
             {
                 /* Olha cada ponta do arco */
                 CaboMaisProximo( p[m], iMenorDist, DistMaisProx, PontoNaReta, -1, Arco->Nivel );
-				CCaboReta *caboReta = &(_cabosReta[iMenorDist]);
+				shared_ptr<CCaboReta> caboReta = _cabosReta[iMenorDist];
                 if (DistMaisProx < DIST_MIN_ELEM_CABO)
                 {
                     // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
@@ -752,7 +753,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
 	for (n = 0; n < _cabosReta.size(); n++)
     {
         /* Olha todos os cabos reta do desenho */
-		tMultipoint = _cabosReta[n]._multipoint;
+		tMultipoint = _cabosReta[n]->_multipoint;
 
         for (m = 0; m < tMultipoint->pontos.size(); m++)
         {
@@ -764,7 +765,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
                 // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
-                _cabosReta[iMenorDist].AdicionaVertice( _verticesGerais->vertices.size(), PontoNaReta );
+                _cabosReta[iMenorDist]->AdicionaVertice( _verticesGerais->vertices.size(), PontoNaReta );
                 VerticeGeral.pos = PontoNaReta;
                 //        if ( CabosReta[iMenorDist]->EhOPrimeiroPonto(PontoNaReta, Dados->Multipoint, DistMinElemCabo) )
                 //          CabosReta[iMenorDist]->ponta[0] = true;
@@ -772,13 +773,13 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
                 //          CabosReta[iMenorDist]->ponta[1] = true;
                 //        CabosReta[iMenorDist]->ponta[m] = true;
                 if (m == 0)
-                    _cabosReta[n].ponta[0] = true;
+                    _cabosReta[n]->ponta[0] = true;
                 else
-                    _cabosReta[n].ponta[1] = true;
+                    _cabosReta[n]->ponta[1] = true;
             }
             else
                 VerticeGeral.pos = tMultipoint->pontos[m];
-            _cabosReta[n].AdicionaVertice( _verticesGerais->vertices.size(), tMultipoint->pontos[m] );
+            _cabosReta[n]->AdicionaVertice( _verticesGerais->vertices.size(), tMultipoint->pontos[m] );
             VerticeGeral.iDesenho = _dados->IndiceDesenho;
             VerticeGeral.IDArquivo = _dados->IDArquivo;
             _verticesGerais->Adiciona( VerticeGeral );
@@ -799,7 +800,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboReta(TPonto Reta[2], int &IndiceCabo,
 	for (m = 0; m < _cabosReta.size(); m++)
     {
         // PontosCabo tem os pontos de in�cio e fim do cabo
-		vector<TPonto> &PontosCabo = _cabosReta[m]._multipoint->pontos;
+		vector<TPonto> &PontosCabo = _cabosReta[m]->_multipoint->pontos;
         for (n = 0; n < 2; n++)
         {
             Dist = DistPontoParaSegmentoReta( Reta, PontosCabo[n], PontoTemp );
@@ -826,7 +827,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2],
 	for (m = 0; m < _cabosReta.size(); m++)
     {
         // PontosCabo tem os pontos de in�cio e fim do cabo
-		vector<TPonto> &PontosCabo = _cabosReta[m]._multipoint->pontos;
+		vector<TPonto> &PontosCabo = _cabosReta[m]->_multipoint->pontos;
         for (n = 0; n < 2; n++)
         {
             Dist = DistPontoParaSegmentoReta( Reta, PontosCabo[n], PontoTemp );
@@ -918,7 +919,7 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco,
     TPontoEIndiceCabo Cabo;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
-		vector<TPonto> &PontosCabo = _cabosReta[m]._multipoint->pontos;
+		vector<TPonto> &PontosCabo = _cabosReta[m]->_multipoint->pontos;
         for (n = 0; n < 2; n++)
         {
             //eixo prim�rio em um c�rculo � o raio
@@ -958,7 +959,7 @@ void CGrafoDesenho::DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, doub
     MenorDist = Infinity;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
-        vector<TPonto> &PontosCabo = _cabosReta[m]._multipoint->pontos;
+        vector<TPonto> &PontosCabo = _cabosReta[m]->_multipoint->pontos;
         for (n = 0; n < 2; n++)
         {
             //eixo prim�rio em um c�rculo � o raio
@@ -1045,13 +1046,13 @@ void CGrafoDesenho::OrdenaVerticesRetas()
     int n;
 	for (n = 0; n < _cabosReta.size(); n++)
     {
-        if (_cabosReta[n].TipoOrientacao == VERTICAL)
+        if (_cabosReta[n]->TipoOrientacao == VERTICAL)
         {
-            sort(_cabosReta[n].VerticesReta.begin(), _cabosReta[n].VerticesReta.end(), OrdenaRetaVertical );
+            sort(_cabosReta[n]->VerticesReta.begin(), _cabosReta[n]->VerticesReta.end(), OrdenaRetaVertical );
         }
         else
         {
-            sort(_cabosReta[n].VerticesReta.begin(), _cabosReta[n].VerticesReta.end(), OrdenaRetaHorizontal );
+            sort(_cabosReta[n]->VerticesReta.begin(), _cabosReta[n]->VerticesReta.end(), OrdenaRetaHorizontal );
         }
     }
 }
@@ -1163,10 +1164,10 @@ void CGrafoDesenho::GeraArestas()
     TVerticeReta *VerticesReta1, *VerticesReta2;
 	for (n = 0; n < _cabosReta.size(); n++)
     {
-        for (m = 0; m < _cabosReta[n].NumVertices - 1; m++)
+        for (m = 0; m < _cabosReta[n]->NumVertices - 1; m++)
         {
-            VerticesReta1 = &_cabosReta[n].VerticesReta[m];
-            VerticesReta2 = &_cabosReta[n].VerticesReta[m + 1];
+            VerticesReta1 = &_cabosReta[n]->VerticesReta[m];
+            VerticesReta2 = &_cabosReta[n]->VerticesReta[m + 1];
             shared_ptr<TAresta> Aresta( new TAresta() );
             Aresta->AdicionaVertices( VerticesReta1->ID, VerticesReta2->ID,
             //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));

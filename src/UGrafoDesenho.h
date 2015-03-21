@@ -120,7 +120,7 @@ public:
   std::vector<CCaboArco> _cabosArco;
   //armazena informa��es das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
-  std::vector<CCaboReta> _cabosReta;
+  std::vector< shared_ptr<CCaboReta> > _cabosReta;
   void GeraColares(const std::vector<TDesenho*> &ListaDesenhos);
   void ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos);
   int _pri;
