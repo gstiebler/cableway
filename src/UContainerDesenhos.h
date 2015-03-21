@@ -37,7 +37,6 @@ public:
   ~CContainerDesenhos();
   CInfoCircuitos *InfoCircuitos;
   //TfrmDesenho **frmDesenhos;
-  void AdicionaDesenho(string NomeArquivo, int id, double altura, bool carregagrafo);
 
   void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura );
 

@@ -231,24 +231,24 @@ void CMostraDesenho::showTree()
 	int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 	TVectorInt iArestas;
 	InfoCircuitos->Arvore(VerticeArvore, iArestas, IndiceDesenho);
-	TAresta Aresta;
+	shared_ptr<TAresta> Aresta;
 	TPonto Pontos[2];
 	for (int n=0; n<(int)iArestas.size(); n++)
 	{
-		Aresta=*(GrafoDesenho->_arestas->getItem(iArestas[n]));
-		string debugTexto = GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->texto;
-		Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->pos;
-		Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->pos;
+		Aresta = GrafoDesenho->_arestas[iArestas[n]];
+		string debugTexto = GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->texto;
+		Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->pos;
+		Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->pos;
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(Pontos[0].x, Pontos[0].y);
 		glVertex2f(Pontos[1].x, Pontos[1].y);
 		glEnd();
 #define TAMBOLACOLAR (1000)
-		if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->EhColar )
+		if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
-		if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->EhColar )
+		if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
@@ -272,22 +272,21 @@ void CMostraDesenho::showTree()
 		int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 		TVectorInt iArestas;
 		InfoCircuitos->Arvore(VerticeArvore2, iArestas, IndiceDesenho);
-		TAresta Aresta;
 		TPonto Pontos[2];
 		for (int n=0; n<(int)iArestas.size(); n++)
 		{
-			Aresta=*(GrafoDesenho->_arestas->getItem(iArestas[n]));
-			Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->pos;
-			Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->pos;
+			Aresta = GrafoDesenho->_arestas[ iArestas[n] ];
+			Pontos[0]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->pos;
+			Pontos[1]=GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->pos;
 			glBegin(GL_LINE_STRIP);
 			glVertex2f(Pontos[0].x, Pontos[0].y);
 			glVertex2f(Pontos[1].x, Pontos[1].y);
 			glEnd();
-			if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice1)->EhColar )
+			if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice1)->EhColar )
 			{
 				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}
-			if ( GrafoDesenho->_verticesGerais->getItem(Aresta.Vertice2)->EhColar )
+			if ( GrafoDesenho->_verticesGerais->getItem(Aresta->Vertice2)->EhColar )
 			{
 				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 			}

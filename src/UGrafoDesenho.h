@@ -115,7 +115,6 @@ private:
   void GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaMultipointCaboReta(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaMultipointCaboArco(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
-protected:
 
 public:
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
@@ -139,7 +138,7 @@ public:
   ~CGrafoDesenho();
 
   TVerticesGerais *_verticesGerais;
-  TListaArestas *_arestas;
+  vector< shared_ptr<TAresta> > _arestas;
   std::shared_ptr<CDadosGenerico> _dados;
 };
 //---------------------------------------------------------------------------

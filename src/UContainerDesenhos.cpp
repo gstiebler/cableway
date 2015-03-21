@@ -39,46 +39,6 @@ CContainerDesenhos::~CContainerDesenhos()
 }
 //---------------------------------------------------------------------------
 
-void CContainerDesenhos::AdicionaDesenho(string NomeArquivo, int id, double altura, bool carregagrafo)
-{
-  // Cria um novo desenho
-  TDesenho *Desenho=new TDesenho;
-  // Preenche o nome
-  Desenho->NomeArquivo=NomeArquivo;
-  // E o ID
-  Desenho->ID = id;
-  Desenho->Altura = altura;
-
-  // Cria um novo params
-  TParamsGrafoDesenho ParamsGrafoDesenho;
-  // O Id
-  ParamsGrafoDesenho.IDArquivo = id;
-  // Para carregar o grafo
-  ParamsGrafoDesenho.CarregaGrafo=carregagrafo;
-  ParamsGrafoDesenho.Altura = altura;
-  // Preenche o índice do desenho
-  ParamsGrafoDesenho.IndiceDesenho=ListaDesenhos.size();
-  // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
-  ParamsGrafoDesenho.VerticesGerais=ParamsInfoCircuitos.VerticesGerais;
-  // E um ponteiro pro Arestas (TListaArestas)
-  ParamsGrafoDesenho.Arestas=ParamsInfoCircuitos.Arestas;
-  try
-  {
-	  //TODO carregar a estrutura TDadosTransfer
-      std::shared_ptr<CDadosGenerico> dados;
-    // Tenta criar um grafodesenho com os par�metros passados
-    Desenho->GrafoDesenho=new CGrafoDesenho(ParamsGrafoDesenho, dados);
-    // E adicionar o desenho na lista de desenhos
-    ListaDesenhos.push_back(Desenho);
-  }
-  catch (...)
-  {
-    // Algo deu errado ao criar/adicionar o desenho.
-    ShowMessage("Erro ao criar desenho na memória.");
-  }
-}
-//---------------------------------------------------------------------------
-
 void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura )
 {
     // Cria um novo params
@@ -93,8 +53,6 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
 	dados->IndiceDesenho = ListaDesenhos.size();
     // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
     paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
-    // E um ponteiro pro Arestas (TListaArestas)
-    paramsGrafoDesenho.Arestas = ParamsInfoCircuitos.Arestas;
 
     CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, dados);
 
@@ -148,10 +106,10 @@ bool CContainerDesenhos::verificaTexto(string str)
 void CContainerDesenhos::GeraListaAdjacencias()
 {
   int n, v1, v2;
-  for (n=0; n<ParamsInfoCircuitos.Arestas->Tamanho(); n++)
+  for (n=0; n<ParamsInfoCircuitos.Arestas.size(); n++)
   {
-    v1=ParamsInfoCircuitos.Arestas->getItem(n)->Vertice1;
-    v2=ParamsInfoCircuitos.Arestas->getItem(n)->Vertice2;
+    v1=ParamsInfoCircuitos.Arestas[n]->Vertice1;
+    v2=ParamsInfoCircuitos.Arestas[n]->Vertice2;
     ParamsInfoCircuitos.VerticesGerais->getItem(v1)->ListaVerticesEArestas->AdicionaVerticeEAresta(v2, n);
     ParamsInfoCircuitos.VerticesGerais->getItem(v2)->ListaVerticesEArestas->AdicionaVerticeEAresta(v1, n);
   }
@@ -251,7 +209,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
         {
           VerticesVisitados[VeA->Vertice] = true;
           arestaRed.ArestasRetiradas->push_back(VeA->Aresta);
-          arestaRed.Tam += ParamsInfoCircuitos.Arestas->getItem(VeA->Aresta)->Tam;
+          arestaRed.Tam += ParamsInfoCircuitos.Arestas[VeA->Aresta]->Tam;
           buscaEmProfundidadeOsVertices(VerticesVisitados, VeA->Vertice, false, arestaRed);
         }//if ( !VerticesVisitados[VeA->Vertice] )
       }//for ( int j = 0 ; j < verticesArestas->Tamanho() ; j++ )
@@ -273,7 +231,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
         }
         arestaRed.Vertice1 = tamanho;
         arestaRed.ArestasRetiradas->push_back(VeA->Aresta);
-        arestaRed.Tam += ParamsInfoCircuitos.Arestas->getItem(VeA->Aresta)->Tam;
+        arestaRed.Tam += ParamsInfoCircuitos.Arestas[VeA->Aresta]->Tam;
         //          busca.push(intVertices(VeA->Vertice, arestaRed.Vertice1)));
         buscaEmProfundidadeOsVertices(VerticesVisitados, VeA->Vertice, false, arestaRed);
         arestaRed.limpa();
@@ -294,6 +252,12 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
 //						ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.y,
 //						ParamsInfoCircuitos.VerticesGerais->getItem( i )->texto.c_str());
 //	}
+
+	for( int i(0); i < ListaDesenhos.size(); ++i)
+	{
+		vector<shared_ptr<TAresta> > &edges = ListaDesenhos[i]->GrafoDesenho->_arestas;
+		ParamsInfoCircuitos.Arestas.insert( ParamsInfoCircuitos.Arestas.end(), edges.begin(), edges.end() );
+	}
 
     int indice = ListaDesenhos.size() - 1;
     if (indice >= 0)

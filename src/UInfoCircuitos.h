@@ -7,6 +7,7 @@
 #include <string>
 //#include <values.h>
 #include <algorithm>
+#include <memory>
 //#include "UArmazenamentoBandeirola.h"
 
 //#include "UGrafoDesenho.h"
@@ -72,7 +73,7 @@ class CInfoCircuitos
 private:
   void GeraInfoCircuitos(callbackStatusCarregamento &call);
   TListaCircuitos *ListaCircuitosArestas;//lista de circuitos de uma determinada aresta
-  TListaArestas *Arestas;
+  vector< shared_ptr<TAresta> > Arestas;
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   int NumDesenhos;

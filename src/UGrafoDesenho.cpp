@@ -78,7 +78,6 @@ bool CCaboReta::EhOUltimoPonto( TPonto ponto )
 //---------------------------------------------------------------------------
 
 CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados)
-//                                            : CDadosDGN(ParamsGrafoDesenho)
 {
     _pri = 0;
     CarregaGrafo = ParamsGrafoDesenho.CarregaGrafo;
@@ -99,8 +98,6 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
         //O vértice 0 não pode ser usado, por isso adiciona-se este vértice vazio
         TVerticeGeral temp;
         _verticesGerais->Adiciona( temp );
-
-        _arestas = ParamsGrafoDesenho.Arestas;
 
         AlocaElementos();
         GeraListaCabos();
@@ -434,15 +431,15 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
                 _cabosReta[pontoEIndiceCabo.IndiceCabo].ponta[1] = true;
             }
 
-            TAresta Aresta;
+            shared_ptr<TAresta> Aresta( new TAresta() );
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
-                Aresta.AdicionaVertices( iVerticesInstrumento->at( i ),
+                Aresta->AdicionaVertices( iVerticesInstrumento->at( i ),
                         _verticesGerais->Tamanho() - 1,
                         DistPontosManhattan( PosVertice, PosVertice ) );
-                Aresta.IndiceDesenho = _dados->IndiceDesenho;
-                Aresta.IDArquivo = _dados->IDArquivo;
-                _arestas->Adiciona( Aresta );
+                Aresta->IndiceDesenho = _dados->IndiceDesenho;
+                Aresta->IDArquivo = _dados->IDArquivo;
+				_arestas.push_back( Aresta );
             }
         }
     }
@@ -464,18 +461,18 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
             //if ( ListaItensCelula->iTexto > 0 )
             //  VerticesGerais->getItem(IndiceVertice)->texto = Textos[ListaItensCelula->iTexto].texto;
             ListaItensCelula->cabosArcoRelacionados.push_back( ListaMenores.at( n ).IndiceCabo );
-            TAresta Aresta;
+            shared_ptr<TAresta> Aresta( new TAresta() );
 
             _cabosArco[ListaMenores.at( n ).IndiceCabo].ponta[ListaMenores.at( n ).IndiceArco] =
                     true;
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
-                Aresta.AdicionaVertices( iVerticesInstrumento->at( i ),
+                Aresta->AdicionaVertices( iVerticesInstrumento->at( i ),
                         ListaMenores.at( n ).IndiceVertice,
                         DistPontosManhattan( PosVertice, PosVertice ) );
-                Aresta.IndiceDesenho = _dados->IndiceDesenho;
-                Aresta.IDArquivo = _dados->IDArquivo;
-                _arestas->Adiciona( Aresta );
+                Aresta->IndiceDesenho = _dados->IndiceDesenho;
+                Aresta->IDArquivo = _dados->IDArquivo;
+				_arestas.push_back( Aresta );
             }
         }
     }
@@ -553,16 +550,16 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             {
                 _cabosReta[IndiceCabo].ponta[1] = true;
             }
-            TAresta Aresta;
+            shared_ptr<TAresta> Aresta( new TAresta() );
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
-                Aresta.AdicionaVertices( iVerticesInstrumento->at( i ),
+                Aresta->AdicionaVertices( iVerticesInstrumento->at( i ),
                         _verticesGerais->Tamanho() - 1,
                         //								DistPontosManhattan(PosVertice, PosVertice));
                         DistPontos( PosVertice, PosVertice ) );
-                Aresta.IndiceDesenho = _dados->IndiceDesenho;
-                Aresta.IDArquivo = _dados->IDArquivo;
-                _arestas->Adiciona( Aresta );
+                Aresta->IndiceDesenho = _dados->IndiceDesenho;
+                Aresta->IDArquivo = _dados->IDArquivo;
+				_arestas.push_back( Aresta );
             }
         }
     }
@@ -623,11 +620,11 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
     // Caso o equipamento seja um colar de subida/descida, então � necess�rio adicionar uma aresta entre a subida e a descida.
     if (ListaItensCelula->iTextos.size() == 2)
     {
-        TAresta Aresta;
-        Aresta.AdicionaVertices( iVerticesInstrumento[0], iVerticesInstrumento[1], 0 );
-        Aresta.IndiceDesenho = _dados->IndiceDesenho;
-        Aresta.IDArquivo = _dados->IDArquivo;
-        _arestas->Adiciona( Aresta );
+        shared_ptr<TAresta> Aresta( new TAresta() );
+        Aresta->AdicionaVertices( iVerticesInstrumento[0], iVerticesInstrumento[1], 0 );
+        Aresta->IndiceDesenho = _dados->IndiceDesenho;
+        Aresta->IDArquivo = _dados->IDArquivo;
+		_arestas.push_back( Aresta );
     }
 
 }
@@ -749,11 +746,11 @@ void CGrafoDesenho::GeraVerticesArcos()
             }
         }
 
-        TAresta Aresta;
-        Aresta.AdicionaVertices( Arco->iV[0], Arco->iV[1], DistPontosManhattan( p[0], p[1] ) );
-        Aresta.IndiceDesenho = _dados->IndiceDesenho;
-        Aresta.IDArquivo = _dados->IDArquivo;
-        _arestas->Adiciona( Aresta );
+        shared_ptr<TAresta> Aresta( new TAresta() );
+        Aresta->AdicionaVertices( Arco->iV[0], Arco->iV[1], DistPontosManhattan( p[0], p[1] ) );
+        Aresta->IndiceDesenho = _dados->IndiceDesenho;
+        Aresta->IDArquivo = _dados->IDArquivo;
+		_arestas.push_back( Aresta );
     }
 }
 //---------------------------------------------------------------------------
@@ -1096,11 +1093,11 @@ void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
                         - ListaDesenhos[V2->iDesenho]->Altura;
                 if (alturaDaAresta < 0)
                     alturaDaAresta *= -1;
-                TAresta Aresta;
-                Aresta.AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
-                Aresta.IndiceDesenho = I_DESENHO_NULO;
-                Aresta.IDArquivo = I_DESENHO_NULO;
-                _arestas->Adiciona( Aresta );
+                shared_ptr<TAresta> Aresta( new TAresta() );
+                Aresta->AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
+                Aresta->IndiceDesenho = I_DESENHO_NULO;
+                Aresta->IDArquivo = I_DESENHO_NULO;
+				_arestas.push_back( Aresta );
 
                 _verticesGerais->getItem( V1->IndiceOriginal )->EhColar = _verticesGerais->getItem(
                         V2->IndiceOriginal )->EhColar = true;
@@ -1189,41 +1186,21 @@ void CGrafoDesenho::GeraArestas()
 {
     int n, m;
     TVerticeReta *VerticesReta1, *VerticesReta2;
-#ifdef DEBUG_BUILDER
-    TStringList *proArquivo = new TStringList();
-    AnsiString vertices = "";
-#endif
 	for (n = 0; n < _cabosReta.size(); n++)
     {
-#ifdef DEBUG_BUILDER
-        vertices += IntToStr(n) + ": ";
-        VerticesReta2=_cabosReta[n]->VerticesReta.getItem(0);
-        vertices += " " + IntToStr(VerticesReta2->ID) + "(" + FormatFloat("###,###,###",VerticesReta2->pos.x) + " - " + FormatFloat("###,###,###",VerticesReta2->pos.y) + ")";
-#endif
         for (m = 0; m < _cabosReta[n].NumVertices - 1; m++)
         {
             VerticesReta1 = &_cabosReta[n].VerticesReta[m];
             VerticesReta2 = &_cabosReta[n].VerticesReta[m + 1];
-#ifdef DEBUG_BUILDER
-            vertices += " " + IntToStr(VerticesReta2->ID) + "(" + FormatFloat("###,###,###",VerticesReta2->pos.x) + " - " + FormatFloat("###,###,###",VerticesReta2->pos.y) + ")";
-#endif
-            TAresta Aresta;
-            Aresta.AdicionaVertices( VerticesReta1->ID, VerticesReta2->ID,
+            shared_ptr<TAresta> Aresta( new TAresta() );
+            Aresta->AdicionaVertices( VerticesReta1->ID, VerticesReta2->ID,
             //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));
                     DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );
-            Aresta.IndiceDesenho = _dados->IndiceDesenho;
-            Aresta.IDArquivo = _dados->IDArquivo;
-            _arestas->Adiciona( Aresta );
+            Aresta->IndiceDesenho = _dados->IndiceDesenho;
+            Aresta->IDArquivo = _dados->IDArquivo;
+			_arestas.push_back( Aresta );
         }
-#ifdef DEBUG_BUILDER
-        proArquivo->Add(vertices);
-        vertices="";
-#endif
     }
-#ifdef DEBUG_BUILDER
-    proArquivo->SaveToFile(ExtractFilePath(Application->ExeName) + "arestas.txt");
-    delete proArquivo;
-#endif
 }
 //---------------------------------------------------------------------------
 

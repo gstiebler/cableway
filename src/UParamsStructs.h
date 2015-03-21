@@ -11,6 +11,7 @@ class TListaArestas;
 #include "UVerticesArestas.h"
 
 #include <vector>
+#include <memory>
 
 struct TParamsDadosGenerico
 {
@@ -25,7 +26,6 @@ struct TParamsGrafoDesenho: public TParamsDadosGenerico
   bool CarregaGrafo;
   double Altura;
   TVerticesGerais *VerticesGerais;
-  TListaArestas *Arestas;
 };
 //---------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ struct TParamsInfoCircuitos
   TParamsInfoCircuitos();
   ~TParamsInfoCircuitos();
   TVerticesGerais *VerticesGerais, *VerticesReduzidos;
-  TListaArestas *Arestas;
+  vector< shared_ptr<TAresta> > Arestas;
   std::vector<TArestaReduzida> ArestasReduzidas;
   int NumDesenhos;
 };
