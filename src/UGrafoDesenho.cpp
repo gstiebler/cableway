@@ -33,7 +33,7 @@ void CCaboReta::AdicionaVertice(int ID, TPonto &ponto)
 //---------------------------------------------------------------------------
 
 //Retorna verdadeiro se o ponto recebido está próximo ao primeiro ponto do vetor
-bool CCaboReta::EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo)
+bool CCaboReta::EhOPrimeiroPonto( TPonto ponto )
 {
 	TPonto pontoM = _multipoint->pontos[0]; //primeiro ponto
     TPonto pontoR = _multipoint->pontos[_multipoint->pontos.size() - 1]; //último ponto
@@ -55,7 +55,7 @@ bool CCaboReta::EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, i
 }
 
 //Retorna verdadeiro se o ponto recebido está próximo ao último ponto do vetor
-bool CCaboReta::EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo)
+bool CCaboReta::EhOUltimoPonto( TPonto ponto )
 {
     TPonto pontoM = _multipoint->pontos[_multipoint->pontos.size() - 1];
     TPonto pontoR = _multipoint->pontos[0];
@@ -137,11 +137,11 @@ void CGrafoDesenho::GeraListaCabos()
     for (n = 0; n < _dados->Multipoint.size(); n++)
     {
         //verifica o tipo de elemento pela cor
-        if ( _dados->Multipoint[n].Nivel == CABO )
+        if ( _dados->Multipoint[n]->Nivel == CABO )
         {
 			_cabosReta.push_back( CCaboReta() );
-			_cabosReta.back()._multipoint = &(_dados->Multipoint[n]);
-            Pontos = _dados->Multipoint[n].pontos;
+			_cabosReta.back()._multipoint = _dados->Multipoint[n];
+            Pontos = _dados->Multipoint[n]->pontos;
             DifX = fabs( Pontos[0].x - Pontos[1].x );
             DifY = fabs( Pontos[0].y - Pontos[1].y );
             _cabosReta.back().TipoOrientacao = (DifY > DifX) ? VERTICAL : HORIZONTAL;
@@ -151,12 +151,12 @@ void CGrafoDesenho::GeraListaCabos()
     double SomaRaios = 0;
     for (n = 0; n < _dados->Arcos.size(); n++)
     {
-		if ( _dados->Arcos[n].Nivel == CABO )
+		if ( _dados->Arcos[n]->Nivel == CABO )
         {
 			_cabosArco.push_back( CCaboArco() );
-			_cabosArco.back()._arco = &(_dados->Arcos[n]);
+			_cabosArco.back()._arco = _dados->Arcos[n];
 
-            SomaRaios += _dados->Arcos[n].EixoPrimario;
+            SomaRaios += _dados->Arcos[n]->EixoPrimario;
         }
     }
     _mediaRaioCaboArco = _cabosArco.size() > 0 ? SomaRaios / _cabosArco.size() : 0;
@@ -177,7 +177,7 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &Dist
     MenorDist = Infinity;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
-		TMultipoint *multipoint = _cabosReta[m]._multipoint;
+		shared_ptr<TMultipoint> multipoint = _cabosReta[m]._multipoint;
         if ((Nivel != -1) && (multipoint->Nivel != Nivel))
             continue;
 		vector<TPonto> &pontosCabo = multipoint->pontos;
@@ -206,119 +206,20 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &Dist
 }
 //---------------------------------------------------------------------------
 
-// Acha a ponta 1
-void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelula *ListaItens,
-        double DistMinBandeirola)
-{
-    int m;
-    vector<int> JahPassou;
-    int menores = 0;
-    double MenorDist, Dist;
-    TPonto Ponto;
-    int IndiceCabo, CaboPonta;
-
-    TPonto PontoInicial;
-    JahPassou.push_back( 0 );
-
-    Ponto = _dados->Multipoint[iPonto].pontos[Ponta];
-    PontoInicial = Ponto;
-
-    do
-    {
-        IndiceCabo = -1;
-        MenorDist = Infinity;
-        menores = 0;
-        for (m = 0; m < ListaItens->Tamanho(); m++)
-        {
-            if (m == iM)
-                continue;
-
-            vector<TPonto> &PontosReta = _dados->Multipoint[ListaItens->getItem( m )->Indice].pontos;
-            // V� a Distância pra primeira ponta do cabo
-            Dist = DistPontos( PontosReta[0], Ponto );
-            if (Dist - MenorDist < DistMinBandeirola && Dist < DistMinBandeirola)
-            {
-                menores++;
-                MenorDist = Dist;
-                IndiceCabo = m;
-                CaboPonta = _dados->Multipoint[ListaItens->getItem( m )->Indice].pontos.size() - 1;
-                if (menores > 1)
-                    CaboPonta = 0;
-            }
-
-            // V� a Distância pra segunda ponta do cabo
-            Dist = DistPontos( PontosReta[_dados->Multipoint[ListaItens->getItem( m )->Indice].pontos.size() - 1], Ponto );
-            if (Dist - MenorDist < DistMinBandeirola && Dist < DistMinBandeirola)
-            {
-                menores++;
-                MenorDist = Dist;
-                IndiceCabo = m;
-                CaboPonta = 0;
-                if (menores > 1)
-                    CaboPonta = _dados->Multipoint[ListaItens->getItem( m )->Indice].pontos.size()
-                            - 1;
-            }
-        }  //for (m=0; m<NumCabosReta; m++)
-
-        if (menores > 1)
-        {
-            iM = IndiceCabo;
-            iPonto = ListaItens->getItem( IndiceCabo )->Indice;
-            Ponta = CaboPonta;
-            Ponto = _dados->Multipoint[iPonto].pontos[Ponta];
-            break;
-        }
-
-        if (IndiceCabo >= 0)
-        {
-            iM = IndiceCabo;
-            iPonto = ListaItens->getItem( IndiceCabo )->Indice;
-            Ponta = CaboPonta;
-            Ponto = _dados->Multipoint[iPonto].pontos[Ponta];
-            if (iM != JahPassou[ 0 ])
-                JahPassou.push_back( iM );
-            if (fabs( Ponto.x - PontoInicial.x ) < DistMinBandeirola
-                    && fabs( Ponto.y - PontoInicial.y ) < DistMinBandeirola)
-            {
-                while (JahPassou.size())
-                {
-                    int frente = JahPassou.front();
-                    ListaItens->Remove( frente );
-                    JahPassou.erase( JahPassou.begin() );
-                    for (m = 0; m < (int) JahPassou.size(); m++)
-                    {
-                        if (JahPassou[ m ] > frente)
-                            JahPassou[ m ]--;}
-                    }
-                if (ListaItens->Tamanho() == 0)
-                    break;
-                IndiceCabo = 0;
-                CaboPonta = 0;
-                iM = IndiceCabo;
-                iPonto = ListaItens->getItem( IndiceCabo )->Indice;
-                Ponta = CaboPonta;
-                Ponto = _dados->Multipoint[iPonto].pontos[Ponta];
-            }
-        }
-    } while (IndiceCabo >= 0);
-}
-
 //---------------------------------------------------------------------------
 //adiciona os vértices das bandeirolas nas estruturas dos cabos
 void CGrafoDesenho::GeraVerticesBandeirola()
 {
     int n, m, iMenorDist;
     TPonto PontoBandeirola[2], PontoNaReta;
-    TListaCelulas *ListaBandeirolas;
+    vector<TListaItensCelula> &ListaBandeirolas = _dados->InfoCelula.ListaCelulasBandeirolas;
     TListaItensCelula *ListaItens;
-    TItemCelula *ItemCelula;
-    ListaBandeirolas = _dados->InfoCelula.ListaCelulasBandeirolas;
 
     //percorre todas as bandeirolas
-    for (n = 0; n < ListaBandeirolas->Tamanho(); n++)
+    for (n = 0; n < ListaBandeirolas.size(); n++)
     {
         int NumArcosBandeirola = 0;
-        ListaItens = new TListaItensCelula( *ListaBandeirolas->getItem( n ) );
+        ListaItens = new TListaItensCelula( ListaBandeirolas[ n ] );
         TVerticeGeral VerticeGeral;
         VerticeGeral.TipoVertice = VERTICE_BANDEIROLA;
 
@@ -327,39 +228,33 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         vector<TReta> RetasBandeirola;
 
         //transfere as retas e arcos para vetores vis�veis somente nesta fun��o
-        for (m = 0; m < ListaItens->Tamanho(); m++)
+		for (m = 0; m < ListaItens->_multipoints.size(); m++)
         {
-            // Cada elemento reta da bandeirola
-            if (ListaItens->getItem( m )->TipoVetorCW == VMULTIPOINT)
+			vector<TPonto> &points = ListaItens->_multipoints[m]->pontos;
+            int NumPontos = points.size();
+            int IndiceDoUltimoPonto = NumPontos - 1;
+            // Pega o primeiro e o último ponto do multipoint e p�e na lista de extremidades.
+            PontosExtremidadesElementosBandeirola.push_back (points[0] );
+            PontosExtremidadesElementosBandeirola.push_back( points[IndiceDoUltimoPonto] );
+            for (int k = 0; k < (NumPontos - 1); k++)
             {
-                int IndiceNoVetorMultipoint = ListaItens->getItem( m )->Indice;
-                int NumPontos = _dados->Multipoint[IndiceNoVetorMultipoint].pontos.size();
-                int IndiceDoUltimoPonto = NumPontos - 1;
-                // Pega o primeiro e o último ponto do multipoint e p�e na lista de extremidades.
-                PontosExtremidadesElementosBandeirola.push_back(
-                        _dados->Multipoint[IndiceNoVetorMultipoint].pontos[0] );
-                PontosExtremidadesElementosBandeirola.push_back(
-                        _dados->Multipoint[IndiceNoVetorMultipoint].pontos[IndiceDoUltimoPonto] );
-                for (int k = 0; k < (NumPontos - 1); k++)
-                {
-                    TReta reta;
-                    reta.pontos[0] = _dados->Multipoint[IndiceNoVetorMultipoint].pontos[k];
-                    reta.pontos[1] = _dados->Multipoint[IndiceNoVetorMultipoint].pontos[k + 1];
-                    RetasBandeirola.push_back( reta );
-                }
-            }
-            // Cada elemento arco da bandeirola
-            else if (ListaItens->getItem( m )->TipoVetorCW == VARCO)
-            {
-                TPonto pontas[2];
-                int IndiceNoVetorArco = ListaItens->getItem( m )->Indice;
-                _dados->Arcos[IndiceNoVetorArco].PontasArco( pontas );
-                // Pega as pontas do arco e p�e na lista de extremidades
-                PontosExtremidadesElementosBandeirola.push_back( pontas[0] );
-                PontosExtremidadesElementosBandeirola.push_back( pontas[1] );
-                NumArcosBandeirola++;
+                TReta reta;
+                reta.pontos[0] = points[k];
+                reta.pontos[1] = points[k + 1];
+                RetasBandeirola.push_back( reta );
             }
         }
+
+		
+		for (m = 0; m < ListaItens->_arcs.size(); m++)
+		{
+            TPonto pontas[2];
+            ListaItens->_arcs[m]->PontasArco( pontas );
+            // Pega as pontas do arco e p�e na lista de extremidades
+            PontosExtremidadesElementosBandeirola.push_back( pontas[0] );
+            PontosExtremidadesElementosBandeirola.push_back( pontas[1] );
+            NumArcosBandeirola++;
+		}
 
         //VAI PRECISAR DEPOIS
         //compara cada ponto com cada ponto para verificar os que estáo juntos e os apaga
@@ -395,7 +290,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
 
         if (ListaItens->iTextos.size() == 1) //se a bandeirola possui um e somente um texto, gera o vértice
         {
-            VerticeGeral.texto = _dados->Textos[ListaItens->iTextos[0]].texto;
+            VerticeGeral.texto = _dados->Textos[ListaItens->iTextos[0]]->texto;
             TPonto MaisDist;
             double DistMaisProx;
             bool Bandeirola2Retas = false;
@@ -446,19 +341,13 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             }
             if (!Bandeirola2Retas)
             {
-                TPonto origemTexto = _dados->Textos[ListaItens->iTextos[0] ].origem;
-                origemTexto.x += (_dados->Textos[ListaItens->iTextos[0] ].FatorAltura *
-                FATOR_FONTE * _dados->Textos[ListaItens->iTextos[0] ].texto.size())
-                        * cos( _dados->Textos[ListaItens->iTextos[0]].rotacao ) / 2;
-                origemTexto.x += _dados->Textos[ListaItens->iTextos[0]].FatorAltura *
-                FATOR_FONTE * cos( _dados->Textos[ListaItens->iTextos[0]].rotacao * M_PI / 2 )
-                        / 2;
-                origemTexto.y += (_dados->Textos[ListaItens->iTextos[0]].FatorAltura *
-                FATOR_FONTE * _dados->Textos[ListaItens->iTextos[0]].texto.size())
-                        * sin( _dados->Textos[ListaItens->iTextos[0]].rotacao ) / 2;
-                origemTexto.y += _dados->Textos[ListaItens->iTextos[0]].FatorAltura *
-                FATOR_FONTE * sin( _dados->Textos[ListaItens->iTextos[0]].rotacao * M_PI / 2 )
-                        / 2;
+				shared_ptr<TTexto> text = _dados->Textos[ListaItens->iTextos[0] ];
+                TPonto origemTexto = text->origem;
+                origemTexto.x += (text->FatorAltura * FATOR_FONTE * text->texto.size()) * cos(text->rotacao ) / 2;
+                origemTexto.x += text->FatorAltura * FATOR_FONTE * cos( text->rotacao * M_PI / 2 ) / 2;
+                origemTexto.y += (text->FatorAltura * FATOR_FONTE * text->texto.size()) * sin( text->rotacao ) / 2;
+                origemTexto.y += text->FatorAltura *
+                FATOR_FONTE * sin( text->rotacao * M_PI / 2 ) / 2;
                 //verifica qual o ponto livre da bandeirola mais longe do centro do texto
                 PontoMaisDistante( origemTexto, PontosExtremidadesElementosBandeirola, MaisDist );
             }
@@ -490,7 +379,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                     (string) "No desenho " + ExtractFileName( _dados->NomeArq.c_str() ).c_str()
                             + " existe um grupamento em nível de bandeirola com mais de um texto associado. Textos: " );
             for (int i = 0; i < ListaItens->iTextos.size(); i++)
-                erros->novoErro( _dados->Textos[ListaItens->iTextos[i]].texto );
+                erros->novoErro( _dados->Textos[ListaItens->iTextos[i]]->texto );
             erros->novoErro( "" );
         }
         else if (ListaItens->iTextos.size() == 0) //avisa caso exista bandeirola sem texto nenhum
@@ -522,7 +411,6 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 
         if (!isAdded)
         {
-            ligado = ligaEquipamentoSeDesligado( ListaItensCelula, ligado );
             //adiciona o vértice na lista de vértices do cabo
             _cabosReta[pontoEIndiceCabo.IndiceCabo].AdicionaVertice( _verticesGerais->Tamanho(),
                     pontoEIndiceCabo.PosVertice );
@@ -537,15 +425,11 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 			
             ListaItensCelula->cabosRetaRelacionados.push_back( pontoEIndiceCabo.IndiceCabo );
 
-            if (_cabosReta[pontoEIndiceCabo.IndiceCabo].EhOPrimeiroPonto(
-                    pontoEIndiceCabo.PosVertice, _dados->Multipoint,
-                    pontoEIndiceCabo.IndiceCabo ))
+            if (_cabosReta[pontoEIndiceCabo.IndiceCabo].EhOPrimeiroPonto( pontoEIndiceCabo.PosVertice  ))
             {
                 _cabosReta[pontoEIndiceCabo.IndiceCabo].ponta[0] = true;
             }
-            else if (_cabosReta[pontoEIndiceCabo.IndiceCabo].EhOUltimoPonto(
-                    pontoEIndiceCabo.PosVertice, _dados->Multipoint,
-                    pontoEIndiceCabo.IndiceCabo ))
+            else if (_cabosReta[pontoEIndiceCabo.IndiceCabo].EhOUltimoPonto( pontoEIndiceCabo.PosVertice ))
             {
                 _cabosReta[pontoEIndiceCabo.IndiceCabo].ponta[1] = true;
             }
@@ -577,7 +461,6 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
 
         if (!isAdded)
         {
-            ligado = ligaEquipamentoSeDesligado( ListaItensCelula, ligado );
             //if ( ListaItensCelula->iTexto > 0 )
             //  VerticesGerais->getItem(IndiceVertice)->texto = Textos[ListaItensCelula->iTexto].texto;
             ListaItensCelula->cabosArcoRelacionados.push_back( ListaMenores.at( n ).IndiceCabo );
@@ -599,22 +482,19 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint(int Indice,
-        TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento,
-        TPonto PosVertice)
+void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint,
+        TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice)
 {
     TVectorPontoEIndiceCabo ListaMenores;
     int j;
-    TMultipoint MultipointT;
     TPonto reta[2];
-    MultipointT = _dados->Multipoint[Indice];
-    for (j = 0; j < MultipointT.pontos.size(); j++)
+    for (j = 0; j < multipoint->pontos.size(); j++)
     {
-        reta[0] = MultipointT.pontos[j];
-        if (j + 1 != MultipointT.pontos.size())
-            reta[1] = MultipointT.pontos[j + 1];
+        reta[0] = multipoint->pontos[j];
+        if (j + 1 != multipoint->pontos.size())
+            reta[1] = multipoint->pontos[j + 1];
         else
-            reta[1] = MultipointT.pontos[0];
+            reta[1] = multipoint->pontos[0];
 
         ListaMenores.clear();
         //retorna a lista de cabos que possuem Distância pequena para o equipamento
@@ -633,17 +513,13 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint(int Indice,
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco(int Indice,
-        TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento,
-        TPonto PosVertice)
+void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
+        TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice)
 {
     TVectorPontoEIndiceCabo ListaMenores;
-    TArco Arco;
     int IndiceCabo;
-//  double DistMaisPerto;
-    Arco = _dados->Arcos[Indice];
     ListaMenores.clear();
-    DistArcoParaTodasPontasRetaCabo( Arco, ListaMenores, DIST_MIN_ELEM_CABO );
+    DistArcoParaTodasPontasRetaCabo( *arc, ListaMenores, DIST_MIN_ELEM_CABO );
 
     for (int n = 0; n < (int) ListaMenores.size(); n++)
     {
@@ -657,7 +533,6 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco(int Indice,
 
         if (!isAdded)
         {
-            ligado = ligaEquipamentoSeDesligado( ListaItensCelula, ligado );
             //adiciona o vértice na lista de vértices do cabo
             _cabosReta[IndiceCabo].AdicionaVertice( _verticesGerais->Tamanho(), PosVertice );
 
@@ -670,13 +545,11 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco(int Indice,
             _verticesGerais->Adiciona( VerticeGeral );
 
             ListaItensCelula->cabosRetaRelacionados.push_back( IndiceCabo );
-            if (_cabosReta[IndiceCabo].EhOPrimeiroPonto( PosVertice, _dados->Multipoint,
-                    IndiceCabo ))
+            if (_cabosReta[IndiceCabo].EhOPrimeiroPonto( PosVertice ))
             {
                 _cabosReta[IndiceCabo].ponta[0] = true;
             }
-            else if (_cabosReta[IndiceCabo].EhOUltimoPonto( PosVertice, _dados->Multipoint,
-                    IndiceCabo ))
+            else if (_cabosReta[IndiceCabo].EhOUltimoPonto( PosVertice ))
             {
                 _cabosReta[IndiceCabo].ponta[1] = true;
             }
@@ -700,15 +573,13 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco(int Indice,
 void CGrafoDesenho::GeraVerticesInstrumentos()
 {
     int n, i;
-    TListaItensCelula *ListaItensCelula;
-    TItemCelula *ItemCelula;
 
     TPonto PosVertice;
     //percorre c�lulas de instrumentos
-    for (n = 0; n < _dados->InfoCelula.ListaCelulasInstrumentos->Tamanho(); n++) //percorre todas as c�lulas do desenho
+    for (n = 0; n < _dados->InfoCelula.ListaCelulasInstrumentos.size(); n++) //percorre todas as c�lulas do desenho
     {
         bool ligado = false;
-        ListaItensCelula = _dados->InfoCelula.ListaCelulasInstrumentos->getItem( n );
+		TListaItensCelula *ListaItensCelula = &(_dados->InfoCelula.ListaCelulasInstrumentos[ n ]);
  
 		vector<int> iVerticesInstrumento;
         if (ListaItensCelula->iTextos.size() == 0)
@@ -723,45 +594,12 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
         CriaVerticesEArestasInstrumento( ListaItensCelula, iVerticesInstrumento, PosVertice );
 
-        for (i = 0; i < ListaItensCelula->Tamanho(); i++)  //percorre todos os itens da c�lula atual
-        {
-            ItemCelula = ListaItensCelula->getItem( i );
-            switch (ItemCelula->TipoVetorCW)
-            //verifica o tipo do elemento do equipamento
-            {
-            case VMULTIPOINT:  //adiciona um vértice de um instrumento na ponta de um cabo
-                GeraVerticesInstrumentosAdicionaMultipoint( ItemCelula->Indice, ListaItensCelula,
-                        ligado, &iVerticesInstrumento, PosVertice );
-                break;
-            case VARCO:
-                GeraVerticesInstrumentosAdicionaArco( ItemCelula->Indice, ListaItensCelula, ligado,
-                        &iVerticesInstrumento, PosVertice );
-                break;
-            }  //switch (ItemCelula->TipoVetorCW)
-        }  //for (i=0; i<ListaItensCelula->Tamanho(); i++)
-    }
-}
-//---------------------------------------------------------------------------
+		for (i = 0; i < ListaItensCelula->_multipoints.size(); i++)  //percorre todos os itens da c�lula atual
+			GeraVerticesInstrumentosAdicionaMultipoint( ListaItensCelula->_multipoints[i], ListaItensCelula, ligado, &iVerticesInstrumento, PosVertice );
 
-bool CGrafoDesenho::ligaEquipamentoSeDesligado(TListaItensCelula *ListaItensCelula, bool ligado)
-{
-    if (!ligado)
-    {
-        for (int k = 0; k < ListaItensCelula->Tamanho(); k++)
-        {
-            if (ListaItensCelula->getItem( k )->TipoVetorCW == VMULTIPOINT)
-            {
-                _dados->Multipoint[ListaItensCelula->getItem( k )->Indice].Nivel = INSTRUMENTO;
-            }
-            if (ListaItensCelula->getItem( k )->TipoVetorCW == VARCO)
-            {
-                _dados->Arcos[ListaItensCelula->getItem( k )->Indice].Nivel = INSTRUMENTO;
-            }
-        }
-        ligado = true;
+		for (i = 0; i < ListaItensCelula->_arcs.size(); i++)  //percorre todos os itens da c�lula atual
+			GeraVerticesInstrumentosAdicionaArco( ListaItensCelula->_arcs[i], ListaItensCelula, ligado, &iVerticesInstrumento, PosVertice );
     }
-
-    return ligado;
 }
 //---------------------------------------------------------------------------
 
@@ -775,7 +613,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         VerticeInstrumento.TipoElemento = INSTRUMENTO;
         VerticeInstrumento.iDesenho = _dados->IndiceDesenho;
         VerticeInstrumento.IDArquivo = _dados->IDArquivo;
-        VerticeInstrumento.texto = _dados->Textos[ListaItensCelula->iTextos[i]].texto;
+        VerticeInstrumento.texto = _dados->Textos[ListaItensCelula->iTextos[i]]->texto;
         VerticeInstrumento.pos = PosVertice;
         iVerticesInstrumento.push_back( _verticesGerais->Tamanho() );
         VerticeInstrumento.TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
@@ -805,57 +643,37 @@ TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCel
 	maiorX = maiorY = -1;
     first = true;
     //percorre itens da c�lula
-    for (i = 0; i < ListaItensCelula->Tamanho(); i++)
+	for (i = 0; i < ListaItensCelula->_multipoints.size(); i++)
     {
-        //se o item corrente da c�lula for multipoint, continua
-		TItemCelula *itemCelula = ListaItensCelula->getItem( i );
-        if (itemCelula->TipoVetorCW == VMULTIPOINT)
+		vector<TPonto> &points = ListaItensCelula->_multipoints[i]->pontos;
+        for (j = 0; j < points.size(); j++)
         {
-            for (j = 0; j < _dados->Multipoint[itemCelula->Indice].pontos.size();
-                    j++)
-            {
-                if (first)
-                {
-                    first = false;
-                    maiorX = menorX =
-                            _dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].x;
-                    maiorY = menorY =
-                            _dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].y;
-                }
-                if (_dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].x > maiorX)
-                    maiorX = _dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].x;
-                if (_dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].x < menorX)
-                    menorX = _dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].x;
-                if (_dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].y > maiorY)
-                    maiorY = _dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].y;
-                if (_dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].y < menorY)
-                    menorY = _dados->Multipoint[ListaItensCelula->getItem( i )->Indice].pontos[j].y;
-            }
-        }     //se o item da c�lula for um arco
-        else if (ListaItensCelula->getItem( i )->TipoVetorCW == VARCO)
-        {
-            TPonto Centro;
-            double Raio;
-            Centro = _dados->Arcos[ListaItensCelula->getItem( i )->Indice].Centro;
-            Raio = _dados->Arcos[ListaItensCelula->getItem( i )->Indice].EixoPrimario;
-            if (first)
-            {
-                first = false;
-                maiorX = Centro.x + Raio;
-                menorX = Centro.x - Raio;
-                maiorY = Centro.y + Raio;
-                menorY = Centro.y - Raio;
-            }
-            if (Centro.x + Raio > maiorX)
-                maiorX = Centro.x + Raio;
-            if (Centro.x + Raio > menorX)
-                menorX = Centro.x - Raio;
-            if (Centro.y + Raio > maiorY)
-                maiorY = Centro.y + Raio;
-            if (Centro.y - Raio > menorY)
-                menorY = Centro.y - Raio;
+            if ( points[j].x > maiorX)
+                maiorX = points[j].x;
+            if (points[j].x < menorX)
+                menorX = points[j].x;
+            if (points[j].y > maiorY)
+                maiorY = points[j].y;
+            if (points[j].y < menorY)
+                menorY = points[j].y;
         }
-    }     //fim do loop que percorre os itens da c�lula
+	}
+	for (i = 0; i < ListaItensCelula->_arcs.size(); i++)
+	{
+		shared_ptr<TArco> arc = ListaItensCelula->_arcs[i];
+        TPonto Centro;
+        double Raio;
+        Centro = arc->Centro;
+        Raio = arc->EixoPrimario;
+        if (Centro.x + Raio > maiorX)
+            maiorX = Centro.x + Raio;
+        if (Centro.x + Raio > menorX)
+            menorX = Centro.x - Raio;
+        if (Centro.y + Raio > maiorY)
+            maiorY = Centro.y + Raio;
+        if (Centro.y - Raio > menorY)
+            menorY = Centro.y - Raio;
+    }     
     PosVertice.x = (maiorX + menorX) / 2;
     PosVertice.y = (maiorY + menorY) / 2;
 
@@ -870,7 +688,7 @@ void CGrafoDesenho::GeraVerticesArcos()
     int iMenorDist;     //, iV[2];
     double DistMaisProx;
     TPonto p[2], PontoNaReta, PontoTemp;
-    TArco *Arco;
+    shared_ptr<TArco> Arco;
     TVerticeGeral VerticeGeral;
     VerticeGeral.TipoVertice = VERTICE_ARCO;
     int IndiceCabo, IndiceVertice, PontaArco;
@@ -913,11 +731,11 @@ void CGrafoDesenho::GeraVerticesArcos()
                     caboReta->AdicionaVertice( Arco->iV[m], PontoNaReta );
                     VerticeGeral.pos = PontoNaReta;
                     _cabosArco[n].ponta[m] = true;
-                    if (caboReta->EhOPrimeiroPonto( PontoNaReta, _dados->Multipoint, iMenorDist ))
+                    if (caboReta->EhOPrimeiroPonto( PontoNaReta ))
                     {
                         caboReta->ponta[0] = true;
                     }
-                    else if (caboReta->EhOUltimoPonto( PontoNaReta, _dados->Multipoint, iMenorDist ))
+                    else if (caboReta->EhOUltimoPonto( PontoNaReta ))
                     {
                         caboReta->ponta[1] = true;
                     }
@@ -946,7 +764,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
     int iMenorDist;
     double DistMaisProx;
     TPonto PontoNaReta;
-    TMultipoint *tMultipoint;
+    shared_ptr<TMultipoint> tMultipoint;
     TVerticeGeral VerticeGeral;
     VerticeGeral.TipoVertice = VERTICE_PONTA_CABO;
 	for (n = 0; n < _cabosReta.size(); n++)
@@ -1054,7 +872,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
     MenorDist = Infinity;
 	for (m = 0; m < _cabosArco.size(); m++)
     {
-		TArco *arco = _cabosArco[m]._arco;
+		shared_ptr<TArco> arco = _cabosArco[m]._arco;
         for (n = 0; n < 2; n++)
         {
 			pontoCabo = _verticesGerais->getItem( arco->iV[n] )->pos;

@@ -8,6 +8,7 @@
 #include "UInfoCelula.h"
 //#include "UNiveisProjeto.h"
 #include <cmath>
+#include <memory>
 #include "UDefines.h"
 
 class TNiveisProjeto;
@@ -187,9 +188,9 @@ public:
 	TInfoCelula InfoCelula;
 	string NomeArq;
 	TNiveisProjeto *NiveisProjeto;
-	vector<TMultipoint> Multipoint;
-	vector<TArco> Arcos;
-	vector<TTexto> Textos;
+	vector< std::shared_ptr<TMultipoint> > Multipoint;
+	vector< std::shared_ptr<TArco> > Arcos;
+	vector< std::shared_ptr<TTexto> > Textos;
 	CDadosGenerico();
 	~CDadosGenerico ();
 	///<summary>Fun��o que preenche um objeto do tipo TDadosTransfer com base na inst�ncia

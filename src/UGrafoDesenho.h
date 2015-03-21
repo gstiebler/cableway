@@ -27,7 +27,7 @@ enum TTipoOrientacao {VERTICAL, HORIZONTAL};
 struct CCaboArco
 {
   bool ponta[2];
-  TArco *_arco;
+  shared_ptr<TArco> _arco;
   CCaboArco ()
   {
     ponta[0] = ponta[1] = false;
@@ -40,10 +40,10 @@ struct CCaboReta
 public:
   CCaboReta();
   ~CCaboReta();
-  bool EhOPrimeiroPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo);
-  bool EhOUltimoPonto(TPonto ponto, vector<TMultipoint> Multipoint, int IndiceCabo);
+  bool EhOPrimeiroPonto( TPonto ponto );
+  bool EhOUltimoPonto( TPonto ponto );
   void AdicionaVertice(int ID, TPonto &ponto);
-  TMultipoint *_multipoint;
+  shared_ptr<TMultipoint> _multipoint;
   int NumVertices;
   bool ponta[2];
   TTipoOrientacao TipoOrientacao;
@@ -109,12 +109,10 @@ private:
   void OrdenaVerticesRetas();
   void GeraArestas();
   void AchaTextoBandeirola(TPonto &pos, std::string &texto);
-  void AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelula *ListaItens, double DistMinBandeirola);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt &iVerticesInstrumento, TPonto PosVertice );
-  bool ligaEquipamentoSeDesligado (TListaItensCelula *ListaItensCelula, bool ligado);
-  void GeraVerticesInstrumentosAdicionaMultipoint(int Indice, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
-  void GeraVerticesInstrumentosAdicionaArco(int Indice, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
+  void GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
+  void GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaMultipointCaboReta(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaMultipointCaboArco(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
 protected:

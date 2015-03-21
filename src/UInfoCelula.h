@@ -8,7 +8,8 @@
 #include <string>
 using namespace std;
 
-class TListaCelulas;
+#include "UListaCelulas.h"
+
 class TListaItensCelula;
 
 struct TInfoCelula
@@ -35,9 +36,9 @@ struct TInfoCelula
 	void FechaCelula();
 
 	/// Lista de grupamentos em nível de Instrumento.
-	TListaCelulas *ListaCelulasInstrumentos, 
+	std::vector<TListaItensCelula> ListaCelulasInstrumentos, 
 	/// Lista de grupamentos em nível de Bandeirolas.
-				  *ListaCelulasBandeirolas;
+				  ListaCelulasBandeirolas;
 
 	/// Se DentroCelula � verdadeiro:
 	///	Indica qual � o tipo da c�lula atual: NADA, INSTRUMENTO, BANDEIROLA

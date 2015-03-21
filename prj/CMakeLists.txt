@@ -32,7 +32,6 @@ set(ALL_SOURCES ${SRC_BASE}/UAuxString.cpp
 				${SRC_BASE}/UGrafoDesenho.cpp
 				${SRC_BASE}/UInfoCelula.cpp
 				${SRC_BASE}/UInfoCircuitos.cpp
-				${SRC_BASE}/UItemCelula.cpp
 				${SRC_BASE}/UListaCelulas.cpp
 				${SRC_BASE}/UListaItensCelula.cpp
 				${SRC_BASE}/UListaPontoEIndiceCabo.cpp

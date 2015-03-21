@@ -4,14 +4,18 @@
 #define UListaItensCelulaH
 //---------------------------------------------------------------------------
 #include "UListaV.h"
-#include "UItemCelula.h"
 //#include "UVetor.h"
 #include <vector>
+#include <memory>
 
-struct TListaItensCelula: public TListaV<TItemCelula>
+struct TArco;
+struct TMultipoint;
+
+struct TListaItensCelula
 {
-//  int iTexto;
-//  int iTexto2Colar;
+
+	std::vector< std::shared_ptr<TArco> > _arcs;
+	std::vector< std::shared_ptr<TMultipoint> > _multipoints;
   double esq, dir, enc, emb;
   int id;
   std::vector<int> iTextos, iTextosBandeirola, cabosRetaRelacionados, cabosArcoRelacionados;

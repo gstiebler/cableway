@@ -8,8 +8,6 @@
 
 TInfoCelula::TInfoCelula()
 {
-	ListaCelulasInstrumentos=new TListaCelulas;
-	ListaCelulasBandeirolas=new TListaCelulas;
 	TipoElementoCelulaAtual = NADA;
 	DentroCelula=false;
 	shared = false;
@@ -30,10 +28,11 @@ TInfoCelula::~TInfoCelula()
 //---------------------------------------------------------------------------
 TInfoCelula& TInfoCelula::operator=( TInfoCelula &f )
 {
-	delete ListaCelulasInstrumentos;
-	delete ListaCelulasBandeirolas;
-	ListaCelulasInstrumentos = new TListaCelulas(f.ListaCelulasInstrumentos);
-	ListaCelulasBandeirolas = new TListaCelulas(f.ListaCelulasBandeirolas);
+	ListaCelulasInstrumentos.clear();
+	ListaCelulasBandeirolas.clear();
+
+	ListaCelulasInstrumentos.assign( f.ListaCelulasInstrumentos.begin(), f.ListaCelulasInstrumentos.end() );
+	ListaCelulasBandeirolas.assign( f.ListaCelulasBandeirolas.begin(), f.ListaCelulasBandeirolas.end() );
 
 	TipoElementoCelulaAtual = f.TipoElementoCelulaAtual;
 	DentroCelula=f.DentroCelula;
@@ -99,13 +98,13 @@ void TInfoCelula::FechaCelula()
 	{
 	// Caso esteja em grupamento de instrumento, ele adiciona na lista de intrumentos
 	case INSTRUMENTO:
-		ListaCelulasInstrumentos->Adiciona(ListaItensCelula);
+		ListaCelulasInstrumentos.push_back(*ListaItensCelula);
 		break;
 	// Caso esteja em grupamento de bandeirola, ele adiciona na lista de bandeirolas
 	// e bota os textos que estavam em nível de bandeirola como os textos do grupo
 	case BANDEIROLA:
 		ListaItensCelula->iTextos.assign(ListaItensCelula->iTextosBandeirola.begin(), ListaItensCelula->iTextosBandeirola.end());
-		ListaCelulasBandeirolas->Adiciona(ListaItensCelula);
+		ListaCelulasBandeirolas.push_back(*ListaItensCelula);
 		break;
 	// Caso não esteja em um desses n�veis, ele apaga o grupo e seta ListaItensCelula
 	// como NULL.

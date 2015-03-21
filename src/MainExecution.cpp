@@ -93,7 +93,7 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 			TDesenho *pnt = _containerDesenhos->getDesenho(j);
 			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
 			{
-				if ( pnt->GrafoDesenho->_dados->Textos[i].texto == Origem )
+				if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Origem )
 				{
 					exists = true;
 					break;
@@ -121,7 +121,7 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 			TDesenho *pnt = _containerDesenhos->getDesenho(j);
 			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
 			{
-				if ( pnt->GrafoDesenho->_dados->Textos[i].texto == Destino )
+				if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Destino )
 				{
 					exists = true;
 					break;

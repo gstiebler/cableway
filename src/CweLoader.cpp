@@ -15,7 +15,6 @@
 #include "UDadosGenerico.h"
 #include "UDefines.h"
 #include "UInfoCelula.h"
-#include "UItemCelula.h"
 #include "UListaCelulas.h"
 #include "UListaItensCelula.h"
 #include "UListaV.h"
@@ -122,7 +121,7 @@ void CweLoader::readText()
 {
 	string line, key, value;
 	
-    TTexto texto;
+    shared_ptr<TTexto> texto( new TTexto() );
 
 	while (true)
 	{
@@ -130,28 +129,28 @@ void CweLoader::readText()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
-			texto.Nivel = _userParams->getTipoElemento( value );
+			texto->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "TEXT" )
 		{
-			texto.texto = value;
+			texto->texto = value;
 		}
 		else if( key == "X" )
 		{
-			sscanf( value.c_str(), "%lf", &(texto.origem.x) );
+			sscanf( value.c_str(), "%lf", &(texto->origem.x) );
 		}
 		else if ( key == "Y" )
 		{
-			sscanf( value.c_str(), "%lf", &(texto.origem.y) );
+			sscanf( value.c_str(), "%lf", &(texto->origem.y) );
 		}
 		else if ( key == "WIDTH" )
 		{
-			sscanf( value.c_str(), "%d", &(texto.FatorAltura) );
-			texto.FatorAltura /= 1000.0;
+			sscanf( value.c_str(), "%d", &(texto->FatorAltura) );
+			texto->FatorAltura /= 1000.0;
 		}
 		else if ( key == "ID" )
 		{
-			sscanf( value.c_str(), "%d", &(texto.ID) );
+			sscanf( value.c_str(), "%d", &(texto->ID) );
 		}
 		else if ( key == "END_OBJ" )
 			break;
@@ -164,7 +163,7 @@ void CweLoader::readText()
     if( _dados->InfoCelula.DentroCelula )
     {
 		int textIndex = _dados->Textos.size() - 1;
-		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex].texto, _dados->Textos[textIndex].Nivel );
+		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex]->texto, _dados->Textos[textIndex]->Nivel );
     }
 }
 
@@ -174,7 +173,7 @@ void CweLoader::readDBText()
 {
 	string line, key, value;
 	
-    TTexto texto;
+    shared_ptr<TTexto> texto( new TTexto() );
 
 	while (true)
 	{
@@ -185,27 +184,27 @@ void CweLoader::readDBText()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
-			texto.Nivel = _userParams->getTipoElemento( value );
+			texto->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "TEXT" ) 
 		{
-			texto.texto = value;
+			texto->texto = value;
 		}
 		else if( key == "X" )
 		{
-			sscanf( value.c_str(), "%lf", &(texto.origem.x) );
+			sscanf( value.c_str(), "%lf", &(texto->origem.x) );
 		}
 		else if ( key == "Y" )
 		{
-			sscanf( value.c_str(), "%lf", &(texto.origem.y) );
+			sscanf( value.c_str(), "%lf", &(texto->origem.y) );
 		}
 		else if ( key == "WIDTH_FACTOR" )
 		{
-			sscanf( value.c_str(), "%lf", &(texto.FatorAltura) );
+			sscanf( value.c_str(), "%lf", &(texto->FatorAltura) );
 		}
 		else if ( key == "ID" )
 		{
-			sscanf( value.c_str(), "%d", &(texto.ID) );
+			sscanf( value.c_str(), "%d", &(texto->ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
@@ -216,7 +215,7 @@ void CweLoader::readDBText()
     if( _dados->InfoCelula.DentroCelula )
     {
 		int textIndex = _dados->Textos.size() - 1;
-		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex].texto, _dados->Textos[textIndex].Nivel );
+		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex]->texto, _dados->Textos[textIndex]->Nivel );
     }
 }
 
@@ -225,7 +224,7 @@ void CweLoader::readDBText()
 void CweLoader::readCircle()
 {
 	string line, key, value;
-    TArco arco; 
+    shared_ptr<TArco> arco( new TArco() ); 
 
 	while (true)
 	{
@@ -236,30 +235,30 @@ void CweLoader::readCircle()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
-			arco.Nivel = _userParams->getTipoElemento( value );
+			arco->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "DIAMETER" )
 		{
-			sscanf( value.c_str(), "%lf", &(arco.EixoPrimario) );
-			arco.EixoPrimario /= 2.0;
-			arco.EixoSecundario = arco.EixoPrimario;
-			arco.AngIni = 0.0;
-			arco.AngEnd = M_PI * 2;
+			sscanf( value.c_str(), "%lf", &(arco->EixoPrimario) );
+			arco->EixoPrimario /= 2.0;
+			arco->EixoSecundario = arco->EixoPrimario;
+			arco->AngIni = 0.0;
+			arco->AngEnd = M_PI * 2;
 		}
 		else if( key == "CENTER_X" )
 		{
-			sscanf( value.c_str(), "%lf", &(arco.Centro.x) );
+			sscanf( value.c_str(), "%lf", &(arco->Centro.x) );
 
 			getKeyValue( key, value );
 			
 			if( key != "CENTER_Y" )
 				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 			
-			sscanf( value.c_str(), "%lf", &(arco.Centro.y) );
+			sscanf( value.c_str(), "%lf", &(arco->Centro.y) );
 		}
 		else if ( key == "ID" )
 		{
-			sscanf( value.c_str(), "%d", &(arco.ID) );
+			sscanf( value.c_str(), "%d", &(arco->ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
@@ -268,19 +267,14 @@ void CweLoader::readCircle()
 	_dados->Arcos.push_back( arco );
 
 	if( _dados->InfoCelula.DentroCelula )
-    {
-        TItemCelula itemCelula;
-		itemCelula.Indice = _dados->Arcos.size() - 1;
-		itemCelula.TipoVetorCW = VARCO;
-        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
-    }
+		_dados->InfoCelula.ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
 }
 
 
 void CweLoader::readArc()
 {
 	string line, key, value;
-    TArco arco; 
+    shared_ptr<TArco> arco( new TArco() ); 
 
 	while (true)
 	{
@@ -291,7 +285,7 @@ void CweLoader::readArc()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
-			arco.Nivel = _userParams->getTipoElemento( value );
+			arco->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "END_POINT_X" )
 		{
@@ -308,25 +302,25 @@ void CweLoader::readArc()
 			sscanf( value.c_str(), "%lf", &y );
 	
 			//TODO
-			double difX = arco.Centro.x - x;
-			double difY = arco.Centro.y - y;
-			arco.EixoPrimario = sqrt( difX * difX + difY * difY );
-			arco.EixoSecundario = arco.EixoPrimario;
+			double difX = arco->Centro.x - x;
+			double difY = arco->Centro.y - y;
+			arco->EixoPrimario = sqrt( difX * difX + difY * difY );
+			arco->EixoSecundario = arco->EixoPrimario;
 		}
 		else if( key == "CENTER_X" )
 		{
-			sscanf( value.c_str(), "%lf", &(arco.Centro.x) );
+			sscanf( value.c_str(), "%lf", &(arco->Centro.x) );
 
 			getKeyValue( key, value );
 			
 			if( key != "CENTER_Y" )
 				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 			
-			sscanf( value.c_str(), "%lf", &(arco.Centro.y) );
+			sscanf( value.c_str(), "%lf", &(arco->Centro.y) );
 		}
 		else if( key == "START_ANGLE" )
 		{
-			sscanf( value.c_str(), "%lf", &(arco.AngIni) );
+			sscanf( value.c_str(), "%lf", &(arco->AngIni) );
 
 			getKeyValue( key, value );
 			
@@ -334,11 +328,11 @@ void CweLoader::readArc()
 				CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 			
 			double angEnd;
-			sscanf( value.c_str(), "%lf", &(arco.AngEnd) );
+			sscanf( value.c_str(), "%lf", &(arco->AngEnd) );
 		}
 		else if ( key == "ID" )
 		{
-			sscanf( value.c_str(), "%d", &(arco.ID) );
+			sscanf( value.c_str(), "%d", &(arco->ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
@@ -346,12 +340,7 @@ void CweLoader::readArc()
 	_dados->Arcos.push_back( arco );
 
 	if( _dados->InfoCelula.DentroCelula )
-    {
-        TItemCelula itemCelula;
-		itemCelula.Indice = _dados->Arcos.size() - 1;
-		itemCelula.TipoVetorCW = VARCO;
-        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
-    }
+		_dados->InfoCelula.ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
 }
 
 
@@ -361,8 +350,7 @@ void CweLoader::readLine()
 {
 	string line, key, value;
 	
-	
-    TMultipoint multipoint;
+    shared_ptr<TMultipoint> multipoint( new TMultipoint() );
 
 	while (true)
 	{
@@ -373,7 +361,7 @@ void CweLoader::readLine()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
-			multipoint.Nivel = _userParams->getTipoElemento( value );
+			multipoint->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "START_POINT_X" )
 		{
@@ -388,7 +376,7 @@ void CweLoader::readLine()
 			
 			sscanf( value.c_str(), "%lf", &(startPoint.y) );
 
-			multipoint.pontos.push_back( startPoint );
+			multipoint->pontos.push_back( startPoint );
 		}
 		else if( key == "END_POINT_X" )
 		{
@@ -403,11 +391,11 @@ void CweLoader::readLine()
 			
 			sscanf( value.c_str(), "%lf", &(startPoint.y) );
 
-			multipoint.pontos.push_back( startPoint );
+			multipoint->pontos.push_back( startPoint );
 		}
 		else if ( key == "ID" )
 		{
-			sscanf( value.c_str(), "%d", &(multipoint.ID) );
+			sscanf( value.c_str(), "%d", &(multipoint->ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
@@ -416,12 +404,7 @@ void CweLoader::readLine()
     _dados->Multipoint.push_back( multipoint );
 
 	if( _dados->InfoCelula.DentroCelula )
-    {
-        TItemCelula itemCelula;
-        itemCelula.Indice = _dados->Multipoint.size() - 1;
-        itemCelula.TipoVetorCW = VMULTIPOINT;
-        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
-    }
+		_dados->InfoCelula.ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
 }
 
 
@@ -430,7 +413,7 @@ void CweLoader::readPolyLine()
 {
 	string line, key, value;
 	
-    TMultipoint multipoint;
+    shared_ptr<TMultipoint> multipoint( new TMultipoint() );
 
 	while (true)
 	{
@@ -441,7 +424,7 @@ void CweLoader::readPolyLine()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
-			multipoint.Nivel = _userParams->getTipoElemento( value );
+			multipoint->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if ( key == "NUM_VERTEX" )
 		{
@@ -462,12 +445,12 @@ void CweLoader::readPolyLine()
 					CErrosMsg::getInstance()->novoErro( "Error reading " + key );
 				sscanf( value.c_str(), "%lf", &(point.y) );
 
-				multipoint.pontos.push_back( point );
+				multipoint->pontos.push_back( point );
 			}
 		}
 		else if ( key == "ID" )
 		{
-			sscanf( value.c_str(), "%d", &(multipoint.ID) );
+			sscanf( value.c_str(), "%d", &(multipoint->ID) );
 		}
 		else
 			CErrosMsg::getInstance()->novoErro( "Error reading " + key );
@@ -476,12 +459,7 @@ void CweLoader::readPolyLine()
     _dados->Multipoint.push_back( multipoint );
 
 	if( _dados->InfoCelula.DentroCelula )
-    {
-        TItemCelula itemCelula;
-        itemCelula.Indice = _dados->Multipoint.size() - 1;
-        itemCelula.TipoVetorCW = VMULTIPOINT;
-        _dados->InfoCelula.ListaItensCelula->Adiciona( itemCelula );
-    }
+		_dados->InfoCelula.ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
 }
 
 

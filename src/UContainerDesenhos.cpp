@@ -133,7 +133,7 @@ bool CContainerDesenhos::verificaTexto(string str)
     TDesenho *pnt = getDesenho(j);
     for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
     {
-      if ( pnt->GrafoDesenho->_dados->Textos[i].texto == str )
+      if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == str )
       {
         exists = true;
         break;
@@ -372,7 +372,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
           TDesenho *pnt = this->getDesenho(j);
           for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
           {
-            if ( pnt->GrafoDesenho->_dados->Textos[i].texto == Circuito.Origem )
+            if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Origem )
             {
               exists = true;
               break;
@@ -398,7 +398,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
           TDesenho *pnt = this->getDesenho(j);
           for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
           {
-            if ( pnt->GrafoDesenho->_dados->Textos[i].texto == Circuito.Destino )
+            if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Destino )
             {
               exists = true;
               break;

@@ -72,7 +72,7 @@ void CMostraDesenho::initializeLimits()
 		GrafoDesenho->_ult = GrafoDesenho->_dados->Multipoint.size();
 	for (int n=GrafoDesenho->_pri; n<GrafoDesenho->_ult; n++)
 	{
-		vector<TPonto> &points = GrafoDesenho->_dados->Multipoint[n].pontos;
+		vector<TPonto> &points = GrafoDesenho->_dados->Multipoint[n]->pontos;
 		int numPoints = points.size();
 		for (int i=0; i < numPoints; i++)
 		{
@@ -84,10 +84,10 @@ void CMostraDesenho::initializeLimits()
 	}
 	for ( int i=0; i<GrafoDesenho->_dados->Arcos.size(); i++)
 	{
-			x = GrafoDesenho->_dados->Arcos[i].Centro.x;
-			y = GrafoDesenho->_dados->Arcos[i].Centro.y;
+			x = GrafoDesenho->_dados->Arcos[i]->Centro.x;
+			y = GrafoDesenho->_dados->Arcos[i]->Centro.y;
 
-			double raio = GrafoDesenho->_dados->Arcos[i].EixoPrimario;
+			double raio = GrafoDesenho->_dados->Arcos[i]->EixoPrimario;
 
 			_glCoords.updateLimits( x + raio, y + raio );
 	}
@@ -131,17 +131,17 @@ void CMostraDesenho::drawMultipoints()
 			//    for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
 	{
 		//      byte cor=GrafoDesenho->Dados->Multipoint[n].Cor;
-		glColor3f(GrafoDesenho->_dados->Multipoint[n].CorR/255.0, GrafoDesenho->_dados->Multipoint[n].CorG/255.0,
-				GrafoDesenho->_dados->Multipoint[n].CorB/255.0);
+		glColor3f(GrafoDesenho->_dados->Multipoint[n]->CorR/255.0, GrafoDesenho->_dados->Multipoint[n]->CorG/255.0,
+				GrafoDesenho->_dados->Multipoint[n]->CorB/255.0);
 		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
 		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
 		if (destacaCoresDeEquipamentos)
-			setColorFromLevel( GrafoDesenho->_dados->Multipoint[n].Nivel );
+			setColorFromLevel( GrafoDesenho->_dados->Multipoint[n]->Nivel );
     if ( semCores )
     {
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
     }
-		switch (GrafoDesenho->_dados->Multipoint[n].tipo)
+		switch (GrafoDesenho->_dados->Multipoint[n]->tipo)
 		{
 			case LINE_CLOSED:
 				glBegin(GL_LINE_LOOP);
@@ -153,10 +153,10 @@ void CMostraDesenho::drawMultipoints()
 		//glLineWidth((GLfloat)(1.0+GrafoDesenho->Multipoint[n].Peso));
 		//if (GrafoDesenho->Multipoint[n].tam<10)
 		{
-			for (int i=0; i<GrafoDesenho->_dados->Multipoint[n].pontos.size(); i++)
+			for (int i=0; i<GrafoDesenho->_dados->Multipoint[n]->pontos.size(); i++)
 			{
-				double x = GrafoDesenho->_dados->Multipoint[n].pontos[i].x;
-				double y = GrafoDesenho->_dados->Multipoint[n].pontos[i].y;
+				double x = GrafoDesenho->_dados->Multipoint[n]->pontos[i].x;
+				double y = GrafoDesenho->_dados->Multipoint[n]->pontos[i].y;
 				glVertex2f(x, y);
 			}
 		}
@@ -169,22 +169,22 @@ void CMostraDesenho::drawMultipoints()
 void CMostraDesenho::drawArcs()
 {
 	//TArco *Arcos=GrafoDesenho->Arcos;
-	vector<TArco> Arcos = GrafoDesenho->_dados->Arcos;
+	vector< shared_ptr<TArco> > &Arcos = GrafoDesenho->_dados->Arcos;
 	for (int n=0; n<GrafoDesenho->_dados->Arcos.size(); n++)
 	{
 		//      byte cor=GrafoDesenho->Dados->Arcos[n].Cor;
 		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
 		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
-		glColor3f(GrafoDesenho->_dados->Arcos[n].CorR/255.0, GrafoDesenho->_dados->Arcos[n].CorG/255.0,
-				GrafoDesenho->_dados->Arcos[n].CorB/255.0);
+		glColor3f(GrafoDesenho->_dados->Arcos[n]->CorR/255.0, GrafoDesenho->_dados->Arcos[n]->CorG/255.0,
+				GrafoDesenho->_dados->Arcos[n]->CorB/255.0);
 		if ( destacaCoresDeEquipamentos )
-			setColorFromLevel( GrafoDesenho->_dados->Arcos[n].Nivel );
+			setColorFromLevel( GrafoDesenho->_dados->Arcos[n]->Nivel );
 		if ( semCores )
 		{
 				glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
 		}
-		TArco &arco = Arcos[n];
-		DesenhaArco( arco.Centro.x, arco.Centro.y, arco.EixoPrimario, arco.EixoSecundario, arco.AngIni, arco.AngEnd, 20);
+		shared_ptr<TArco> arco = Arcos[n];
+		DesenhaArco( arco->Centro.x, arco->Centro.y, arco->EixoPrimario, arco->EixoSecundario, arco->AngIni, arco->AngEnd, 20);
 	}
 }
 
@@ -363,13 +363,13 @@ void CMostraDesenho::drawTexts()
 {
 	for (int n=0; n<GrafoDesenho->_dados->Textos.size(); n++)
 	{
-		TTexto &texto = GrafoDesenho->_dados->Textos[n];
+		shared_ptr<TTexto> texto = GrafoDesenho->_dados->Textos[n];
 
 		if ( destacaCoresDeEquipamentos )
 		{
-			if( texto.Nivel == INSTRUMENTO)
+			if( texto->Nivel == INSTRUMENTO)
 				glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
-			else if( texto.Nivel == BANDEIROLA)
+			else if( texto->Nivel == BANDEIROLA)
 				glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
 			else
 				glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
@@ -378,11 +378,11 @@ void CMostraDesenho::drawTexts()
 		else if ( semCores )
 			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
 		else
-			glColor3f( texto.CorR/255.0, texto.CorG/255.0, texto.CorB/255.0);
+			glColor3f( texto->CorR/255.0, texto->CorG/255.0, texto->CorB/255.0);
 
 		glPushMatrix();
 
-		EscreveTexto(texto.texto, texto.origem, texto.rotacao, texto.FatorAltura);
+		EscreveTexto(texto->texto, texto->origem, texto->rotacao, texto->FatorAltura);
 		glPopMatrix();
 	}
 }

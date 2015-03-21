@@ -13,14 +13,14 @@ TListaItensCelula::~TListaItensCelula()
 }
 //---------------------------------------------------------------------------
 
-TListaItensCelula::TListaItensCelula(): TListaV<TItemCelula>()
+TListaItensCelula::TListaItensCelula()
 {
   emb=esq=1.5e280;
   enc=dir=-1.5e280;
 }
 //---------------------------------------------------------------------------
 
-TListaItensCelula::TListaItensCelula(const TListaItensCelula &cpy): TListaV<TItemCelula>()
+TListaItensCelula::TListaItensCelula(const TListaItensCelula &cpy)
 {
 //      temp->esq = old->esq;
 //      temp->dir = old->dir;
@@ -37,20 +37,12 @@ TListaItensCelula::TListaItensCelula(const TListaItensCelula &cpy): TListaV<TIte
   id = cpy.id;
 
   iTextosBandeirola.assign(cpy.iTextosBandeirola.begin(), cpy.iTextosBandeirola.end());
-
   iTextos.assign(cpy.iTextos.begin(), cpy.iTextos.end());
-
   cabosRetaRelacionados.assign(cpy.cabosRetaRelacionados.begin(), cpy.cabosRetaRelacionados.end());
-
   cabosArcoRelacionados.assign(cpy.cabosArcoRelacionados.begin(), cpy.cabosArcoRelacionados.end());
-  for ( int i = 0 ; i < cpy.Tamanho() ; i++ )
-  {
-    TItemCelula temp, *old;
-    old = cpy.getItem(i);
-    temp.Indice = old->Indice;
-    temp.TipoVetorCW = old->TipoVetorCW;
-    Adiciona(temp);
-  }
+
+  _arcs.assign( cpy._arcs.begin(), cpy._arcs.end() );
+  _multipoints.assign( cpy._multipoints.begin(), cpy._multipoints.end() );
 }
 
 bool TListaItensCelula::VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int IndiceCabo)
