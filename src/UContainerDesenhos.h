@@ -39,11 +39,9 @@ public:
   void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura );
 
   TDesenho * getDesenho(int Indice);
-  void CriaFormDesenho(int Indice);
   void MostraCircuito(string circuito);
   void MostraArvore(string Nome);
   void MostraDoubleArvore(string Nome, string Nome2);
-  void MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto);
   int NumDesenhos();
   void Conclui(callbackStatusCarregamento &call);
   void ReduzGrafo();

@@ -24,9 +24,7 @@ CContainerDesenhos::CContainerDesenhos()
 }
 //---------------------------------------------------------------------------
 
-void CContainerDesenhos::MudaNiveisDeProjeto(TNiveisProjeto* NiveisProjeto)
-{
-}
+
 
 CContainerDesenhos::~CContainerDesenhos()
 {
@@ -279,24 +277,8 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
     InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos, call, callVT );
 }
 //---------------------------------------------------------------------------
-//TfrmDesenhoAbas *CContainerDesenhos::getfrmDesenhoAbas()
-//{
-//  return frmDesenhoAbas;
-//}
 
-void CContainerDesenhos::CriaFormDesenho(int Indice)
-{
-  //// Se não form de abas, então faz umnovo
-  //if (!frmDesenhoAbas)
-  //  frmDesenhoAbas=new TfrmDesenhoAbas(NULL, &frmDesenhoAbas, ListaDesenhos->Count);
-  //// Adiciona uma aba
-  //frmDesenhoAbas->AdicionaAba(InfoCircuitos, getDesenho(Indice)->GrafoDesenho, Indice);
-  //// Bota o form maximizado
-  //frmDesenhoAbas->WindowState=wsMaximized;
-  //// E mostra
-  //frmDesenhoAbas->Show();
-}
-//---------------------------------------------------------------------------
+
 
 void CContainerDesenhos::MostraCircuito(string circuito)
 {
@@ -312,14 +294,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
     IndiceCircuitoArestas=InfoCircuitos->ListaArestasDoCircuito(circuito);
     if (IndiceCircuitoArestas>=0)
     {
-      for (int n=0; n<NumDesenhos(); n++)
-        if (InfoCircuitos->ArestasDoCircuito[IndiceCircuitoArestas].ArestasDesenho[n].size())
-        {
-          CriaFormDesenho(n);
-          //frmDesenhoAbas->Abas[n].fraDesenho->MostraDesenho->MostraCircuito(IndiceCircuitoArestas);
-          //frmDesenhos[n]->MostraDesenho->MostraCircuito(IndiceCircuitoArestas);
-          //frmDesenhos[n]->Show();
-        }
+
     }
     else
     {
@@ -397,12 +372,7 @@ void CContainerDesenhos::MostraArvore(string Nome)
 {
   for (int n=0; n<NumDesenhos(); n++)
   {
-    CriaFormDesenho(n);
     int vertice=InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Nome);
-    //if (vertice>=0)                                           
-    //  frmDesenhoAbas->Abas[n].fraDesenho->MostraDesenho->MostraArvore(vertice);
-    //frmDesenhos[n]->MostraDesenho->MostraArvore(vertice);
-    //frmDesenhos[n]->Show();
   }
 }
 //---------------------------------------------------------------------------
@@ -411,13 +381,8 @@ void CContainerDesenhos::MostraDoubleArvore(string Nome, string Nome2)
 {
   for (int n=0; n<NumDesenhos(); n++)
   {
-    CriaFormDesenho(n);
     int vertice=InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Nome);
     int vertice2=InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Nome2);
-    //if (vertice>=0&&vertice2>=0)          
-    //  frmDesenhoAbas->Abas[n].fraDesenho->MostraDesenho->MostraDoubleArvore(vertice, vertice2);
-    //frmDesenhos[n]->MostraDesenho->MostraDoubleArvore(vertice, vertice2);
-    //frmDesenhos[n]->Show();
   }
 }
 //---------------------------------------------------------------------------

@@ -11,9 +11,6 @@
 #include <memory>
 #include "UDefines.h"
 
-class TNiveisProjeto;
-
-
 struct TElemento
 {
 	int ID;
@@ -151,7 +148,6 @@ public:
 	int IDArquivo;
 	TInfoCelula InfoCelula;
 	string NomeArq;
-	TNiveisProjeto *NiveisProjeto;
 	vector< std::shared_ptr<TMultipoint> > Multipoint;
 	vector< std::shared_ptr<TArco> > Arcos;
 	vector< std::shared_ptr<TTexto> > Textos;
