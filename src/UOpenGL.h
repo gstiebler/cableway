@@ -34,7 +34,7 @@ public:
   void Paint();
   
   void DesenhaArco(float x_center, float y_center, float w,
-          float h, float startAngle, float arcAngle, int n);
+          float h, float startAngle, float endAngle, int n);
   void DesenhaBolaFechada(float x_center, float y_center, float w,
           float h, float startAngle, float arcAngle, int n);
   void EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura);

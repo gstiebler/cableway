@@ -184,7 +184,7 @@ void CMostraDesenho::drawArcs()
 				glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
 		}
 		TArco &arco = Arcos[n];
-		DesenhaArco( arco.Centro.x, arco.Centro.y, arco.EixoPrimario, arco.EixoSecundario, arco.AngIni + arco.Rotacao, arco.getAng(), 20);
+		DesenhaArco( arco.Centro.x, arco.Centro.y, arco.EixoPrimario, arco.EixoSecundario, arco.AngIni, arco.AngEnd, 20);
 	}
 }
 
@@ -300,10 +300,6 @@ void CMostraDesenho::showTree()
 
 void CMostraDesenho::showDisconnectedCircuitEndings()
 {
-	#ifdef DEBUG_BUILDER
-	TStringList *proArquivo = new TStringList();
-	AnsiString vertices = "";
-#endif
 	glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
 	for ( int i = 0 ; i < GrafoDesenho->_numCabosReta ; i++ )
 	{
@@ -311,20 +307,12 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 		{
 			TPonto pontos = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos[0];
 			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
-#ifdef DEBUG_BUILDER
-			vertices = "Multipoint 0 "+IntToStr(i)+" X:" + FormatFloat("###,###,###",pontos.x) + " Y:" + FormatFloat("###,###,###",pontos.y);
-			proArquivo->Add(vertices);
-#endif
 		}
 		if ( !GrafoDesenho->_cabosReta[i]->ponta[1] )
 		{
 			int tam = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos.size();
 			TPonto pontos = GrafoDesenho->_dados->Multipoint[GrafoDesenho->_cabosReta[i]->Indice].pontos[tam-1];
 			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
-#ifdef DEBUG_BUILDER
-			vertices = "Multipoint 1 "+IntToStr(i)+" X:" + FormatFloat("###,###,###",pontos.x) + " Y:" + FormatFloat("###,###,###",pontos.y);
-			proArquivo->Add(vertices);
-#endif
 		}
 	}
 
@@ -335,24 +323,12 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 		if ( !GrafoDesenho->_cabosArco[i]->ponta[0] )
 		{
 			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
-#ifdef DEBUG_BUILDER
-			vertices = "Arcos 0 " + IntToStr(i) +" X:" + FormatFloat("###,###,###",pontos[0].x) + " Y:" + FormatFloat("###,###,###",pontos[0].y);
-			proArquivo->Add(vertices);
-#endif
 		}
 		if ( !GrafoDesenho->_cabosArco[i]->ponta[1] )
 		{
 			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
-#ifdef DEBUG_BUILDER
-			vertices = "Arcos 1 " + IntToStr(i) +" X:" + FormatFloat("###,###,###",pontos[1].x) + " Y:" + FormatFloat("###,###,###",pontos[1].y);
-			proArquivo->Add(vertices);
-#endif
 		}
 	}
-#ifdef DEBUG_BUILDER
-	proArquivo->SaveToFile(ExtractFilePath(Application->ExeName) + "CabosPonta.txt");
-	delete proArquivo;
-#endif
 }
 
 

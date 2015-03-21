@@ -276,15 +276,14 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
         double DistMinBandeirola)
 {
     int m;
-    TVectorInt *JahPassou = new TVectorInt();
+    vector<int> JahPassou;
     int menores = 0;
     double MenorDist, Dist;
     TPonto Ponto;
     int IndiceCabo, CaboPonta;
 
     TPonto PontoInicial;
-    JahPassou->clear();
-    JahPassou->push_back( 0 );
+    JahPassou.push_back( 0 );
 
     Ponto = _dados->Multipoint[iPonto].pontos[Ponta];
     PontoInicial = Ponto;
@@ -344,20 +343,20 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
             iPonto = ListaItens->getItem( IndiceCabo )->Indice;
             Ponta = CaboPonta;
             Ponto = _dados->Multipoint[iPonto].pontos[Ponta];
-            if (iM != JahPassou->at( 0 ))
-                JahPassou->push_back( iM );
+            if (iM != JahPassou[ 0 ])
+                JahPassou.push_back( iM );
             if (fabs( Ponto.x - PontoInicial.x ) < DistMinBandeirola
                     && fabs( Ponto.y - PontoInicial.y ) < DistMinBandeirola)
             {
-                while (JahPassou->size())
+                while (JahPassou.size())
                 {
-                    int frente = JahPassou->front();
+                    int frente = JahPassou.front();
                     ListaItens->Remove( frente );
-                    JahPassou->erase( JahPassou->begin() );
-                    for (m = 0; m < (int) JahPassou->size(); m++)
+                    JahPassou.erase( JahPassou.begin() );
+                    for (m = 0; m < (int) JahPassou.size(); m++)
                     {
-                        if (JahPassou->at( m ) > frente)
-                            JahPassou->at( m )--;}
+                        if (JahPassou[ m ] > frente)
+                            JahPassou[ m ]--;}
                     }
                 if (ListaItens->Tamanho() == 0)
                     break;
@@ -370,7 +369,6 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
             }
         }
     } while (IndiceCabo >= 0);
-    delete JahPassou;
 }
 
 //---------------------------------------------------------------------------

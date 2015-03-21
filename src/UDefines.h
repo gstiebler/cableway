@@ -24,7 +24,7 @@ using namespace std;
 #endif
 //#define DEBUG_BUILDER
 
-#define DIST_MIN_ELEM_CABO 0.001
+#define DIST_MIN_ELEM_CABO 0.1
 
 #define LINE_CLOSED 0
 #define LINE_OPEN 1
