@@ -5,7 +5,7 @@
 #include "UTempoExec.h"
 #include "UGeometria.h"
 #include "UContainerDesenhos.h"
-#include "UListaCelulas.h"
+#include "UListaItensCelula.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

@@ -4,7 +4,8 @@
 #pragma hdrstop
 
 #include "UInfoCelula.h"
-#include "UListaCelulas.h"
+#include "UDefines.h"
+#include "UListaItensCelula.h"
 
 TInfoCelula::TInfoCelula()
 {

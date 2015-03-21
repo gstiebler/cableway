@@ -8,8 +8,6 @@
 #include <string>
 using namespace std;
 
-#include "UListaCelulas.h"
-
 class TListaItensCelula;
 
 struct TInfoCelula

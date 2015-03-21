@@ -15,7 +15,6 @@
 #include "UDadosGenerico.h"
 #include "UDefines.h"
 #include "UInfoCelula.h"
-#include "UListaCelulas.h"
 #include "UListaItensCelula.h"
 #include "UListaV.h"
 #include "UserParams/UserParams.h"
