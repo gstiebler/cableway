@@ -18,7 +18,6 @@
 #include "UCallbacks.h"
 #include "UDefines.h"
 #include "UArmazenamentoCircuitos.h"
-#include "UTCallbackStatusCarregamento.h"
 #include "UVerticesArestas.h"
 
 class TListaArestas;
@@ -83,7 +82,7 @@ private:
   //bool *VerticesVisitados, *VerticesExplorados;
   int *PaisVertices, *vArestas;
 public:      
-  CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackStatusCarregamento &call, callbackVerificaTexto &callVT);
+  CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackVerificaTexto &callVT);
 
   ~CInfoCircuitos();
 

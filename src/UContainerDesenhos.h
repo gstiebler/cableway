@@ -6,7 +6,6 @@
 #include "UGrafoDesenho.h"
 #include "UInfoCircuitos.h"
 #include "TDesenho.h"
-#include "UTCallbackStatusCarregamento.h"
 #include "UCallbacks.h"
 #include <stack>
 #include <vector>
@@ -41,7 +40,7 @@ public:
   void MostraArvore(string Nome);
   void MostraDoubleArvore(string Nome, string Nome2);
   int NumDesenhos();
-  void Conclui(callbackStatusCarregamento &call);
+  void Conclui();
   void ReduzGrafo();
 };
 //---------------------------------------------------------------------------

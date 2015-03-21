@@ -14,7 +14,6 @@
 #include "UInfoCircuitos.h"
 #include "UserParams/LoadUserParams.h"
 #include "UserParams/UserParams.h"
-#include "UTCallbackStatusCarregamento.h"
 
 #include <QtCore>
 
@@ -44,8 +43,7 @@ MainExecution::MainExecution( const string &userParametersFileName )
         _containerDesenhos->addDrawing( dados, userParams.drawingsParams[i].elevation );
     }
 
-    callbackStatusCarregamento sc;
-    _containerDesenhos->Conclui( sc );
+    _containerDesenhos->Conclui();
 }
 
 

@@ -11,7 +11,6 @@
 
 #include "UGrafoDesenho.h"
 #include "UArmazenamentoCircuitos.h"
-#include "UTCallbackStatusCarregamento.h"
 
 using namespace std;
 
@@ -38,7 +37,7 @@ TListaCircuitos::~TListaCircuitos()
 
 
 
-CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackStatusCarregamento& call, callbackVerificaTexto &callVT) :
+CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackVerificaTexto &callVT) :
         VerticesGerais( NULL )
 {
     // CallVT.ponteiroFuncao = callVT.ponteiroFuncao;

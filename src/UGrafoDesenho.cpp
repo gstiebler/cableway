@@ -2,7 +2,6 @@
 #pragma hdrstop
 #include "UGrafoDesenho.h"
 #include "UErros.h"
-#include "UTempoExec.h"
 #include "UGeometria.h"
 #include "UContainerDesenhos.h"
 #include "UListaItensCelula.h"
@@ -81,10 +80,6 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
 {
     _pri = 0;
     CarregaGrafo = ParamsGrafoDesenho.CarregaGrafo;
-
-    CTempoExec *tempo = CTempoExec::getInstance();
-
-    tempo->MarcaTempo( "Inicio da marcacao de tempo no grafoDesenho" );
 
     // Cria um DadosGenerico para ser usado
     this->_dados = Dados;

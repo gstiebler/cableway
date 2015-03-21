@@ -218,7 +218,7 @@ void CContainerDesenhos::buscaEmProfundidadeOsVertices(bool *VerticesVisitados, 
   delete verticesArestas;
 }
 
-void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
+void CContainerDesenhos::Conclui()
 {
 //	for(int i(0); i < ParamsInfoCircuitos.VerticesGerais->Tamanho(); ++i)
 //	{
@@ -250,7 +250,7 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
     GeraListaAdjacencias();
 
 //  ReduzGrafo();
-    InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos, call, callVT );
+    InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos, callVT );
 }
 //---------------------------------------------------------------------------
 

@@ -37,8 +37,6 @@ set(ALL_SOURCES ${SRC_BASE}/UCallbacks.cpp
 				${SRC_BASE}/GLCoords.cpp
 				${SRC_BASE}/UParamsStructs.cpp
 				${SRC_BASE}/UStructs.cpp
-				${SRC_BASE}/UTCallbackStatusCarregamento.cpp
-				${SRC_BASE}/UTempoExec.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/CweLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
