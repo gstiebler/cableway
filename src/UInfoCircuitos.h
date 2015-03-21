@@ -5,17 +5,9 @@
 #include <math.h>
 #include <vector>
 #include <string>
-//#include <values.h>
 #include <algorithm>
 #include <memory>
-//#include "UArmazenamentoBandeirola.h"
 
-//#include "UGrafoDesenho.h"
-//#include "UArmazenamentoCircuitos.h"
-//#include "UAuxString.h"
-//#include "UConfig.h"
-//#include "UTCallbackStatusCarregamento.h"
-#include "UCallbacks.h"
 #include "UDefines.h"
 #include "UArmazenamentoCircuitos.h"
 #include "UVerticesArestas.h"
@@ -76,13 +68,12 @@ private:
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   int NumDesenhos;
   bool dentroEquipamento;
-  callbackVerificaTexto CallVT;
   double *DistanciaDjikstra;
   int *anterior;
   //bool *VerticesVisitados, *VerticesExplorados;
   int *PaisVertices, *vArestas;
 public:      
-  CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackVerificaTexto &callVT);
+  CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos);
 
   ~CInfoCircuitos();
 

@@ -244,13 +244,10 @@ void CContainerDesenhos::Conclui()
     // V� o n�mero de desenhos
     ParamsInfoCircuitos.NumDesenhos = NumDesenhos();
     // Cria um novo InfoCircuitos baseado nos par�metros
-    callbackVerificaTexto callVT;
-    callVT.PonteiroProThis = this;
-    callVT.ponteiroFuncao = CContainerDesenhos::verificaTextoWrap;
     GeraListaAdjacencias();
 
 //  ReduzGrafo();
-    InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos, callVT );
+    InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos );
 }
 //---------------------------------------------------------------------------
 

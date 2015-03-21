@@ -37,7 +37,7 @@ TListaCircuitos::~TListaCircuitos()
 
 
 
-CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos, callbackVerificaTexto &callVT) :
+CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos) :
         VerticesGerais( NULL )
 {
     // CallVT.ponteiroFuncao = callVT.ponteiroFuncao;

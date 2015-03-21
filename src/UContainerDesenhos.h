@@ -6,7 +6,6 @@
 #include "UGrafoDesenho.h"
 #include "UInfoCircuitos.h"
 #include "TDesenho.h"
-#include "UCallbacks.h"
 #include <stack>
 #include <vector>
 
