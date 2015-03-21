@@ -312,10 +312,7 @@ void CGrafoDesenho::AchaPonta(int &iPonto, int &iM, int &Ponta, TListaItensCelul
             }
 
             // V� a Distância pra segunda ponta do cabo
-            Dist =
-                    DistPontos(
-                            PontosReta[_dados->Multipoint[ListaItens->getItem( m )->Indice].pontos.size()
-                                    - 1], Ponto );
+            Dist = DistPontos( PontosReta[_dados->Multipoint[ListaItens->getItem( m )->Indice].pontos.size() - 1], Ponto );
             if (Dist - MenorDist < DistMinBandeirola && Dist < DistMinBandeirola)
             {
                 menores++;
@@ -585,38 +582,37 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 //percorre lista de cabos ligados ao equipamento
     for (int n = 0; n < (int) ListaMenores.size(); n++)
     {
-        bool isAdded;
-        isAdded = ListaItensCelula->VerificaSeCaboRetaJaFoiLigadoAoEquipamento(
-                ListaMenores.at( n ).IndiceCabo );
+		TPontoEIndiceCabo &pontoEIndiceCabo = ListaMenores[ n ];
+        bool isAdded = ListaItensCelula->VerificaSeCaboRetaJaFoiLigadoAoEquipamento( pontoEIndiceCabo.IndiceCabo );
 
         if (!isAdded)
         {
             ligado = ligaEquipamentoSeDesligado( ListaItensCelula, ligado );
             //adiciona o vértice na lista de vértices do cabo
-            _cabosReta[ListaMenores.at( n ).IndiceCabo]->AdicionaVertice( _verticesGerais->Tamanho(),
-                    ListaMenores.at( n ).PosVertice );
+            _cabosReta[pontoEIndiceCabo.IndiceCabo]->AdicionaVertice( _verticesGerais->Tamanho(),
+                    pontoEIndiceCabo.PosVertice );
 
             TVerticeGeral VerticeGeral;
-            VerticeGeral.pos = ListaMenores.at( n ).PosVertice;
+            VerticeGeral.pos = pontoEIndiceCabo.PosVertice;
             VerticeGeral.TipoElemento = INSTRUMENTO;
             VerticeGeral.iDesenho = _dados->IndiceDesenho;
             VerticeGeral.IDArquivo = _dados->IDArquivo;
             VerticeGeral.TipoVertice = VERTICE_INSTRUMENTO_RETA;
             _verticesGerais->Adiciona( VerticeGeral );
+			
+            ListaItensCelula->cabosRetaRelacionados.push_back( pontoEIndiceCabo.IndiceCabo );
 
-            ListaItensCelula->cabosRetaRelacionados.push_back( ListaMenores.at( n ).IndiceCabo );
-
-            if (_cabosReta[ListaMenores.at( n ).IndiceCabo]->EhOPrimeiroPonto(
-                    ListaMenores.at( n ).PosVertice, _dados->Multipoint,
-                    ListaMenores.at( n ).IndiceCabo ))
+            if (_cabosReta[pontoEIndiceCabo.IndiceCabo]->EhOPrimeiroPonto(
+                    pontoEIndiceCabo.PosVertice, _dados->Multipoint,
+                    pontoEIndiceCabo.IndiceCabo ))
             {
-                _cabosReta[ListaMenores.at( n ).IndiceCabo]->ponta[0] = true;
+                _cabosReta[pontoEIndiceCabo.IndiceCabo]->ponta[0] = true;
             }
-            else if (_cabosReta[ListaMenores.at( n ).IndiceCabo]->EhOUltimoPonto(
-                    ListaMenores.at( n ).PosVertice, _dados->Multipoint,
-                    ListaMenores.at( n ).IndiceCabo ))
+            else if (_cabosReta[pontoEIndiceCabo.IndiceCabo]->EhOUltimoPonto(
+                    pontoEIndiceCabo.PosVertice, _dados->Multipoint,
+                    pontoEIndiceCabo.IndiceCabo ))
             {
-                _cabosReta[ListaMenores.at( n ).IndiceCabo]->ponta[1] = true;
+                _cabosReta[pontoEIndiceCabo.IndiceCabo]->ponta[1] = true;
             }
 
             TAresta Aresta;
