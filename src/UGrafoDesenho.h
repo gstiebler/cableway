@@ -19,13 +19,14 @@
 #include <memory>
 
 struct TDesenho;
+struct TArco;
 
 enum TTipoOrientacao {VERTICAL, HORIZONTAL};
 
 struct CCaboArco
 {
   bool ponta[2];
-  int Indice;
+  TArco *_arco;
   CCaboArco ()
   {
     ponta[0] = ponta[1] = false;
