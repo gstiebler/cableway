@@ -33,10 +33,8 @@ private:
   void buscaEmProfundidadeOsVertices(bool *VerticesVisitados, int indice, bool arestazerada, TArestaReduzida arestaRed);
 public:
   CContainerDesenhos();
-//  CContainerDesenhos(TInterfaceMainPar *imp);
   ~CContainerDesenhos();
   CInfoCircuitos *InfoCircuitos;
-  //TfrmDesenho **frmDesenhos;
 
   void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura );
 
@@ -49,8 +47,6 @@ public:
   int NumDesenhos();
   void Conclui(callbackStatusCarregamento &call);
   void ReduzGrafo();
-  //TfrmDesenhoAbas *getfrmDesenhoAbas();
-//  CConfig *Config;
 };
 //---------------------------------------------------------------------------
 #endif

@@ -4,7 +4,6 @@
 #define UParamsStructsH
 //---------------------------------------------------------------------------
 
-class TNiveisProjetoTransfer;
 class TVerticesGerais;
 class TListaArestas;
 
@@ -16,7 +15,6 @@ class TListaArestas;
 struct TParamsDadosGenerico
 {
   int IndiceDesenho;
-  TNiveisProjetoTransfer *NiveisProjeto;
   int IDArquivo; 
 //  TInterfaceMainPar *IMP;
 };

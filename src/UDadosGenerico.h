@@ -128,7 +128,6 @@ struct TArco: public TElemento
 	double getAng() const;
 };
 //---------------------------------------------------------------------------
-struct TTextoTransfer;
 
 struct TTexto: public TElemento
 {
@@ -140,41 +139,6 @@ struct TTexto: public TElemento
 	{
 		origem.x = origem.y = rotacao = FatorAltura = 0.0;
 	};
-	///<summary>Cria um objeto TTexto usando um objeto TTextoTransfer como base.</summary>
-	///<param name"Texto">Objeto do tipo TTextoTransfer que será usado como base.</param>
-	TTexto(const TTextoTransfer &Texto);
-	TTexto& operator=( const TTextoTransfer &Texto );
-};
-//---------------------------------------------------------------------------
-
-struct TTextoTransfer: public TElemento
-{
-	TPonto origem;
-	double rotacao;
-	char *texto;
-	int tamTexto;
-	double FatorAltura;
-	TTextoTransfer& operator=( const TTexto &Texto );
-	~TTextoTransfer () { delete[] texto; }
-};
-//---------------------------------------------------------------------------
-
-// Estrutura para troca de dados entre o principal e a dll
-struct TDadosTransfer
-{
-  // são preenchidos na dll
-	TInfoCelula InfoCelula;
-	int NumMultipoint;
-	int NumArcos;
-	int NumTextos;
-	TMultipoint *Multipoint;
-	TArco *Arcos;
-	TTextoTransfer *Textos;
-  // já vem preenchidos do Builder;
-	int IndiceDesenho;
-	int IDArquivo;
-	char *NomeArq;
-	int NomeArqTam;
 };
 //---------------------------------------------------------------------------
 
@@ -193,18 +157,9 @@ public:
 	vector< std::shared_ptr<TTexto> > Textos;
 	CDadosGenerico();
 	~CDadosGenerico ();
-	///<summary>Fun��o que preenche um objeto do tipo TDadosTransfer com base na inst�ncia
-	///do objeto CDadosGenerico.</summary>
-	///<param name"dados">Objeto do tipo TDadosTransfer que será preenchido.</param>
-	void convertePraTransfer(TDadosTransfer *dados);
-	///<summary>Fun��o que preenche a inst�ncia de CDadosGenerico com base num objeto 
-	///TDadosTransfer que será passado a fun��o.</summary>
-	///<param name"dados">Objeto do tipo TDadosTransfer que será usado como base.</param>
-	void importaTransfer(TDadosTransfer *dados);
 };
 
 bool pointInPolygon(double *polyX, double *polyY, int polySides, double x, double y);
-void liberaTransfer (TDadosTransfer *dados);
 
 #endif
 

@@ -262,7 +262,7 @@ void CContainerDesenhos::Conclui(callbackStatusCarregamento& call)
     int indice = ListaDesenhos.size() - 1;
     if (indice >= 0)
     {
-		CGrafoDesenho* grafoDesenho = ((TDesenho *) (ListaDesenhos[indice]))->GrafoDesenho;
+		CGrafoDesenho* grafoDesenho = ListaDesenhos[indice]->GrafoDesenho;
         // Checa vertices duplos(?)
         grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
         grafoDesenho->GeraColares( ListaDesenhos );
