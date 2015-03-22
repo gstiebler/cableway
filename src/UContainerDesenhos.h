@@ -27,6 +27,7 @@ private:
   bool verificaTexto(string str);
   void GeraListaAdjacencias();
   void buscaEmProfundidadeOsVertices(bool *VerticesVisitados, int indice, bool arestazerada, TArestaReduzida arestaRed);
+  void GeraColares();
 public:
   CContainerDesenhos();
   ~CContainerDesenhos();

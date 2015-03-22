@@ -231,21 +231,50 @@ void CContainerDesenhos::Conclui()
 		ParamsInfoCircuitos.Arestas.insert( ParamsInfoCircuitos.Arestas.end(), edges.begin(), edges.end() );
 	}
 
-    int indice = ListaDesenhos.size() - 1;
-    if (indice >= 0)
+    if (ListaDesenhos.size() > 1)
     {
-		CGrafoDesenho* grafoDesenho = ListaDesenhos[indice]->GrafoDesenho;
+		CGrafoDesenho* grafoDesenho = ListaDesenhos[0]->GrafoDesenho;
         // Checa vertices duplos(?)
         grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
-        grafoDesenho->GeraColares( ListaDesenhos );
+        GeraColares();
     }
     // V� o n�mero de desenhos
     ParamsInfoCircuitos.NumDesenhos = NumDesenhos();
     // Cria um novo InfoCircuitos baseado nos par�metros
     GeraListaAdjacencias();
 
-//  ReduzGrafo();
     InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos );
+}
+//---------------------------------------------------------------------------
+
+
+
+void CContainerDesenhos::GeraColares()
+{
+    vector< shared_ptr<TVerticeGeral> > Lista;
+	ParamsInfoCircuitos.VerticesGerais->ListaOrd( Lista );  //gera lista ordenada
+    shared_ptr<TVerticeGeral> V1, V2;
+    for (int n = 0; n < (int) (Lista.size() - 1); n++)
+    {
+        V1 = Lista[n];
+        if ( V1->texto == "" )
+			continue;
+
+        V2 = Lista[n + 1];
+        if ((V1->texto != V2->texto) || (V1->iDesenho == V2->iDesenho) || (V1->TipoElemento != INSTRUMENTO) || (V2->TipoElemento != INSTRUMENTO))
+			continue;
+
+        double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura - ListaDesenhos[V2->iDesenho]->Altura;
+        if (alturaDaAresta < 0)
+            alturaDaAresta *= -1;
+        shared_ptr<TAresta> Aresta( new TAresta() );
+        Aresta->AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
+        Aresta->IndiceDesenho = I_DESENHO_NULO;
+        Aresta->IDArquivo = I_DESENHO_NULO;
+		ParamsInfoCircuitos.Arestas.push_back( Aresta );
+
+		V1->EhColar = V2->EhColar = true;
+    }
 }
 //---------------------------------------------------------------------------
 

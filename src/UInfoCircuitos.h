@@ -66,7 +66,6 @@ private:
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   int NumDesenhos;
-  bool dentroEquipamento;
   double *DistanciaDjikstra;
   int *anterior;
   //bool *VerticesVisitados, *VerticesExplorados;

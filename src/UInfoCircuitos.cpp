@@ -6,8 +6,8 @@
 
 #include "UGeometria.h"
 #include "UInfoCircuitos.h"
+#include "UParamsStructs.h"
 
-#include "UGrafoDesenho.h"
 #include "UArmazenamentoCircuitos.h"
 
 using namespace std;
@@ -438,15 +438,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 
     DistanciaDjikstra[vertice[0]] = 0; // Distância do vértice pra ele mesmo � zero.
 
-    //  for (m=0; ArestasCircuito && m<(int)ArestasCircuito->Arestas.size(); m++)
-    //  {
-    //    VerticesExplorados[Arestas->getItem(ArestasCircuito->Arestas[m])->Vertice1] = true;
-    //    VerticesExplorados[Arestas->getItem(ArestasCircuito->Arestas[m])->Vertice2] = true;
-    //  }
-    //  VerticesExplorados[vertice[0]]=false;
-    //  VerticesExplorados[vertice[1]]=false;
-
-    //tempo->MarcaTempo("fez heap");
     shared_ptr<TVerticeGeral> VerticeTemp;
     TVerticeEAresta *VerticeEArestaTemp;
     heap.push(VerticesDjikstra(vertice[0], 0));
@@ -471,15 +462,14 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
             VerticeEArestaTemp = ListaVerticesEArestasT->getVerticeEAresta(n);
             vatual = VerticeEArestaTemp->Vertice;
             int alt;
-            if ( dentroEquipamento )
-            {
-                VerticeTemp = VerticesGerais->vertices[vatual];
-                if (VerticeTemp->TipoElemento == INSTRUMENTO && ( !VerticeTemp->EhColar ) ) //|| !VerticesGerais->getItem(vatual)->EhPrensaCabo ) )
-                {
-                    if (!VerticeTemp->texto.empty() && vatual != vertice[0] && vatual != vertice[1])
-                    continue;
-                }
-            }
+
+            VerticeTemp = VerticesGerais->vertices[vatual];
+     //       if (VerticeTemp->TipoElemento == INSTRUMENTO && ( !VerticeTemp->EhColar ) ) //|| !VerticesGerais->getItem(vatual)->EhPrensaCabo ) )
+     //       {
+     //           if (!VerticeTemp->texto.empty() && vatual != vertice[0] && vatual != vertice[1])
+					//continue;
+     //       }
+
             iAresta = VerticeEArestaTemp->Aresta;
             alt = DistanciaDjikstra[vfila] + Arestas[iAresta]->Tam;
             if ( alt < DistanciaDjikstra[vatual] )
@@ -533,24 +523,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 
             tam+=Arestas[vArestas[vatual]]->Tam;
             TamSubRota += Arestas[vArestas[vatual]]->Tam;
-
-            if ( Arestas[vArestas[vatual]]->Vertice1 > 0 )
-            {
-                ListaVerticesEArestasT = VerticesGerais->vertices[Arestas[vArestas[vatual]]->Vertice1]->ListaVerticesEArestas;
-                for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )
-                {
-                    //Arestas->getItem(ListaVerticesEArestasT->getVerticeEAresta(i)->Aresta)->Tam = Infinity;
-                }
-            }
-
-            if ( Arestas[vArestas[vatual]]->Vertice2 > 0 )
-            {
-                ListaVerticesEArestasT = VerticesGerais->vertices[Arestas[vArestas[vatual] ]->Vertice2]->ListaVerticesEArestas;
-                for ( int i = 0; i < ListaVerticesEArestasT->list.size(); i++ )
-                {
-                    //Arestas->getItem(ListaVerticesEArestasT->getVerticeEAresta(i)->Aresta)->Tam = Infinity;
-                }
-            }
 
 
             if (VerticesGerais->vertices[vatual]->texto!="")

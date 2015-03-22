@@ -1050,38 +1050,7 @@ void CGrafoDesenho::OrdenaVerticesRetas()
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::GeraColares(const std::vector<TDesenho*> &ListaDesenhos)
-{
-    if (!CarregaGrafo)
-        return;
-    int n;
-    vector< shared_ptr<TVerticeGeral> > Lista;
-    _verticesGerais->ListaOrd( Lista );  //gera lista ordenada
-    shared_ptr<TVerticeGeral> V1, V2;
-    for (n = 0; n < (int) (Lista.size() - 1); n++)
-    {
-        V1 = Lista[n];
-        if ( V1->texto == "" )
-			continue;
 
-        V2 = Lista[n + 1];
-        if ((V1->texto != V2->texto) || (V1->iDesenho == V2->iDesenho) || (V1->TipoElemento != INSTRUMENTO) || (V2->TipoElemento != INSTRUMENTO))
-			continue;
-
-        double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura
-                - ListaDesenhos[V2->iDesenho]->Altura;
-        if (alturaDaAresta < 0)
-            alturaDaAresta *= -1;
-        shared_ptr<TAresta> Aresta( new TAresta() );
-        Aresta->AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
-        Aresta->IndiceDesenho = I_DESENHO_NULO;
-        Aresta->IDArquivo = I_DESENHO_NULO;
-		_arestas.push_back( Aresta );
-
-        _verticesGerais->vertices[ V1->IndiceOriginal ]->EhColar = _verticesGerais->vertices[ V2->IndiceOriginal ]->EhColar = true;
-    }
-}
-//---------------------------------------------------------------------------
 
 void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos)
 {
