@@ -85,7 +85,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 	  // Chama desse jeito se não tiver rota do usuário
 	  if ( Circuito.RotaUsuario == "" )
 	  {
-      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, SubRotas, CircuitoAreas);
+      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, SubRotas);
     }
 	  // E assim caso tenha..
 	  else
@@ -337,7 +337,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
         bool erroNessaRota = false;
         tamTemp = 0;
         rotaTemp.clear();
-        if (GeraRota(ListaRota->at(i+1), ListaRota->at(i), tamTemp, rotaTemp, ArestasCircuito, ListaBandeirolas, DEBUG_arestas, SubRotasTemp, CircuitoAreas))
+        if (GeraRota(ListaRota->at(i+1), ListaRota->at(i), tamTemp, rotaTemp, ArestasCircuito, ListaBandeirolas, SubRotasTemp))
         {
             erroNessaRota = erro = true;
         }
@@ -366,8 +366,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
 //---------------------------------------------------------------------------
 
 bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, TArestasCircuito *ArestasCircuito,
-        TVectorInt *ListaBandeirolas,
-        TStringList*DEBUG_arestas, string &SubRotas, TCircuitoAreas *CircuitoAreas)
+        TVectorInt *ListaBandeirolas, string &SubRotas )
 {
     int n, m;
     int vertice[2], vfila, vatual;
@@ -490,7 +489,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
     tam= VerticesGerais->vertices[vertice[0]]->dist + VerticesGerais->vertices[vertice[1]]->dist;
     string temp;
 	vector<string> sRota;
-    int UltDesenho = -1;
     if(achou_final)
     {
         while (anterior[vatual] > 0)
@@ -501,25 +499,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
             ArestaTemp = Arestas[iArestaTemp];
             if (ArestasCircuito && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO)
 				(*ArestasDesenho)[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
-            if ( CircuitoAreas )
-            {
-                CircuitoAreas[VerticesGerais->vertices[vatual]->iDesenho].IDArquivo = VerticesGerais->vertices[vatual]->IDArquivo;
-                CircuitoAreas[VerticesGerais->vertices[vatual]->iDesenho].ativo = true;
-
-                if ( VerticesGerais->vertices[vatual]->iDesenho != UltDesenho && UltDesenho >= 0 )
-                {
-                    CircuitoAreas[UltDesenho].rota = CircuitoAreas[UltDesenho].rota;
-                }
-
-                if (VerticesGerais->vertices[vatual]->texto!="")
-                {
-                    temp = VerticesGerais->vertices[vatual]->texto;
-                    if (UltTemp!=temp || VerticesGerais->vertices[vatual]->iDesenho != UltDesenho )
-						CircuitoAreas[VerticesGerais->vertices[vatual]->iDesenho].rota.push_back( temp );
-                    //					UltTemp=temp;
-                    UltDesenho = VerticesGerais->vertices[vatual]->iDesenho;
-                }
-            }
 
             tam+=Arestas[vArestas[vatual]]->Tam;
             TamSubRota += Arestas[vArestas[vatual]]->Tam;
@@ -550,10 +529,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
             vatual=anterior[vatual];
         }
         sRota.push_back( V[0] );
-        if (CircuitoAreas && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO && ArestaTemp->IDArquivo!=I_DESENHO_NULO)
-        {
-			CircuitoAreas[ArestaTemp->IndiceDesenho].rota.push_back( V[0] );
-        }
     }
     else
     tam=0;

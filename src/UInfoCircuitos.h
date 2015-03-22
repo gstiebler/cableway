@@ -90,7 +90,7 @@ public:
               TStringList *DEBUG_arestas, TCircuitoAreas *CircuitoAreas);
   bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota,
              TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
-             TStringList *DEBUG_arestas, string &SubRotas, TCircuitoAreas *CircuitoAreas);
+             string &SubRotas);
   void Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho);        
   int ApagaArestasDoCircuito(string circuito, int idCircuito);
   TVerticesGerais *VerticesGerais;
