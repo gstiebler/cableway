@@ -26,7 +26,6 @@ private:
   static bool verificaTextoWrap(void* PonteiroThis, const char *str);
   bool verificaTexto(string str);
   void GeraListaAdjacencias();
-  void buscaEmProfundidadeOsVertices(bool *VerticesVisitados, int indice, bool arestazerada, TArestaReduzida arestaRed);
   void GeraColares();
 public:
   CContainerDesenhos();
@@ -41,7 +40,6 @@ public:
   void MostraDoubleArvore(string Nome, string Nome2);
   int NumDesenhos();
   void Conclui();
-  void ReduzGrafo();
 };
 //---------------------------------------------------------------------------
 #endif
