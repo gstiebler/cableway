@@ -102,14 +102,18 @@ bool CContainerDesenhos::verificaTexto(string str)
 
 void CContainerDesenhos::GeraListaAdjacencias()
 {
-  int n, v1, v2;
-  for (n=0; n<ParamsInfoCircuitos.Arestas.size(); n++)
-  {
-    v1=ParamsInfoCircuitos.Arestas[n]->Vertice1;
-    v2=ParamsInfoCircuitos.Arestas[n]->Vertice2;
-    ParamsInfoCircuitos.VerticesGerais->vertices[v1]->ListaVerticesEArestas->AdicionaVerticeEAresta(v2, n);
-    ParamsInfoCircuitos.VerticesGerais->vertices[v2]->ListaVerticesEArestas->AdicionaVerticeEAresta(v1, n);
-  }
+	int iV1, iV2;
+	for ( int n(0); n<ParamsInfoCircuitos.Arestas.size(); n++)
+	{
+		iV1 = ParamsInfoCircuitos.Arestas[n]->Vertice1;
+		iV2 = ParamsInfoCircuitos.Arestas[n]->Vertice2;
+
+		shared_ptr<TVerticeGeral> v1 = ParamsInfoCircuitos.VerticesGerais->vertices[iV1];
+		shared_ptr<TVerticeGeral> v2 = ParamsInfoCircuitos.VerticesGerais->vertices[iV2];
+
+		v1->ListaVerticesEArestas->AdicionaVerticeEAresta( iV2, n );
+		v2->ListaVerticesEArestas->AdicionaVerticeEAresta( iV1, n );
+	}
 }
 
 
