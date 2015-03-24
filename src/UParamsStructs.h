@@ -21,7 +21,6 @@ struct TParamsDadosGenerico
 
 struct TParamsGrafoDesenho: public TParamsDadosGenerico
 {
-  bool CarregaGrafo;
   TVerticesGerais *VerticesGerais;
 };
 //---------------------------------------------------------------------------

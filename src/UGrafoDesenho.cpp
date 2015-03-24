@@ -77,29 +77,26 @@ bool CCaboReta::EhOUltimoPonto( TPonto ponto )
 CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados)
 {
     _pri = 0;
-    CarregaGrafo = ParamsGrafoDesenho.CarregaGrafo;
 
     // Cria um DadosGenerico para ser usado
     this->_dados = Dados;
 
-    if (CarregaGrafo)
-    {
-        unsigned int n;
-        memset( TipoElementoCor, 0, NUM_CORES * sizeof(TTipoElemento) );
-        _verticesGerais = ParamsGrafoDesenho.VerticesGerais;
+    unsigned int n;
+    memset( TipoElementoCor, 0, NUM_CORES * sizeof(TTipoElemento) );
+    _verticesGerais = ParamsGrafoDesenho.VerticesGerais;
 
-        //O vértice 0 não pode ser usado, por isso adiciona-se este vértice vazio
-        TVerticeGeral temp;
-        _verticesGerais->Adiciona( temp );
+    //O vértice 0 não pode ser usado, por isso adiciona-se este vértice vazio
+    TVerticeGeral temp;
+    _verticesGerais->Adiciona( temp );
 
-        GeraListaCabos();
-        GeraVerticesBandeirola();
-        GeraVerticesArcos();
-        GeraVerticesPontaCabos();
-        GeraVerticesInstrumentos();
-        OrdenaVerticesRetas();
-        GeraArestas();
-    }
+    GeraListaCabos();
+    GeraVerticesBandeirola();
+    GeraVerticesArcos();
+    GeraVerticesPontaCabos();
+    GeraVerticesInstrumentos();
+    OrdenaVerticesRetas();
+    GeraArestas();
+
     _ult = Dados->Multipoint.size();
 }
 //---------------------------------------------------------------------------
@@ -1052,9 +1049,6 @@ void CGrafoDesenho::OrdenaVerticesRetas()
 
 void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos)
 {
-    if (!CarregaGrafo)
-        return;
-
     int n;
     vector< shared_ptr<TVerticeGeral> > Lista;
     _verticesGerais->ListaOrd( Lista );  //gera lista ordenada

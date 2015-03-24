@@ -74,7 +74,6 @@ typedef vector<TPontosBandeirola> TVectorPontosBandeirola;
 class CGrafoDesenho
 {
 private:
-  bool CarregaGrafo;
   TTipoElemento TipoElementoCor[NUM_CORES];
   void GeraListaCabos();
   //dado um ponto pega o cabo reta mais pr�ximo do ponto

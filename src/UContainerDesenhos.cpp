@@ -42,8 +42,6 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     TParamsGrafoDesenho paramsGrafoDesenho;
     // O Id
     paramsGrafoDesenho.IDArquivo = ListaDesenhos.size();
-    // Para carregar o grafo
-    paramsGrafoDesenho.CarregaGrafo = true;
     // Preenche o índice do desenho
     paramsGrafoDesenho.IndiceDesenho = ListaDesenhos.size();
 	dados->IndiceDesenho = ListaDesenhos.size();
