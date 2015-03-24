@@ -22,7 +22,6 @@ struct TParamsDadosGenerico
 struct TParamsGrafoDesenho: public TParamsDadosGenerico
 {
   bool CarregaGrafo;
-  double Altura;
   TVerticesGerais *VerticesGerais;
 };
 //---------------------------------------------------------------------------
@@ -33,7 +32,6 @@ struct TParamsInfoCircuitos
   ~TParamsInfoCircuitos();
   TVerticesGerais *VerticesGerais, *VerticesReduzidos;
   vector< shared_ptr<TAresta> > Arestas;
-  std::vector<TArestaReduzida> ArestasReduzidas;
   int NumDesenhos;
 };
 //---------------------------------------------------------------------------

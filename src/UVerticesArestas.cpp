@@ -196,15 +196,3 @@ bool ComparaTVerticeGeral(shared_ptr<TVerticeGeral> Item1, shared_ptr<TVerticeGe
     return (Item1->texto < Item2->texto);
 }
 //---------------------------------------------------------------------------
-
-
-
-TArestaReduzida::TArestaReduzida(const TArestaReduzida &cpy)
-{
-	Vertice1 = cpy.Vertice1;
-	Vertice2 = cpy.Vertice2;
-	Tam = cpy.Tam;
-	IndiceDesenho = cpy.IndiceDesenho;
-	IDArquivo = cpy.IDArquivo;
-	ArestasRetiradas.assign( cpy.ArestasRetiradas.begin(), cpy.ArestasRetiradas.end() );
-}

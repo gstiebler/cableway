@@ -372,7 +372,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
     int vertice[2];
     vertice[0] = vertice[1]=-1;
     TVectorInt *ListaArestas=NULL;
-    vector< vector<int> > *ArestasDesenho;
+    vector< vector<int> > &ArestasDesenho = ArestasCircuito->ArestasDesenho;
     string UltTemp="";
     string V[2];
     V[0] = Destino;
@@ -388,7 +388,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
          * A grande diferen�a � que no ListaArestas também estáo as arestas entre desenhos.
          */
         ListaArestas=&ArestasCircuito->Arestas;
-        ArestasDesenho = &(ArestasCircuito->ArestasDesenho);
     }
 
     //tempo->MarcaTempo("Vai achar vértices");
@@ -430,7 +429,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 				ListaArestas->push_back(iArestaTemp);
             ArestaTemp = Arestas[iArestaTemp];
             if (ArestasCircuito && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO)
-				(*ArestasDesenho)[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
+				ArestasDesenho[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
 
             tam+=Arestas[vArestas[vatual]]->Tam;
             TamSubRota += Arestas[vArestas[vatual]]->Tam;

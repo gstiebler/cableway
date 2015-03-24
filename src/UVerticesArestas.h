@@ -92,29 +92,6 @@ struct TAresta
   TAresta();
   void AdicionaVertices(int v1, int v2, double dist);
 };
-struct TArestaReduzida
-{
-  int Vertice1, Vertice2;
-  double Tam;
-  int IndiceDesenho;
-  int IDArquivo;
-  vector<int> ArestasRetiradas;
-  TArestaReduzida () 
-  { 
-	  limpa(); 
-  }
-
-  TArestaReduzida(const TArestaReduzida &cpy);
-
-  void limpa()
-  {
-    Vertice1 = Vertice2 = -1;
-    Tam = 0;
-    IndiceDesenho = IDArquivo = I_DESENHO_NULO;
-
-	ArestasRetiradas.clear();
-  }
-};
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
