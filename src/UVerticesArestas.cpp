@@ -7,7 +7,8 @@
 #include <string>
 
 
-TAresta::TAresta()
+TAresta::TAresta( int layer ) :
+	_layer( layer )
 {
     IndiceDesenho = I_DESENHO_NULO;
     IDArquivo = I_DESENHO_NULO;

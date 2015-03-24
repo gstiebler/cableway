@@ -89,7 +89,8 @@ struct TAresta
   double Tam;
   int IndiceDesenho;
   int IDArquivo;
-  TAresta();
+  int _layer;
+  TAresta( int layer );
   void AdicionaVertices(int v1, int v2, double dist);
 };
 //---------------------------------------------------------------------------
