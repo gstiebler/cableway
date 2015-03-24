@@ -500,15 +500,8 @@ void CMostraDesenho::SetDestacaBandeirolas(bool facilita)
 }
 //---------------------------------------------------------------------------
 
-void CMostraDesenho::MostraBola(double x, double y, double tam)
-{
-	primeiro=true;
-	bMostraBola=true;
-	xBola=x;
-	yBola=y;
-	tamBola=tam * (_glCoords.getWorldWidth() /100);
-}
-//---------------------------------------------------------------------------
+
+
 void CMostraDesenho::SetDestacaCores(bool DestacaCores)
 {
 	primeiro = true;

@@ -64,7 +64,6 @@ public:
   void MostraNumVerticesDEBUG(bool mostra);
   void MostraArvore(int vertice);
   void MostraDoubleArvore(int vertice, int vertice2);
-  void MostraBola(double x, double y, double tam);
   void SetDestacaCores(bool DestacaCores);
   void SetDestacaBandeirolas(bool facilita);
   void SetMostraChegaEquip(bool MostraEquip);

@@ -369,9 +369,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
         TVectorInt *ListaBandeirolas, string &SubRotas )
 {
     int n, m;
-    int vertice[2], vfila, vatual;
-    int iArestaTemp;
-    shared_ptr<TAresta> ArestaTemp;
+    int vertice[2];
     vertice[0] = vertice[1]=-1;
     TVectorInt *ListaArestas=NULL;
     vector< vector<int> > *ArestasDesenho;
@@ -409,26 +407,84 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
         tam = 0.0;
         return 1;
     }
-    //tempo->MarcaTempo("Vai alocar memória");
-    // Djikstra
-    double *DistanciaDjikstra;
-    int *anterior;
 
-//  tempo->MarcaTempo("Marcação de tempo antes de alocar as coisas do InfoCircuitos");
-	int *PaisVertices=new int [VerticesGerais->vertices.size()];//armazena os pais de cada vértice na �rvore
-    int *vArestas=new int [VerticesGerais->vertices.size()];//armazena a aresta de cada vértice referente em PaisVertices
-    DistanciaDjikstra = new double[VerticesGerais->vertices.size()];
-    anterior = new int[VerticesGerais->vertices.size()];
-//  tempo->MarcaTempo("Fim da Marcação de tempo.");
-//  tempo->MostraTempo((string)"Tempo InfoCircuitos.txt");
+    vector<int> anterior( VerticesGerais->vertices.size() );
+    vector<int> vArestas( VerticesGerais->vertices.size() );//armazena a aresta de cada vértice referente em PaisVertices
+	bool achou_final = CInfoCircuitos::generateDistanceTree( vertice, anterior, vArestas );
+	
+	vector<string> sRota;
+    if(achou_final)
+    {
+		int iArestaTemp;
+		shared_ptr<TAresta> ArestaTemp;
+		double TamSubRota=0;
+		//CAMINHO INVERSO NA �RVORE DE LARGURA
+		int vatual = vertice[1];
+		tam= VerticesGerais->vertices[vertice[0]]->dist + VerticesGerais->vertices[vertice[1]]->dist;
+		string temp;
+
+        while (anterior[vatual] > 0)
+        {
+            iArestaTemp = vArestas[vatual];
+            if ( ListaArestas )
+				ListaArestas->push_back(iArestaTemp);
+            ArestaTemp = Arestas[iArestaTemp];
+            if (ArestasCircuito && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO)
+				(*ArestasDesenho)[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
+
+            tam+=Arestas[vArestas[vatual]]->Tam;
+            TamSubRota += Arestas[vArestas[vatual]]->Tam;
+
+
+            if (VerticesGerais->vertices[vatual]->texto!="")
+            {
+                //if ( VerticesGerais->getItem(vatual)->TipoElemento!=INSTRUMENTO || (VerticesGerais->getItem(vatual)->texto.UpperCase()==Origem.UpperCase() || VerticesGerais->getItem(vatual)->texto.UpperCase()==Destino.UpperCase()))
+                {
+                    temp=VerticesGerais->vertices[vatual]->texto;
+                    if (UltTemp!=temp && temp != Destino)
+						sRota.push_back( temp );
+                    UltTemp=temp;
+                    SubRotas+=to_string(TamSubRota)+"/";
+                    TamSubRota=0;
+                    if ( (VerticesGerais->vertices[vatual]->TipoElemento==BANDEIROLA) || VerticesGerais->vertices[vatual]->EhColar)
+                    {
+                        if (ListaBandeirolas)
+							ListaBandeirolas->push_back(vatual);
+                    }
+                }
+            }
+            vatual=anterior[vatual];
+        }
+        sRota.push_back( V[0] );
+    }
+    else
+    tam=0;
+
+    rota = sRota;
+
+	if ( rota.size() == 0 )
+		return 1;
+
+    return 0;
+}
+//---------------------------------------------------------------------------
+
+
+bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior, vector<int> &vArestas )
+{
+	vector<int> PaisVertices( VerticesGerais->vertices.size() );//armazena os pais de cada vértice na �rvore
+	vector<double> DistanciaDjikstra( VerticesGerais->vertices.size() );
+    shared_ptr<TVerticeGeral> VerticeTemp;
+    TVerticeEAresta *VerticeEArestaTemp;
+	int vfila, vatual;
+    double dist;
+    int iAresta;
     TListaVerticesEArestas *ListaVerticesEArestasT;
     priority_queue<VerticesDjikstra> heap;
+    heap.push(VerticesDjikstra(vertice[0], 0));
+	bool achou_final = false;
 
-    heap.empty();
-
-    //tempo->MarcaTempo("Alocou memória");
-
-    /* initialize single source */
+	    /* initialize single source */
     for ( int n = 0; n < VerticesGerais->vertices.size(); n++ )
     {
         DistanciaDjikstra[n] = Infinity;
@@ -437,12 +493,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 
     DistanciaDjikstra[vertice[0]] = 0; // Distância do vértice pra ele mesmo � zero.
 
-    shared_ptr<TVerticeGeral> VerticeTemp;
-    TVerticeEAresta *VerticeEArestaTemp;
-    heap.push(VerticesDjikstra(vertice[0], 0));
-    double dist;
-    int iAresta;
-    bool achou_final = false;
     while(heap.size())
     {
         vfila = heap.top().n;
@@ -456,7 +506,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
             continue;
 
         ListaVerticesEArestasT = VerticesGerais->vertices[vfila]->ListaVerticesEArestas;
-        for(n = 0; n < ListaVerticesEArestasT->list.size(); n++)
+        for(int n = 0; n < ListaVerticesEArestasT->list.size(); n++)
         {
             VerticeEArestaTemp = ListaVerticesEArestasT->getVerticeEAresta(n);
             vatual = VerticeEArestaTemp->Vertice;
@@ -481,73 +531,9 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
         }
     }
 
-    //tempo->MarcaTempo("Fez rota");
-
-    double TamSubRota=0;
-    //CAMINHO INVERSO NA �RVORE DE LARGURA
-    vatual=vertice[1];
-    tam= VerticesGerais->vertices[vertice[0]]->dist + VerticesGerais->vertices[vertice[1]]->dist;
-    string temp;
-	vector<string> sRota;
-    if(achou_final)
-    {
-        while (anterior[vatual] > 0)
-        {
-            iArestaTemp=vArestas[vatual];
-            if ( ListaArestas )
-				ListaArestas->push_back(iArestaTemp);
-            ArestaTemp = Arestas[iArestaTemp];
-            if (ArestasCircuito && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO)
-				(*ArestasDesenho)[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
-
-            tam+=Arestas[vArestas[vatual]]->Tam;
-            TamSubRota += Arestas[vArestas[vatual]]->Tam;
-
-
-            if (VerticesGerais->vertices[vatual]->texto!="")
-            {
-                //if ( VerticesGerais->getItem(vatual)->TipoElemento!=INSTRUMENTO || (VerticesGerais->getItem(vatual)->texto.UpperCase()==Origem.UpperCase() || VerticesGerais->getItem(vatual)->texto.UpperCase()==Destino.UpperCase()))
-                {
-                    temp=VerticesGerais->vertices[vatual]->texto;
-                    if (UltTemp!=temp && temp != Destino)
-						sRota.push_back( temp );
-                    UltTemp=temp;
-                    SubRotas+=to_string(TamSubRota)+"/";
-                    TamSubRota=0;
-                    if (VerticesGerais->vertices[vatual]->TipoElemento==BANDEIROLA)
-                    {
-                        if (ListaBandeirolas)
-                        ListaBandeirolas->push_back(vatual);
-                    }
-                    else if ( VerticesGerais->vertices[vatual]->EhColar )
-                    {
-                        if (ListaBandeirolas)
-                        ListaBandeirolas->push_back(vatual);
-                    }
-                }
-            }
-            vatual=anterior[vatual];
-        }
-        sRota.push_back( V[0] );
-    }
-    else
-    tam=0;
-
-    //tempo->MarcaTempo("Fez caminho inverso");
-
-    rota = sRota;
-
-    heap.empty();
-    delete [] anterior;
-    delete [] DistanciaDjikstra;
-    delete [] PaisVertices;
-    delete [] vArestas;
-	if ( rota.size() == 0 )
-		return 1;
-
-    return 0;
+	return achou_final;
 }
-//---------------------------------------------------------------------------
+
 
 void CInfoCircuitos::Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho)
 {

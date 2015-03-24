@@ -193,13 +193,12 @@ void CGrafoDesenho::GeraVerticesBandeirola()
     int n, m, iMenorDist;
     TPonto PontoBandeirola[2], PontoNaReta;
     vector<TListaItensCelula> &ListaBandeirolas = _dados->InfoCelula.ListaCelulasBandeirolas;
-    TListaItensCelula *ListaItens;
 
     //percorre todas as bandeirolas
     for (n = 0; n < ListaBandeirolas.size(); n++)
     {
         int NumArcosBandeirola = 0;
-        ListaItens = new TListaItensCelula( ListaBandeirolas[ n ] );
+        TListaItensCelula ListaItens( ListaBandeirolas[ n ] );
         TVerticeGeral VerticeGeral;
         VerticeGeral.TipoVertice = VERTICE_BANDEIROLA;
 
@@ -208,9 +207,9 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         vector<TReta> RetasBandeirola;
 
         //transfere as retas e arcos para vetores vis�veis somente nesta fun��o
-		for (m = 0; m < ListaItens->_multipoints.size(); m++)
+		for (m = 0; m < ListaItens._multipoints.size(); m++)
         {
-			vector<TPonto> &points = ListaItens->_multipoints[m]->pontos;
+			vector<TPonto> &points = ListaItens._multipoints[m]->pontos;
             int NumPontos = points.size();
             int IndiceDoUltimoPonto = NumPontos - 1;
             // Pega o primeiro e o último ponto do multipoint e p�e na lista de extremidades.
@@ -226,10 +225,10 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         }
 
 		
-		for (m = 0; m < ListaItens->_arcs.size(); m++)
+		for (m = 0; m < ListaItens._arcs.size(); m++)
 		{
             TPonto pontas[2];
-            ListaItens->_arcs[m]->PontasArco( pontas );
+            ListaItens._arcs[m]->PontasArco( pontas );
             // Pega as pontas do arco e p�e na lista de extremidades
             PontosExtremidadesElementosBandeirola.push_back( pontas[0] );
             PontosExtremidadesElementosBandeirola.push_back( pontas[1] );
@@ -268,9 +267,9 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             continue;
         }
 
-        if (ListaItens->iTextos.size() == 1) //se a bandeirola possui um e somente um texto, gera o vértice
+        if (ListaItens.iTextos.size() == 1) //se a bandeirola possui um e somente um texto, gera o vértice
         {
-            VerticeGeral.texto = _dados->Textos[ListaItens->iTextos[0]]->texto;
+            VerticeGeral.texto = _dados->Textos[ListaItens.iTextos[0]]->texto;
             TPonto MaisDist;
             double DistMaisProx;
             bool Bandeirola2Retas = false;
@@ -321,7 +320,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             }
             if (!Bandeirola2Retas)
             {
-				shared_ptr<TTexto> text = _dados->Textos[ListaItens->iTextos[0] ];
+				shared_ptr<TTexto> text = _dados->Textos[ListaItens.iTextos[0] ];
                 TPonto origemTexto = text->origem;
                 origemTexto.x += (text->FatorAltura * FATOR_FONTE * text->texto.size()) * cos(text->rotacao ) / 2;
                 origemTexto.x += text->FatorAltura * FATOR_FONTE * cos( text->rotacao * M_PI / 2 ) / 2;
@@ -350,16 +349,16 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 erros->novoErro( "Atenção: " +  _dados->NomeArq + " não possui cabos." );
             }
         }
-        else if (ListaItens->iTextos.size() > 1) //avisa caso a bandeirola tenha mais de um texto
+        else if (ListaItens.iTextos.size() > 1) //avisa caso a bandeirola tenha mais de um texto
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
             erros->novoErro("No desenho " + _dados->NomeArq
                             + " existe um grupamento em nível de bandeirola com mais de um texto associado. Textos: " );
-            for (int i = 0; i < ListaItens->iTextos.size(); i++)
-                erros->novoErro( _dados->Textos[ListaItens->iTextos[i]]->texto );
+            for (int i = 0; i < ListaItens.iTextos.size(); i++)
+                erros->novoErro( _dados->Textos[ListaItens.iTextos[i]]->texto );
             erros->novoErro( "" );
         }
-        else if (ListaItens->iTextos.size() == 0) //avisa caso exista bandeirola sem texto nenhum
+        else if (ListaItens.iTextos.size() == 0) //avisa caso exista bandeirola sem texto nenhum
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
             erros->novoErro(
@@ -371,7 +370,6 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         VerticeGeral.iDesenho = _dados->IndiceDesenho;
         VerticeGeral.IDArquivo = _dados->IDArquivo;
         _verticesGerais->Adiciona( VerticeGeral );
-        delete ListaItens;
     }
 }
 //---------------------------------------------------------------------------
