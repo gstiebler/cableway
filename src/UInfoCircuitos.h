@@ -7,6 +7,7 @@
 #include <string>
 #include <algorithm>
 #include <memory>
+#include <set>
 
 #include "UDefines.h"
 #include "UArmazenamentoCircuitos.h"
@@ -66,6 +67,7 @@ private:
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   int NumDesenhos;
+  set<string> getLevelsFromVertex( int vertexIndex );
 public:      
   CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos);
 
@@ -87,7 +89,7 @@ public:
   bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota,
              TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
              string &SubRotas);
-  bool generateDistanceTree( int vertice[2], vector<int> &anterior, vector<int> &vArestas );
+  bool generateDistanceTree( int vertice[2], vector<int> &anterior, vector<int> &vArestas, string layer );
   void Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho);        
   int ApagaArestasDoCircuito(string circuito, int idCircuito);
   TVerticesGerais *VerticesGerais;

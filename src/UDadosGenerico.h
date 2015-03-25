@@ -18,6 +18,7 @@ struct TElemento
 	int Nivel;
 	int Peso;
 	int Estilo;
+	string layerName;
 	TElemento()
 	{
 		ID = Nivel = Peso = Estilo = 0;

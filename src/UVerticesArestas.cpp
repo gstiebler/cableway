@@ -7,7 +7,7 @@
 #include <string>
 
 
-TAresta::TAresta( int layer ) :
+TAresta::TAresta( string layer ) :
 	_layer( layer )
 {
     IndiceDesenho = I_DESENHO_NULO;

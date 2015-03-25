@@ -166,7 +166,7 @@ void CContainerDesenhos::GeraColares()
         double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura - ListaDesenhos[V2->iDesenho]->Altura;
         if (alturaDaAresta < 0)
             alturaDaAresta *= -1;
-        shared_ptr<TAresta> Aresta( new TAresta( -1 ) );
+        shared_ptr<TAresta> Aresta( new TAresta( "" ) );
         Aresta->AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
         Aresta->IndiceDesenho = I_DESENHO_NULO;
         Aresta->IDArquivo = I_DESENHO_NULO;

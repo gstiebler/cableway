@@ -365,6 +365,20 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
 }
 //---------------------------------------------------------------------------
 
+
+set<string> CInfoCircuitos::getLevelsFromVertex( int vertexIndex )
+{
+    TListaVerticesEArestas *verticeEArestaTemp = VerticesGerais->vertices[vertexIndex]->ListaVerticesEArestas;
+	set<string> result;
+	for (int i(0); i < verticeEArestaTemp->list.size(); ++i)
+	{
+		int iAresta = verticeEArestaTemp->list[i].Aresta;
+		result.insert( Arestas[iAresta]->_layer );
+	}
+	return result;
+}
+
+
 bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, TArestasCircuito *ArestasCircuito,
         TVectorInt *ListaBandeirolas, string &SubRotas )
 {
@@ -407,9 +421,21 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
         return 1;
     }
 
+	string selectedLayer;
+	set<string> levelsFrom1 = getLevelsFromVertex( vertice[0] );
+	set<string> levelsFrom2 = getLevelsFromVertex( vertice[1] );
+	set<string>::iterator it, e = levelsFrom1.end();
+	for( it = levelsFrom1.begin(); it != e; ++it)
+	{
+		if ( levelsFrom2.find( *it ) != levelsFrom2.end() )
+		{
+			selectedLayer = *it;
+		}
+	}
+
     vector<int> anterior( VerticesGerais->vertices.size() );
     vector<int> vArestas( VerticesGerais->vertices.size() );//armazena a aresta de cada vértice referente em PaisVertices
-	bool achou_final = CInfoCircuitos::generateDistanceTree( vertice, anterior, vArestas );
+	bool achou_final = CInfoCircuitos::generateDistanceTree( vertice, anterior, vArestas, selectedLayer );
 	
 	vector<string> sRota;
     if(achou_final)
@@ -469,7 +495,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 //---------------------------------------------------------------------------
 
 
-bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior, vector<int> &vArestas )
+bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior, vector<int> &vArestas, string layer )
 {
 	vector<int> PaisVertices( VerticesGerais->vertices.size() );//armazena os pais de cada vértice na �rvore
 	vector<double> DistanciaDjikstra( VerticesGerais->vertices.size() );
@@ -508,6 +534,11 @@ bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior
         for(int n = 0; n < ListaVerticesEArestasT->list.size(); n++)
         {
             VerticeEArestaTemp = ListaVerticesEArestasT->getVerticeEAresta(n);
+            iAresta = VerticeEArestaTemp->Aresta;
+			shared_ptr<TAresta> edge = Arestas[iAresta];
+			if ( edge->_layer != "" && edge->_layer != layer )
+				continue;
+
             vatual = VerticeEArestaTemp->Vertice;
             int alt;
 
@@ -518,8 +549,7 @@ bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior
 					//continue;
      //       }
 
-            iAresta = VerticeEArestaTemp->Aresta;
-            alt = DistanciaDjikstra[vfila] + Arestas[iAresta]->Tam;
+            alt = DistanciaDjikstra[vfila] + edge->Tam;
             if ( alt < DistanciaDjikstra[vatual] )
             {
                 DistanciaDjikstra[vatual] = alt;

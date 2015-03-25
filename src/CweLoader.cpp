@@ -127,6 +127,7 @@ void CweLoader::readText()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
+			texto->layerName = value;
 			texto->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "TEXT" )
@@ -182,6 +183,7 @@ void CweLoader::readDBText()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
+			texto->layerName = value;
 			texto->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "TEXT" ) 
@@ -233,6 +235,7 @@ void CweLoader::readCircle()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
+			arco->layerName = value;
 			arco->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "DIAMETER" )
@@ -283,6 +286,7 @@ void CweLoader::readArc()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
+			arco->layerName = value;
 			arco->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "END_POINT_X" )
@@ -359,6 +363,7 @@ void CweLoader::readLine()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
+			multipoint->layerName = value;
 			multipoint->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if( key == "START_POINT_X" )
@@ -422,6 +427,7 @@ void CweLoader::readPolyLine()
 		breakLine( line, key, value );
 		if( key == "LAYER" )
 		{
+			multipoint->layerName = value;
 			multipoint->Nivel = _userParams->getTipoElemento( value );
 		}
 		else if ( key == "NUM_VERTEX" )

@@ -407,7 +407,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
                 straightCable->ponta[1] = true;
             }
 
-			shared_ptr<TAresta> Aresta( new TAresta( straightCable->_multipoint->Nivel ) );
+			shared_ptr<TAresta> Aresta( new TAresta( straightCable->_multipoint->layerName ) );
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
                 Aresta->AdicionaVertices( iVerticesInstrumento->at( i ),
@@ -438,7 +438,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
             //if ( ListaItensCelula->iTexto > 0 )
             //  VerticesGerais->getItem(IndiceVertice)->texto = Textos[ListaItensCelula->iTexto].texto;
             ListaItensCelula->cabosArcoRelacionados.push_back( cableIndex );
-            shared_ptr<TAresta> Aresta( new TAresta( _cabosArco[cableIndex]._arco->Nivel ) );
+			shared_ptr<TAresta> Aresta( new TAresta( _cabosArco[cableIndex]._arco->layerName ) );
 
             _cabosArco[cableIndex].ponta[ListaMenores.at( n ).IndiceArco] =
                     true;
@@ -527,7 +527,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             {
                 _cabosReta[IndiceCabo]->ponta[1] = true;
             }
-			shared_ptr<TAresta> Aresta( new TAresta( _cabosReta[IndiceCabo]->_multipoint->Nivel ) );
+			shared_ptr<TAresta> Aresta( new TAresta( _cabosReta[IndiceCabo]->_multipoint->layerName ) );
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
                 Aresta->AdicionaVertices( iVerticesInstrumento->at( i ),
@@ -595,7 +595,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
     // Caso o equipamento seja um colar de subida/descida, então � necess�rio adicionar uma aresta entre a subida e a descida.
     if (ListaItensCelula->iTextos.size() == 2)
     {
-        shared_ptr<TAresta> Aresta( new TAresta( -1 ) );
+        shared_ptr<TAresta> Aresta( new TAresta( "" ) );
         Aresta->AdicionaVertices( iVerticesInstrumento[0], iVerticesInstrumento[1], 0 );
         Aresta->IndiceDesenho = _dados->IndiceDesenho;
         Aresta->IDArquivo = _dados->IDArquivo;
@@ -721,7 +721,7 @@ void CGrafoDesenho::GeraVerticesArcos()
             }
         }
 
-		shared_ptr<TAresta> Aresta( new TAresta( Arco->Nivel ) );
+		shared_ptr<TAresta> Aresta( new TAresta( Arco->layerName ) );
         Aresta->AdicionaVertices( Arco->iV[0], Arco->iV[1], DistPontosManhattan( p[0], p[1] ) );
         Aresta->IndiceDesenho = _dados->IndiceDesenho;
         Aresta->IDArquivo = _dados->IDArquivo;
@@ -1115,7 +1115,7 @@ void CGrafoDesenho::GeraArestas()
         {
             VerticesReta1 = &_cabosReta[n]->VerticesReta[m];
             VerticesReta2 = &_cabosReta[n]->VerticesReta[m + 1];
-			shared_ptr<TAresta> Aresta( new TAresta( _cabosReta[n]->_multipoint->Nivel ) );
+			shared_ptr<TAresta> Aresta( new TAresta( _cabosReta[n]->_multipoint->layerName ) );
             Aresta->AdicionaVertices( VerticesReta1->ID, VerticesReta2->ID,
             //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));
                     DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );
