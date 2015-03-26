@@ -58,6 +58,9 @@ void loadLevelsParams(xlsWorkSheet *pWS, int col, set<string> &levels )
     for (int cellRow = 1; cellRow <= pWS->rows.lastrow; cellRow++)
     {
         xlsCell *cell = xls_cell(pWS, cellRow, col);
+		if( !cell )
+			continue;
+
         if( cell->id == STRING_FORMAT )
             levels.insert( string((char*)cell->str) );
         else if ( cell->id == NUMBER_FORMAT )
