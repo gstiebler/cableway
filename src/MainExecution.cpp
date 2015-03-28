@@ -7,8 +7,8 @@
 
 #include "MainExecution.h"
 
-#include "CweLoader.h"
-#include "InputCircuitsReader.h"
+#include "file/CweLoader.h"
+#include "file/InputCircuitsReader.h"
 #include "UContainerDesenhos.h"
 #include "UDadosGenerico.h"
 #include "UInfoCircuitos.h"

@@ -6,12 +6,12 @@
 #include <utility>
 #include <vector>
 
-#include "../CweLoader.h"
-#include "../UDadosGenerico.h"
-#include "../UDefines.h"
-#include "../UInfoCelula.h"
-#include "../UListaItensCelula.h"
-#include "../UserParams/UserParams.h"
+#include "file/CweLoader.h"
+#include "UDadosGenerico.h"
+#include "UDefines.h"
+#include "UInfoCelula.h"
+#include "UListaItensCelula.h"
+#include "UserParams/UserParams.h"
 #include "TestsUtil.h"
 
 using namespace std;

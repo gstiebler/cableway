@@ -32,14 +32,14 @@ set(ALL_SOURCES ${SRC_BASE}/UContainerDesenhos.cpp
 				${SRC_BASE}/GLCoords.cpp
 				${SRC_BASE}/UParamsStructs.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
-				${SRC_BASE}/CweLoader.cpp
 				${SRC_BASE}/MainExecution.cpp
+				${SRC_BASE}/Reports.cpp
 				${SRC_BASE}/interface/MainWindow.cpp
 				${SRC_BASE}/interface/DrawingWindow.cpp
 				${SRC_BASE}/presenters/MainPresenter.cpp
 				${SRC_BASE}/presenters/DrawingPresenter.cpp
-				${SRC_BASE}/InputCircuitsReader.cpp
-				${SRC_BASE}/Reports.cpp
+				${SRC_BASE}/file/CweLoader.cpp
+				${SRC_BASE}/file/InputCircuitsReader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
                 
@@ -94,7 +94,8 @@ set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
                   ${SRC_BASE}/tests/TestsUtil.cpp
                   ${SRC_BASE}/tests/UserParamsLoadingTests.cpp
                   ${SRC_BASE}/tests/DrawingLoaderTests.cpp
-                  ${SRC_BASE}/tests/InputCircuitsReaderTests.cpp)
+                  ${SRC_BASE}/tests/InputCircuitsReaderTests.cpp
+                  ${SRC_BASE}/tests/File2FileTests.cpp)
 
 add_executable(cableway_tests ${ALL_SOURCES} 
                     ${TESTS_SOURCES}

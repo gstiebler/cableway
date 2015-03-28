@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <InputCircuitsReader.h>
+#include "file/InputCircuitsReader.h"
 #include "TestsUtil.h"
 
 using namespace std;

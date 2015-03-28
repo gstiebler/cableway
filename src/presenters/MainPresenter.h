@@ -9,7 +9,7 @@
 #define MAINPRESENTER_H_
 
 #include <QObject>
-#include "InputCircuitsReader.h"
+#include "file/InputCircuitsReader.h"
 #include "MainExecution.h"
 
 class MainWindow;

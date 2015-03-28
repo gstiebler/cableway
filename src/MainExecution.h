@@ -10,7 +10,7 @@
 
 #include <string>
 #include <vector>
-#include "InputCircuitsReader.h"
+#include "file/InputCircuitsReader.h"
 
 class CContainerDesenhos;
 

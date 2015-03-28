@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../CweLoader.h"
+#include "file/CweLoader.h"
 #include "../UContainerDesenhos.h"
 #include "../UDadosGenerico.h"
 #include "../UDefines.h"

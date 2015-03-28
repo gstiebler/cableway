@@ -2,7 +2,7 @@
 #define __REPORTS_H
 
 #include <string>
-#include "InputCircuitsReader.h"
+#include "file/InputCircuitsReader.h"
 #include "MainExecution.h"
 
 class Reports
