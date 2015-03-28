@@ -4,20 +4,15 @@
 #include <string>
 #include <vector>
 
-#include "../DwgLoader.h"
+#include "../CweLoader.h"
 #include "../UContainerDesenhos.h"
 #include "../UDadosGenerico.h"
 #include "../UDefines.h"
 #include "../UInfoCelula.h"
 #include "../UInfoCircuitos.h"
-#include "../UItemCelula.h"
-#include "../UListaCelulas.h"
 #include "../UListaItensCelula.h"
-#include "../UListaV.h"
-#include "../UNiveisProjeto.h"
 #include "../UserParams/LoadUserParams.h"
 #include "../UserParams/UserParams.h"
-#include "../UTCallbackStatusCarregamento.h"
 #include "MainExecution.h"
 #include "TestsUtil.h"
 
@@ -43,82 +38,73 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
     dados->IDArquivo = 0;
 	// equipment 1
 	{
-		TMultipoint equip1;
-		equip1.pontos.push_back( TPonto( 10.0, 10.0 ) );
-		equip1.pontos.push_back( TPonto( 20.0, 10.0 ) );
-		equip1.pontos.push_back( TPonto( 20.0, 20.0 ) );
-		equip1.pontos.push_back( TPonto( 10.0, 20.0 ) );
-		equip1.Nivel = INSTRUMENTO;
+		shared_ptr<TMultipoint> equip1;
+		equip1->pontos.push_back( TPonto( 10.0, 10.0 ) );
+		equip1->pontos.push_back( TPonto( 20.0, 10.0 ) );
+		equip1->pontos.push_back( TPonto( 20.0, 20.0 ) );
+		equip1->pontos.push_back( TPonto( 10.0, 20.0 ) );
+		equip1->Nivel = INSTRUMENTO;
 		dados->Multipoint.push_back( equip1 );
 
-		TTexto equip1Text;
-		equip1Text.texto = "Equipamento 1";
-		equip1Text.Nivel = TAG;
+		shared_ptr<TTexto> equip1Text;
+		equip1Text->texto = "Equipamento 1";
+		equip1Text->Nivel = TAG;
 		dados->Textos.push_back( equip1Text );
 		
-		TItemCelula itemCelula;
-		itemCelula.Indice = dados->Multipoint.size() - 1;
-		itemCelula.TipoVetorCW = VMULTIPOINT;
 		TListaItensCelula lista;
-		lista.Adiciona( itemCelula );
+		lista._multipoints.push_back( equip1 );
 		lista.iTextos.push_back( dados->Textos.size() - 1 );
-		dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+		dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
 	}
 
 	// equipment 2
 	{
-		TMultipoint equip2;
-		equip2.pontos.push_back( TPonto( 40.0, 20.0 ) );
-		equip2.pontos.push_back( TPonto( 40.0, 10.0 ) );
-		equip2.pontos.push_back( TPonto( 50.0, 10.0 ) );
-		equip2.pontos.push_back( TPonto( 50.0, 20.0 ) );
-		equip2.Nivel = INSTRUMENTO;
+		shared_ptr<TMultipoint> equip2;
+		equip2->pontos.push_back( TPonto( 40.0, 20.0 ) );
+		equip2->pontos.push_back( TPonto( 40.0, 10.0 ) );
+		equip2->pontos.push_back( TPonto( 50.0, 10.0 ) );
+		equip2->pontos.push_back( TPonto( 50.0, 20.0 ) );
+		equip2->Nivel = INSTRUMENTO;
 		dados->Multipoint.push_back( equip2 );
 
-		TTexto equip2Text;
-		equip2Text.texto = "Equipamento 2";
-		equip2Text.Nivel = TAG;
+		shared_ptr<TTexto> equip2Text;
+		equip2Text->texto = "Equipamento 2";
+		equip2Text->Nivel = TAG;
 		dados->Textos.push_back( equip2Text );
 
-		TItemCelula itemCelula;
-		itemCelula.Indice = dados->Multipoint.size() - 1;
-		itemCelula.TipoVetorCW = VMULTIPOINT;
 		TListaItensCelula lista;
-		lista.Adiciona( itemCelula );
+		lista._multipoints.push_back( equip2 );
 		lista.iTextos.push_back( dados->Textos.size() - 1 );
-		dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+		dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
 	}
 
 	// cable
 	{
-		TMultipoint cable;
-		cable.Nivel = CABO;
-		cable.pontos.push_back( TPonto( 20.0, 15.0 ) );
-		cable.pontos.push_back( TPonto( 40.0, 15.0 ) );
+		shared_ptr<TMultipoint> cable;
+		cable->Nivel = CABO;
+		cable->pontos.push_back( TPonto( 20.0, 15.0 ) );
+		cable->pontos.push_back( TPonto( 40.0, 15.0 ) );
 		dados->Multipoint.push_back( cable );
 	}
 
 	
 	// bandeirola
 	{
-		TMultipoint bandeirola;
-		bandeirola.pontos.push_back( TPonto( 30.0, 5.0 ) );
-		bandeirola.pontos.push_back( TPonto( 30.0, 14.0 ) );
-		bandeirola.Nivel = BANDEIROLA;
+		shared_ptr<TMultipoint> bandeirola;
+		bandeirola->pontos.push_back( TPonto( 30.0, 5.0 ) );
+		bandeirola->pontos.push_back( TPonto( 30.0, 14.0 ) );
+		bandeirola->Nivel = BANDEIROLA;
 		dados->Multipoint.push_back( bandeirola );
 
-		TTexto bandeirolaText;
-		bandeirolaText.texto = "Bandeirola1";
-		bandeirolaText.Nivel = BANDEIROLA;
+		shared_ptr<TTexto> bandeirolaText;
+		bandeirolaText->texto = "Bandeirola1";
+		bandeirolaText->Nivel = BANDEIROLA;
 		dados->Textos.push_back( bandeirolaText );
 
-		TItemCelula itemCelula;
-		itemCelula.Indice = dados->Multipoint.size() - 1;
-		itemCelula.TipoVetorCW = VMULTIPOINT;
 		TListaItensCelula lista;
-		lista.Adiciona( itemCelula );
+		lista._multipoints.push_back( bandeirola );
 		lista.iTextos.push_back( dados->Textos.size() - 1 );
-		dados->InfoCelula.ListaCelulasBandeirolas->Adiciona( lista );
+		dados->InfoCelula.ListaCelulasBandeirolas.push_back( lista );
 	}
 }
 
@@ -129,58 +115,52 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
     dados->IDArquivo = 1;
     // equipment 3
     {
-        TMultipoint equip3;
-        equip3.pontos.push_back( TPonto( 40.0, 70.0 ) );
-        equip3.pontos.push_back( TPonto( 60.0, 70.0 ) );
-        equip3.pontos.push_back( TPonto( 60.0, 80.0 ) );
-        equip3.pontos.push_back( TPonto( 40.0, 80.0 ) );
-        equip3.Nivel = INSTRUMENTO;
+        shared_ptr<TMultipoint> equip3;
+        equip3->pontos.push_back( TPonto( 40.0, 70.0 ) );
+        equip3->pontos.push_back( TPonto( 60.0, 70.0 ) );
+        equip3->pontos.push_back( TPonto( 60.0, 80.0 ) );
+        equip3->pontos.push_back( TPonto( 40.0, 80.0 ) );
+        equip3->Nivel = INSTRUMENTO;
         dados->Multipoint.push_back( equip3 );
 
-        TTexto equip3Text;
-        equip3Text.texto = "Equipamento 3";
-        equip3Text.Nivel = TAG;
+        shared_ptr<TTexto> equip3Text;
+        equip3Text->texto = "Equipamento 3";
+        equip3Text->Nivel = TAG;
         dados->Textos.push_back( equip3Text );
 
-        TItemCelula itemCelula;
-        itemCelula.Indice = dados->Multipoint.size() - 1;
-        itemCelula.TipoVetorCW = VMULTIPOINT;
         TListaItensCelula lista;
-        lista.Adiciona( itemCelula );
+		lista._multipoints.push_back( equip3 );
         lista.iTextos.push_back( dados->Textos.size() - 1 );
-        dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+		dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
     }
 
     // equipment 2
     {
-        TMultipoint equip2;
-        equip2.pontos.push_back( TPonto( 40.0, 20.0 ) );
-        equip2.pontos.push_back( TPonto( 40.0, 10.0 ) );
-        equip2.pontos.push_back( TPonto( 50.0, 10.0 ) );
-        equip2.pontos.push_back( TPonto( 50.0, 20.0 ) );
-        equip2.Nivel = INSTRUMENTO;
+        shared_ptr<TMultipoint> equip2;
+        equip2->pontos.push_back( TPonto( 40.0, 20.0 ) );
+        equip2->pontos.push_back( TPonto( 40.0, 10.0 ) );
+        equip2->pontos.push_back( TPonto( 50.0, 10.0 ) );
+        equip2->pontos.push_back( TPonto( 50.0, 20.0 ) );
+        equip2->Nivel = INSTRUMENTO;
         dados->Multipoint.push_back( equip2 );
 
-        TTexto equip2Text;
-        equip2Text.texto = "Equipamento 2";
-        equip2Text.Nivel = TAG;
+        shared_ptr<TTexto> equip2Text;
+        equip2Text->texto = "Equipamento 2";
+        equip2Text->Nivel = TAG;
         dados->Textos.push_back( equip2Text );
 
-        TItemCelula itemCelula;
-        itemCelula.Indice = dados->Multipoint.size() - 1;
-        itemCelula.TipoVetorCW = VMULTIPOINT;
         TListaItensCelula lista;
-        lista.Adiciona( itemCelula );
+		lista._multipoints.push_back( equip2 );
         lista.iTextos.push_back( dados->Textos.size() - 1 );
-        dados->InfoCelula.ListaCelulasInstrumentos->Adiciona( lista );
+        dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
     }
 
     // cable
     {
-        TMultipoint cable;
-        cable.Nivel = CABO;
-        cable.pontos.push_back( TPonto( 45.0, 20.0 ) );
-        cable.pontos.push_back( TPonto( 45.0, 70.0 ) );
+        shared_ptr<TMultipoint> cable;
+        cable->Nivel = CABO;
+        cable->pontos.push_back( TPonto( 45.0, 20.0 ) );
+        cable->pontos.push_back( TPonto( 45.0, 70.0 ) );
         dados->Multipoint.push_back( cable );
     }
 }
@@ -195,19 +175,15 @@ TEST_F(BasicTest, singleDrawing)
 	createFloor1( dados );
 
 	containerDesenhos.addDrawing( dados, 100.0 );
-	callbackStatusCarregamento sc;
-	containerDesenhos.Conclui( sc );
+	containerDesenhos.Conclui();
 
 	double tam;
 	vector<string> rota;
 	TArestasCircuito *ArestasCircuito = NULL;
 	vector<int> ListaBandeirolas;
-	vector<string> DEBUG_arestas;
 	string SubRotas; 
-	TCircuitoAreas *CircuitoAreas = NULL;
 
-	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 2", "Equipamento 1", tam, rota, ArestasCircuito, &ListaBandeirolas,
-		&DEBUG_arestas, SubRotas, CircuitoAreas);
+	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 2", "Equipamento 1", tam, rota, ArestasCircuito, &ListaBandeirolas, SubRotas);
 
 	EXPECT_FLOAT_EQ( 20.0, tam );
 	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2", InputCircuit::getFormatedRoute( rota ).c_str() );
@@ -226,19 +202,15 @@ TEST_F(BasicTest, multipleDrawings)
     createFloor2( floor2Data );
     containerDesenhos.addDrawing( floor2Data, 126.0 );
 
-	callbackStatusCarregamento sc;
-	containerDesenhos.Conclui( sc );
+	containerDesenhos.Conclui();
 
 	double tam;
 	vector<string> rota;
 	TArestasCircuito *ArestasCircuito = NULL;
 	vector<int> ListaBandeirolas;
-	vector<string> DEBUG_arestas;
 	string SubRotas; 
-	TCircuitoAreas *CircuitoAreas = NULL;
 
-	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 3", "Equipamento 1", tam, rota, ArestasCircuito, &ListaBandeirolas,
-		&DEBUG_arestas, SubRotas, CircuitoAreas);
+	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 3", "Equipamento 1", tam, rota, ArestasCircuito, &ListaBandeirolas, SubRotas);
 
 	// 70 = 20 + 50 + (126.0 - 100.0)
 	EXPECT_FLOAT_EQ( 96.0, tam );
@@ -255,23 +227,19 @@ TEST_F(BasicTest, complete)
 
     std::shared_ptr<CDadosGenerico> dados( new CDadosGenerico() );
     string dwgFileName = TestsUtil::getDataPath() + "\\tests\\drawing2.dwg";
-    DwgLoader *loader = new DwgLoader( dwgFileName, dados, &userParams );
+    CweLoader *loader = new CweLoader( dwgFileName, dados, &userParams );
 
     CContainerDesenhos containerDesenhos;
 
     containerDesenhos.addDrawing( dados, 100.0 );
-    callbackStatusCarregamento sc;
-    containerDesenhos.Conclui( sc );
+    containerDesenhos.Conclui();
 
     double tam;
     vector<string> rota;
     TArestasCircuito *ArestasCircuito = NULL;
     vector<int> ListaBandeirolas;
-    vector<string> DEBUG_arestas;
     string SubRotas;
-    TCircuitoAreas *CircuitoAreas = NULL;
-    containerDesenhos.InfoCircuitos->GeraRota("Equipamento 1", "Equipamento 2", tam, rota, ArestasCircuito, &ListaBandeirolas,
-        &DEBUG_arestas, SubRotas, CircuitoAreas);
+    containerDesenhos.InfoCircuitos->GeraRota("Equipamento 1", "Equipamento 2", tam, rota, ArestasCircuito, &ListaBandeirolas, SubRotas );
 
     EXPECT_FLOAT_EQ( 500.0, tam );
     EXPECT_STREQ( "Equipamento 2/Equipamento 1", InputCircuit::getFormatedRoute( rota ).c_str() );
