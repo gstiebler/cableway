@@ -40,6 +40,7 @@ set(ALL_SOURCES ${SRC_BASE}/UContainerDesenhos.cpp
 				${SRC_BASE}/presenters/DrawingPresenter.cpp
 				${SRC_BASE}/file/CweLoader.cpp
 				${SRC_BASE}/file/InputCircuitsReader.cpp
+				${SRC_BASE}/file/CsvReader.cpp
 				${SRC_BASE}/UserParams/LoadUserParams.cpp
 				${SRC_BASE}/UserParams/UserParams.cpp  )
                 
