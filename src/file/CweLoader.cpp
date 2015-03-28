@@ -80,7 +80,7 @@ eReadElementResult CweLoader::readElement()
 	if( obj != "OBJ" )
 	{
 		CErrosMsg::getInstance()->novoErro( "Error reading obj " + obj );
-		return E_ERROR;
+		return E_OK;
 	}
 
 	if( type == "TEXT")
