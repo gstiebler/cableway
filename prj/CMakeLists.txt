@@ -21,7 +21,6 @@ set(QT_UI_BASE_PATH ../data/qt)
 
 set(ALL_SOURCES ${SRC_BASE}/UContainerDesenhos.cpp
 				${SRC_BASE}/UDadosGenerico.cpp
-				${SRC_BASE}/UDebug.cpp
 				${SRC_BASE}/UErros.cpp
 				${SRC_BASE}/UGeometria.cpp
 				${SRC_BASE}/UGrafoDesenho.cpp
