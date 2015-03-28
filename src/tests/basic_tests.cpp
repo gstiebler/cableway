@@ -38,7 +38,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
     dados->IDArquivo = 0;
 	// equipment 1
 	{
-		shared_ptr<TMultipoint> equip1;
+		shared_ptr<TMultipoint> equip1( new TMultipoint() );
 		equip1->pontos.push_back( TPonto( 10.0, 10.0 ) );
 		equip1->pontos.push_back( TPonto( 20.0, 10.0 ) );
 		equip1->pontos.push_back( TPonto( 20.0, 20.0 ) );
@@ -46,7 +46,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 		equip1->Nivel = INSTRUMENTO;
 		dados->Multipoint.push_back( equip1 );
 
-		shared_ptr<TTexto> equip1Text;
+		shared_ptr<TTexto> equip1Text( new TTexto() );
 		equip1Text->texto = "Equipamento 1";
 		equip1Text->Nivel = TAG;
 		dados->Textos.push_back( equip1Text );
@@ -59,7 +59,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 
 	// equipment 2
 	{
-		shared_ptr<TMultipoint> equip2;
+		shared_ptr<TMultipoint> equip2( new TMultipoint() );
 		equip2->pontos.push_back( TPonto( 40.0, 20.0 ) );
 		equip2->pontos.push_back( TPonto( 40.0, 10.0 ) );
 		equip2->pontos.push_back( TPonto( 50.0, 10.0 ) );
@@ -67,7 +67,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 		equip2->Nivel = INSTRUMENTO;
 		dados->Multipoint.push_back( equip2 );
 
-		shared_ptr<TTexto> equip2Text;
+		shared_ptr<TTexto> equip2Text( new TTexto() );
 		equip2Text->texto = "Equipamento 2";
 		equip2Text->Nivel = TAG;
 		dados->Textos.push_back( equip2Text );
@@ -80,7 +80,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 
 	// cable
 	{
-		shared_ptr<TMultipoint> cable;
+		shared_ptr<TMultipoint> cable( new TMultipoint() );
 		cable->Nivel = CABO;
 		cable->pontos.push_back( TPonto( 20.0, 15.0 ) );
 		cable->pontos.push_back( TPonto( 40.0, 15.0 ) );
@@ -90,13 +90,13 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 	
 	// bandeirola
 	{
-		shared_ptr<TMultipoint> bandeirola;
+		shared_ptr<TMultipoint> bandeirola( new TMultipoint() );
 		bandeirola->pontos.push_back( TPonto( 30.0, 5.0 ) );
 		bandeirola->pontos.push_back( TPonto( 30.0, 14.0 ) );
 		bandeirola->Nivel = BANDEIROLA;
 		dados->Multipoint.push_back( bandeirola );
 
-		shared_ptr<TTexto> bandeirolaText;
+		shared_ptr<TTexto> bandeirolaText( new TTexto() );
 		bandeirolaText->texto = "Bandeirola1";
 		bandeirolaText->Nivel = BANDEIROLA;
 		dados->Textos.push_back( bandeirolaText );
@@ -115,7 +115,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
     dados->IDArquivo = 1;
     // equipment 3
     {
-        shared_ptr<TMultipoint> equip3;
+        shared_ptr<TMultipoint> equip3( new TMultipoint() );
         equip3->pontos.push_back( TPonto( 40.0, 70.0 ) );
         equip3->pontos.push_back( TPonto( 60.0, 70.0 ) );
         equip3->pontos.push_back( TPonto( 60.0, 80.0 ) );
@@ -123,7 +123,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
         equip3->Nivel = INSTRUMENTO;
         dados->Multipoint.push_back( equip3 );
 
-        shared_ptr<TTexto> equip3Text;
+        shared_ptr<TTexto> equip3Text( new TTexto() );
         equip3Text->texto = "Equipamento 3";
         equip3Text->Nivel = TAG;
         dados->Textos.push_back( equip3Text );
@@ -136,7 +136,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
 
     // equipment 2
     {
-        shared_ptr<TMultipoint> equip2;
+        shared_ptr<TMultipoint> equip2( new TMultipoint() );
         equip2->pontos.push_back( TPonto( 40.0, 20.0 ) );
         equip2->pontos.push_back( TPonto( 40.0, 10.0 ) );
         equip2->pontos.push_back( TPonto( 50.0, 10.0 ) );
@@ -144,7 +144,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
         equip2->Nivel = INSTRUMENTO;
         dados->Multipoint.push_back( equip2 );
 
-        shared_ptr<TTexto> equip2Text;
+        shared_ptr<TTexto> equip2Text( new TTexto() );
         equip2Text->texto = "Equipamento 2";
         equip2Text->Nivel = TAG;
         dados->Textos.push_back( equip2Text );
@@ -157,7 +157,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
 
     // cable
     {
-        shared_ptr<TMultipoint> cable;
+        shared_ptr<TMultipoint> cable( new TMultipoint() );
         cable->Nivel = CABO;
         cable->pontos.push_back( TPonto( 45.0, 20.0 ) );
         cable->pontos.push_back( TPonto( 45.0, 70.0 ) );
@@ -226,7 +226,7 @@ TEST_F(BasicTest, complete)
     loadUserParams( xlsFileName, &userParams );
 
     std::shared_ptr<CDadosGenerico> dados( new CDadosGenerico() );
-    string dwgFileName = TestsUtil::getDataPath() + "\\tests\\drawing2.dwg";
+    string dwgFileName = TestsUtil::getDataPath() + "\\tests\\drawing2.cwe";
     CweLoader *loader = new CweLoader( dwgFileName, dados, &userParams );
 
     CContainerDesenhos containerDesenhos;
