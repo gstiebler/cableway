@@ -92,6 +92,8 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 	  {
 		  erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, CircuitoAreas);
 	  }
+	  if( erro )
+		  Circuito.metragem = 0.0;
   }
   catch(...)
   {

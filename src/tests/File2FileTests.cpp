@@ -29,7 +29,7 @@ TEST_F(File2FileTests, test1)
 	// removes the header
 	circuitsFixtures.erase( circuitsFixtures.begin() );
 
-	ASSERT_EQ( 12, circuitsFixtures.size() );
+	ASSERT_EQ( 11, circuitsFixtures.size() );
 	ASSERT_EQ( circuitsFixtures.size(), mainExecution._resultCircuits.size() );
 
 	const int LENGTH_COLUMN_INDEX = 5;
@@ -39,15 +39,15 @@ TEST_F(File2FileTests, test1)
 	{
 		if( circuitsFixtures[i][LENGTH_COLUMN_INDEX] == "" )
 		{
-			EXPECT_EQ( 0.0, mainExecution._resultCircuits[i].length );
+			EXPECT_EQ( 0.0, mainExecution._resultCircuits[i].length ) << "on circuit " << i;
 		}
 		else
 		{
 			double fixtureLength = stod( circuitsFixtures[i][LENGTH_COLUMN_INDEX] );
-			EXPECT_FLOAT_EQ( mainExecution._resultCircuits[i].length, fixtureLength );
+			EXPECT_FLOAT_EQ( fixtureLength, mainExecution._resultCircuits[i].length ) << "on circuit " << i << " name: " << circuitsFixtures[i][0].c_str();
 		}
 
-		EXPECT_STREQ( circuitsFixtures[i][ROUTE_COLUMN_INDEX].c_str(), InputCircuit::getFormatedRoute( mainExecution._resultCircuits[i].route ).c_str() );
-		EXPECT_STREQ( circuitsFixtures[i][ERROR_COLUMN_INDEX].c_str(), mainExecution._resultCircuits[i].errorMessage.c_str() );
+		EXPECT_STREQ( circuitsFixtures[i][ROUTE_COLUMN_INDEX].c_str(), InputCircuit::getFormatedRoute( mainExecution._resultCircuits[i].route ).c_str() ) << "on circuit " << i;
+		//EXPECT_STREQ( circuitsFixtures[i][ERROR_COLUMN_INDEX].c_str(), mainExecution._resultCircuits[i].errorMessage.c_str() ) << "on circuit " << i;
 	}
 }

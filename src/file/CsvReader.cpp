@@ -1,19 +1,18 @@
 
 #include "CsvReader.h"
-#include <QFile>
-#include <QTextStream>
+#include <QString>
+#include <QStringList>
+#include <fstream>
 
 using namespace std;
 
 void CsvReader::readCsv( string fileName, vector< vector< string > > &values )
 {
-	QFile inputFile( QString::fromStdString( fileName ) );
-	if ( inputFile.open( QIODevice::ReadOnly ) )
-	{
-	   QTextStream in(&inputFile);
-	   while (!in.atEnd())
-	   {
-		  QString line = in.readLine();
+	std::ifstream file( fileName );
+    std::string str; 
+    while (std::getline(file, str))
+    {		  
+		QString line = QString::fromLatin1( str.c_str() );
 		  QStringList list = line.split( ";" );
 		  
 		  vector< string > strings;
@@ -21,7 +20,5 @@ void CsvReader::readCsv( string fileName, vector< vector< string > > &values )
 			  strings.push_back( list[i].toStdString() );
 
 		  values.push_back( strings );
-	   }
-	   inputFile.close();
-	}
+    }
 }
