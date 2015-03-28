@@ -31,9 +31,9 @@ void Reports::generateCirtuitsReport( std::string fileName, const std::vector<In
 		line += inputCircuit.cable + ";";
 		line += string(strLength) + ";";
 		line += InputCircuit::getFormatedRoute( resultCircuit.route ) + ";";
-		line += resultCircuit.errorMessage + ";\n";
+		line += QString::fromLatin1( (resultCircuit.errorMessage + ";\n").c_str() ).toStdString();
 
-		out << QString::fromLatin1( line.c_str() );
+		out << QString::fromUtf8( line.c_str() );
 	}
  
     file.close(); 
