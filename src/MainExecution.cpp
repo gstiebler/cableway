@@ -82,7 +82,7 @@ void MainExecution::execute( std::string inputCircuitsFileName )
 string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std::string> &route )
 {
 	string erro;
-	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Origem) < 0 )
+	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Origem).get() ==  0 )
 	{
 		bool exists;
 		exists = false;
@@ -110,7 +110,7 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 			erro += "O texto de origem não existe nos desenhos; ";
 		}
 	}
-	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Destino) < 0 )
+	if ( _containerDesenhos->InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Destino).get() == 0 )
 	{
 		bool exists;
 		exists = false;

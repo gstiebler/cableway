@@ -85,7 +85,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 		TArestasCircuito &arestasCircuito = infoCircuitos->ArestasDoCircuito[IndiceCircuitoArestas];
 		for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 		{
-			vector<int> &arestasDesenho = arestasCircuito.ArestasDesenho[n];
+			vector< shared_ptr<TAresta> > &arestasDesenho = arestasCircuito.ArestasDesenho[n];
 			if (arestasDesenho.size() > 0)
 			{
 				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
@@ -95,10 +95,10 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 	}
 	else // circuit has problems
 	{
-		int vertice = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( source );
-		int vertice2 = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( dest );
+		shared_ptr<TVerticeGeral> vertice = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( source );
+		shared_ptr<TVerticeGeral> vertice2 = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( dest );
 
-		if( vertice >= 0 && vertice2 >= 0 )
+		if( vertice.get() != 0 && vertice2.get() != 0 )
 		{
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{

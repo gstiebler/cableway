@@ -10,6 +10,7 @@
 #include <cmath>
 #include <memory>
 #include "UDefines.h"
+#include "UVerticesArestas.h"
 
 struct TElemento
 {
@@ -68,16 +69,16 @@ struct TArco: public TElemento
 	// Sweep angle (degrees)
 	double AngEnd;
 	// �ndice dos vertices 
-	int iV[2];
+	std::vector< shared_ptr<TVerticeGeral> > _vertices;
   ///<summary>Fun��o que calcula as duas pontas de um arco.</summary>
   ///<param name"Arco">O Arco.</param>
   ///<param name"pontas">O ponteiro para o vetor de pontas</param>
   void PontasArco(TPonto pontas[2]);
 	TArco() : TElemento()
 	{
+		_vertices.resize( 2 );
 		Centro.x = Centro.y = 0.0;
 		EixoPrimario = EixoSecundario = Rotacao = AngIni = AngEnd = 0.0;
-		iV[0] = iV[1] = -1;
 	}
   TArco(const TArco &arco) : TElemento(arco)
   {
@@ -88,8 +89,8 @@ struct TArco: public TElemento
     Rotacao = arco.Rotacao;
     AngIni = arco.AngIni;
     AngEnd = arco.AngEnd;
-    iV[0] = arco.iV[0];
-    iV[1] = arco.iV[1];
+    _vertices[0] = arco._vertices[0];
+    _vertices[1] = arco._vertices[1];
   }
 	TArco& operator=( const TArco &arco )
   {
@@ -107,8 +108,8 @@ struct TArco: public TElemento
     Rotacao = arco.Rotacao;
     AngIni = arco.AngIni;
     AngEnd = arco.AngEnd;
-    iV[0] = arco.iV[0];
-    iV[1] = arco.iV[1];
+	_vertices[0] = arco._vertices[0];
+    _vertices[1] = arco._vertices[1];
   	return *this;
   }
 	double getAng() const;

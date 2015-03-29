@@ -40,8 +40,8 @@ private:
   bool bMostraArvore;
   bool bMostraArvore2;
   bool bMostraBola;
-  int VerticeArvore;
-  int VerticeArvore2;
+  shared_ptr<TVerticeGeral> VerticeArvore;
+  shared_ptr<TVerticeGeral> VerticeArvore2;
   bool destacaCoresDeEquipamentos;
   bool facilitarVerBandeirola;
   bool mostraLigacaoEquipamento;
@@ -62,8 +62,8 @@ public:
   void MostraCircuito(int Circuito);
   void ApagaCircuito();
   void MostraNumVerticesDEBUG(bool mostra);
-  void MostraArvore(int vertice);
-  void MostraDoubleArvore(int vertice, int vertice2);
+  void MostraArvore(shared_ptr<TVerticeGeral> vertice);
+  void MostraDoubleArvore(shared_ptr<TVerticeGeral> vertice, shared_ptr<TVerticeGeral> vertice2);
   void SetDestacaCores(bool DestacaCores);
   void SetDestacaBandeirolas(bool facilita);
   void SetMostraChegaEquip(bool MostraEquip);

@@ -99,17 +99,14 @@ bool CContainerDesenhos::verificaTexto(string str)
 
 void CContainerDesenhos::GeraListaAdjacencias()
 {
-	int iV1, iV2;
 	for ( int n(0); n<ParamsInfoCircuitos.Arestas.size(); n++)
 	{
-		iV1 = ParamsInfoCircuitos.Arestas[n]->Vertice1;
-		iV2 = ParamsInfoCircuitos.Arestas[n]->Vertice2;
+		shared_ptr<TAresta> aresta = ParamsInfoCircuitos.Arestas[n];
+		shared_ptr<TVerticeGeral> v1 = aresta->_vertices[0];
+		shared_ptr<TVerticeGeral> v2 = aresta->_vertices[1];
 
-		shared_ptr<TVerticeGeral> v1 = ParamsInfoCircuitos.VerticesGerais->vertices[iV1];
-		shared_ptr<TVerticeGeral> v2 = ParamsInfoCircuitos.VerticesGerais->vertices[iV2];
-
-		v1->ListaVerticesEArestas->AdicionaVerticeEAresta( iV2, n );
-		v2->ListaVerticesEArestas->AdicionaVerticeEAresta( iV1, n );
+		v1->ListaVerticesEArestas->AdicionaVerticeEAresta( v2, aresta );
+		v2->ListaVerticesEArestas->AdicionaVerticeEAresta( v1, aresta );
 	}
 }
 
@@ -167,7 +164,7 @@ void CContainerDesenhos::GeraColares()
         if (alturaDaAresta < 0)
             alturaDaAresta *= -1;
         shared_ptr<TAresta> Aresta( new TAresta( "" ) );
-        Aresta->AdicionaVertices( V1->IndiceOriginal, V2->IndiceOriginal, alturaDaAresta );
+        Aresta->AdicionaVertices( V1, V2, alturaDaAresta );
         Aresta->IndiceDesenho = I_DESENHO_NULO;
         Aresta->IDArquivo = I_DESENHO_NULO;
 		ParamsInfoCircuitos.Arestas.push_back( Aresta );
@@ -197,7 +194,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       erro = "não foi encontrado caminho.";
       bool exists, equips;
       equips = true;
-      if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Origem) < 0 )
+      if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Origem).get() == 0 )
       {
         exists = false;
         equips = false;
@@ -223,7 +220,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       }
 
       /***/
-      if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Destino) < 0 )
+      if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Destino).get() == 0 )
       {
         exists = false;
         equips = false;
@@ -262,20 +259,13 @@ void CContainerDesenhos::MostraCircuito(string circuito)
 
 void CContainerDesenhos::MostraArvore(string Nome)
 {
-  for (int n=0; n<NumDesenhos(); n++)
-  {
-    int vertice=InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Nome);
-  }
+
 }
 //---------------------------------------------------------------------------
 
 void CContainerDesenhos::MostraDoubleArvore(string Nome, string Nome2)
 {
-  for (int n=0; n<NumDesenhos(); n++)
-  {
-    int vertice=InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Nome);
-    int vertice2=InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Nome2);
-  }
+
 }
 //---------------------------------------------------------------------------
 

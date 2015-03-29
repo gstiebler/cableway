@@ -115,7 +115,7 @@ void TVerticesGerais::Adiciona(TVerticeGeral &Item)
 }
 //---------------------------------------------------------------------------
 
-int TVerticesGerais::AchaVerticePeloTexto(string Texto)
+shared_ptr<TVerticeGeral> TVerticesGerais::AchaVerticePeloTexto(string Texto)
 {
     int n;
     string texto1, texto2;
@@ -130,10 +130,10 @@ int TVerticesGerais::AchaVerticePeloTexto(string Texto)
 //    if (getItem(n)->texto==Texto)
         //    if (getItem(n)->texto.UpperCase()==Texto.UpperCase())
         if (texto1 == texto2)
-            return n;
+            return vertices[n];
     }
 
-    return -1;
+    return shared_ptr<TVerticeGeral>();
 }
 //---------------------------------------------------------------------------
 
@@ -167,16 +167,16 @@ void TVerticesGerais::ListaOrd(vector<shared_ptr<TVerticeGeral> > &ListaOrdenada
 
 //---------------------------------------------------------------------------
 
-void TAresta::AdicionaVertices(int v1, int v2, double dist)
+void TAresta::AdicionaVertices(shared_ptr<TVerticeGeral> v1, shared_ptr<TVerticeGeral> v2, double dist)
 {
-    Vertice1 = v1;
-    Vertice2 = v2;
+    _vertices[0] = v1;
+    _vertices[1] = v2;
     Tam = dist;
 }
 //---------------------------------------------------------------------------   
 //---------------------------------------------------------------------------
 
-void TListaVerticesEArestas::AdicionaVerticeEAresta(int vertice, int aresta)
+void TListaVerticesEArestas::AdicionaVerticeEAresta(shared_ptr<TVerticeGeral> vertice, shared_ptr<TAresta> aresta)
 {
     TVerticeEAresta temp;
     temp.Vertice = vertice;

@@ -42,7 +42,7 @@ public:
   ~CCaboReta();
   bool EhOPrimeiroPonto( TPonto ponto );
   bool EhOUltimoPonto( TPonto ponto );
-  void AdicionaVertice(int ID, TPonto &ponto);
+  void AdicionaVertice(shared_ptr<TVerticeGeral> Vertice, TPonto &ponto);
   shared_ptr<TMultipoint> _multipoint;
   int NumVertices;
   bool ponta[2];
@@ -55,7 +55,7 @@ struct TPontoEIndiceCabo
 {
   int IndiceCabo;
   TPonto PosVertice;
-  int IndiceVertice;
+  shared_ptr<TVerticeGeral> _vertex;
   int IndiceArco;
   double Dist;
 };
@@ -83,7 +83,7 @@ private:
   void GeraVerticesPontaCabos();
   //dado um ponto (de ponta de arco) pega o cabo arco cuja ponta � a mais pr�xima ao ponto dado
   void DistPontoParaPontaCaboArco(TPonto ponto,
-             int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, int &IndiceVertice, int IndiceMax,
+             int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex, int IndiceMax,
              int &pontaCabo);
   //dada uma reta (de instrumento) pega o cabo reta cuja ponta � a mais pr�xima da reta dada
   void DistRetaParaPontaCaboReta(TPonto Reta[2],
@@ -93,7 +93,7 @@ private:
                         TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo);
   //dada uma reta (de instrumento) pega o cabo arco cuja ponta � a mais pr�xima da reta dada
   void DistRetaParaPontaCaboArco(TPonto Reta[2],
-                        int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, int &IndiceVertice);
+                        int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex);
   //dada uma reta (de instrumento) pega todos os cabos arco cuja ponta está t�o pr�xima quanto a Distância m�nima da reta dada
   void DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
                         TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo);
@@ -107,11 +107,11 @@ private:
   void GeraArestas();
   void AchaTextoBandeirola(TPonto &pos, std::string &texto);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
-  void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, TVectorInt &iVerticesInstrumento, TPonto PosVertice );
-  void GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
-  void GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc, TListaItensCelula *ListaItensCelula, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
-  void GeraVerticesInstrumentosAdicionaMultipointCaboReta(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
-  void GeraVerticesInstrumentosAdicionaMultipointCaboArco(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, TVectorInt *iVerticesInstrumento, TPonto PosVertice);
+  void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice );
+  void GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
+  void GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
+  void GeraVerticesInstrumentosAdicionaMultipointCaboReta(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
+  void GeraVerticesInstrumentosAdicionaMultipointCaboArco(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
 
 public:
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco

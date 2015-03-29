@@ -43,10 +43,6 @@ CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos) :
     NumDesenhos = ParamsInfoCircuitos->NumDesenhos;
     VerticesGerais = ParamsInfoCircuitos->VerticesGerais;
     Arestas = ParamsInfoCircuitos->Arestas;
-
-    ListaCircuitosArestas = new TListaCircuitos[Arestas.size()];
-    for (int n = 0; n < Arestas.size(); n++)
-        ListaCircuitosArestas[n].NumCircuitos = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -60,12 +56,12 @@ CInfoCircuitos::~CInfoCircuitos()
 void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 {
 	int m;
-	int Aresta;
+	shared_ptr<TAresta> Aresta;
 	TCircuitoAreas *CircuitoAreas;
 	CircuitoAreas = new TCircuitoAreas[NumDesenhos];
 	TArestasCircuito *ArestasCircuito;
 	string rota, SubRotas;
-	TVectorInt Bandeirolas;
+	vector< shared_ptr<TVerticeGeral> > Bandeirolas;
 	ArestasDoCircuito.push_back( NumDesenhos );
 	// O item está em branco
 	ArestasCircuito = &ArestasDoCircuito.back();
@@ -85,12 +81,12 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 	  // Chama desse jeito se não tiver rota do usuário
 	  if ( Circuito.RotaUsuario == "" )
 	  {
-      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, SubRotas);
+      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, Bandeirolas, SubRotas);
     }
 	  // E assim caso tenha..
 	  else
 	  {
-		  erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito, &Bandeirolas, DebugArestas, CircuitoAreas);
+		  erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito, Bandeirolas, DebugArestas, CircuitoAreas);
 	  }
 	  if( erro )
 		  Circuito.metragem = 0.0;
@@ -105,13 +101,6 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 	{
 		ArestasCircuito->Circuito=Circuito.NomeCircuito;
 		ArestasCircuito->idCircuito=Circuito.ID;
-		//Adiciona o circuito na lista da aresta
-		for (m=0; m<(int)ArestasCircuito->Arestas.size(); m++)
-		{
-			Aresta=ArestasCircuito->Arestas[m];
-			ListaCircuitosArestas[Aresta].AdicionaCircuito(Circuito.NomeCircuito);
-		}
-		//CArmazenamentoCircuitos::AtualizaRotaMetragem(Circuito);
 
 #ifdef DEBUG_BUILDER
 		DebugArestas->SaveToFile(ExtractFilePath(Application->ExeName)+"Vertices\\"+Circuito.NomeCircuito.c_str()+".txt");
@@ -123,15 +112,6 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
     // Se deu erro, mas era rota de usuário e conseguiu completar alguma parte...
 		ArestasCircuito->Circuito=Circuito.NomeCircuito;
 		ArestasCircuito->idCircuito=Circuito.ID;
-		//Adiciona o circuito na lista da aresta
-		for (m=0; m<(int)ArestasCircuito->Arestas.size(); m++)
-		{
-			Aresta=ArestasCircuito->Arestas[m];
-			ListaCircuitosArestas[Aresta].AdicionaCircuito(Circuito.NomeCircuito);
-		}
-		//CArmazenamentoCircuitos::AtualizaRotaMetragem(Circuito);
-
-		//CArmazenamentoCircuitos::DeuErro(Circuito);
 	}
 	else
 	{
@@ -162,8 +142,8 @@ int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceD
     {
         if (Arestas[ m ]->IndiceDesenho != IndiceDesenho)
             continue;
-        Reta[0] = VerticesGerais->vertices[ Arestas[ m ]->Vertice1 ]->pos;
-        Reta[1] = VerticesGerais->vertices[ Arestas[ m ]->Vertice2 ]->pos;
+		Reta[0] = Arestas[ m ]->_vertices[0]->pos;
+		Reta[1] = Arestas[ m ]->_vertices[1]->pos;
 
         Dist = DistPontoParaSegmentoReta( Reta, ponto, retorno );
 
@@ -177,9 +157,9 @@ int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceD
     return IndiceAresta;
 }
 //---------------------------------------------------------------------------
-VerticesDjikstra::VerticesDjikstra(int numero, double Distancia)
+VerticesDjikstra::VerticesDjikstra(shared_ptr<TVerticeGeral> vertex, double Distancia)
 {
-    n = numero;
+    _vertex = vertex;
     distancia = Distancia;
 }
 
@@ -192,22 +172,6 @@ bool VerticesDjikstra::operator>(const VerticesDjikstra& right) const
 {
     return distancia < right.distancia;
 }
-
-//--------------------------------------------------------------------------
-string CInfoCircuitos::CircuitosDaAresta(int Aresta)
-{
-    int n;
-    string retorno, temp;
-    retorno = "";
-    for (n = 0; n < ListaCircuitosArestas[Aresta].NumCircuitos; n++)
-    {
-        temp = ListaCircuitosArestas[Aresta].Circuitos->at( n );
-        retorno += "/" + temp;
-    }
-    retorno.erase( 0, 1 );
-    return retorno;
-}
-//---------------------------------------------------------------------------
 
 int CInfoCircuitos::ListaArestasDoCircuito(string circuito)
 {
@@ -229,47 +193,16 @@ int CInfoCircuitos::ListaArestasDoCircuito(int idCircuito)
 }
 //---------------------------------------------------------------------------
 
-int CInfoCircuitos::ApagaArestasDoCircuito(string circuito, int idCircuito)
+vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(int circuito, int IndiceDesenho)
 {
-    int n = ListaArestasDoCircuito( idCircuito );
-    if (n < 0)
-    {
-        return -1;
-    }
-
-    TVectorInt Arestas = ArestasDoCircuito[n].Arestas;
-
-    for (int i = 0; i < (int) Arestas.size(); i++)
-    {
-        int Aresta = Arestas.at( i );
-        for (int j = 0; j < (int) ListaCircuitosArestas[Aresta].Circuitos->size(); j++)
-        {
-            if (ListaCircuitosArestas[Aresta].Circuitos->at( j ) == circuito)
-            {
-                ListaCircuitosArestas[Aresta].Circuitos->erase( ListaCircuitosArestas[Aresta].Circuitos->begin() + j );
-                ListaCircuitosArestas[Aresta].NumCircuitos--;
-                j--;
-            }
-        }
-    }
-    ArestasDoCircuito.erase( ArestasDoCircuito.begin() + n );
-    return 0;
-}
-
-TVectorInt * CInfoCircuitos::ArestasCircuito(int circuito, int IndiceDesenho)
-{
-    return &ArestasDoCircuito[circuito].ArestasDesenho[IndiceDesenho];
+    return ArestasDoCircuito[circuito].ArestasDesenho[IndiceDesenho];
 }
 //---------------------------------------------------------------------------
 
-void CInfoCircuitos::PontosAresta(TPonto Pontos[2], int iAresta)
+void CInfoCircuitos::PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta)
 {
-    int vertices[2];
-    vertices[0] = Arestas[ iAresta ]->Vertice1;
-    vertices[1] = Arestas[ iAresta ]->Vertice2;
-
-	Pontos[0] = VerticesGerais->vertices[ vertices[0] ]->pos;
-    Pontos[1] = VerticesGerais->vertices[ vertices[1] ]->pos;
+	Pontos[0] = Aresta->_vertices[0]->pos;
+    Pontos[1] = Aresta->_vertices[1]->pos;
 }
 
 //---------------------------------------------------------------------------
@@ -315,7 +248,7 @@ void CInfoCircuitos::MergeRota(vector<std::string> &rota, vector<std::string> No
 
 //Recebe a origem e o destino, e toda a rota do usuário
 bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, vector<string> &rota,
-        TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
+        TArestasCircuito *ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
         TStringList*DEBUG_arestas, TCircuitoAreas *CircuitoAreas)
 {
     vector<string> * ListaRota = new vector<string>();
@@ -368,27 +301,26 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
 //---------------------------------------------------------------------------
 
 
-set<string> CInfoCircuitos::getLevelsFromVertex( int vertexIndex )
+set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex )
 {
-    TListaVerticesEArestas *verticeEArestaTemp = VerticesGerais->vertices[vertexIndex]->ListaVerticesEArestas;
+    TListaVerticesEArestas *verticeEArestaTemp = vertexIndex->ListaVerticesEArestas;
 	set<string> result;
 	for (int i(0); i < verticeEArestaTemp->list.size(); ++i)
 	{
-		int iAresta = verticeEArestaTemp->list[i].Aresta;
-		result.insert( Arestas[iAresta]->_layer );
+		shared_ptr<TAresta> Aresta = verticeEArestaTemp->list[i].Aresta;
+		result.insert( Aresta->_layer );
 	}
 	return result;
 }
 
 
 bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, TArestasCircuito *ArestasCircuito,
-        TVectorInt *ListaBandeirolas, string &SubRotas )
+        vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas, string &SubRotas )
 {
     int n, m;
-    int vertice[2];
-    vertice[0] = vertice[1]=-1;
-    TVectorInt *ListaArestas=NULL;
-    vector< vector<int> > &ArestasDesenho = ArestasCircuito->ArestasDesenho;
+	shared_ptr<TVerticeGeral> vertice[2];
+    vector< shared_ptr<TAresta> > *ListaArestas=NULL;
+    vector< vector< shared_ptr<TAresta> > > &ArestasDesenho = ArestasCircuito->ArestasDesenho;
     string UltTemp="";
     string V[2];
     V[0] = Destino;
@@ -403,7 +335,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
          * ListaArestas guarda todas as arestas, enquanto ArestasDesenho guarda as arestas espec�ficas de cada desenho
          * A grande diferen�a � que no ListaArestas também estáo as arestas entre desenhos.
          */
-        ListaArestas=&ArestasCircuito->Arestas;
+        ListaArestas = &ArestasCircuito->Arestas;
     }
 
     //tempo->MarcaTempo("Vai achar vértices");
@@ -413,10 +345,10 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
          * vertice[] guarda os índices dos vértices, já que eles são passados pelo nome.
          */
         vertice[m] = VerticesGerais->AchaVerticePeloTexto(V[m]);
-        if (vertice[m] < 0)
+        if (vertice[m].get() == 0)
 			return 1;
     }
-    if(vertice[0] == vertice[1])
+    if(vertice[0].get() == vertice[1].get())
     {
 		rota.clear();
         tam = 0.0;
@@ -435,52 +367,48 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 		}
 	}
 
-    vector<int> anterior( VerticesGerais->vertices.size() );
-    vector<int> vArestas( VerticesGerais->vertices.size() );//armazena a aresta de cada vértice referente em PaisVertices
+    vector< shared_ptr<TVerticeGeral> > anterior( VerticesGerais->vertices.size() );
+    vector< shared_ptr<TAresta> > vArestas( VerticesGerais->vertices.size() );//armazena a aresta de cada vértice referente em PaisVertices
 	bool achou_final = CInfoCircuitos::generateDistanceTree( vertice, anterior, vArestas, selectedLayer );
 	
 	vector<string> sRota;
     if(achou_final)
     {
-		int iArestaTemp;
 		shared_ptr<TAresta> ArestaTemp;
 		double TamSubRota=0;
 		//CAMINHO INVERSO NA �RVORE DE LARGURA
-		int vatual = vertice[1];
-		tam= VerticesGerais->vertices[vertice[0]]->dist + VerticesGerais->vertices[vertice[1]]->dist;
+		shared_ptr<TVerticeGeral> vatual = vertice[1];
+		tam = vertice[0]->dist + vertice[1]->dist;
 		string temp;
 
-        while (anterior[vatual] > 0)
+		while (anterior[vatual->IndiceOriginal].get() == 0)
         {
-            iArestaTemp = vArestas[vatual];
+			ArestaTemp = vArestas[vatual->IndiceOriginal];
             if ( ListaArestas )
-				ListaArestas->push_back(iArestaTemp);
-            ArestaTemp = Arestas[iArestaTemp];
+				ListaArestas->push_back( ArestaTemp );
+
             if (ArestasCircuito && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO)
-				ArestasDesenho[ArestaTemp->IndiceDesenho].push_back(iArestaTemp);
+				ArestasDesenho[ArestaTemp->IndiceDesenho].push_back( ArestaTemp );
 
-            tam+=Arestas[vArestas[vatual]]->Tam;
-            TamSubRota += Arestas[vArestas[vatual]]->Tam;
+			tam += vArestas[vatual->IndiceOriginal]->Tam;
+			TamSubRota += vArestas[vatual->IndiceOriginal]->Tam;
 
 
-            if (VerticesGerais->vertices[vatual]->texto!="")
+            if (vatual->texto != "")
             {
                 //if ( VerticesGerais->getItem(vatual)->TipoElemento!=INSTRUMENTO || (VerticesGerais->getItem(vatual)->texto.UpperCase()==Origem.UpperCase() || VerticesGerais->getItem(vatual)->texto.UpperCase()==Destino.UpperCase()))
                 {
-                    temp=VerticesGerais->vertices[vatual]->texto;
+                    temp = vatual->texto;
                     if (UltTemp!=temp && temp != Destino)
 						sRota.push_back( temp );
                     UltTemp=temp;
                     SubRotas+=to_string(TamSubRota)+"/";
                     TamSubRota=0;
-                    if ( (VerticesGerais->vertices[vatual]->TipoElemento==BANDEIROLA) || VerticesGerais->vertices[vatual]->EhColar)
-                    {
-                        if (ListaBandeirolas)
-							ListaBandeirolas->push_back(vatual);
-                    }
+                    if ( (vatual->TipoElemento==BANDEIROLA) || vatual->EhColar)
+						ListaBandeirolas.push_back(vatual);
                 }
             }
-            vatual=anterior[vatual];
+			vatual = anterior[vatual->IndiceOriginal];
         }
         sRota.push_back( V[0] );
     }
@@ -497,15 +425,14 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 //---------------------------------------------------------------------------
 
 
-bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior, vector<int> &vArestas, string layer )
+bool CInfoCircuitos::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, string layer )
 {
-	vector<int> PaisVertices( VerticesGerais->vertices.size() );//armazena os pais de cada vértice na �rvore
+	//vector<int> PaisVertices( VerticesGerais->vertices.size() );//armazena os pais de cada vértice na �rvore
 	vector<double> DistanciaDjikstra( VerticesGerais->vertices.size() );
     shared_ptr<TVerticeGeral> VerticeTemp;
     TVerticeEAresta *VerticeEArestaTemp;
-	int vfila, vatual;
+	shared_ptr<TVerticeGeral> vfila, vatual;
     double dist;
-    int iAresta;
     TListaVerticesEArestas *ListaVerticesEArestasT;
     priority_queue<VerticesDjikstra> heap;
     heap.push(VerticesDjikstra(vertice[0], 0));
@@ -515,48 +442,41 @@ bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior
     for ( int n = 0; n < VerticesGerais->vertices.size(); n++ )
     {
         DistanciaDjikstra[n] = Infinity;
-        anterior[n] = -1;
+        anterior[n] = shared_ptr<TVerticeGeral>();
+		VerticesGerais->vertices[n]->IndiceOriginal = n;
     }
 
-    DistanciaDjikstra[vertice[0]] = 0; // Distância do vértice pra ele mesmo � zero.
+	DistanciaDjikstra[ vertice[0]->IndiceOriginal ] = 0; // Distância do vértice pra ele mesmo � zero.
 
     while(heap.size())
     {
-        vfila = heap.top().n;
+		vfila = heap.top()._vertex;
         dist = heap.top().distancia;
         heap.pop();
 
         if(vfila == vertice[1])
             achou_final = true;
 
-        if(dist > DistanciaDjikstra[vfila])
+		if(dist > DistanciaDjikstra[vfila->IndiceOriginal])
             continue;
 
-        ListaVerticesEArestasT = VerticesGerais->vertices[vfila]->ListaVerticesEArestas;
+        ListaVerticesEArestasT = vfila->ListaVerticesEArestas;
         for(int n = 0; n < ListaVerticesEArestasT->list.size(); n++)
         {
             VerticeEArestaTemp = ListaVerticesEArestasT->getVerticeEAresta(n);
-            iAresta = VerticeEArestaTemp->Aresta;
-			shared_ptr<TAresta> edge = Arestas[iAresta];
+			shared_ptr<TAresta> edge = VerticeEArestaTemp->Aresta;
 			if ( edge->_layer != "" && edge->_layer != layer )
 				continue;
 
             vatual = VerticeEArestaTemp->Vertice;
             int alt;
 
-            VerticeTemp = VerticesGerais->vertices[vatual];
-     //       if (VerticeTemp->TipoElemento == INSTRUMENTO && ( !VerticeTemp->EhColar ) ) //|| !VerticesGerais->getItem(vatual)->EhPrensaCabo ) )
-     //       {
-     //           if (!VerticeTemp->texto.empty() && vatual != vertice[0] && vatual != vertice[1])
-					//continue;
-     //       }
-
-            alt = DistanciaDjikstra[vfila] + edge->Tam;
-            if ( alt < DistanciaDjikstra[vatual] )
+			alt = DistanciaDjikstra[vfila->IndiceOriginal] + edge->Tam;
+            if ( alt < DistanciaDjikstra[vatual->IndiceOriginal] )
             {
-                DistanciaDjikstra[vatual] = alt;
-                anterior[vatual] = vfila;
-                vArestas[vatual] = iAresta;
+				DistanciaDjikstra[vatual->IndiceOriginal] = alt;
+                anterior[vatual->IndiceOriginal] = vfila;
+                vArestas[vatual->IndiceOriginal] = edge;
                 heap.push(VerticesDjikstra(vatual, alt));
             }
         }
@@ -566,44 +486,41 @@ bool CInfoCircuitos::generateDistanceTree( int vertice[2], vector<int> &anterior
 }
 
 
-void CInfoCircuitos::Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho)
+void CInfoCircuitos::Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, int IndiceDesenho)
 {
     int n;
-    queue<int> fila;
+    queue<TVerticeGeral*> fila;
     //fila=new CFila(VerticesGerais->Tamanho());
-    int vfila, vatual;
-    int iArestaTemp;
-    bool *VerticesVisitados;
-	VerticesVisitados = new bool[VerticesGerais->vertices.size()];
-    memset( VerticesVisitados, 0, VerticesGerais->vertices.size() * sizeof(bool) );
-    fila.push( Vertice );
-    VerticesVisitados[Vertice] = true;
+    TVerticeGeral *vfila, *vatual;
+    shared_ptr<TAresta> ArestaTemp;
+    set<TVerticeGeral*> VerticesVisitados;
+	fila.push( Vertice.get() );
+    VerticesVisitados.insert( Vertice.get() );
     //BUSCA EM LARGURA
     TListaVerticesEArestas *ListaVerticesEArestas;
     while (fila.size())
     {
         vfila = fila.front();
         fila.pop();
-        ListaVerticesEArestas = VerticesGerais->vertices[ vfila ]->ListaVerticesEArestas;
+        ListaVerticesEArestas = vfila->ListaVerticesEArestas;
         for (n = 0; n < ListaVerticesEArestas->list.size(); n++)
         {
             //vfila � o vértice que queremos a lista de adjac�ncia
             //n � o en�simo vértice na lista de adjac�ncia de vfila
             //.Vertice � pq podemos pegar também .Aresta
-            vatual = ListaVerticesEArestas->getVerticeEAresta( n )->Vertice;
-            iArestaTemp = ListaVerticesEArestas->getVerticeEAresta( n )->Aresta;
+			vatual = ListaVerticesEArestas->getVerticeEAresta( n )->Vertice.get();
+            ArestaTemp = ListaVerticesEArestas->getVerticeEAresta( n )->Aresta;
             // ListaArestas � a lista de arestas da �rvore no desenho atual
             // A �rvore � regerada para cada desenho
-            if (Arestas[ iArestaTemp ]->IndiceDesenho == IndiceDesenho)
-                ListaArestas.push_back( iArestaTemp );
-            if (!VerticesVisitados[vatual])
+            if (ArestaTemp->IndiceDesenho == IndiceDesenho)
+                ListaArestas.push_back( ArestaTemp );
+            if ( VerticesVisitados.find( vatual ) == VerticesVisitados.end() )
             {
-                VerticesVisitados[vatual] = true;
+				VerticesVisitados.insert( vatual );
                 fila.push( vatual );
             }
         }
     }
-    delete[] VerticesVisitados;
 }
 //---------------------------------------------------------------------------
 

@@ -53,8 +53,8 @@ class VerticesDjikstra
   public:
     bool operator<(const VerticesDjikstra&) const; 
     bool operator>(const VerticesDjikstra&) const;
-    VerticesDjikstra(int numero, double Distancia);
-    int n;
+    VerticesDjikstra(shared_ptr<TVerticeGeral> vertex, double Distancia);
+    shared_ptr<TVerticeGeral> _vertex;
     double distancia;
 };
 
@@ -63,11 +63,10 @@ class VerticesDjikstra
 class CInfoCircuitos
 {
 private:
-  TListaCircuitos *ListaCircuitosArestas;//lista de circuitos de uma determinada aresta
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   int NumDesenhos;
-  set<string> getLevelsFromVertex( int vertexIndex );
+  set<string> getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex );
 public:      
   CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos);
 
@@ -75,23 +74,20 @@ public:
 
   std::vector<TArestasCircuito> ArestasDoCircuito;//arestas de um determinado circuito
 
-  string CircuitosDaAresta(int Aresta);
-
   int ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceDesenho);
   int ListaArestasDoCircuito(string circuito);
   int ListaArestasDoCircuito(int idCircuito);
   void AdicionaCircuito(TCircuito &Circuito);
-  TVectorInt * ArestasCircuito(int circuito, int IndiceDesenho);
-  void PontosAresta(TPonto Pontos[2], int iAresta);
+  vector< shared_ptr<TAresta> >& ArestasCircuito(int circuito, int IndiceDesenho);
+  void PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta);
   bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota,
-              TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
+              TArestasCircuito *ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
               TStringList *DEBUG_arestas, TCircuitoAreas *CircuitoAreas);
   bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota,
-             TArestasCircuito *ArestasCircuito, TVectorInt *ListaBandeirolas,
+             TArestasCircuito *ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
              string &SubRotas);
-  bool generateDistanceTree( int vertice[2], vector<int> &anterior, vector<int> &vArestas, string layer );
-  void Arvore(int Vertice, TVectorInt &ListaArestas, int IndiceDesenho);        
-  int ApagaArestasDoCircuito(string circuito, int idCircuito);
+  bool generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, string layer );
+  void Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, int IndiceDesenho); 
   TVerticesGerais *VerticesGerais;
   vector< shared_ptr<TAresta> > Arestas;
 };                                     

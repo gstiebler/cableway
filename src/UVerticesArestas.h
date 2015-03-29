@@ -7,43 +7,44 @@
 #include "UDefines.h"
 #include <algorithm>
 #include <memory>
+
 //---------------------------------------------------------------------------
 
-//s� � usado no CCaboReta
+struct TVerticeGeral;
+
+//só é usado no CCaboReta
 struct TVerticeReta
 {
-  int ID;
+  shared_ptr<TVerticeGeral> vertex;
   TPonto pos;
 };
 //---------------------------------------------------------------------------
 
+struct TAresta;
+
 struct TArestasCircuito
 {
   string Circuito;
-  TVectorInt Arestas;
+  vector< shared_ptr<TAresta> > Arestas;
   int NumDesenhos;
   int idCircuito;
   TArestasCircuito(int numDesenhos);
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();
   void Apaga();
-  vector< vector<int> > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
+  vector< vector< shared_ptr<TAresta> > > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
 };
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------  
 
-struct TVerticeEAresta
-{
-  int Vertice;
-  int Aresta;//� a aresta que liga o vértice ao pai da lista de adjac�ncia
-};
-//---------------------------------------------------------------------------  
+struct TVerticeEAresta;
+struct TAresta;
 
 struct TListaVerticesEArestas
 {
     std::vector<TVerticeEAresta> list;
 
   TVerticeEAresta* getVerticeEAresta(int Indice);
-  void AdicionaVerticeEAresta(int vertice, int aresta);
+  void AdicionaVerticeEAresta(shared_ptr<TVerticeGeral> vertice, shared_ptr<TAresta> aresta);
   TListaVerticesEArestas(){}
   ~TListaVerticesEArestas() {}
   TListaVerticesEArestas(const TListaVerticesEArestas &cpy);
@@ -68,12 +69,21 @@ struct TVerticeGeral
 };
 //---------------------------------------------------------------------------
 
+struct TAresta;
+
+struct TVerticeEAresta
+{
+	shared_ptr<TVerticeGeral> Vertice;
+    shared_ptr<TAresta> Aresta;//� a aresta que liga o vértice ao pai da lista de adjac�ncia
+};
+//--------------------------------------------------------------------------
+
 struct TVerticesGerais
 {
 	TVerticesGerais();
 	vector<shared_ptr<TVerticeGeral> > vertices;
   void Adiciona(TVerticeGeral &Item);
-  int AchaVerticePeloTexto(string Texto);
+  shared_ptr<TVerticeGeral> AchaVerticePeloTexto(string Texto);
   bool VerticeEhEquipamento(int n);
   bool VerticeEhBandeirola(int n);
   void ListaOrd( vector<shared_ptr<TVerticeGeral> > &ListaOrdenada);
@@ -85,13 +95,13 @@ struct TVerticesGerais
 
 struct TAresta
 {
-  int Vertice1, Vertice2;
+	shared_ptr<TVerticeGeral> _vertices[2];
   double Tam;
   int IndiceDesenho;
   int IDArquivo;
   string _layer;
   TAresta( string layer );
-  void AdicionaVertices(int v1, int v2, double dist);
+  void AdicionaVertices( shared_ptr<TVerticeGeral> v1, shared_ptr<TVerticeGeral> v2, double dist);
 };
 //---------------------------------------------------------------------------
 

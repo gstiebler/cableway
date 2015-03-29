@@ -28,9 +28,7 @@ CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *info
         CircuitoAExibir( -1 ),
         xBola( -1 ),
         yBola( - 1),
-        tamBola( -1 ),
-        VerticeArvore( -1 ),
-        VerticeArvore2( -1 )
+        tamBola( -1 )
 {
   semCores = false;
 	primeiro=true;
@@ -191,17 +189,16 @@ void CMostraDesenho::drawArcs()
 void CMostraDesenho::showCircuit()
 {
 	int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
-	TVectorInt *iArestas;
 	TPonto Pontos[2];
 	glColor3f(pegaVermelho(CORCAMINHO)/255.0, pegaVerde(CORCAMINHO)/255.0, pegaAzul(CORCAMINHO)/255.0);
 //			glColor3f(0.0, 0.0, 1.0);
 	glLineWidth((GLfloat)(3.0));
-	iArestas=InfoCircuitos->ArestasCircuito(CircuitoAExibir, IndiceDesenho);
-	for (int n=0; n<(int)iArestas->size(); n++)
+	vector< shared_ptr<TAresta> > &edges = InfoCircuitos->ArestasCircuito(CircuitoAExibir, IndiceDesenho);
+	for (int n=0; n<(int)edges.size(); n++)
 	{
-		if ( ( n == 0 || n == (int)iArestas->size()-1 ) && !mostraLigacaoEquipamento )
+		if ( ( n == 0 || n == (int)edges.size()-1 ) && !mostraLigacaoEquipamento )
 			continue;
-		InfoCircuitos->PontosAresta(Pontos, (*iArestas)[n]);
+		InfoCircuitos->PontosAresta(Pontos, edges[n]);
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(Pontos[0].x, Pontos[0].y);
 		glVertex2f(Pontos[1].x, Pontos[1].y);
@@ -217,7 +214,7 @@ void CMostraDesenho::showTree()
 	// Laranja - Origem
 
 	//			glColor3f(1.0, 0.5, 0.0);
-	string origem = GrafoDesenho->_verticesGerais->vertices[VerticeArvore]->texto.c_str();
+	string origem = VerticeArvore->texto.c_str();
 //			if ( !bMostraArvore2 && ponteiroPraFuncao)
 //			    ponteiroPraFuncao(ponteiroProThis, origem , "");
 	glColor3f(pegaVermelho(CORARVORE)/255.0, pegaVerde(CORARVORE)/255.0, pegaAzul(CORARVORE)/255.0);
@@ -227,26 +224,26 @@ void CMostraDesenho::showTree()
 	//					GrafoDesenho->Dados->Textos[0].FatorAltura*10);
 	glPopMatrix();
 	int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
-	TVectorInt iArestas;
-	InfoCircuitos->Arvore(VerticeArvore, iArestas, IndiceDesenho);
+	vector< shared_ptr<TAresta> > Arestas;
+	InfoCircuitos->Arvore(VerticeArvore, Arestas, IndiceDesenho);
 	shared_ptr<TAresta> Aresta;
 	TPonto Pontos[2];
-	for (int n=0; n<(int)iArestas.size(); n++)
+	for (int n=0; n<(int)Arestas.size(); n++)
 	{
-		Aresta = InfoCircuitos->Arestas[iArestas[n]];
-		string debugTexto = GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->texto;
-		Pontos[0]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->pos;
-		Pontos[1]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->pos;
+		Aresta = Arestas[n];
+		string debugTexto = Aresta->_vertices[0]->texto;
+		Pontos[0] = Aresta->_vertices[0]->pos;
+		Pontos[1] = Aresta->_vertices[1]->pos;
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(Pontos[0].x, Pontos[0].y);
 		glVertex2f(Pontos[1].x, Pontos[1].y);
 		glEnd();
 #define TAMBOLACOLAR (1000)
-		if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->EhColar )
+		if ( Aresta->_vertices[0]->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
-		if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->EhColar )
+		if ( Aresta->_vertices[1]->EhColar )
 		{
 			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
 		}
@@ -255,7 +252,7 @@ void CMostraDesenho::showTree()
 	if (bMostraArvore2)
 	{
 		// Roxo - Destino
-		string destino = GrafoDesenho->_verticesGerais->vertices[VerticeArvore2]->texto.c_str();
+		string destino = VerticeArvore2->texto;
 //				if ( ponteiroPraFuncao )
 //				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
 		glColor3f(pegaVermelho(CORARVORE2)/255.0, pegaVerde(CORARVORE2)/255.0, pegaAzul(CORARVORE2)/255.0);
@@ -268,25 +265,26 @@ void CMostraDesenho::showTree()
 		glPopMatrix();
 
 		int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
-		TVectorInt iArestas;
-		InfoCircuitos->Arvore(VerticeArvore2, iArestas, IndiceDesenho);
+		vector< shared_ptr<TAresta> > Arestas;
+		InfoCircuitos->Arvore(VerticeArvore2, Arestas, IndiceDesenho);
 		TPonto Pontos[2];
-		for (int n=0; n<(int)iArestas.size(); n++)
+		for (int n=0; n<(int)Arestas.size(); n++)
 		{
-			Aresta = InfoCircuitos->Arestas[ iArestas[n] ];
-			Pontos[0]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->pos;
-			Pontos[1]=GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->pos;
+			Aresta = Arestas[n];
+			for( int i(0); i < 2; ++i )
+				Pontos[i] = Aresta->_vertices[i]->pos;
+
 			glBegin(GL_LINE_STRIP);
-			glVertex2f(Pontos[0].x, Pontos[0].y);
-			glVertex2f(Pontos[1].x, Pontos[1].y);
+			for( int i(0); i < 2; ++i )
+				glVertex2f(Pontos[i].x, Pontos[i].y);
 			glEnd();
-			if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice1]->EhColar )
+			
+			for( int i(0); i < 2; ++i )
 			{
-				DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
-			}
-			if ( GrafoDesenho->_verticesGerais->vertices[Aresta->Vertice2]->EhColar )
-			{
-				DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+				if ( Aresta->_vertices[i]->EhColar )
+				{
+					DesenhaBolaFechada(Pontos[i].x, Pontos[i].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+				}
 			}
 		}
 		glLineWidth((GLfloat)(1.0));
@@ -475,7 +473,7 @@ void CMostraDesenho::MostraNumVerticesDEBUG(bool mostra)
 }
 //---------------------------------------------------------------------------
 
-void CMostraDesenho::MostraArvore(int vertice)
+void CMostraDesenho::MostraArvore(shared_ptr<TVerticeGeral> vertice)
 {
 	primeiro=true;
 	VerticeArvore=vertice;
@@ -484,7 +482,7 @@ void CMostraDesenho::MostraArvore(int vertice)
 }
 //---------------------------------------------------------------------------
 
-void CMostraDesenho::MostraDoubleArvore(int vertice, int vertice2)
+void CMostraDesenho::MostraDoubleArvore(shared_ptr<TVerticeGeral> vertice, shared_ptr<TVerticeGeral> vertice2)
 {
 	primeiro=true;
 	VerticeArvore=vertice;
