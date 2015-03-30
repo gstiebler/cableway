@@ -139,25 +139,15 @@ double DistPontos(TPonto &p1, TPonto &p2)
 }
 //---------------------------------------------------------------------------
 
-bool OrdenaRetaVertical(const TVerticeReta &Item1, const TVerticeReta &Item2)
+bool OrdenaRetaVertical(const shared_ptr<TVerticeGeral> &Item1, const shared_ptr<TVerticeGeral> &Item2)
 {
-	return (Item1.pos.y - Item2.pos.y) < -0.001; 
+	return Item1->pos.y < Item2->pos.y;
 }  
 //---------------------------------------------------------------------------
 
-bool OrdenaRetaHorizontal(const TVerticeReta &Item1, const TVerticeReta &Item2)
+bool OrdenaRetaHorizontal(const shared_ptr<TVerticeGeral> &Item1, const shared_ptr<TVerticeGeral> &Item2)
 {
-return (Item1.pos.x - Item2.pos.x) < -0.001; 
-//  return (Item1->pos.x < Item2->pos.x);
+	//return (Item1.pos.x - Item2.pos.x) < -0.001; 
+	return Item1->pos.x < Item2->pos.x;
 }
-//int __fastcall OrdenaRetaHorizontal(void *Item1, void *Item2)
-//{
-//  if ( ((TVerticeReta *)Item1)->pos.x>((TVerticeReta *)Item2)->pos.x )
-//    return 1;
-//  else
-//  if ( ((TVerticeReta *)Item1)->pos.x<((TVerticeReta *)Item2)->pos.x )
-//    return -1;
-//  return 0;
-//}
-//---------------------------------------------------------------------------
 

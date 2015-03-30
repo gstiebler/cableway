@@ -12,14 +12,6 @@
 
 struct TVerticeGeral;
 
-//só é usado no CCaboReta
-struct TVerticeReta
-{
-  shared_ptr<TVerticeGeral> vertex;
-  TPonto pos;
-};
-//---------------------------------------------------------------------------
-
 struct TAresta;
 
 struct TArestasCircuito

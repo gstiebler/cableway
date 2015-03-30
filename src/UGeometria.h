@@ -11,7 +11,7 @@
 //#include "UErros.h"
 #include "UDefines.h"
 
-class TVerticeReta;
+#include "UVerticesArestas.h"
 
 void PontoMaisDistante(TPonto ponto, vector<TPonto> pontos,
 		TPonto &maisDist);
@@ -35,11 +35,11 @@ double DistPontosManhattan(TPonto &p1, TPonto &p2);
 ///<param name"Item1">O primeiro vertice</param>
 ///<param name"Item2">O segundo vertice</param>
 ///<returns>Valor booleano, verdadeiro caso o primeiro seja menor do que o segundo.</returns>
-bool OrdenaRetaHorizontal(const TVerticeReta &Item1, const TVerticeReta &Item2);
+bool OrdenaRetaHorizontal(const shared_ptr<TVerticeGeral> &Item1, const shared_ptr<TVerticeGeral> &Item2);
 ///<summary>Fun��o para ordenar uma reta de acordo com y.</summary>
 ///<param name"Item1">O primeiro vertice</param>
 ///<param name"Item2">O segundo vertice</param>
 ///<returns>Valor booleano, verdadeiro caso o primeiro seja menor do que o segundo.</returns>
-bool OrdenaRetaVertical(const TVerticeReta &Item1, const TVerticeReta &Item2);
+bool OrdenaRetaVertical(const shared_ptr<TVerticeGeral> &Item1, const shared_ptr<TVerticeGeral> &Item2);
 
 #endif

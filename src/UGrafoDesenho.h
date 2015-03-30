@@ -42,11 +42,11 @@ public:
   ~CCaboReta();
   bool EhOPrimeiroPonto( TPonto ponto );
   bool EhOUltimoPonto( TPonto ponto );
-  void AdicionaVertice(shared_ptr<TVerticeGeral> Vertice, TPonto &ponto);
+  void AdicionaVertice( shared_ptr<TVerticeGeral> Vertice );
   shared_ptr<TMultipoint> _multipoint;
   bool ponta[2];
   TTipoOrientacao TipoOrientacao;
-  std::vector<TVerticeReta> VerticesReta;
+  std::vector< shared_ptr< TVerticeGeral > > VerticesReta;
 };
 //---------------------------------------------------------------------------
 
