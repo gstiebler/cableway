@@ -326,8 +326,8 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             CaboMaisProximo( MaisDist, iMenorDist, DistMaisProx, PontoNaReta, -1, -1 );
             if (iMenorDist >= 0)
             {
-                _cabosReta[iMenorDist]->AdicionaVertice( VerticeGeral );
                 VerticeGeral->pos = PontoNaReta;
+                _cabosReta[iMenorDist]->AdicionaVertice( VerticeGeral );
 
                 TPontosBandeirola pontoTemp;
                 pontoTemp.NaBandeirola = MaisDist;
@@ -380,8 +380,6 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
         {
             shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
 			shared_ptr<CCaboReta> straightCable = _cabosReta[pontoEIndiceCabo.IndiceCabo];
-            //adiciona o vértice na lista de vértices do cabo
-            straightCable->AdicionaVertice( VerticeGeral );
 
             VerticeGeral->pos = pontoEIndiceCabo.PosVertice;
             VerticeGeral->TipoElemento = INSTRUMENTO;
@@ -389,6 +387,8 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
             VerticeGeral->IDArquivo = _dados->IDArquivo;
             VerticeGeral->TipoVertice = VERTICE_INSTRUMENTO_RETA;
             _verticesGerais->Adiciona( VerticeGeral );
+            //adiciona o vértice na lista de vértices do cabo
+            straightCable->AdicionaVertice( VerticeGeral );
 			
             ListaItensCelula->cabosRetaRelacionados.push_back( pontoEIndiceCabo.IndiceCabo );
 
@@ -650,8 +650,6 @@ void CGrafoDesenho::GeraVerticesArcos()
     double DistMaisProx;
     TPonto p[2], PontoNaReta, PontoTemp;
     shared_ptr<TArco> Arco;
-    shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
-    VerticeGeral->TipoVertice = VERTICE_ARCO;
     int IndiceCabo, PontaArco;
     n = m = iMenorDist = IndiceCabo = 0;
     DistMaisProx = 0;
@@ -665,6 +663,8 @@ void CGrafoDesenho::GeraVerticesArcos()
 
         for (m = 0; m < 2; m++)
         {
+			shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
+			VerticeGeral->TipoVertice = VERTICE_ARCO;
             // iV[m] � o índice do novo vértice que será criado, e como ele será o último vértice,
             // o seu índice � igual ao total atual de vértices
             Arco->_vertices[m] = VerticeGeral;
@@ -727,8 +727,6 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
     double DistMaisProx;
     TPonto PontoNaReta;
     shared_ptr<TMultipoint> tMultipoint;
-    shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
-    VerticeGeral->TipoVertice = VERTICE_PONTA_CABO;
 	for (n = 0; n < _cabosReta.size(); n++)
     {
         /* Olha todos os cabos reta do desenho */
@@ -736,6 +734,8 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
 
         for (m = 0; m < tMultipoint->pontos.size(); m++)
         {
+			shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
+			VerticeGeral->TipoVertice = VERTICE_PONTA_CABO;
             if (m != 0 && m != tMultipoint->pontos.size() - 1)
                 continue;
             /* Olha cada ponta da reta */
@@ -744,8 +744,8 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
                 // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
-                _cabosReta[iMenorDist]->AdicionaVertice( VerticeGeral );
                 VerticeGeral->pos = PontoNaReta;
+                _cabosReta[iMenorDist]->AdicionaVertice( VerticeGeral );
                 //        if ( CabosReta[iMenorDist]->EhOPrimeiroPonto(PontoNaReta, Dados->Multipoint, DistMinElemCabo) )
                 //          CabosReta[iMenorDist]->ponta[0] = true;
                 //       if ( CabosReta[iMenorDist]->EhOUltimoPonto(PontoNaReta, Dados->Multipoint, DistMinElemCabo) )

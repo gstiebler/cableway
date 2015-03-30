@@ -381,7 +381,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 		tam = vertice[0]->dist + vertice[1]->dist;
 		string temp;
 
-		while (anterior[vatual->IndiceOriginal].get() == 0)
+		while (anterior[vatual->IndiceOriginal].get() != 0)
         {
 			ArestaTemp = vArestas[vatual->IndiceOriginal];
             if ( ListaArestas )
