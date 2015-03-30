@@ -9,7 +9,6 @@
 
 CCaboReta::CCaboReta()
 {
-    NumVertices = 0;
     ponta[0] = ponta[1] = false;
 }
 //---------------------------------------------------------------------------
@@ -25,7 +24,6 @@ void CCaboReta::AdicionaVertice(shared_ptr<TVerticeGeral> Vertice, TPonto &ponto
 	VerticeReta.vertex = Vertice;
     VerticeReta.pos = ponto;
 	VerticesReta.push_back( VerticeReta );
-    NumVertices++;
 }
 //---------------------------------------------------------------------------
 
@@ -1108,11 +1106,12 @@ void CGrafoDesenho::GeraArestas()
     TVerticeReta *VerticesReta1, *VerticesReta2;
 	for (n = 0; n < _cabosReta.size(); n++)
     {
-        for (m = 0; m < _cabosReta[n]->NumVertices - 1; m++)
+		shared_ptr<CCaboReta> caboReta = _cabosReta[n];
+		for (m = 0; m < caboReta->VerticesReta.size() - 1; m++)
         {
-            VerticesReta1 = &_cabosReta[n]->VerticesReta[m];
-            VerticesReta2 = &_cabosReta[n]->VerticesReta[m + 1];
-			shared_ptr<TAresta> Aresta( new TAresta( _cabosReta[n]->_multipoint->layerName ) );
+            VerticesReta1 = &caboReta->VerticesReta[m];
+            VerticesReta2 = &caboReta->VerticesReta[m + 1];
+			shared_ptr<TAresta> Aresta( new TAresta( caboReta->_multipoint->layerName ) );
 			Aresta->AdicionaVertices( VerticesReta1->vertex, VerticesReta2->vertex,
             //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));
                     DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );

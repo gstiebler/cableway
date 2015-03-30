@@ -44,7 +44,6 @@ public:
   bool EhOUltimoPonto( TPonto ponto );
   void AdicionaVertice(shared_ptr<TVerticeGeral> Vertice, TPonto &ponto);
   shared_ptr<TMultipoint> _multipoint;
-  int NumVertices;
   bool ponta[2];
   TTipoOrientacao TipoOrientacao;
   std::vector<TVerticeReta> VerticesReta;
