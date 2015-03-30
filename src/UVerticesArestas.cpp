@@ -104,14 +104,9 @@ TVerticesGerais::TVerticesGerais()
 }
 
 
-void TVerticesGerais::Adiciona(TVerticeGeral &Item)
+void TVerticesGerais::Adiciona(shared_ptr<TVerticeGeral> Item)
 {
-    shared_ptr<TVerticeGeral> temp( new TVerticeGeral() );
-    TListaVerticesEArestas *ListaVerticesEArestasT = temp->ListaVerticesEArestas;
-    *temp = Item;
-    temp->ListaVerticesEArestas = ListaVerticesEArestasT;
-//  lista->Add((void *)temp);
-	vertices.push_back( temp );
+	vertices.push_back( Item );
 }
 //---------------------------------------------------------------------------
 

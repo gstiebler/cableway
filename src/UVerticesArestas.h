@@ -82,7 +82,7 @@ struct TVerticesGerais
 {
 	TVerticesGerais();
 	vector<shared_ptr<TVerticeGeral> > vertices;
-  void Adiciona(TVerticeGeral &Item);
+  void Adiciona(shared_ptr<TVerticeGeral> Item);
   shared_ptr<TVerticeGeral> AchaVerticePeloTexto(string Texto);
   bool VerticeEhEquipamento(int n);
   bool VerticeEhBandeirola(int n);
