@@ -1,7 +1,6 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "UContainerDesenhos.h"
-#include "UStructs.h"
 #include "UErros.h"
 #include "TDesenho.h"
 
