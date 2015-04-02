@@ -14,6 +14,7 @@
 #include "UInfoCircuitos.h"
 #include "UserParams/LoadUserParams.h"
 #include "UserParams/UserParams.h"
+#include "TDesenho.h"
 
 #include <QtCore>
 
@@ -88,7 +89,7 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 		exists = false;
 		for ( int j = 0 ; j < _containerDesenhos->NumDesenhos() ; j++ )
 		{
-			TDesenho *pnt = _containerDesenhos->getDesenho(j);
+			shared_ptr<TDesenho> pnt = _containerDesenhos->getDesenho(j);
 			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
 			{
 				if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Origem )
@@ -116,7 +117,7 @@ string MainExecution::ErrosDoCircuito( string Origem, string Destino, vector<std
 		exists = false;
 		for ( int j = 0 ; j < _containerDesenhos->NumDesenhos() ; j++ )
 		{
-			TDesenho *pnt = _containerDesenhos->getDesenho(j);
+			shared_ptr<TDesenho> pnt = _containerDesenhos->getDesenho(j);
 			for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
 			{
 				if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Destino )

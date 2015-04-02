@@ -15,6 +15,7 @@
 #include "UMostraDesenho.h"
 #include <UContainerDesenhos.h>
 #include "Reports.h"
+#include "TDesenho.h"
 
 using namespace std;
 

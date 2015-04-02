@@ -3,6 +3,7 @@
 #include "UContainerDesenhos.h"
 #include "UStructs.h"
 #include "UErros.h"
+#include "TDesenho.h"
 
 int ID_PROJETO;
 
@@ -51,7 +52,7 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, dados);
 
     // Cria um novo desenho
-    TDesenho *desenho = new TDesenho;
+    shared_ptr<TDesenho> desenho( new TDesenho );
     // E o ID
 	desenho->ID = ListaDesenhos.size();
     desenho->Altura = altura;
@@ -60,7 +61,7 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     ListaDesenhos.push_back( desenho );
 }
 
-TDesenho * CContainerDesenhos::getDesenho(int Indice)
+shared_ptr<TDesenho> CContainerDesenhos::getDesenho(int Indice)
 {
   return ListaDesenhos[Indice];
 }
@@ -82,7 +83,7 @@ bool CContainerDesenhos::verificaTexto(string str)
   bool exists = false;
   for ( int j = 0 ; j < NumDesenhos() ; j++ )
   {
-    TDesenho *pnt = getDesenho(j);
+    shared_ptr<TDesenho> pnt = getDesenho(j);
     for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
     {
       if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == str )
@@ -200,7 +201,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         equips = false;
         for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
         {
-          TDesenho *pnt = this->getDesenho(j);
+          shared_ptr<TDesenho> pnt = getDesenho(j);
           for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
           {
             if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Origem )
@@ -226,7 +227,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         equips = false;
         for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
         {
-          TDesenho *pnt = this->getDesenho(j);
+          shared_ptr<TDesenho> pnt = getDesenho(j);
           for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
           {
             if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Destino )

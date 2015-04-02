@@ -5,6 +5,7 @@
 #include "UGeometria.h"
 #include "UContainerDesenhos.h"
 #include "UListaItensCelula.h"
+#include "TDesenho.h"
 
 
 CCaboReta::CCaboReta()
@@ -1040,7 +1041,7 @@ void CGrafoDesenho::OrdenaVerticesRetas()
 
 
 
-void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector<TDesenho*> &ListaDesenhos)
+void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho> > &ListaDesenhos)
 {
     int n;
     vector< shared_ptr<TVerticeGeral> > Lista;

@@ -5,7 +5,6 @@
 
 #include "UGrafoDesenho.h"
 #include "UInfoCircuitos.h"
-#include "TDesenho.h"
 #include <stack>
 #include <vector>
 
@@ -21,7 +20,7 @@ struct intVertices
 class CContainerDesenhos
 {
 private:
-  std::vector<TDesenho*> ListaDesenhos;
+  std::vector< shared_ptr<TDesenho> > ListaDesenhos;
   TParamsInfoCircuitos ParamsInfoCircuitos;
   static bool verificaTextoWrap(void* PonteiroThis, const char *str);
   bool verificaTexto(string str);
@@ -34,7 +33,7 @@ public:
 
   void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura );
 
-  TDesenho * getDesenho(int Indice);
+  shared_ptr<TDesenho> getDesenho(int Indice);
   void MostraCircuito(string circuito);
   void MostraArvore(string Nome);
   void MostraDoubleArvore(string Nome, string Nome2);
