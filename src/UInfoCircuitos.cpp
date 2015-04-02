@@ -131,7 +131,7 @@ void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
 }
 //---------------------------------------------------------------------------
 
-int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceDesenho)
+int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, shared_ptr<TDesenho> drawing)
 {
     int m;
     double MenorDist, Dist, DistPonta1, DistPonta2;
@@ -140,7 +140,7 @@ int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceD
     MenorDist = Infinity;
     for (m = 0; m < Arestas.size(); m++)
     {
-        if (Arestas[ m ]->IndiceDesenho != IndiceDesenho)
+        if (Arestas[ m ]->_drawing != drawing)
             continue;
 		Reta[0] = Arestas[ m ]->_vertices[0]->pos;
 		Reta[1] = Arestas[ m ]->_vertices[1]->pos;
@@ -193,9 +193,9 @@ int CInfoCircuitos::ListaArestasDoCircuito(int idCircuito)
 }
 //---------------------------------------------------------------------------
 
-vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(int circuito, int IndiceDesenho)
+vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(int circuito, shared_ptr<TDesenho> drawing)
 {
-    return ArestasDoCircuito[circuito].ArestasDesenho[IndiceDesenho];
+    return ArestasDoCircuito[circuito].ArestasDesenho[drawing.get()];
 }
 //---------------------------------------------------------------------------
 
@@ -320,7 +320,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
     int n, m;
 	shared_ptr<TVerticeGeral> vertice[2];
     vector< shared_ptr<TAresta> > *ListaArestas=NULL;
-    vector< vector< shared_ptr<TAresta> > > &ArestasDesenho = ArestasCircuito->ArestasDesenho;
+    map< TDesenho*, vector< shared_ptr<TAresta> > > &ArestasDesenho = ArestasCircuito->ArestasDesenho;
     string UltTemp="";
     string V[2];
     V[0] = Destino;
@@ -387,8 +387,8 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
             if ( ListaArestas )
 				ListaArestas->push_back( ArestaTemp );
 
-            if (ArestasCircuito && ArestaTemp->IndiceDesenho!=I_DESENHO_NULO)
-				ArestasDesenho[ArestaTemp->IndiceDesenho].push_back( ArestaTemp );
+            if (ArestasCircuito && ArestaTemp->_drawing.get() != 0)
+				ArestasDesenho[ArestaTemp->_drawing.get()].push_back( ArestaTemp );
 
 			tam += vArestas[vatual->IndiceOriginal]->Tam;
 			TamSubRota += vArestas[vatual->IndiceOriginal]->Tam;
@@ -486,7 +486,7 @@ bool CInfoCircuitos::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2],
 }
 
 
-void CInfoCircuitos::Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, int IndiceDesenho)
+void CInfoCircuitos::Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing)
 {
     int n;
     queue<TVerticeGeral*> fila;
@@ -512,7 +512,7 @@ void CInfoCircuitos::Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< sha
             ArestaTemp = ListaVerticesEArestas->getVerticeEAresta( n )->Aresta;
             // ListaArestas � a lista de arestas da �rvore no desenho atual
             // A �rvore � regerada para cada desenho
-            if (ArestaTemp->IndiceDesenho == IndiceDesenho)
+			if (ArestaTemp->_drawing.get() == drawing.get())
                 ListaArestas.push_back( ArestaTemp );
             if ( VerticesVisitados.find( vatual ) == VerticesVisitados.end() )
             {

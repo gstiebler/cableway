@@ -7,12 +7,13 @@
 #include "UDefines.h"
 #include <algorithm>
 #include <memory>
+#include <map>
 
 //---------------------------------------------------------------------------
 
 struct TVerticeGeral;
-
 struct TAresta;
+struct TDesenho;
 
 struct TArestasCircuito
 {
@@ -24,7 +25,7 @@ struct TArestasCircuito
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();
   void Apaga();
-  vector< vector< shared_ptr<TAresta> > > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
+  map< TDesenho*, vector< shared_ptr<TAresta> > > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
 };
 //----------------------------------------------------------------------------  
 
@@ -53,8 +54,7 @@ struct TVerticeGeral
   TListaVerticesEArestas *ListaVerticesEArestas;
   double dist;//altura 3d, pouco usado
   string texto;
-  int iDesenho;
-  int IDArquivo;
+  shared_ptr<TDesenho> drawing;
   TTipoVertice TipoVertice;
   int IndiceOriginal;//usado somente na gera��o dos colares
   bool EhColar;
@@ -89,8 +89,7 @@ struct TAresta
 {
 	shared_ptr<TVerticeGeral> _vertices[2];
   double Tam;
-  int IndiceDesenho;
-  int IDArquivo;
+	shared_ptr<TDesenho> _drawing;
   string _layer;
   TAresta( string layer );
   void AdicionaVertices( shared_ptr<TVerticeGeral> v1, shared_ptr<TVerticeGeral> v2, double dist);

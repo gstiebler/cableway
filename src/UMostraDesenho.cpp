@@ -188,12 +188,11 @@ void CMostraDesenho::drawArcs()
 
 void CMostraDesenho::showCircuit()
 {
-	int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 	TPonto Pontos[2];
 	glColor3f(pegaVermelho(CORCAMINHO)/255.0, pegaVerde(CORCAMINHO)/255.0, pegaAzul(CORCAMINHO)/255.0);
 //			glColor3f(0.0, 0.0, 1.0);
 	glLineWidth((GLfloat)(3.0));
-	vector< shared_ptr<TAresta> > &edges = InfoCircuitos->ArestasCircuito(CircuitoAExibir, IndiceDesenho);
+	vector< shared_ptr<TAresta> > &edges = InfoCircuitos->ArestasCircuito(CircuitoAExibir, GrafoDesenho->_dados->_drawing);
 	for (int n=0; n<(int)edges.size(); n++)
 	{
 		if ( ( n == 0 || n == (int)edges.size()-1 ) && !mostraLigacaoEquipamento )
@@ -223,9 +222,8 @@ void CMostraDesenho::showTree()
 	//			EscreveTexto(("Origem: "+ GrafoDesenho->VerticesGerais->getItem(VerticeArvore)->texto).c_str(), pos, 0,
 	//					GrafoDesenho->Dados->Textos[0].FatorAltura*10);
 	glPopMatrix();
-	int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 	vector< shared_ptr<TAresta> > Arestas;
-	InfoCircuitos->Arvore(VerticeArvore, Arestas, IndiceDesenho);
+	InfoCircuitos->Arvore(VerticeArvore, Arestas, GrafoDesenho->_dados->_drawing);
 	shared_ptr<TAresta> Aresta;
 	TPonto Pontos[2];
 	for (int n=0; n<(int)Arestas.size(); n++)
@@ -264,9 +262,8 @@ void CMostraDesenho::showTree()
 		//						GrafoDesenho->Dados->Textos[0].FatorAltura*10);
 		glPopMatrix();
 
-		int IndiceDesenho=GrafoDesenho->_dados->IndiceDesenho;
 		vector< shared_ptr<TAresta> > Arestas;
-		InfoCircuitos->Arvore(VerticeArvore2, Arestas, IndiceDesenho);
+		InfoCircuitos->Arvore(VerticeArvore2, Arestas, GrafoDesenho->_dados->_drawing);
 		TPonto Pontos[2];
 		for (int n=0; n<(int)Arestas.size(); n++)
 		{

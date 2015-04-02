@@ -39,22 +39,20 @@ CContainerDesenhos::~CContainerDesenhos()
 
 void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura )
 {
+    // Cria um novo desenho
+    shared_ptr<TDesenho> desenho( new TDesenho );
+
     // Cria um novo params
     TParamsGrafoDesenho paramsGrafoDesenho;
     // O Id
-    paramsGrafoDesenho.IDArquivo = ListaDesenhos.size();
-    // Preenche o índice do desenho
-    paramsGrafoDesenho.IndiceDesenho = ListaDesenhos.size();
-	dados->IndiceDesenho = ListaDesenhos.size();
+    paramsGrafoDesenho.drawing = desenho;
+	dados->_drawing = desenho;
     // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
     paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
 
     CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, dados);
 
-    // Cria um novo desenho
-    shared_ptr<TDesenho> desenho( new TDesenho );
     // E o ID
-	desenho->ID = ListaDesenhos.size();
     desenho->Altura = altura;
     desenho->GrafoDesenho = grafoDesenho;
 
@@ -158,16 +156,14 @@ void CContainerDesenhos::GeraColares()
 			continue;
 
         V2 = Lista[n + 1];
-        if ((V1->texto != V2->texto) || (V1->iDesenho == V2->iDesenho) || (V1->TipoElemento != INSTRUMENTO) || (V2->TipoElemento != INSTRUMENTO))
+		if ((V1->texto != V2->texto) || (V1->drawing.get() == V2->drawing.get()) || (V1->TipoElemento != INSTRUMENTO) || (V2->TipoElemento != INSTRUMENTO))
 			continue;
 
-        double alturaDaAresta = ListaDesenhos[V1->iDesenho]->Altura - ListaDesenhos[V2->iDesenho]->Altura;
+		double alturaDaAresta = V1->drawing->Altura - V2->drawing->Altura;
         if (alturaDaAresta < 0)
             alturaDaAresta *= -1;
         shared_ptr<TAresta> Aresta( new TAresta( "" ) );
         Aresta->AdicionaVertices( V1, V2, alturaDaAresta );
-        Aresta->IndiceDesenho = I_DESENHO_NULO;
-        Aresta->IDArquivo = I_DESENHO_NULO;
 		ParamsInfoCircuitos.Arestas.push_back( Aresta );
 
 		V1->EhColar = V2->EhColar = true;

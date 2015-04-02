@@ -9,7 +9,6 @@ struct TDesenho
 {
   CGrafoDesenho *GrafoDesenho;
   string NomeArquivo;
-  int ID;
   double Altura;
   ~TDesenho();
 };

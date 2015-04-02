@@ -14,9 +14,7 @@ class TListaArestas;
 
 struct TParamsDadosGenerico
 {
-  int IndiceDesenho;
-  int IDArquivo; 
-//  TInterfaceMainPar *IMP;
+  shared_ptr<TDesenho> drawing;
 };
 
 struct TParamsGrafoDesenho: public TParamsDadosGenerico

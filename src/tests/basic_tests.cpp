@@ -34,8 +34,6 @@ class BasicTest : public ::testing::Test {
 
 void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 {
-    dados->IndiceDesenho = 0;
-    dados->IDArquivo = 0;
 	// equipment 1
 	{
 		shared_ptr<TMultipoint> equip1( new TMultipoint() );
@@ -111,8 +109,6 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 
 void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
 {
-    dados->IndiceDesenho = 1;
-    dados->IDArquivo = 1;
     // equipment 3
     {
         shared_ptr<TMultipoint> equip3( new TMultipoint() );

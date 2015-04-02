@@ -10,15 +10,12 @@
 TAresta::TAresta( string layer ) :
 	_layer( layer )
 {
-    IndiceDesenho = I_DESENHO_NULO;
-    IDArquivo = I_DESENHO_NULO;
 }
 //---------------------------------------------------------------------------
 
 TArestasCircuito::TArestasCircuito(int numDesenhos)
 {
     NumDesenhos = numDesenhos;
-	ArestasDesenho.resize( NumDesenhos );
 }
 //---------------------------------------------------------------------------
 
@@ -34,16 +31,12 @@ TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
     NumDesenhos = cpy.NumDesenhos;
 //    NumDesenhos=numDesenhos;
     idCircuito = cpy.idCircuito;
-	ArestasDesenho.resize( NumDesenhos );
-    ArestasDesenho.assign( cpy.ArestasDesenho.begin(), cpy.ArestasDesenho.end() );
+	ArestasDesenho = cpy.ArestasDesenho;
 }
 //---------------------------------------------------------------------------
 
 void TArestasCircuito::Apaga()
 {
-    for (int n = 0; n < NumDesenhos; n++)
-        ArestasDesenho[n].clear();
-    Arestas.clear();
     Circuito = "";
     idCircuito = -1;
 }
@@ -67,8 +60,6 @@ TVerticeGeral::TVerticeGeral()
 {
     pos.x = 0;
     pos.y = 0;
-    iDesenho = 0;
-    IDArquivo = I_DESENHO_NULO;
     TipoElemento = NADA;
     dist = 0;
     texto = "";
@@ -86,11 +77,10 @@ TVerticeGeral::TVerticeGeral(const TVerticeGeral &cpy)
 {
     pos.x = cpy.pos.x;
     pos.y = cpy.pos.y;
-    IDArquivo = cpy.IDArquivo;
     TipoElemento = cpy.TipoElemento;
     dist = cpy.dist;
     texto = cpy.texto;
-    iDesenho = cpy.iDesenho;
+    drawing = cpy.drawing;
     IndiceOriginal = cpy.IndiceOriginal;
     EhColar = cpy.EhColar;
     TipoVertice = cpy.TipoVertice;

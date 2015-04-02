@@ -360,8 +360,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         }
 
         VerticeGeral->TipoElemento = BANDEIROLA;
-        VerticeGeral->iDesenho = _dados->IndiceDesenho;
-        VerticeGeral->IDArquivo = _dados->IDArquivo;
+		VerticeGeral->drawing = _dados->_drawing;
         _verticesGerais->Adiciona( VerticeGeral );
     }
 }
@@ -384,8 +383,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 
             VerticeGeral->pos = pontoEIndiceCabo.PosVertice;
             VerticeGeral->TipoElemento = INSTRUMENTO;
-            VerticeGeral->iDesenho = _dados->IndiceDesenho;
-            VerticeGeral->IDArquivo = _dados->IDArquivo;
+			VerticeGeral->drawing = _dados->_drawing;
             VerticeGeral->TipoVertice = VERTICE_INSTRUMENTO_RETA;
             _verticesGerais->Adiciona( VerticeGeral );
             //adiciona o vértice na lista de vértices do cabo
@@ -406,8 +404,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontosManhattan( PosVertice, PosVertice ) );
-                Aresta->IndiceDesenho = _dados->IndiceDesenho;
-                Aresta->IDArquivo = _dados->IDArquivo;
+                Aresta->_drawing = _dados->_drawing;
 				_arestas.push_back( Aresta );
             }
         }
@@ -440,8 +437,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ],
                         ListaMenores[ n ]._vertex,
                         DistPontosManhattan( PosVertice, PosVertice ) );
-                Aresta->IndiceDesenho = _dados->IndiceDesenho;
-                Aresta->IDArquivo = _dados->IDArquivo;
+				Aresta->_drawing = _dados->_drawing;
 				_arestas.push_back( Aresta );
             }
         }
@@ -505,8 +501,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             _cabosReta[IndiceCabo]->AdicionaVertice( VerticeGeral );
 
             VerticeGeral->pos = PosVertice;
-            VerticeGeral->IDArquivo = _dados->IDArquivo;
-            VerticeGeral->iDesenho = _dados->IndiceDesenho;
+			VerticeGeral->drawing = _dados->_drawing;
             VerticeGeral->TipoElemento = INSTRUMENTO;
             VerticeGeral->TipoVertice = VERTICE_INSTRUMENTO_ARCO;
             _verticesGerais->Adiciona( VerticeGeral );
@@ -524,8 +519,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontos( PosVertice, PosVertice ) );
-                Aresta->IndiceDesenho = _dados->IndiceDesenho;
-                Aresta->IDArquivo = _dados->IDArquivo;
+				Aresta->_drawing = _dados->_drawing;
 				_arestas.push_back( Aresta );
             }
         }
@@ -573,8 +567,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
     {
         shared_ptr<TVerticeGeral> VerticeInstrumento( new TVerticeGeral() );;
         VerticeInstrumento->TipoElemento = INSTRUMENTO;
-        VerticeInstrumento->iDesenho = _dados->IndiceDesenho;
-        VerticeInstrumento->IDArquivo = _dados->IDArquivo;
+		VerticeInstrumento->drawing = _dados->_drawing;
         VerticeInstrumento->texto = _dados->Textos[ListaItensCelula->iTextos[i]]->texto;
         VerticeInstrumento->pos = PosVertice;
         VerticesInstrumento.push_back( VerticeInstrumento );
@@ -587,8 +580,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
     {
         shared_ptr<TAresta> Aresta( new TAresta( "" ) );
         Aresta->AdicionaVertices( VerticesInstrumento[0], VerticesInstrumento[1], 0 );
-        Aresta->IndiceDesenho = _dados->IndiceDesenho;
-        Aresta->IDArquivo = _dados->IDArquivo;
+        Aresta->_drawing = _dados->_drawing;
 		_arestas.push_back( Aresta );
     }
 
@@ -706,16 +698,14 @@ void CGrafoDesenho::GeraVerticesArcos()
                 else
                     VerticeGeral->pos = p[m];
 
-                VerticeGeral->iDesenho = _dados->IndiceDesenho;
-                VerticeGeral->IDArquivo = _dados->IDArquivo;
+				VerticeGeral->drawing = _dados->_drawing;
                 _verticesGerais->Adiciona( VerticeGeral );
             }
         }
 
 		shared_ptr<TAresta> Aresta( new TAresta( Arco->layerName ) );
 		Aresta->AdicionaVertices( Arco->_vertices[0], Arco->_vertices[1], DistPontosManhattan( p[0], p[1] ) );
-        Aresta->IndiceDesenho = _dados->IndiceDesenho;
-        Aresta->IDArquivo = _dados->IDArquivo;
+        Aresta->_drawing = _dados->_drawing;
 		_arestas.push_back( Aresta );
     }
 }
@@ -760,8 +750,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
             else
                 VerticeGeral->pos = tMultipoint->pontos[m];
             _cabosReta[n]->AdicionaVertice( VerticeGeral );
-            VerticeGeral->iDesenho = _dados->IndiceDesenho;
-            VerticeGeral->IDArquivo = _dados->IDArquivo;
+			VerticeGeral->drawing = _dados->_drawing;
             _verticesGerais->Adiciona( VerticeGeral );
         }
     }
@@ -1058,7 +1047,7 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho>
         if (V1->texto != V2->texto)
 			continue;
 
-        if (V1->iDesenho != V2->iDesenho
+		if (V1->drawing.get() != V2->drawing.get()
                 && (V1->TipoElemento == INSTRUMENTO && V2->TipoElemento == INSTRUMENTO)
                 && (n + 2 < (int) (Lista.size() - 1)
                         && (Lista[ n + 1 ])->texto != V1->texto))
@@ -1090,7 +1079,7 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho>
             else
                 tipo = "Desconhecido";
 
-            erros->novoErro( "No desenho: " + ListaDesenhos[(Lista[ n ])->iDesenho]->NomeArquivo + " em nível de " + tipo );
+			erros->novoErro( "No desenho: " + (Lista[ n ])->drawing->NomeArquivo + " em nível de " + tipo );
         }
         erros->novoErro( "" );
     }
@@ -1112,8 +1101,7 @@ void CGrafoDesenho::GeraArestas()
 			Aresta->AdicionaVertices( VerticesReta1, VerticesReta2,
             //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));
                     DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );
-            Aresta->IndiceDesenho = _dados->IndiceDesenho;
-            Aresta->IDArquivo = _dados->IDArquivo;
+			Aresta->_drawing = _dados->_drawing;
 			_arestas.push_back( Aresta );
         }
     }

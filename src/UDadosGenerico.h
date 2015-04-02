@@ -133,9 +133,7 @@ class CDadosGenerico
 {
 protected:
 public:
-	int IndiceDesenho;
-	int NumElementos;
-	int IDArquivo;
+	shared_ptr<TDesenho> _drawing;
 	TInfoCelula InfoCelula;
 	string NomeArq;
 	vector< std::shared_ptr<TMultipoint> > Multipoint;

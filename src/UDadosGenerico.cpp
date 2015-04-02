@@ -54,8 +54,6 @@ void TArco::PontasArco(TPonto pontas[2])
 
 CDadosGenerico::CDadosGenerico()
 {
-	NumElementos = IDArquivo = IndiceDesenho = 0;
-
 	InfoCelula.somaX = InfoCelula.somaY = InfoCelula.somaZ = InfoCelula.FimCelula = 0;
 	InfoCelula.DentroCelula = false;
 	Multipoint.clear();

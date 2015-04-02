@@ -86,10 +86,11 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 		TArestasCircuito &arestasCircuito = infoCircuitos->ArestasDoCircuito[IndiceCircuitoArestas];
 		for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 		{
-			vector< shared_ptr<TAresta> > &arestasDesenho = arestasCircuito.ArestasDesenho[n];
+			shared_ptr<TDesenho> drawing = _mainExecution->_containerDesenhos->getDesenho( n );
+			vector< shared_ptr<TAresta> > &arestasDesenho = arestasCircuito.ArestasDesenho[drawing.get()];
 			if (arestasDesenho.size() > 0)
 			{
-				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
+				CGrafoDesenho *grafoDesenho = drawing->GrafoDesenho;
 				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
 			}
 		}

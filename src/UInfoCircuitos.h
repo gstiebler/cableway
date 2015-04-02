@@ -74,11 +74,11 @@ public:
 
   std::vector<TArestasCircuito> ArestasDoCircuito;//arestas de um determinado circuito
 
-  int ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, int IndiceDesenho);
+  int ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, shared_ptr<TDesenho> drawing);
   int ListaArestasDoCircuito(string circuito);
   int ListaArestasDoCircuito(int idCircuito);
   void AdicionaCircuito(TCircuito &Circuito);
-  vector< shared_ptr<TAresta> >& ArestasCircuito(int circuito, int IndiceDesenho);
+  vector< shared_ptr<TAresta> >& ArestasCircuito(int circuito, shared_ptr<TDesenho> drawing);
   void PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta);
   bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota,
               TArestasCircuito *ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
@@ -87,7 +87,7 @@ public:
              TArestasCircuito *ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
              string &SubRotas);
   bool generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, string layer );
-  void Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, int IndiceDesenho); 
+  void Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing); 
   TVerticesGerais *VerticesGerais;
   vector< shared_ptr<TAresta> > Arestas;
 };                                     
