@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "file/InputCircuitsReader.h"
 
 class CContainerDesenhos;
@@ -32,7 +33,7 @@ public:
 
     void execute( std::string inputCircuitsFileName );
 
-    CContainerDesenhos *_containerDesenhos;
+    std::shared_ptr<CContainerDesenhos> _containerDesenhos;
 
 	
    std::vector<InputCircuit> _inputCircuits;

@@ -33,7 +33,7 @@ string MainExecution::getExePath()
 
 MainExecution::MainExecution( const string &userParametersFileName )
 {
-    _containerDesenhos = new CContainerDesenhos();
+    _containerDesenhos = shared_ptr<CContainerDesenhos>( new CContainerDesenhos() );
     UserParams userParams;
     loadUserParams( userParametersFileName, &userParams );
 
@@ -51,7 +51,6 @@ MainExecution::MainExecution( const string &userParametersFileName )
 
 MainExecution::~MainExecution()
 {
-    delete _containerDesenhos;
 }
 
 
