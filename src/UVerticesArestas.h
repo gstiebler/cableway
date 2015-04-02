@@ -79,9 +79,6 @@ struct TVerticesGerais
   bool VerticeEhEquipamento(int n);
   bool VerticeEhBandeirola(int n);
   void ListaOrd( vector<shared_ptr<TVerticeGeral> > &ListaOrdenada);
-  #ifdef _DEBUG_BUILDER
-  void DEBUG_Grava();
-  #endif
 };
 //---------------------------------------------------------------------------
 

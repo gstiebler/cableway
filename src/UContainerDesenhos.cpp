@@ -3,6 +3,7 @@
 #include "UContainerDesenhos.h"
 #include "UErros.h"
 #include "TDesenho.h"
+#include "Graph.h"
 
 int ID_PROJETO;
 
@@ -40,15 +41,11 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     // Cria um novo desenho
     shared_ptr<TDesenho> desenho( new TDesenho );
 
-    // Cria um novo params
-    TParamsGrafoDesenho paramsGrafoDesenho;
     // O Id
-    paramsGrafoDesenho.drawing = desenho;
 	dados->_drawing = desenho;
-    // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
-    paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
+	shared_ptr<Graph> graph( new Graph );
 
-    shared_ptr<CGrafoDesenho> grafoDesenho( new CGrafoDesenho(paramsGrafoDesenho, dados) );
+    shared_ptr<CGrafoDesenho> grafoDesenho( new CGrafoDesenho( graph, dados) );
 
     // E o ID
     desenho->Altura = altura;
@@ -96,9 +93,9 @@ bool CContainerDesenhos::verificaTexto(string str)
 
 void CContainerDesenhos::GeraListaAdjacencias()
 {
-	for ( int n(0); n<ParamsInfoCircuitos.Arestas.size(); n++)
+	for ( int n(0); n < _graph->_arestas.size(); n++)
 	{
-		shared_ptr<TAresta> aresta = ParamsInfoCircuitos.Arestas[n];
+		shared_ptr<TAresta> aresta = _graph->_arestas[n];
 		shared_ptr<TVerticeGeral> v1 = aresta->_vertices[0];
 		shared_ptr<TVerticeGeral> v2 = aresta->_vertices[1];
 
@@ -118,10 +115,10 @@ void CContainerDesenhos::Conclui()
 //						ParamsInfoCircuitos.VerticesGerais->getItem( i )->texto.c_str());
 //	}
 
+	_graph = shared_ptr<Graph>( new Graph );
 	for( int i(0); i < ListaDesenhos.size(); ++i)
 	{
-		vector<shared_ptr<TAresta> > &edges = ListaDesenhos[i]->GrafoDesenho->_arestas;
-		ParamsInfoCircuitos.Arestas.insert( ParamsInfoCircuitos.Arestas.end(), edges.begin(), edges.end() );
+		_graph->merge( ListaDesenhos[i]->GrafoDesenho->_graph );
 	}
 
     if (ListaDesenhos.size() > 1)
@@ -134,7 +131,7 @@ void CContainerDesenhos::Conclui()
     // Cria um novo InfoCircuitos baseado nos par�metros
     GeraListaAdjacencias();
 
-    InfoCircuitos = shared_ptr<CInfoCircuitos>( new CInfoCircuitos( &ParamsInfoCircuitos ) );
+    InfoCircuitos = shared_ptr<CInfoCircuitos>( new CInfoCircuitos( _graph ) );
 }
 //---------------------------------------------------------------------------
 
@@ -143,7 +140,7 @@ void CContainerDesenhos::Conclui()
 void CContainerDesenhos::GeraColares()
 {
     vector< shared_ptr<TVerticeGeral> > Lista;
-	ParamsInfoCircuitos.VerticesGerais->ListaOrd( Lista );  //gera lista ordenada
+	_graph->_verticesGerais->ListaOrd( Lista );  //gera lista ordenada
     shared_ptr<TVerticeGeral> V1, V2;
     for (int n = 0; n < (int) (Lista.size() - 1); n++)
     {
@@ -160,7 +157,7 @@ void CContainerDesenhos::GeraColares()
             alturaDaAresta *= -1;
         shared_ptr<TAresta> Aresta( new TAresta( "" ) );
         Aresta->AdicionaVertices( V1, V2, alturaDaAresta );
-		ParamsInfoCircuitos.Arestas.push_back( Aresta );
+		_graph->_arestas.push_back( Aresta );
 
 		V1->EhColar = V2->EhColar = true;
     }
@@ -187,7 +184,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       erro = "não foi encontrado caminho.";
       bool exists, equips;
       equips = true;
-      if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Origem).get() == 0 )
+      if ( InfoCircuitos->_graph->_verticesGerais->AchaVerticePeloTexto(Circuito.Origem).get() == 0 )
       {
         exists = false;
         equips = false;
@@ -213,7 +210,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       }
 
       /***/
-      if ( InfoCircuitos->VerticesGerais->AchaVerticePeloTexto(Circuito.Destino).get() == 0 )
+      if ( InfoCircuitos->_graph->_verticesGerais->AchaVerticePeloTexto(Circuito.Destino).get() == 0 )
       {
         exists = false;
         equips = false;

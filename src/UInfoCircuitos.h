@@ -17,6 +17,7 @@ class TListaArestas;
 class TParamsInfoCircuitos;
 class TArestasCircuito;
 class TVerticesGerais;
+class Graph;
 
 struct TListaCircuitos
 {
@@ -67,7 +68,7 @@ private:
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   set<string> getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex );
 public:      
-  CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos);
+  CInfoCircuitos( shared_ptr<Graph> graph );
 
   ~CInfoCircuitos();
 
@@ -87,8 +88,7 @@ public:
              string &SubRotas);
   bool generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, string layer );
   void Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing); 
-  TVerticesGerais *VerticesGerais;
-  vector< shared_ptr<TAresta> > Arestas;
+  shared_ptr<Graph> _graph;
 };                                     
 //---------------------------------------------------------------------------
 

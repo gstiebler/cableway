@@ -16,6 +16,7 @@
 #include <UContainerDesenhos.h>
 #include "Reports.h"
 #include "TDesenho.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -97,8 +98,8 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 	}
 	else // circuit has problems
 	{
-		shared_ptr<TVerticeGeral> vertice = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( source );
-		shared_ptr<TVerticeGeral> vertice2 = infoCircuitos->VerticesGerais->AchaVerticePeloTexto( dest );
+		shared_ptr<TVerticeGeral> vertice = infoCircuitos->_graph->_verticesGerais->AchaVerticePeloTexto( source );
+		shared_ptr<TVerticeGeral> vertice2 = infoCircuitos->_graph->_verticesGerais->AchaVerticePeloTexto( dest );
 
 		if( vertice.get() != 0 && vertice2.get() != 0 )
 		{

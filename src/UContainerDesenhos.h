@@ -9,6 +9,7 @@
 #include <vector>
 
 struct TDesenho;
+class Graph;
 
 struct intVertices
 {
@@ -21,7 +22,6 @@ class CContainerDesenhos
 {
 private:
   std::vector< shared_ptr<TDesenho> > ListaDesenhos;
-  TParamsInfoCircuitos ParamsInfoCircuitos;
   static bool verificaTextoWrap(void* PonteiroThis, const char *str);
   bool verificaTexto(string str);
   void GeraListaAdjacencias();
@@ -39,6 +39,7 @@ public:
   void MostraDoubleArvore(string Nome, string Nome2);
   int NumDesenhos();
   void Conclui();
+  shared_ptr<Graph> _graph;
 };
 //---------------------------------------------------------------------------
 #endif

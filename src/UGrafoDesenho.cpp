@@ -6,6 +6,7 @@
 #include "UContainerDesenhos.h"
 #include "UListaItensCelula.h"
 #include "TDesenho.h"
+#include "Graph.h"
 
 
 CCaboReta::CCaboReta()
@@ -70,7 +71,8 @@ bool CCaboReta::EhOUltimoPonto( TPonto ponto )
 
 //---------------------------------------------------------------------------
 
-CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados)
+CGrafoDesenho::CGrafoDesenho( shared_ptr<Graph> graph, std::shared_ptr<CDadosGenerico> Dados) :
+	_graph( graph )
 {
     _pri = 0;
 
@@ -79,11 +81,10 @@ CGrafoDesenho::CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::share
 
     unsigned int n;
     memset( TipoElementoCor, 0, NUM_CORES * sizeof(TTipoElemento) );
-    _verticesGerais = ParamsGrafoDesenho.VerticesGerais;
 
     //O vértice 0 não pode ser usado, por isso adiciona-se este vértice vazio
     shared_ptr<TVerticeGeral> temp( new TVerticeGeral() );
-    _verticesGerais->Adiciona( temp );
+    _graph->_verticesGerais->Adiciona( temp );
 
     GeraListaCabos();
     GeraVerticesBandeirola();
@@ -361,7 +362,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
 
         VerticeGeral->TipoElemento = BANDEIROLA;
 		VerticeGeral->drawing = _dados->_drawing;
-        _verticesGerais->Adiciona( VerticeGeral );
+        _graph->_verticesGerais->Adiciona( VerticeGeral );
     }
 }
 //---------------------------------------------------------------------------
@@ -385,7 +386,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
             VerticeGeral->TipoElemento = INSTRUMENTO;
 			VerticeGeral->drawing = _dados->_drawing;
             VerticeGeral->TipoVertice = VERTICE_INSTRUMENTO_RETA;
-            _verticesGerais->Adiciona( VerticeGeral );
+            _graph->_verticesGerais->Adiciona( VerticeGeral );
             //adiciona o vértice na lista de vértices do cabo
             straightCable->AdicionaVertice( VerticeGeral );
 			
@@ -405,7 +406,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontosManhattan( PosVertice, PosVertice ) );
                 Aresta->_drawing = _dados->_drawing;
-				_arestas.push_back( Aresta );
+				_graph->_arestas.push_back( Aresta );
             }
         }
     }
@@ -438,7 +439,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
                         ListaMenores[ n ]._vertex,
                         DistPontosManhattan( PosVertice, PosVertice ) );
 				Aresta->_drawing = _dados->_drawing;
-				_arestas.push_back( Aresta );
+				_graph->_arestas.push_back( Aresta );
             }
         }
     }
@@ -504,7 +505,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
 			VerticeGeral->drawing = _dados->_drawing;
             VerticeGeral->TipoElemento = INSTRUMENTO;
             VerticeGeral->TipoVertice = VERTICE_INSTRUMENTO_ARCO;
-            _verticesGerais->Adiciona( VerticeGeral );
+            _graph->_verticesGerais->Adiciona( VerticeGeral );
 
             ListaItensCelula->cabosRetaRelacionados.push_back( IndiceCabo );
             if (_cabosReta[IndiceCabo]->EhOPrimeiroPonto( PosVertice ))
@@ -520,7 +521,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontos( PosVertice, PosVertice ) );
 				Aresta->_drawing = _dados->_drawing;
-				_arestas.push_back( Aresta );
+				_graph->_arestas.push_back( Aresta );
             }
         }
     }
@@ -572,7 +573,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         VerticeInstrumento->pos = PosVertice;
         VerticesInstrumento.push_back( VerticeInstrumento );
         VerticeInstrumento->TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
-        _verticesGerais->Adiciona( VerticeInstrumento );
+        _graph->_verticesGerais->Adiciona( VerticeInstrumento );
     }
 
     // Caso o equipamento seja um colar de subida/descida, então � necess�rio adicionar uma aresta entre a subida e a descida.
@@ -581,7 +582,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         shared_ptr<TAresta> Aresta( new TAresta( "" ) );
         Aresta->AdicionaVertices( VerticesInstrumento[0], VerticesInstrumento[1], 0 );
         Aresta->_drawing = _dados->_drawing;
-		_arestas.push_back( Aresta );
+		_graph->_arestas.push_back( Aresta );
     }
 
 }
@@ -699,14 +700,14 @@ void CGrafoDesenho::GeraVerticesArcos()
                     VerticeGeral->pos = p[m];
 
 				VerticeGeral->drawing = _dados->_drawing;
-                _verticesGerais->Adiciona( VerticeGeral );
+                _graph->_verticesGerais->Adiciona( VerticeGeral );
             }
         }
 
 		shared_ptr<TAresta> Aresta( new TAresta( Arco->layerName ) );
 		Aresta->AdicionaVertices( Arco->_vertices[0], Arco->_vertices[1], DistPontosManhattan( p[0], p[1] ) );
         Aresta->_drawing = _dados->_drawing;
-		_arestas.push_back( Aresta );
+		_graph->_arestas.push_back( Aresta );
     }
 }
 //---------------------------------------------------------------------------
@@ -751,7 +752,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
                 VerticeGeral->pos = tMultipoint->pontos[m];
             _cabosReta[n]->AdicionaVertice( VerticeGeral );
 			VerticeGeral->drawing = _dados->_drawing;
-            _verticesGerais->Adiciona( VerticeGeral );
+            _graph->_verticesGerais->Adiciona( VerticeGeral );
         }
     }
 }
@@ -1034,7 +1035,7 @@ void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho>
 {
     int n;
     vector< shared_ptr<TVerticeGeral> > Lista;
-    _verticesGerais->ListaOrd( Lista );  //gera lista ordenada
+    _graph->_verticesGerais->ListaOrd( Lista );  //gera lista ordenada
     shared_ptr<TVerticeGeral> V1, V2;
     string Ultimo;
     for (n = 0; n < (int) (Lista.size() - 1); n++)
@@ -1102,7 +1103,7 @@ void CGrafoDesenho::GeraArestas()
             //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));
                     DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );
 			Aresta->_drawing = _dados->_drawing;
-			_arestas.push_back( Aresta );
+			_graph->_arestas.push_back( Aresta );
         }
     }
 }

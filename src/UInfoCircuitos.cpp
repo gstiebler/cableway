@@ -6,9 +6,9 @@
 
 #include "UGeometria.h"
 #include "UInfoCircuitos.h"
-#include "UParamsStructs.h"
 
 #include "UArmazenamentoCircuitos.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -35,11 +35,9 @@ TListaCircuitos::~TListaCircuitos()
 
 
 
-CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos) :
-        VerticesGerais( NULL )
+CInfoCircuitos::CInfoCircuitos( shared_ptr<Graph> graph ) :
+	_graph( graph )
 {
-    VerticesGerais = ParamsInfoCircuitos->VerticesGerais;
-    Arestas = ParamsInfoCircuitos->Arestas;
 }
 //---------------------------------------------------------------------------
 
@@ -63,7 +61,7 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
 	// O item está em branco
 	ArestasCircuito = &ArestasDoCircuito.back();
 	TStringList *DebugArestas=NULL;
-	bool erro, erro_interno;
+	bool erro = true, erro_interno;
 #ifdef DEBUG_BUILDER
   DebugArestas = new TStringList();
 //	DebugArestas=new vector<string>;
@@ -135,12 +133,12 @@ int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, shared_ptr<
     TPonto Reta[2], retorno;
     int IndiceAresta = -1;
     MenorDist = Infinity;
-    for (m = 0; m < Arestas.size(); m++)
+    for (m = 0; m < _graph->_arestas.size(); m++)
     {
-        if (Arestas[ m ]->_drawing != drawing)
+        if (_graph->_arestas[ m ]->_drawing != drawing)
             continue;
-		Reta[0] = Arestas[ m ]->_vertices[0]->pos;
-		Reta[1] = Arestas[ m ]->_vertices[1]->pos;
+		Reta[0] = _graph->_arestas[ m ]->_vertices[0]->pos;
+		Reta[1] = _graph->_arestas[ m ]->_vertices[1]->pos;
 
         Dist = DistPontoParaSegmentoReta( Reta, ponto, retorno );
 
@@ -341,7 +339,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
         /*
          * vertice[] guarda os índices dos vértices, já que eles são passados pelo nome.
          */
-        vertice[m] = VerticesGerais->AchaVerticePeloTexto(V[m]);
+		vertice[m] = _graph->_verticesGerais->AchaVerticePeloTexto(V[m]);
         if (vertice[m].get() == 0)
 			return 1;
     }
@@ -364,8 +362,8 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 		}
 	}
 
-    vector< shared_ptr<TVerticeGeral> > anterior( VerticesGerais->vertices.size() );
-    vector< shared_ptr<TAresta> > vArestas( VerticesGerais->vertices.size() );//armazena a aresta de cada vértice referente em PaisVertices
+    vector< shared_ptr<TVerticeGeral> > anterior( _graph->_verticesGerais->vertices.size() );
+    vector< shared_ptr<TAresta> > vArestas( _graph->_verticesGerais->vertices.size() );//armazena a aresta de cada vértice referente em PaisVertices
 	bool achou_final = CInfoCircuitos::generateDistanceTree( vertice, anterior, vArestas, selectedLayer );
 	
 	vector<string> sRota;
@@ -425,7 +423,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 bool CInfoCircuitos::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, string layer )
 {
 	//vector<int> PaisVertices( VerticesGerais->vertices.size() );//armazena os pais de cada vértice na �rvore
-	vector<double> DistanciaDjikstra( VerticesGerais->vertices.size() );
+	vector<double> DistanciaDjikstra( _graph->_verticesGerais->vertices.size() );
     shared_ptr<TVerticeGeral> VerticeTemp;
     TVerticeEAresta *VerticeEArestaTemp;
 	shared_ptr<TVerticeGeral> vfila, vatual;
@@ -436,11 +434,11 @@ bool CInfoCircuitos::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2],
 	bool achou_final = false;
 
 	    /* initialize single source */
-    for ( int n = 0; n < VerticesGerais->vertices.size(); n++ )
+    for ( int n = 0; n < _graph->_verticesGerais->vertices.size(); n++ )
     {
         DistanciaDjikstra[n] = Infinity;
         anterior[n] = shared_ptr<TVerticeGeral>();
-		VerticesGerais->vertices[n]->IndiceOriginal = n;
+		_graph->_verticesGerais->vertices[n]->IndiceOriginal = n;
     }
 
 	DistanciaDjikstra[ vertice[0]->IndiceOriginal ] = 0; // Distância do vértice pra ele mesmo � zero.

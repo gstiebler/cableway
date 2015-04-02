@@ -3,24 +3,16 @@
 #define UGrafoDesenhoH
 //---------------------------------------------------------------------------
 #include <math.h>
-//#include "UDadosDGN.h"
-//#include "UDadosDWG.h"
-#include "UParamsStructs.h" 
 #include "UDadosGenerico.h"
-//#include "UFila.h"
-//#include "TInterfaceMainPar.h"
-//#include "TDesenho.h"
-//#include "UGeometria.h"
-//#include "UTempoExec.h"
 #include <vector>
 #include "UVerticesArestas.h"
-//#include "UErros.h"
 
 #include <memory>
 
 struct TDesenho;
 struct TArco;
 struct TMultipoint;
+class Graph;
 
 enum TTipoOrientacao {VERTICAL, HORIZONTAL};
 
@@ -128,13 +120,12 @@ public:
   //para por exemplo ter um limiar do quanto uma ponta de cabo pode ser separada da outra
   double _mediaRaioCaboArco;
   double _distMinElemCaboPraOpenGL;
-  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, std::shared_ptr<CDadosGenerico> Dados);
+  CGrafoDesenho( shared_ptr<Graph> graph, std::shared_ptr<CDadosGenerico> Dados);
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
 
-  TVerticesGerais *_verticesGerais;
-  vector< shared_ptr<TAresta> > _arestas;
   std::shared_ptr<CDadosGenerico> _dados;
+  shared_ptr<Graph> _graph;
 };
 //---------------------------------------------------------------------------
 
