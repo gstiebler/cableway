@@ -64,17 +64,10 @@ struct TReta
   TPonto pontos[2];
 };
 
-typedef vector<TPonto> TVectorPonto;
-
 std::string ExtractFileName(std::string path);
 
 #define Infinity 9999999999999999.9999
 
-class TList
-{
-public:
-    vector<int> Items;
-};
 
 #define TStringList vector<std::string>
 
