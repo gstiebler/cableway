@@ -74,7 +74,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 	int indexOnGrid = index.row();
 	printf( "Index: %d\n", indexOnGrid );
 	
-    CInfoCircuitos *infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
+    std::shared_ptr<CInfoCircuitos> infoCircuitos = _mainExecution->_containerDesenhos->InfoCircuitos;
 
 	string circuit, source, dest;
 	_window->getCircuit( indexOnGrid, circuit, source, dest );

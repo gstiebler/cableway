@@ -29,7 +29,7 @@ private:
 public:
   CContainerDesenhos();
   ~CContainerDesenhos();
-  CInfoCircuitos *InfoCircuitos;
+  shared_ptr<CInfoCircuitos> InfoCircuitos;
 
   void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura );
 

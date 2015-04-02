@@ -29,7 +29,6 @@ struct TParamsInfoCircuitos
   ~TParamsInfoCircuitos();
   TVerticesGerais *VerticesGerais, *VerticesReduzidos;
   vector< shared_ptr<TAresta> > Arestas;
-  int NumDesenhos;
 };
 //---------------------------------------------------------------------------
 

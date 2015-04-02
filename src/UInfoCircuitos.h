@@ -65,7 +65,6 @@ class CInfoCircuitos
 private:
   static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
-  int NumDesenhos;
   set<string> getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex );
 public:      
   CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos);
@@ -77,7 +76,7 @@ public:
   int ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, shared_ptr<TDesenho> drawing);
   int ListaArestasDoCircuito(string circuito);
   int ListaArestasDoCircuito(int idCircuito);
-  void AdicionaCircuito(TCircuito &Circuito);
+  void AdicionaCircuito(TCircuito &Circuito, int numDrawings);
   vector< shared_ptr<TAresta> >& ArestasCircuito(int circuito, shared_ptr<TDesenho> drawing);
   void PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta);
   bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota,

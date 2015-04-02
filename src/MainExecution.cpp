@@ -70,7 +70,7 @@ void MainExecution::execute( std::string inputCircuitsFileName )
 		circuito.Destino = _inputCircuits[i].dest;
 		circuito.RotaUsuario = _inputCircuits[i].getFormatedRoute();
 		circuito.NomeCircuito = _inputCircuits[i].name;
-		_containerDesenhos->InfoCircuitos->AdicionaCircuito( circuito );
+		_containerDesenhos->InfoCircuitos->AdicionaCircuito( circuito, _containerDesenhos->NumDesenhos() );
 		_resultCircuits[i].route = circuito.rota;
 		_resultCircuits[i].length = circuito.metragem;
 

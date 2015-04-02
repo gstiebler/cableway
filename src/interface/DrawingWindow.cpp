@@ -11,7 +11,7 @@
 
 using namespace std;
 
-DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, CInfoCircuitos *infoCircuitos)
+DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos>  infoCircuitos)
 {
     setupUi(this);
 

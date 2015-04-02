@@ -38,9 +38,6 @@ TListaCircuitos::~TListaCircuitos()
 CInfoCircuitos::CInfoCircuitos(TParamsInfoCircuitos *ParamsInfoCircuitos) :
         VerticesGerais( NULL )
 {
-    // CallVT.ponteiroFuncao = callVT.ponteiroFuncao;
-    // CallVT.PonteiroProThis = callVT.PonteiroProThis;
-    NumDesenhos = ParamsInfoCircuitos->NumDesenhos;
     VerticesGerais = ParamsInfoCircuitos->VerticesGerais;
     Arestas = ParamsInfoCircuitos->Arestas;
 }
@@ -53,16 +50,16 @@ CInfoCircuitos::~CInfoCircuitos()
 
 
 
-void CInfoCircuitos::AdicionaCircuito(TCircuito &Circuito)
+void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
 {
 	int m;
 	shared_ptr<TAresta> Aresta;
 	TCircuitoAreas *CircuitoAreas;
-	CircuitoAreas = new TCircuitoAreas[NumDesenhos];
+	CircuitoAreas = new TCircuitoAreas[numDrawings];
 	TArestasCircuito *ArestasCircuito;
 	string rota, SubRotas;
 	vector< shared_ptr<TVerticeGeral> > Bandeirolas;
-	ArestasDoCircuito.push_back( NumDesenhos );
+	ArestasDoCircuito.push_back( numDrawings );
 	// O item está em branco
 	ArestasCircuito = &ArestasDoCircuito.back();
 	TStringList *DebugArestas=NULL;

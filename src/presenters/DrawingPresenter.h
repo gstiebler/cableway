@@ -20,7 +20,7 @@ class DrawingPresenter : public QObject
     Q_OBJECT
 
 public:
-    DrawingPresenter( std::shared_ptr<CGrafoDesenho> grafoDesenho, CInfoCircuitos *infoCircuitos, int circuitIndex = -1 );
+    DrawingPresenter( std::shared_ptr<CGrafoDesenho> grafoDesenho, std::shared_ptr<CInfoCircuitos> infoCircuitos, int circuitIndex = -1 );
     virtual ~DrawingPresenter();
 
     DrawingWindow *_window;

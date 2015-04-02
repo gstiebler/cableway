@@ -132,12 +132,10 @@ void CContainerDesenhos::Conclui()
         grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
         GeraColares();
     }
-    // V� o n�mero de desenhos
-    ParamsInfoCircuitos.NumDesenhos = NumDesenhos();
     // Cria um novo InfoCircuitos baseado nos par�metros
     GeraListaAdjacencias();
 
-    InfoCircuitos = new CInfoCircuitos( &ParamsInfoCircuitos );
+    InfoCircuitos = shared_ptr<CInfoCircuitos>( new CInfoCircuitos( &ParamsInfoCircuitos ) );
 }
 //---------------------------------------------------------------------------
 
