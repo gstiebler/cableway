@@ -90,7 +90,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			vector< shared_ptr<TAresta> > &arestasDesenho = arestasCircuito.ArestasDesenho[drawing.get()];
 			if (arestasDesenho.size() > 0)
 			{
-				CGrafoDesenho *grafoDesenho = drawing->GrafoDesenho;
+				shared_ptr<CGrafoDesenho> grafoDesenho = drawing->GrafoDesenho;
 				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
 			}
 		}
@@ -104,7 +104,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 		{
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
-				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
+				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
 				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
 				drawingPresenter->_window->_mostraDesenho->MostraDoubleArvore(vertice, vertice2);
 			}
@@ -113,7 +113,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 		{
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
-				CGrafoDesenho *grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
+				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
 				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
 			}
 		}

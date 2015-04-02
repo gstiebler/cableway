@@ -34,7 +34,7 @@ private:
 
   bool ExibirCircuito;
   int CircuitoAExibir;
-  CGrafoDesenho *GrafoDesenho;
+  shared_ptr<CGrafoDesenho> GrafoDesenho;
   CInfoCircuitos *InfoCircuitos;
   bool bMostraNumVerticesDEBUG;
   bool bMostraArvore;
@@ -57,7 +57,7 @@ protected:
   bool semCores;
   bool primeiro;      
 public:
-  CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, QWidget *parent = 0);
+  CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, CInfoCircuitos *infoCircuitos, QWidget *parent = 0);
   ~CMostraDesenho();
   void MostraCircuito(int Circuito);
   void ApagaCircuito();

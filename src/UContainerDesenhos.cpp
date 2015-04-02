@@ -9,7 +9,6 @@ int ID_PROJETO;
 
 TDesenho::~TDesenho()
 {
-  delete GrafoDesenho;
 }
 //---------------------------------------------------------------------------
 
@@ -50,7 +49,7 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     // Passa um ponteiro para o VerticesGerais (TVerticesGerais)
     paramsGrafoDesenho.VerticesGerais = ParamsInfoCircuitos.VerticesGerais;
 
-    CGrafoDesenho* grafoDesenho = new CGrafoDesenho(paramsGrafoDesenho, dados);
+    shared_ptr<CGrafoDesenho> grafoDesenho( new CGrafoDesenho(paramsGrafoDesenho, dados) );
 
     // E o ID
     desenho->Altura = altura;
@@ -128,7 +127,7 @@ void CContainerDesenhos::Conclui()
 
     if (ListaDesenhos.size() > 1)
     {
-		CGrafoDesenho* grafoDesenho = ListaDesenhos[0]->GrafoDesenho;
+		shared_ptr<CGrafoDesenho> grafoDesenho = ListaDesenhos[0]->GrafoDesenho;
         // Checa vertices duplos(?)
         grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
         GeraColares();

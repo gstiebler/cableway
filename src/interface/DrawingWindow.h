@@ -9,6 +9,7 @@
 #define DRAWINGWINDOW_H_
 
 #include <QDialog>
+#include <memory>
 
 #include "ui_DrawingWindow.h"
 
@@ -21,7 +22,7 @@ class DrawingWindow : public QDialog, private Ui::Dialog
     Q_OBJECT
 
 public:
-    DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos);
+    DrawingWindow( std::shared_ptr<CGrafoDesenho> grafoDesenho, CInfoCircuitos *infoCircuitos);
     virtual ~DrawingWindow();
 
 	void getOptions( bool &showOriginalColors, bool &showDisconnectedCables, bool &showBandeirolas, bool &showEquipmentEnding );

@@ -7,7 +7,7 @@
 class CGrafoDesenho;
 struct TDesenho
 {
-  CGrafoDesenho *GrafoDesenho;
+  shared_ptr<CGrafoDesenho> GrafoDesenho;
   string NomeArquivo;
   double Altura;
   ~TDesenho();

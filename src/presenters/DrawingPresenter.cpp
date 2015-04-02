@@ -10,7 +10,7 @@
 
 #include <interface/DrawingWindow.h>
 
-DrawingPresenter::DrawingPresenter(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, int circuitIndex )
+DrawingPresenter::DrawingPresenter( shared_ptr<CGrafoDesenho> grafoDesenho, CInfoCircuitos *infoCircuitos, int circuitIndex )
 {
     _window = new DrawingWindow(grafoDesenho, infoCircuitos);
     _window->show();

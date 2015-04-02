@@ -9,7 +9,9 @@
 
 #include <UMostraDesenho.h>
 
-DrawingWindow::DrawingWindow(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos)
+using namespace std;
+
+DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, CInfoCircuitos *infoCircuitos)
 {
     setupUi(this);
 

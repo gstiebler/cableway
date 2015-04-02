@@ -22,7 +22,7 @@ unsigned char pegaVermelho ( int cor )
 }
 
 
-CMostraDesenho::CMostraDesenho(CGrafoDesenho *grafoDesenho, CInfoCircuitos *infoCircuitos, QWidget *parent) :
+CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, CInfoCircuitos *infoCircuitos, QWidget *parent) :
         COpenGL(600, 600, parent),
         bMostraArvore2( false ),
         CircuitoAExibir( -1 ),
