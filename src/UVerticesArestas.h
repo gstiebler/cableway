@@ -19,9 +19,8 @@ struct TArestasCircuito
 {
   string Circuito;
   vector< shared_ptr<TAresta> > Arestas;
-  int NumDesenhos;
   int idCircuito;
-  TArestasCircuito(int numDesenhos);
+  TArestasCircuito();
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();
   void Apaga();

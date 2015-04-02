@@ -57,7 +57,7 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
 	TArestasCircuito *ArestasCircuito;
 	string rota, SubRotas;
 	vector< shared_ptr<TVerticeGeral> > Bandeirolas;
-	ArestasDoCircuito.push_back( numDrawings );
+	ArestasDoCircuito.push_back( TArestasCircuito() );
 	// O item está em branco
 	ArestasCircuito = &ArestasDoCircuito.back();
 	TStringList *DebugArestas=NULL;

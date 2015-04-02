@@ -13,9 +13,8 @@ TAresta::TAresta( string layer ) :
 }
 //---------------------------------------------------------------------------
 
-TArestasCircuito::TArestasCircuito(int numDesenhos)
+TArestasCircuito::TArestasCircuito()
 {
-    NumDesenhos = numDesenhos;
 }
 //---------------------------------------------------------------------------
 
@@ -28,7 +27,6 @@ TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
     Circuito = cpy.Circuito;
 
     Arestas.assign( cpy.Arestas.begin(), cpy.Arestas.end() );
-    NumDesenhos = cpy.NumDesenhos;
 //    NumDesenhos=numDesenhos;
     idCircuito = cpy.idCircuito;
 	ArestasDesenho = cpy.ArestasDesenho;
