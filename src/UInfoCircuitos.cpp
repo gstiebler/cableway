@@ -47,116 +47,37 @@ CInfoCircuitos::~CInfoCircuitos()
 
 
 
-void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
+void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito )
 {
 	int m;
 	shared_ptr<TAresta> Aresta;
-	TCircuitoAreas *CircuitoAreas;
-	CircuitoAreas = new TCircuitoAreas[numDrawings];
 	shared_ptr<TArestasCircuito> ArestasCircuito( new TArestasCircuito );
-	string rota, SubRotas;
-	vector< shared_ptr<TVerticeGeral> > Bandeirolas;
 	ArestasDoCircuito[Circuito.NomeCircuito] = ArestasCircuito;
-	TStringList *DebugArestas=NULL;
 	bool erro = true, erro_interno;
-#ifdef DEBUG_BUILDER
-  DebugArestas = new TStringList();
-//	DebugArestas=new vector<string>;
-#endif
 
-  //CTempoExec *tempo = CTempoExec::getInstance();
-  //tempo->MarcaTempo("Circuito: "+Circuito.NomeCircuito);
-
-  erro_interno = false;
-  try
-  {
+	erro_interno = false;
+	try
+	{
 	  // Chama desse jeito se não tiver rota do usuário
-	  if ( Circuito.RotaUsuario == "" )
-	  {
-      erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito, Bandeirolas, SubRotas);
-    }
-	  // E assim caso tenha..
-	  else
-	  {
-		  erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito, Bandeirolas, DebugArestas, CircuitoAreas);
-	  }
-	  if( erro )
-		  Circuito.metragem = 0.0;
-  }
-  catch(...)
-  {
-    erro_interno = true;
-  }
-  //tempo->MarcaTempo((string)"Fim da Gera��o" + (erro?" Nao achou":" Achou"));
-
-	if ( !erro )
-	{
-
-#ifdef DEBUG_BUILDER
-		DebugArestas->SaveToFile(ExtractFilePath(Application->ExeName)+"Vertices\\"+Circuito.NomeCircuito.c_str()+".txt");
-		delete DebugArestas;
-#endif
-	}
-	else if ( erro && Circuito.RotaUsuario != "" && Circuito.rota.size() > 0 )
-  {
-	}
-	else
-	{
-		if(erro_interno)
-		{        
-		  //CArmazenamentoCircuitos::DeuErro(Circuito, "Erro interno. Favor contactar o administrador.");
+		if ( Circuito.RotaUsuario == "" )
+		{
+			erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.metragem, Circuito.rota, ArestasCircuito->Arestas);
+			ArestasCircuito->calcArestasDesenho();
 		}
+		// E assim caso tenha..
 		else
-		{          
+		{
+			erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito );
 		}
-	}
-
-	//delete Bandeirolas;
-	delete[] CircuitoAreas;
+		if( erro )
+			Circuito.metragem = 0.0;
+	  }
+	  catch(...)
+	  {
+		erro_interno = true;
+	  }
 }
 //---------------------------------------------------------------------------
-
-int CInfoCircuitos::ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, shared_ptr<TDesenho> drawing)
-{
-    int m;
-    double MenorDist, Dist, DistPonta1, DistPonta2;
-    TPonto Reta[2], retorno;
-    int IndiceAresta = -1;
-    MenorDist = Infinity;
-    for (m = 0; m < _graph->_arestas.size(); m++)
-    {
-        if (_graph->_arestas[ m ]->_drawing != drawing)
-            continue;
-		Reta[0] = _graph->_arestas[ m ]->_vertices[0]->pos;
-		Reta[1] = _graph->_arestas[ m ]->_vertices[1]->pos;
-
-        Dist = DistPontoParaSegmentoReta( Reta, ponto, retorno );
-
-        if (Dist < MenorDist)
-        {
-            MenorDist = Dist;
-            IndiceAresta = m;
-            PontoNaReta = retorno;
-        }
-    }	//for (m=0; m<NumCabosReta; m++)
-    return IndiceAresta;
-}
-//---------------------------------------------------------------------------
-VerticesDjikstra::VerticesDjikstra(shared_ptr<TVerticeGeral> vertex, double Distancia)
-{
-    _vertex = vertex;
-    distancia = Distancia;
-}
-
-bool VerticesDjikstra::operator<(const VerticesDjikstra& right) const
-{
-    return distancia > right.distancia;
-}
-
-bool VerticesDjikstra::operator>(const VerticesDjikstra& right) const
-{
-    return distancia < right.distancia;
-}
 
 
 vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(std::string circuitName, shared_ptr<TDesenho> drawing)
@@ -173,7 +94,7 @@ void CInfoCircuitos::PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta)
 
 //---------------------------------------------------------------------------
 
-void CInfoCircuitos::SeparaRota(string ListaPontos, vector<string> *ListaRota)
+void CInfoCircuitos::SeparaRota(string ListaPontos, vector<string> &ListaRota)
 {
     size_t pos;
     while (true)
@@ -185,12 +106,12 @@ void CInfoCircuitos::SeparaRota(string ListaPontos, vector<string> *ListaRota)
             break;
         // Adiciona a substring sem a "/" na lista..
         string temp = ListaPontos.substr( 0, pos );
-        ListaRota->push_back( ListaPontos.substr( 0, pos ) );
+        ListaRota.push_back( ListaPontos.substr( 0, pos ) );
         // E tira a substring da lista..
         ListaPontos = ListaPontos.substr( pos + 1 );
     }
     // No fim, bota o que sobrou na lista..
-    ListaRota->push_back( ListaPontos );
+    ListaRota.push_back( ListaPontos );
 }
 //---------------------------------------------------------------------------
 
@@ -213,33 +134,31 @@ void CInfoCircuitos::MergeRota(vector<std::string> &rota, vector<std::string> No
 //---------------------------------------------------------------------------
 
 //Recebe a origem e o destino, e toda a rota do usuário
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, vector<string> &rota,
-        shared_ptr<TArestasCircuito> ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
-        TStringList*DEBUG_arestas, TCircuitoAreas *CircuitoAreas)
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, vector<string> &rota, shared_ptr<TArestasCircuito> ArestasCircuito)
 {
-    vector<string> * ListaRota = new vector<string>();
+    vector<string> ListaRota;
     int i;
     vector<string> rotaTemp;
-	string SubRotasTemp;
     double tamTemp;
     bool erro = false;
 
-    ListaRota->push_back(Origem);
+    ListaRota.push_back(Origem);
     SeparaRota(ListaPontos, ListaRota);
-    ListaRota->push_back(Destino);
+    ListaRota.push_back(Destino);
 
 	rota.clear();
     tam = 0;
 
     bool ultimo = true;
 
-    for ( i = 0; i < (int)(ListaRota->size()-1); i++ )
+    for ( i = 0; i < (int)(ListaRota.size()-1); i++ )
     {
         bool erroNessaRota = false;
         tamTemp = 0;
         rotaTemp.clear();
-        if (GeraRota(ListaRota->at(i+1), ListaRota->at(i), tamTemp, rotaTemp, ArestasCircuito, ListaBandeirolas, SubRotasTemp))
+		if (GeraRota(ListaRota[i+1], ListaRota[i], tamTemp, rotaTemp, ArestasCircuito->Arestas))
         {
+			ArestasCircuito->calcArestasDesenho();
             erroNessaRota = erro = true;
         }
         if ( !erroNessaRota )
@@ -260,8 +179,6 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
         ultimo = erroNessaRota;
     }
 
-    delete ListaRota;
-
     return erro;
 }
 //---------------------------------------------------------------------------
@@ -280,36 +197,17 @@ set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> verte
 }
 
 
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, shared_ptr<TArestasCircuito> ArestasCircuito,
-        vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas, string &SubRotas )
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &ListaArestas )
 {
     int n, m;
 	shared_ptr<TVerticeGeral> vertice[2];
-    vector< shared_ptr<TAresta> > *ListaArestas=NULL;
-    map< TDesenho*, vector< shared_ptr<TAresta> > > &ArestasDesenho = ArestasCircuito->ArestasDesenho;
-    string UltTemp="";
     string V[2];
     V[0] = Destino;
     V[1] = Origem;
 
-    // CTempoExec *tempo = CTempoExec::getInstance();
-
-    if (ArestasCircuito)
-    {
-        /*
-         * ArestasCircuito � um vetor que vai guardar o caminho feito, em termos de aresta, para encontrar o menor caminho.
-         * ListaArestas guarda todas as arestas, enquanto ArestasDesenho guarda as arestas espec�ficas de cada desenho
-         * A grande diferen�a � que no ListaArestas também estáo as arestas entre desenhos.
-         */
-        ListaArestas = &ArestasCircuito->Arestas;
-    }
-
-    //tempo->MarcaTempo("Vai achar vértices");
     for (m=0; m<2; m++)
     {
-        /*
-         * vertice[] guarda os índices dos vértices, já que eles são passados pelo nome.
-         */
+        // vertice[] guarda os índices dos vértices, já que eles são passados pelo nome. 
 		vertice[m] = _graph->_verticesGerais->AchaVerticePeloTexto(V[m]);
         if (vertice[m].get() == 0)
 			return 1;
@@ -328,60 +226,24 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 	for( it = levelsFrom1.begin(); it != e; ++it)
 	{
 		if ( levelsFrom2.find( *it ) != levelsFrom2.end() )
-		{
 			selectedLayer = *it;
-		}
 	}
 
     vector< shared_ptr<TVerticeGeral> > anterior( _graph->_verticesGerais->vertices.size() );
     vector< shared_ptr<TAresta> > vArestas( _graph->_verticesGerais->vertices.size() );//armazena a aresta de cada vértice referente em PaisVertices
 	bool achou_final = _graph->generateDistanceTree( vertice, anterior, vArestas, selectedLayer );
 	
-	vector<string> sRota;
     if(achou_final)
     {
-		shared_ptr<TAresta> ArestaTemp;
-		double TamSubRota=0;
-		//CAMINHO INVERSO NA �RVORE DE LARGURA
-		shared_ptr<TVerticeGeral> vatual = vertice[1];
+		_graph->getEdgesFromPath( anterior, vArestas, ListaArestas, rota, vertice[1] );
+		rota.push_back( Destino );
+		
 		tam = 0;
-		string temp;
-
-		while (anterior[vatual->IndiceOriginal].get() != 0)
-        {
-			ArestaTemp = vArestas[vatual->IndiceOriginal];
-            if ( ListaArestas )
-				ListaArestas->push_back( ArestaTemp );
-
-            if (ArestasCircuito && ArestaTemp->_drawing.get() != 0)
-				ArestasDesenho[ArestaTemp->_drawing.get()].push_back( ArestaTemp );
-
-			tam += vArestas[vatual->IndiceOriginal]->Tam;
-			TamSubRota += vArestas[vatual->IndiceOriginal]->Tam;
-
-
-            if (vatual->texto != "")
-            {
-                //if ( VerticesGerais->getItem(vatual)->TipoElemento!=INSTRUMENTO || (VerticesGerais->getItem(vatual)->texto.UpperCase()==Origem.UpperCase() || VerticesGerais->getItem(vatual)->texto.UpperCase()==Destino.UpperCase()))
-                {
-                    temp = vatual->texto;
-                    if (UltTemp!=temp && temp != Destino)
-						sRota.push_back( temp );
-                    UltTemp=temp;
-                    SubRotas+=to_string(TamSubRota)+"/";
-                    TamSubRota=0;
-                    if ( (vatual->TipoElemento==BANDEIROLA) || vatual->EhColar)
-						ListaBandeirolas.push_back(vatual);
-                }
-            }
-			vatual = anterior[vatual->IndiceOriginal];
-        }
-        sRota.push_back( V[0] );
+		for(int i(0); i < ListaArestas.size(); ++i)
+			tam += ListaArestas[i]->Tam;
     }
     else
-    tam=0;
-
-    rota = sRota;
+		tam=0;
 
 	if ( rota.size() == 0 )
 		return 1;

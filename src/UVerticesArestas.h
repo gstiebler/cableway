@@ -22,6 +22,7 @@ struct TArestasCircuito
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();
   map< TDesenho*, vector< shared_ptr<TAresta> > > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
+	void calcArestasDesenho();
 };
 //----------------------------------------------------------------------------  
 

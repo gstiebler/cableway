@@ -175,11 +175,9 @@ TEST_F(BasicTest, singleDrawing)
 
 	double tam;
 	vector<string> rota;
-	shared_ptr<TArestasCircuito> ArestasCircuito;
-	vector< shared_ptr<TVerticeGeral> > ListaBandeirolas;
-	string SubRotas; 
+	shared_ptr<TArestasCircuito> ArestasCircuito( new TArestasCircuito );
 
-	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 2", "Equipamento 1", tam, rota, ArestasCircuito, ListaBandeirolas, SubRotas);
+	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 2", "Equipamento 1", tam, rota, ArestasCircuito->Arestas);
 
 	EXPECT_FLOAT_EQ( 20.0, tam );
 	EXPECT_STREQ( "Equipamento 1/Bandeirola1/Equipamento 2", InputCircuit::getFormatedRoute( rota ).c_str() );
@@ -202,11 +200,9 @@ TEST_F(BasicTest, multipleDrawings)
 
 	double tam;
 	vector<string> rota;
-	shared_ptr<TArestasCircuito> ArestasCircuito;
-	vector< shared_ptr<TVerticeGeral> > ListaBandeirolas;
-	string SubRotas; 
+	shared_ptr<TArestasCircuito> ArestasCircuito( new TArestasCircuito );
 
-	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 3", "Equipamento 1", tam, rota, ArestasCircuito, ListaBandeirolas, SubRotas);
+	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 3", "Equipamento 1", tam, rota, ArestasCircuito->Arestas );
 
 	// 70 = 20 + 50 + (126.0 - 100.0)
 	EXPECT_FLOAT_EQ( 96.0, tam );
@@ -232,10 +228,8 @@ TEST_F(BasicTest, complete)
 
     double tam;
     vector<string> rota;
-	shared_ptr<TArestasCircuito> ArestasCircuito;
-	vector< shared_ptr<TVerticeGeral> > ListaBandeirolas;
-    string SubRotas;
-    containerDesenhos.InfoCircuitos->GeraRota("Equipamento 1", "Equipamento 2", tam, rota, ArestasCircuito, ListaBandeirolas, SubRotas );
+	shared_ptr<TArestasCircuito> ArestasCircuito( new TArestasCircuito );
+	containerDesenhos.InfoCircuitos->GeraRota("Equipamento 1", "Equipamento 2", tam, rota, ArestasCircuito->Arestas );
 
     EXPECT_FLOAT_EQ( 500.0, tam );
     EXPECT_STREQ( "Equipamento 2/Equipamento 1", InputCircuit::getFormatedRoute( rota ).c_str() );

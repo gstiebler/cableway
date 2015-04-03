@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 struct TVerticesGerais;
 struct TAresta;
@@ -31,6 +32,9 @@ public:
 	
     bool generateDistanceTree( std::shared_ptr<TVerticeGeral> vertice[2], std::vector< std::shared_ptr<TVerticeGeral> > &anterior, 
 		std::vector< std::shared_ptr<TAresta> > &vArestas, std::string layer );
+
+	void getEdgesFromPath( std::vector< std::shared_ptr<TVerticeGeral> > &anterior, std::vector< std::shared_ptr<TAresta> > &vArestas, 
+				std::vector< std::shared_ptr<TAresta> > &ListaArestas, std::vector< std::string > &vertexLabels, std::shared_ptr<TVerticeGeral> vertex );
 };
 
 #endif

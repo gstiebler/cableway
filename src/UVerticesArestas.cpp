@@ -30,6 +30,17 @@ TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
 //---------------------------------------------------------------------------
 
 
+void TArestasCircuito::calcArestasDesenho()
+{
+	ArestasDesenho.clear();
+	for( int i(0); i < Arestas.size(); ++i )
+	{
+		if( Arestas[i]->_drawing.get() != 0)
+			ArestasDesenho[Arestas[i]->_drawing.get()].push_back( Arestas[i] );
+	}
+}
+
+
 TListaVerticesEArestas::TListaVerticesEArestas(const TListaVerticesEArestas &cpy)
 {
 	try

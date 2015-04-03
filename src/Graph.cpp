@@ -4,6 +4,26 @@
 
 using namespace std;
 
+
+VerticesDjikstra::VerticesDjikstra(shared_ptr<TVerticeGeral> vertex, double Distancia)
+{
+    _vertex = vertex;
+    distancia = Distancia;
+}
+
+
+bool VerticesDjikstra::operator<(const VerticesDjikstra& right) const
+{
+    return distancia > right.distancia;
+}
+
+
+bool VerticesDjikstra::operator>(const VerticesDjikstra& right) const
+{
+    return distancia < right.distancia;
+}
+
+
 Graph::Graph() :
 	_verticesGerais( new TVerticesGerais )
 {
@@ -76,4 +96,24 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
     }
 
 	return achou_final;
+}
+
+
+void Graph::getEdgesFromPath( vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, 
+							 vector< shared_ptr<TAresta> > &ListaArestas, std::vector< std::string > &vertexLabels, shared_ptr<TVerticeGeral> vertex )
+{
+	string lastText;
+	shared_ptr<TAresta> ArestaTemp;
+	shared_ptr<TVerticeGeral> vatual = vertex;
+	while (anterior[vatual->IndiceOriginal].get() != 0)
+    {
+		if( !vatual->texto.empty() && vatual->texto != lastText )
+		{
+			vertexLabels.push_back( vatual->texto );
+			lastText = vatual->texto;
+		}
+		ArestaTemp = vArestas[vatual->IndiceOriginal];
+		ListaArestas.push_back( ArestaTemp );
+		vatual = anterior[vatual->IndiceOriginal];
+    }
 }

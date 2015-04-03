@@ -53,7 +53,7 @@ struct TListaCircuitosBandeirola: public TListaCircuitos
 class CInfoCircuitos
 {
 private:
-  static void SeparaRota(std::string ListaPontos, vector<string> *ListaRota);
+  static void SeparaRota(std::string ListaPontos, vector<string> &ListaRota);
   static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
   set<string> getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex );
 public:      
@@ -63,16 +63,11 @@ public:
 
   std::map<std::string, shared_ptr<TArestasCircuito> > ArestasDoCircuito;//arestas de um determinado circuito, indexado pelo nome
 
-  int ArestaDoPonto(TPonto ponto, TPonto &PontoNaReta, shared_ptr<TDesenho> drawing);
-  void AdicionaCircuito(TCircuito &Circuito, int numDrawings);
+  void AdicionaCircuito(TCircuito &Circuito);
   vector< shared_ptr<TAresta> >& ArestasCircuito( std::string circuitName, shared_ptr<TDesenho> drawing);
   void PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta);
-  bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota,
-              shared_ptr<TArestasCircuito> ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
-              TStringList *DEBUG_arestas, TCircuitoAreas *CircuitoAreas);
-  bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota,
-             shared_ptr<TArestasCircuito> ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
-             string &SubRotas);
+  bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota, shared_ptr<TArestasCircuito> ArestasCircuito);
+  bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &ListaArestas);
   void Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing); 
   shared_ptr<Graph> _graph;
 };                                     
