@@ -344,7 +344,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 		double TamSubRota=0;
 		//CAMINHO INVERSO NA �RVORE DE LARGURA
 		shared_ptr<TVerticeGeral> vatual = vertice[1];
-		tam = vertice[0]->dist + vertice[1]->dist;
+		tam = 0;
 		string temp;
 
 		while (anterior[vatual->IndiceOriginal].get() != 0)

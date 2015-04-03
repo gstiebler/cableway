@@ -48,7 +48,6 @@ struct TVerticeGeral
   TPonto pos;
   int TipoElemento;
   TListaVerticesEArestas *ListaVerticesEArestas;
-  double dist;//altura 3d, pouco usado
   string texto;
   shared_ptr<TDesenho> drawing;
   TTipoVertice TipoVertice;

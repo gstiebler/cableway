@@ -48,7 +48,6 @@ TVerticeGeral::TVerticeGeral()
     pos.x = 0;
     pos.y = 0;
     TipoElemento = NADA;
-    dist = 0;
     texto = "";
     ListaVerticesEArestas = new TListaVerticesEArestas;
     EhColar = false;
@@ -65,7 +64,6 @@ TVerticeGeral::TVerticeGeral(const TVerticeGeral &cpy)
     pos.x = cpy.pos.x;
     pos.y = cpy.pos.y;
     TipoElemento = cpy.TipoElemento;
-    dist = cpy.dist;
     texto = cpy.texto;
     drawing = cpy.drawing;
     IndiceOriginal = cpy.IndiceOriginal;
