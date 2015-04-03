@@ -49,17 +49,6 @@ struct TListaCircuitosBandeirola: public TListaCircuitos
 };
 //---------------------------------------------------------------------------
 
-class VerticesDjikstra
-{
-  public:
-    bool operator<(const VerticesDjikstra&) const; 
-    bool operator>(const VerticesDjikstra&) const;
-    VerticesDjikstra(shared_ptr<TVerticeGeral> vertex, double Distancia);
-    shared_ptr<TVerticeGeral> _vertex;
-    double distancia;
-};
-
-//---------------------------------------------------------------------------
 
 class CInfoCircuitos
 {
@@ -84,7 +73,6 @@ public:
   bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota,
              shared_ptr<TArestasCircuito> ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
              string &SubRotas);
-  bool generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, string layer );
   void Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing); 
   shared_ptr<Graph> _graph;
 };                                     
