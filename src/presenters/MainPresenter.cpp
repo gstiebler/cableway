@@ -79,20 +79,19 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 
 	string circuit, source, dest;
 	_window->getCircuit( indexOnGrid, circuit, source, dest );
-	int IndiceCircuitoArestas = infoCircuitos->ListaArestasDoCircuito( circuit );
+	shared_ptr<TArestasCircuito> arestasCircuito = infoCircuitos->ArestasDoCircuito[circuit];
 
 	// circuit is OK
-    if (IndiceCircuitoArestas >= 0)
+    if (arestasCircuito.get() != 0)
     {
-		TArestasCircuito &arestasCircuito = infoCircuitos->ArestasDoCircuito[IndiceCircuitoArestas];
 		for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 		{
 			shared_ptr<TDesenho> drawing = _mainExecution->_containerDesenhos->getDesenho( n );
-			vector< shared_ptr<TAresta> > &arestasDesenho = arestasCircuito.ArestasDesenho[drawing.get()];
+			vector< shared_ptr<TAresta> > &arestasDesenho = arestasCircuito->ArestasDesenho[drawing.get()];
 			if (arestasDesenho.size() > 0)
 			{
 				shared_ptr<CGrafoDesenho> grafoDesenho = drawing->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito );
 			}
 		}
 	}
@@ -106,7 +105,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
 				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito );
 				drawingPresenter->_window->_mostraDesenho->MostraDoubleArvore(vertice, vertice2);
 			}
 		}
@@ -115,7 +114,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
 				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, IndiceCircuitoArestas );
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito );
 			}
 		}
 	}

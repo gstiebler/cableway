@@ -54,12 +54,10 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
 	shared_ptr<TAresta> Aresta;
 	TCircuitoAreas *CircuitoAreas;
 	CircuitoAreas = new TCircuitoAreas[numDrawings];
-	TArestasCircuito *ArestasCircuito;
+	shared_ptr<TArestasCircuito> ArestasCircuito( new TArestasCircuito );
 	string rota, SubRotas;
 	vector< shared_ptr<TVerticeGeral> > Bandeirolas;
-	ArestasDoCircuito.push_back( TArestasCircuito() );
-	// O item está em branco
-	ArestasCircuito = &ArestasDoCircuito.back();
+	ArestasDoCircuito[Circuito.NomeCircuito] = ArestasCircuito;
 	TStringList *DebugArestas=NULL;
 	bool erro = true, erro_interno;
 #ifdef DEBUG_BUILDER
@@ -94,8 +92,6 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
 
 	if ( !erro )
 	{
-		ArestasCircuito->Circuito=Circuito.NomeCircuito;
-		ArestasCircuito->idCircuito=Circuito.ID;
 
 #ifdef DEBUG_BUILDER
 		DebugArestas->SaveToFile(ExtractFilePath(Application->ExeName)+"Vertices\\"+Circuito.NomeCircuito.c_str()+".txt");
@@ -104,9 +100,6 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
 	}
 	else if ( erro && Circuito.RotaUsuario != "" && Circuito.rota.size() > 0 )
   {
-    // Se deu erro, mas era rota de usuário e conseguiu completar alguma parte...
-		ArestasCircuito->Circuito=Circuito.NomeCircuito;
-		ArestasCircuito->idCircuito=Circuito.ID;
 	}
 	else
 	{
@@ -116,8 +109,6 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito, int numDrawings )
 		}
 		else
 		{          
-			ArestasDoCircuito.pop_back();
-		  //CArmazenamentoCircuitos::DeuErro(Circuito, erros);
 		}
 	}
 
@@ -168,29 +159,10 @@ bool VerticesDjikstra::operator>(const VerticesDjikstra& right) const
     return distancia < right.distancia;
 }
 
-int CInfoCircuitos::ListaArestasDoCircuito(string circuito)
-{
-    int n;
-    for (n = 0; n < ArestasDoCircuito.size(); n++)
-        if (circuito == ArestasDoCircuito[n].Circuito)
-            return n;
-    return -1;
-}
-//---------------------------------------------------------------------------
 
-int CInfoCircuitos::ListaArestasDoCircuito(int idCircuito)
+vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(std::string circuitName, shared_ptr<TDesenho> drawing)
 {
-    int n;
-    for (n = 0; n < ArestasDoCircuito.size(); n++)
-        if (idCircuito == ArestasDoCircuito[n].idCircuito)
-            return n;
-    return -1;
-}
-//---------------------------------------------------------------------------
-
-vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(int circuito, shared_ptr<TDesenho> drawing)
-{
-    return ArestasDoCircuito[circuito].ArestasDesenho[drawing.get()];
+    return ArestasDoCircuito[circuitName]->ArestasDesenho[drawing.get()];
 }
 //---------------------------------------------------------------------------
 
@@ -243,7 +215,7 @@ void CInfoCircuitos::MergeRota(vector<std::string> &rota, vector<std::string> No
 
 //Recebe a origem e o destino, e toda a rota do usuário
 bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, vector<string> &rota,
-        TArestasCircuito *ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
+        shared_ptr<TArestasCircuito> ArestasCircuito, vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas,
         TStringList*DEBUG_arestas, TCircuitoAreas *CircuitoAreas)
 {
     vector<string> * ListaRota = new vector<string>();
@@ -309,7 +281,7 @@ set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> verte
 }
 
 
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, TArestasCircuito *ArestasCircuito,
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, shared_ptr<TArestasCircuito> ArestasCircuito,
         vector< shared_ptr<TVerticeGeral> > &ListaBandeirolas, string &SubRotas )
 {
     int n, m;

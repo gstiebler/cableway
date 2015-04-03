@@ -14,13 +14,14 @@
 class DrawingWindow;
 class CGrafoDesenho;
 class CInfoCircuitos;
+struct TArestasCircuito;
 
 class DrawingPresenter : public QObject
 {
     Q_OBJECT
 
 public:
-    DrawingPresenter( std::shared_ptr<CGrafoDesenho> grafoDesenho, std::shared_ptr<CInfoCircuitos> infoCircuitos, int circuitIndex = -1 );
+    DrawingPresenter( std::shared_ptr<CGrafoDesenho> grafoDesenho, std::shared_ptr<CInfoCircuitos> infoCircuitos, std::shared_ptr<TArestasCircuito> arestasCircuito );
     virtual ~DrawingPresenter();
 
     DrawingWindow *_window;

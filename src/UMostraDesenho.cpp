@@ -25,7 +25,6 @@ unsigned char pegaVermelho ( int cor )
 CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, QWidget *parent) :
         COpenGL(600, 600, parent),
         bMostraArvore2( false ),
-        CircuitoAExibir( -1 ),
         xBola( -1 ),
         yBola( - 1),
         tamBola( -1 )
@@ -192,7 +191,7 @@ void CMostraDesenho::showCircuit()
 	glColor3f(pegaVermelho(CORCAMINHO)/255.0, pegaVerde(CORCAMINHO)/255.0, pegaAzul(CORCAMINHO)/255.0);
 //			glColor3f(0.0, 0.0, 1.0);
 	glLineWidth((GLfloat)(3.0));
-	vector< shared_ptr<TAresta> > &edges = InfoCircuitos->ArestasCircuito(CircuitoAExibir, GrafoDesenho->_dados->_drawing);
+	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[GrafoDesenho->_dados->_drawing.get()];
 	for (int n=0; n<(int)edges.size(); n++)
 	{
 		if ( ( n == 0 || n == (int)edges.size()-1 ) && !mostraLigacaoEquipamento )
@@ -455,11 +454,11 @@ void CMostraDesenho::DrawObjects()
 }
 //---------------------------------------------------------------------------
 
-void CMostraDesenho::MostraCircuito(int Circuito)
+void CMostraDesenho::MostraCircuito( shared_ptr<TArestasCircuito> arestasCircuito )
 {
 	ExibirCircuito=true;
 	primeiro=true;
-	CircuitoAExibir=Circuito;
+	_arestasCircuito = arestasCircuito;
 }
 //---------------------------------------------------------------------------
 

@@ -33,7 +33,7 @@ private:
     void paintGL();
 
   bool ExibirCircuito;
-  int CircuitoAExibir;
+  std::shared_ptr<TArestasCircuito> _arestasCircuito;
   shared_ptr<CGrafoDesenho> GrafoDesenho;
   shared_ptr<CInfoCircuitos> InfoCircuitos;
   bool bMostraNumVerticesDEBUG;
@@ -59,7 +59,7 @@ protected:
 public:
   CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, QWidget *parent = 0);
   ~CMostraDesenho();
-  void MostraCircuito(int Circuito);
+  void MostraCircuito(std::shared_ptr<TArestasCircuito> arestasCircuito);
   void ApagaCircuito();
   void MostraNumVerticesDEBUG(bool mostra);
   void MostraArvore(shared_ptr<TVerticeGeral> vertice);

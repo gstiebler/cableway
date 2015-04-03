@@ -17,9 +17,7 @@ struct TDesenho;
 
 struct TArestasCircuito
 {
-  string Circuito;
   vector< shared_ptr<TAresta> > Arestas;
-  int idCircuito;
   TArestasCircuito();
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();

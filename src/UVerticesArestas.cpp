@@ -24,19 +24,13 @@ TArestasCircuito::~TArestasCircuito()
 //---------------------------------------------------------------------------
 TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
 {
-    Circuito = cpy.Circuito;
-
     Arestas.assign( cpy.Arestas.begin(), cpy.Arestas.end() );
-//    NumDesenhos=numDesenhos;
-    idCircuito = cpy.idCircuito;
 	ArestasDesenho = cpy.ArestasDesenho;
 }
 //---------------------------------------------------------------------------
 
 void TArestasCircuito::Apaga()
 {
-    Circuito = "";
-    idCircuito = -1;
 }
 
 

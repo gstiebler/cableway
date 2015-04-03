@@ -168,19 +168,11 @@ void CContainerDesenhos::GeraColares()
 
 void CContainerDesenhos::MostraCircuito(string circuito)
 {
-  int IndiceCircuitoArestas;
   bool AchouCircuito;
   TCircuito Circuito;
-  
-
-    IndiceCircuitoArestas=InfoCircuitos->ListaArestasDoCircuito(circuito);
-    if (IndiceCircuitoArestas>=0)
+	if ( InfoCircuitos->ArestasDoCircuito[circuito].get() == 0 )
     {
-
-    }
-    else
-    {
-      string erro;
+ string erro;
       erro = "não foi encontrado caminho.";
       bool exists, equips;
       equips = true;

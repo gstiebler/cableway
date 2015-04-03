@@ -175,7 +175,7 @@ TEST_F(BasicTest, singleDrawing)
 
 	double tam;
 	vector<string> rota;
-	TArestasCircuito *ArestasCircuito = NULL;
+	shared_ptr<TArestasCircuito> ArestasCircuito;
 	vector< shared_ptr<TVerticeGeral> > ListaBandeirolas;
 	string SubRotas; 
 
@@ -202,7 +202,7 @@ TEST_F(BasicTest, multipleDrawings)
 
 	double tam;
 	vector<string> rota;
-	TArestasCircuito *ArestasCircuito = NULL;
+	shared_ptr<TArestasCircuito> ArestasCircuito;
 	vector< shared_ptr<TVerticeGeral> > ListaBandeirolas;
 	string SubRotas; 
 
@@ -232,7 +232,7 @@ TEST_F(BasicTest, complete)
 
     double tam;
     vector<string> rota;
-    TArestasCircuito *ArestasCircuito = NULL;
+	shared_ptr<TArestasCircuito> ArestasCircuito;
 	vector< shared_ptr<TVerticeGeral> > ListaBandeirolas;
     string SubRotas;
     containerDesenhos.InfoCircuitos->GeraRota("Equipamento 1", "Equipamento 2", tam, rota, ArestasCircuito, ListaBandeirolas, SubRotas );
