@@ -21,7 +21,6 @@ struct TArestasCircuito
   TArestasCircuito();
   TArestasCircuito(const TArestasCircuito &cpy);
   ~TArestasCircuito();
-  void Apaga();
   map< TDesenho*, vector< shared_ptr<TAresta> > > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
 };
 //----------------------------------------------------------------------------  
@@ -69,12 +68,9 @@ struct TVerticeEAresta
 
 struct TVerticesGerais
 {
-	TVerticesGerais();
 	vector<shared_ptr<TVerticeGeral> > vertices;
   void Adiciona(shared_ptr<TVerticeGeral> Item);
   shared_ptr<TVerticeGeral> AchaVerticePeloTexto(string Texto);
-  bool VerticeEhEquipamento(int n);
-  bool VerticeEhBandeirola(int n);
   void ListaOrd( vector<shared_ptr<TVerticeGeral> > &ListaOrdenada);
 };
 //---------------------------------------------------------------------------

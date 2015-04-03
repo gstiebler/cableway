@@ -29,11 +29,6 @@ TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
 }
 //---------------------------------------------------------------------------
 
-void TArestasCircuito::Apaga()
-{
-}
-
-
 
 TListaVerticesEArestas::TListaVerticesEArestas(const TListaVerticesEArestas &cpy)
 {
@@ -81,11 +76,6 @@ TVerticeGeral::TVerticeGeral(const TVerticeGeral &cpy)
 //---------------------------------------------------------------------------
 
 
-TVerticesGerais::TVerticesGerais()
-{
-}
-
-
 void TVerticesGerais::Adiciona(shared_ptr<TVerticeGeral> Item)
 {
 	vertices.push_back( Item );
@@ -114,21 +104,6 @@ shared_ptr<TVerticeGeral> TVerticesGerais::AchaVerticePeloTexto(string Texto)
 }
 //---------------------------------------------------------------------------
 
-bool TVerticesGerais::VerticeEhEquipamento(int n)
-{
-    if (vertices[ n ]->TipoElemento == INSTRUMENTO)
-        return true;
-    return false;
-}
-//---------------------------------------------------------------------------
-
-bool TVerticesGerais::VerticeEhBandeirola(int n)
-{
-    if (vertices[ n ]->TipoElemento == BANDEIROLA)
-        return true;
-    return false;
-}
-//---------------------------------------------------------------------------
 
 void TVerticesGerais::ListaOrd(vector<shared_ptr<TVerticeGeral> > &ListaOrdenada)
 {
