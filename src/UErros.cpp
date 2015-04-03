@@ -33,6 +33,13 @@ void CErrosMsg::destroi()
 
 void CErrosMsg::novoErro(string novo)
 {
-	printf( "%s\n", novo.c_str() );
+	erros.push_back( novo );
+	//printf( "%s\n", novo.c_str() );
 }
 
+
+void CErrosMsg::transferErrors( vector<string> &errors )
+{
+	errors = erros;
+	erros.clear();
+}

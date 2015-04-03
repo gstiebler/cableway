@@ -17,6 +17,7 @@
 #include "Reports.h"
 #include "TDesenho.h"
 #include "Graph.h"
+#include "UErros.h"
 
 using namespace std;
 
@@ -55,6 +56,11 @@ void MainPresenter::execute()
 
 	string bandeirolasReportFileName = _window->getInputDirectory() + "/BandeirolasReport.csv";
 	Reports::generateBandeirolaReport( bandeirolasReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
+
+	vector<string> errors;
+	CErrosMsg::getInstance()->transferErrors( errors );
+	for( int i(0); i < errors.size(); ++i )
+		printf( "%s\n", errors[i].c_str() );
 }
 
 
