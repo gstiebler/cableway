@@ -27,6 +27,7 @@ public:
 								double length, std::string errors );
 	void getCircuit( int &circuitIndex, std::string &name, std::string &source, std::string &dest );
 	void setInputFolder( std::string inputFolder );
+	void showStatusMessage( std::string text );
 
 signals:
 

@@ -18,6 +18,7 @@
 #include "TDesenho.h"
 #include "Graph.h"
 #include "UErros.h"
+#include "InterfaceFeedback.h"
 
 using namespace std;
 
@@ -46,7 +47,8 @@ void MainPresenter::execute()
 	string xlsFileName = _window->getInputDirectory() + "/user_params.xls";
     string inputCircuitsFileName = _window->getInputDirectory() + "/input_circuits.xls";
 
-    _mainExecution = new MainExecution( xlsFileName );
+	shared_ptr<InterfaceFeedback> interfaceFeecback( new InterfaceFeedback( _window ) );
+    _mainExecution = new MainExecution( xlsFileName, interfaceFeecback );
     _mainExecution->execute( inputCircuitsFileName );
 
 	fillWindowGrid( _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );

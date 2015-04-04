@@ -14,6 +14,7 @@
 #include "file/InputCircuitsReader.h"
 
 class CContainerDesenhos;
+class InterfaceFeedback;
 
 struct CircuitResult
 {
@@ -25,7 +26,7 @@ struct CircuitResult
 class MainExecution
 {
 public:
-    MainExecution( const std::string &userParametersFileName );
+    MainExecution( const std::string &userParametersFileName, std::shared_ptr<InterfaceFeedback> interfaceFeedback );
     virtual ~MainExecution();
 
     static std::string exeFileName;
@@ -42,6 +43,7 @@ public:
 private:
 
 	std::string ErrosDoCircuito( std::string Origem, std::string Destino, std::vector<std::string> &route );
+	std::shared_ptr<InterfaceFeedback> _interfaceFeedback;
 
 };
 

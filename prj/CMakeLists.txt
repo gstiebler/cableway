@@ -32,6 +32,7 @@ set(ALL_SOURCES ${SRC_BASE}/UContainerDesenhos.cpp
 				${SRC_BASE}/GLCoords.cpp
 				${SRC_BASE}/UVerticesArestas.cpp
 				${SRC_BASE}/Graph.cpp
+				${SRC_BASE}/InterfaceFeedback.cpp
 				${SRC_BASE}/MainExecution.cpp
 				${SRC_BASE}/Reports.cpp
 				${SRC_BASE}/interface/MainWindow.cpp

@@ -16,6 +16,7 @@
 #include "UserParams/UserParams.h"
 #include "TDesenho.h"
 #include "Graph.h"
+#include "InterfaceFeedback.h"
 
 #include <QtCore>
 
@@ -32,7 +33,8 @@ string MainExecution::getExePath()
 
 
 
-MainExecution::MainExecution( const string &userParametersFileName )
+MainExecution::MainExecution( const string &userParametersFileName, shared_ptr<InterfaceFeedback> interfaceFeedback ) :
+	_interfaceFeedback( interfaceFeedback )
 {
     _containerDesenhos = shared_ptr<CContainerDesenhos>( new CContainerDesenhos() );
     UserParams userParams;
@@ -41,6 +43,7 @@ MainExecution::MainExecution( const string &userParametersFileName )
     for(int i(0); i < (int) userParams.drawingsParams.size(); ++i)
     {
         std::shared_ptr<CDadosGenerico> dados(new CDadosGenerico);
+		interfaceFeedback->showMessage( "Carregando desenho " + userParams.drawingsParams[i].fileName );
         CweLoader dwgLoader( userParams.drawingsParams[i].fileName, dados, &userParams );
         _containerDesenhos->addDrawing( dados, userParams.drawingsParams[i].elevation );
     }
@@ -63,6 +66,10 @@ void MainExecution::execute( std::string inputCircuitsFileName )
 
 	_resultCircuits.resize( _inputCircuits.size() );
 
+	float tenPercent = _inputCircuits.size() * 0.1;
+	int lastValue = 0;
+	
+	_interfaceFeedback->showMessage( "Processando circuitos" );
     for(int i(0); i < (int) _inputCircuits.size(); ++i)
     {
 		TCircuito circuito;
@@ -75,7 +82,18 @@ void MainExecution::execute( std::string inputCircuitsFileName )
 		_resultCircuits[i].length = circuito.metragem;
 
 		_resultCircuits[i].errorMessage = ErrosDoCircuito( _inputCircuits[i].source, _inputCircuits[i].dest, _resultCircuits[i].route );
+
+		int currValue = int(i / tenPercent);
+		if( currValue > lastValue )
+		{
+			lastValue = currValue;
+			char temp[256];
+			sprintf( temp, "Circuitos processados: %d%%", currValue * 10 );
+			_interfaceFeedback->showMessage( temp );
+		}
     }
+	
+	_interfaceFeedback->showMessage( "Processamento concluído." );
 }
 
 

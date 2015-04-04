@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
 	tableView->setModel( _model );
 
 	tableView->setColumnWidth( 7, 800 );
+
+	statusBar()->show();
 	
     connect( tableView, SIGNAL( clicked(QModelIndex) ), this, SIGNAL( circuitGridClicked(QModelIndex) ) );
 }
@@ -92,4 +94,10 @@ void MainWindow::selectFolder()
 void MainWindow::setInputFolder( std::string inputFolder )
 {
 	lineEditInputDirectory->setText( QString::fromLatin1( inputFolder.c_str() ) );
+}
+
+
+void MainWindow::showStatusMessage( std::string text )
+{
+	statusBar()->showMessage( QString::fromLatin1( text.c_str() ) );
 }
