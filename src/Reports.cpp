@@ -68,8 +68,10 @@ void Reports::generateBandeirolaReport( std::string fileName, const std::vector<
 
 		vector<string> &circuits = it->second;
 		for(int i(0); i < circuits.size(); ++i)
+		{
 			out << QString::fromLatin1( circuits[i].c_str() );
 			out << QString::fromLatin1( ";\n" );
+		}
 	
 		out << "\n";
 	}
