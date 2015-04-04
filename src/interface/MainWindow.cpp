@@ -7,8 +7,8 @@
 
 #include "MainWindow.h"
 #include <QStandardItemModel>
-
 #include <QFileDialog>
+#include <QMessageBox>
 #include <string>
 
 using namespace std;
@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect( buttonExecute, SIGNAL( clicked() ), this, SIGNAL( executeButtonClicked() ) );
     connect( btInputDirectory, SIGNAL( clicked() ), this, SLOT( selectFolder() ) );
+	connect( menuSobre, SIGNAL(aboutToShow()), this, SLOT(aboutClicked()) );
 
     _model = new QStandardItemModel();
 	QStringList list;
@@ -100,4 +101,12 @@ void MainWindow::setInputFolder( std::string inputFolder )
 void MainWindow::showStatusMessage( std::string text )
 {
 	statusBar()->showMessage( QString::fromLatin1( text.c_str() ) );
+}
+
+
+void MainWindow::aboutClicked()
+{
+	QMessageBox msgBox;
+	msgBox.setText("Propriedade intelectual de Guilherme Stiebler");
+	msgBox.exec();
 }

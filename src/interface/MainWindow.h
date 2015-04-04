@@ -37,6 +37,7 @@ signals:
 private slots:
 
 	void selectFolder();
+	void aboutClicked();
 
 private:
 	QStandardItemModel *_model;
