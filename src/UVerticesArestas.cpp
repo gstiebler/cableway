@@ -60,27 +60,8 @@ TVerticeGeral::TVerticeGeral()
     pos.y = 0;
     TipoElemento = NADA;
     texto = "";
-    ListaVerticesEArestas = new TListaVerticesEArestas;
+    ListaVerticesEArestas = shared_ptr<TListaVerticesEArestas>( new TListaVerticesEArestas );
     EhColar = false;
-}
-//---------------------------------------------------------------------------
-
-TVerticeGeral::~TVerticeGeral()
-{
-    delete ListaVerticesEArestas;
-}
-//---------------------------------------------------------------------------
-TVerticeGeral::TVerticeGeral(const TVerticeGeral &cpy)
-{
-    pos.x = cpy.pos.x;
-    pos.y = cpy.pos.y;
-    TipoElemento = cpy.TipoElemento;
-    texto = cpy.texto;
-    drawing = cpy.drawing;
-    IndiceOriginal = cpy.IndiceOriginal;
-    EhColar = cpy.EhColar;
-    TipoVertice = cpy.TipoVertice;
-    ListaVerticesEArestas = new TListaVerticesEArestas( *cpy.ListaVerticesEArestas );
 }
 //---------------------------------------------------------------------------
 

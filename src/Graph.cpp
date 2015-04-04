@@ -46,7 +46,7 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
     TVerticeEAresta *VerticeEArestaTemp;
 	shared_ptr<TVerticeGeral> vfila, vatual;
     double dist;
-    TListaVerticesEArestas *ListaVerticesEArestasT;
+    shared_ptr<TListaVerticesEArestas> ListaVerticesEArestasT;
     priority_queue<VerticesDjikstra> heap;
     heap.push(VerticesDjikstra(vertice[0], 0));
 	bool achou_final = false;

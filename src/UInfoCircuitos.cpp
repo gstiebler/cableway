@@ -186,7 +186,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
 
 set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex )
 {
-    TListaVerticesEArestas *verticeEArestaTemp = vertexIndex->ListaVerticesEArestas;
+    shared_ptr<TListaVerticesEArestas> verticeEArestaTemp = vertexIndex->ListaVerticesEArestas;
 	set<string> result;
 	for (int i(0); i < verticeEArestaTemp->list.size(); ++i)
 	{
@@ -264,7 +264,7 @@ void CInfoCircuitos::Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< sha
 	fila.push( Vertice.get() );
     VerticesVisitados.insert( Vertice.get() );
     //BUSCA EM LARGURA
-    TListaVerticesEArestas *ListaVerticesEArestas;
+    shared_ptr<TListaVerticesEArestas> ListaVerticesEArestas;
     while (fila.size())
     {
         vfila = fila.front();

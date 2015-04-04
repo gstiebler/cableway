@@ -44,11 +44,9 @@ struct TListaVerticesEArestas
 struct TVerticeGeral
 {
   TVerticeGeral();
-  ~TVerticeGeral();
-  TVerticeGeral(const TVerticeGeral &cpy);
   TPonto pos;
   int TipoElemento;
-  TListaVerticesEArestas *ListaVerticesEArestas;
+  shared_ptr<TListaVerticesEArestas> ListaVerticesEArestas;
   string texto;
   shared_ptr<TDesenho> drawing;
   TTipoVertice TipoVertice;
