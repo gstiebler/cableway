@@ -402,7 +402,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
             }
 
 			shared_ptr<TAresta> Aresta( new TAresta( straightCable->_multipoint->layerName ) );
-            for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
+            for (int i = 0; i < VerticesInstrumento.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontosManhattan( PosVertice, PosVertice ) );
                 Aresta->_drawing = _dados->_drawing;
@@ -463,16 +463,13 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMult
         ListaMenores.clear();
         //retorna a lista de cabos que possuem Distância pequena para o equipamento
         DistRetaParaTodasPontasCaboReta( reta, ListaMenores, DIST_MIN_ELEM_CABO );
-        GeraVerticesInstrumentosAdicionaMultipointCaboReta( ListaItensCelula, ListaMenores, ligado,
-                VerticesInstrumento, PosVertice );
+        GeraVerticesInstrumentosAdicionaMultipointCaboReta( ListaItensCelula, ListaMenores, ligado, VerticesInstrumento, PosVertice );
 
         ListaMenores.clear();
         //localiza o cabo arco com a ponta mais pr�xima � reta
         DistRetaParaTodasPontasCaboArco( reta, ListaMenores, DIST_MIN_ELEM_CABO );
         //se a Distância for pequena, considera-se que estáo ligados
-        GeraVerticesInstrumentosAdicionaMultipointCaboArco( ListaItensCelula, ListaMenores, ligado,
-                VerticesInstrumento, PosVertice );
-
+        GeraVerticesInstrumentosAdicionaMultipointCaboArco( ListaItensCelula, ListaMenores, ligado, VerticesInstrumento, PosVertice );
     }
 }
 //---------------------------------------------------------------------------
@@ -550,7 +547,6 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
 
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
         CriaVerticesEArestasInstrumento( ListaItensCelula, VerticesInstrumento, PosVertice );
-		createColarEdges( ListaItensCelula, VerticesInstrumento );
 
 		for (i = 0; i < ListaItensCelula->_multipoints.size(); i++)  //percorre todos os itens da c�lula atual
 			GeraVerticesInstrumentosAdicionaMultipoint( ListaItensCelula->_multipoints[i], ListaItensCelula, ligado, VerticesInstrumento, PosVertice );
@@ -578,19 +574,6 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
 
 }
 //---------------------------------------------------------------------------
-
-
-void CGrafoDesenho::createColarEdges( TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento )
-{
-    // Caso o equipamento seja um colar de subida/descida, então � necess�rio adicionar uma aresta entre a subida e a descida.
-    if (ListaItensCelula->iTextos.size() == 2)
-    {
-        shared_ptr<TAresta> Aresta( new TAresta( "" ) );
-        Aresta->AdicionaVertices( VerticesInstrumento[0], VerticesInstrumento[1], 0 );
-        Aresta->_drawing = _dados->_drawing;
-		_graph->_arestas.push_back( Aresta );
-    }
-}
 
 
 TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula)
