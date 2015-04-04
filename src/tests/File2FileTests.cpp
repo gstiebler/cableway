@@ -4,6 +4,7 @@
 #include "TestsUtil.h"
 #include "MainExecution.h"
 #include "file/CsvReader.h"
+#include "InterfaceFeedback.h"
 
 
 using namespace std;
@@ -19,8 +20,9 @@ TEST_F(File2FileTests, test1)
     string xlsFileName = TestsUtil::getDataPath() + "\\tests\\complete_test1\\user_params.xls";
     string inputCircuitsFileName = TestsUtil::getDataPath() + "\\tests\\complete_test1\\input_circuits.xls";
 	string csvFileName = TestsUtil::getDataPath() + "\\tests\\complete_test1\\CircuitsReport_fixtures.csv";
-
-    MainExecution mainExecution( xlsFileName );
+	
+	shared_ptr<InterfaceFeedback> interfaceFeedback( new InterfaceFeedback( NULL ) );
+    MainExecution mainExecution( xlsFileName, interfaceFeedback );
     mainExecution.execute( inputCircuitsFileName );
 
 	vector< vector< string > > circuitsFixtures;

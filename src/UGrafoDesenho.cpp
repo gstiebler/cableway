@@ -550,6 +550,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
 
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
         CriaVerticesEArestasInstrumento( ListaItensCelula, VerticesInstrumento, PosVertice );
+		createColarEdges( ListaItensCelula, VerticesInstrumento );
 
 		for (i = 0; i < ListaItensCelula->_multipoints.size(); i++)  //percorre todos os itens da c�lula atual
 			GeraVerticesInstrumentosAdicionaMultipoint( ListaItensCelula->_multipoints[i], ListaItensCelula, ligado, VerticesInstrumento, PosVertice );
@@ -560,8 +561,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaItensCelula,
-        std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice )
+void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice )
 {
     //para cada texto da c�lula cria um vértice
     for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
@@ -576,6 +576,12 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         _graph->_verticesGerais->Adiciona( VerticeInstrumento );
     }
 
+}
+//---------------------------------------------------------------------------
+
+
+void CGrafoDesenho::createColarEdges( TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento )
+{
     // Caso o equipamento seja um colar de subida/descida, então � necess�rio adicionar uma aresta entre a subida e a descida.
     if (ListaItensCelula->iTextos.size() == 2)
     {
@@ -584,9 +590,8 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
         Aresta->_drawing = _dados->_drawing;
 		_graph->_arestas.push_back( Aresta );
     }
-
 }
-//---------------------------------------------------------------------------
+
 
 TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula)
 {

@@ -15,6 +15,7 @@
 #include "../UserParams/UserParams.h"
 #include "MainExecution.h"
 #include "TestsUtil.h"
+#include "InterfaceFeedback.h"
 
 namespace {
 
@@ -242,7 +243,8 @@ TEST_F(BasicTest, complete2)
     string xlsFileName = TestsUtil::getDataPath() + "\\tests\\user_params2.xls";
     string inputCircuitsFileName = TestsUtil::getDataPath() + "\\tests\\input_circuits2.xls";
 
-    MainExecution mainExecution( xlsFileName );
+	shared_ptr<InterfaceFeedback> interfaceFeedback( new InterfaceFeedback( NULL ) );
+    MainExecution mainExecution( xlsFileName, interfaceFeedback );
     mainExecution.execute( inputCircuitsFileName );
 
     ASSERT_EQ( 3, (int) mainExecution._resultCircuits.size() );

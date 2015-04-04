@@ -99,6 +99,7 @@ private:
   void AchaTextoBandeirola(TPonto &pos, std::string &texto);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice );
+  void createColarEdges( TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento );
   void GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaMultipointCaboReta(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
