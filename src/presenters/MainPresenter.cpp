@@ -19,6 +19,7 @@
 #include "Graph.h"
 #include "UErros.h"
 #include "InterfaceFeedback.h"
+#include "Debug.h"
 
 using namespace std;
 
@@ -58,6 +59,9 @@ void MainPresenter::execute()
 
 	string bandeirolasReportFileName = _window->getInputDirectory() + "/BandeirolasReport.csv";
 	Reports::generateBandeirolaReport( bandeirolasReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
+
+	string verticesDebugFileName = _window->getInputDirectory() + "/VerticesDebug.txt";
+	Debug::printVertices( _mainExecution->_containerDesenhos->_graph->_verticesGerais, verticesDebugFileName );
 
 	vector<string> errors;
 	CErrosMsg::getInstance()->transferErrors( errors );
