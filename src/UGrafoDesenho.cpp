@@ -852,9 +852,6 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
 				Cabo._vertex = _cabosArco[m]._arco->_vertices[n];
                 Cabo.IndiceArco = n;
                 ListaMenores.push_back( Cabo );
-                //        MenorDist=Dist;
-                //        IndiceCabo=m;
-                //        PosVertice=PontosCabo[n];
             }
         }        //for (n=0; n<2; n++)
     }        //for (m=0; m<NumCabosReta; m++)
@@ -869,11 +866,6 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco,
     double Dist;
     TPonto *PontosCabo;
 
-#ifdef DEBUG_BUILDER
-    TStringList *lista=new TStringList;
-#endif
-    //	IndiceCabo=-1;
-    //	MenorDist=Infinity;
     TPontoEIndiceCabo Cabo;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
@@ -888,10 +880,6 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco,
                             - Arco.EixoPrimario );
             if (Dist < DistMinElemCabo)
             {
-
-#ifdef DEBUG_BUILDER
-                lista->Add("indice cabo: "+IntToStr(m));
-#endif
                 Cabo.IndiceCabo = m;
                 Cabo.PosVertice = PontosCabo[n];
                 Cabo.Dist = Dist;
@@ -899,10 +887,6 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco,
             }
         }  //for (n=0; n<2; n++)
     }  //for (m=0; m<NumCabosReta; m++)
-       //	DistMaisPerto=MenorDist;
-#ifdef DEBUG_BUILDER
-    delete lista;
-#endif
 }
 //---------------------------------------------------------------------------
 
