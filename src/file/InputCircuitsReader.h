@@ -23,9 +23,7 @@ struct InputCircuit
 	static std::string getFormatedRoute( const std::vector<std::string> &routeVector );
 };
 
-
-
-
+std::string trimString( std::string text );
 void readInputCircuits( std::string fileName, std::vector< InputCircuit > &circuits );
 
 #endif

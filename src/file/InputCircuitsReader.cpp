@@ -35,6 +35,22 @@ std::string InputCircuit::getFormatedRoute( const vector<string> &routeVector )
 }
 
 
+std::string trimString( std::string text )
+{
+	int last = text.size() - 1;
+	while (last >= 0 && text[last] == ' ')
+		--last;
+
+	int first = 0;
+	while( first < last && text[first] == ' ' ) 
+		first++;
+
+	if( last > first )
+		return text.substr(first, last - first + 1);
+	else
+		return "";
+}
+
 
 std::vector<std::string> processRoute(string s) {
     std::stringstream ss(s);
@@ -53,7 +69,7 @@ string readString( xlsCell *cell )
     string result;
     if( cell->str )
         result = (char*) cell->str;
-    return result;
+	return trimString( result );
 }
 
 
@@ -66,6 +82,8 @@ void loadCircuits( xlsWorkSheet *circuitsSheet, vector< InputCircuit > &circuits
 
         xlsCell *cell = xls_cell(circuitsSheet, cellRow, 0);
         circuit.name = readString( cell );
+		if( circuit.name.empty() )
+			continue;
 
         cell = xls_cell(circuitsSheet, cellRow, 1);
         circuit.source = readString( cell );

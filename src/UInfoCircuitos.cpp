@@ -68,6 +68,7 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito )
 		else
 		{
 			erro = GeraRota(Circuito.Destino, Circuito.Origem, Circuito.RotaUsuario, Circuito.metragem, Circuito.rota, ArestasCircuito );
+			ArestasCircuito->calcArestasDesenho();
 		}
 		if( erro )
 			Circuito.metragem = 0.0;
