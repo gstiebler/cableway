@@ -60,7 +60,7 @@ void MainPresenter::execute()
 	string bandeirolasReportFileName = _window->getInputDirectory() + "/BandeirolasReport.csv";
 	Reports::generateBandeirolaReport( bandeirolasReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
 
-	string verticesDebugFileName = _window->getInputDirectory() + "/VerticesDebug.txt";
+	string verticesDebugFileName = _window->getInputDirectory() + "/TextosEquipamentos.txt";
 	Debug::printVertices( _mainExecution->_containerDesenhos->_graph->_verticesGerais, verticesDebugFileName );
 
 	vector<string> errors;
@@ -94,7 +94,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 	shared_ptr<TArestasCircuito> arestasCircuito = infoCircuitos->ArestasDoCircuito[circuit];
 
 	// circuit is OK
-    if (arestasCircuito.get() != 0)
+	if (arestasCircuito.get() != 0 && arestasCircuito->Arestas.size() > 0 )
     {
 		for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 		{
@@ -103,7 +103,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			if (arestasDesenho.size() > 0)
 			{
 				shared_ptr<CGrafoDesenho> grafoDesenho = drawing->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito );
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
 			}
 		}
 	}
@@ -116,8 +116,9 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 		{
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
+				shared_ptr<TDesenho> drawing = _mainExecution->_containerDesenhos->getDesenho( n );
 				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito );
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
 				drawingPresenter->_window->_mostraDesenho->MostraDoubleArvore(vertice, vertice2);
 			}
 		}
@@ -125,8 +126,9 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 		{
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
+				shared_ptr<TDesenho> drawing = _mainExecution->_containerDesenhos->getDesenho( n );
 				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito );
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
 			}
 		}
 	}

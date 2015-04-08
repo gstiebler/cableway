@@ -123,7 +123,7 @@ void COpenGL::EscreveTexto(string texto, TPonto origem, double rotacao, double F
     glRotatef(rotacao, 0, 0, 1);
 	QString txt( texto.c_str() );
 	double canvasWidth = _glCoords.getRight() - _glCoords.getLeft();
-	int fontSize = 300000 / canvasWidth;
+	int fontSize = 150000 / canvasWidth;
 	if( fontSize < 1 )
 		fontSize = 1;
 	renderText(origem.x, origem.y, 0.0, txt, QFont("Arial", fontSize, QFont::Bold, false) );

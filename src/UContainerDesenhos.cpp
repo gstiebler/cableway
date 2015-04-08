@@ -36,7 +36,7 @@ CContainerDesenhos::~CContainerDesenhos()
 }
 //---------------------------------------------------------------------------
 
-void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura )
+void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, string fileName )
 {
     // Cria um novo desenho
     shared_ptr<TDesenho> desenho( new TDesenho );
@@ -50,6 +50,7 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     // E o ID
     desenho->Altura = altura;
     desenho->GrafoDesenho = grafoDesenho;
+	desenho->NomeArquivo = fileName;
 
     ListaDesenhos.push_back( desenho );
 }

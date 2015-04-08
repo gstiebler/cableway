@@ -31,7 +31,7 @@ public:
   ~CContainerDesenhos();
   shared_ptr<CInfoCircuitos> InfoCircuitos;
 
-  void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura );
+  void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, std::string fileName );
 
   shared_ptr<TDesenho> getDesenho(int Indice);
   void MostraCircuito(string circuito);

@@ -18,6 +18,7 @@
 #include "UListaItensCelula.h"
 #include "UserParams/UserParams.h"
 #include "UErros.h"
+#include "InputCircuitsReader.h"
 
 using namespace std;
 
@@ -132,7 +133,7 @@ void CweLoader::readText()
 		}
 		else if( key == "TEXT" )
 		{
-			texto->texto = value;
+			texto->texto = trimString( value );
 		}
 		else if( key == "X" )
 		{
@@ -188,7 +189,7 @@ void CweLoader::readDBText()
 		}
 		else if( key == "TEXT" ) 
 		{
-			texto->texto = value;
+			texto->texto = trimString( value );;
 		}
 		else if( key == "X" )
 		{

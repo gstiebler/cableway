@@ -171,7 +171,7 @@ TEST_F(BasicTest, singleDrawing)
 
 	createFloor1( dados );
 
-	containerDesenhos.addDrawing( dados, 100.0 );
+	containerDesenhos.addDrawing( dados, 100.0, "" );
 	containerDesenhos.Conclui();
 
 	double tam;
@@ -191,11 +191,11 @@ TEST_F(BasicTest, multipleDrawings)
 
 	std::shared_ptr<CDadosGenerico> floor1Data( new CDadosGenerico() );
 	createFloor1( floor1Data );
-	containerDesenhos.addDrawing( floor1Data, 100.0 );
+	containerDesenhos.addDrawing( floor1Data, 100.0, "" );
 
 	std::shared_ptr<CDadosGenerico> floor2Data( new CDadosGenerico() );
     createFloor2( floor2Data );
-    containerDesenhos.addDrawing( floor2Data, 126.0 );
+    containerDesenhos.addDrawing( floor2Data, 126.0, "" );
 
 	containerDesenhos.Conclui();
 
@@ -224,7 +224,7 @@ TEST_F(BasicTest, complete)
 
     CContainerDesenhos containerDesenhos;
 
-    containerDesenhos.addDrawing( dados, 100.0 );
+    containerDesenhos.addDrawing( dados, 100.0, "" );
     containerDesenhos.Conclui();
 
     double tam;

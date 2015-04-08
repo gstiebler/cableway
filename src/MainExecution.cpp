@@ -45,7 +45,7 @@ MainExecution::MainExecution( const string &userParametersFileName, shared_ptr<I
         std::shared_ptr<CDadosGenerico> dados(new CDadosGenerico);
 		interfaceFeedback->showMessage( "Carregando desenho " + userParams.drawingsParams[i].fileName );
         CweLoader dwgLoader( userParams.drawingsParams[i].fileName, dados, &userParams );
-        _containerDesenhos->addDrawing( dados, userParams.drawingsParams[i].elevation );
+        _containerDesenhos->addDrawing( dados, userParams.drawingsParams[i].elevation, userParams.drawingsParams[i].fileName );
     }
 
     _containerDesenhos->Conclui();

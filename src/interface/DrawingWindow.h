@@ -22,7 +22,7 @@ class DrawingWindow : public QDialog, private Ui::Dialog
     Q_OBJECT
 
 public:
-    DrawingWindow( std::shared_ptr<CGrafoDesenho> grafoDesenho, std::shared_ptr<CInfoCircuitos> infoCircuitos);
+    DrawingWindow( std::shared_ptr<CGrafoDesenho> grafoDesenho, std::shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName);
     virtual ~DrawingWindow();
 
 	void getOptions( bool &showOriginalColors, bool &showDisconnectedCables, bool &showBandeirolas, bool &showEquipmentEnding );

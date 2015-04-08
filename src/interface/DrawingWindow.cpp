@@ -11,12 +11,14 @@
 
 using namespace std;
 
-DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos>  infoCircuitos)
+DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName)
 {
     setupUi(this);
 
     _mostraDesenho = new CMostraDesenho( grafoDesenho, infoCircuitos );
     verticalLayout->addWidget( _mostraDesenho );
+
+	setWindowTitle( drawingName.c_str() );
 
 	cbShowOriginalColors->setChecked( true );
 	cbShowBandeirolas->setChecked( true );
