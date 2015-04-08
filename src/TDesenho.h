@@ -10,7 +10,6 @@ struct TDesenho
   shared_ptr<CGrafoDesenho> GrafoDesenho;
   string NomeArquivo;
   double Altura;
-  ~TDesenho();
 };
 //---------------------------------------------------------------------------
 #endif

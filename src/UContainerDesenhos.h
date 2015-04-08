@@ -25,10 +25,8 @@ private:
   static bool verificaTextoWrap(void* PonteiroThis, const char *str);
   bool verificaTexto(string str);
   void GeraListaAdjacencias();
-  void GeraColares();
+  void ligaColaresEntreDesenhos();
 public:
-  CContainerDesenhos();
-  ~CContainerDesenhos();
   shared_ptr<CInfoCircuitos> InfoCircuitos;
 
   void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, std::string fileName );

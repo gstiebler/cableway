@@ -5,6 +5,7 @@
 #include <QTextStream>
 
 #include "UVerticesArestas.h"
+#include "TDesenho.h"
 
 void Debug::printVertices( shared_ptr<TVerticesGerais> _verticesGerais, string fileName )
 {
@@ -19,7 +20,10 @@ void Debug::printVertices( shared_ptr<TVerticesGerais> _verticesGerais, string f
 		if( sortedVertices[i]->texto.empty() )
 			continue;
 
-		out << QString::fromUtf8( sortedVertices[i]->texto.c_str() ) << "\n";
+		out << QString::fromUtf8( sortedVertices[i]->texto.c_str() ) << ";";
+		out << sortedVertices[i]->pos.x << ";";
+		out << sortedVertices[i]->pos.y << ";";
+		out << QString::fromUtf8( sortedVertices[i]->drawing->NomeArquivo.c_str() ) << "\n";
 	}
  
     file.close(); 

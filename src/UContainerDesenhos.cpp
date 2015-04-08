@@ -5,36 +5,6 @@
 #include "TDesenho.h"
 #include "Graph.h"
 
-int ID_PROJETO;
-
-TDesenho::~TDesenho()
-{
-}
-//---------------------------------------------------------------------------
-
-CContainerDesenhos::CContainerDesenhos()
-{
-  // Cria uma nova lista pra guardar os desenhos
-  //ListaDesenhos=new TList;
-
-  // Bota NULL no InfoCircuitos e no frmDesenhoAbas
-  InfoCircuitos=NULL;
-  //frmDesenhoAbas=NULL;
-}
-//---------------------------------------------------------------------------
-
-
-
-CContainerDesenhos::~CContainerDesenhos()
-{
-//  // Se o InfoCircuitos já não for nulo, então o apaga
-//  if (InfoCircuitos)
-//  {
-//    delete InfoCircuitos;
-//    InfoCircuitos = NULL;
-//  }
-}
-//---------------------------------------------------------------------------
 
 void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, string fileName )
 {
@@ -109,13 +79,6 @@ void CContainerDesenhos::GeraListaAdjacencias()
 
 void CContainerDesenhos::Conclui()
 {
-//	for(int i(0); i < ParamsInfoCircuitos.VerticesGerais->Tamanho(); ++i)
-//	{
-//		printf( "(%f, %f) - %s \n", ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.x,
-//						ParamsInfoCircuitos.VerticesGerais->getItem( i )->pos.y,
-//						ParamsInfoCircuitos.VerticesGerais->getItem( i )->texto.c_str());
-//	}
-
 	_graph = shared_ptr<Graph>( new Graph );
 	for( int i(0); i < ListaDesenhos.size(); ++i)
 	{
@@ -127,7 +90,7 @@ void CContainerDesenhos::Conclui()
 		shared_ptr<CGrafoDesenho> grafoDesenho = ListaDesenhos[0]->GrafoDesenho;
         // Checa vertices duplos(?)
         grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
-        GeraColares();
+        ligaColaresEntreDesenhos();
     }
     // Cria um novo InfoCircuitos baseado nos par�metros
     GeraListaAdjacencias();
@@ -138,7 +101,7 @@ void CContainerDesenhos::Conclui()
 
 
 
-void CContainerDesenhos::GeraColares()
+void CContainerDesenhos::ligaColaresEntreDesenhos()
 {
     vector< shared_ptr<TVerticeGeral> > Lista;
 	_graph->_verticesGerais->ListaOrd( Lista );  //gera lista ordenada
@@ -153,9 +116,7 @@ void CContainerDesenhos::GeraColares()
 		if ((V1->texto != V2->texto) || (V1->drawing.get() == V2->drawing.get()) || (V1->TipoElemento != INSTRUMENTO) || (V2->TipoElemento != INSTRUMENTO))
 			continue;
 
-		double alturaDaAresta = V1->drawing->Altura - V2->drawing->Altura;
-        if (alturaDaAresta < 0)
-            alturaDaAresta *= -1;
+		double alturaDaAresta = fabs( V1->drawing->Altura - V2->drawing->Altura );
         shared_ptr<TAresta> Aresta( new TAresta( "" ) );
         Aresta->AdicionaVertices( V1, V2, alturaDaAresta );
 		_graph->_arestas.push_back( Aresta );
