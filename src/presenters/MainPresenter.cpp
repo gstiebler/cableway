@@ -63,6 +63,9 @@ void MainPresenter::execute()
 	string verticesDebugFileName = _window->getInputDirectory() + "/TextosEquipamentos.txt";
 	Debug::printVertices( _mainExecution->_containerDesenhos->_graph->_verticesGerais, verticesDebugFileName );
 
+	string graphDebugFileName = _window->getInputDirectory() + "/Grafo.txt";
+	Debug::printGraph( _mainExecution->_containerDesenhos->_graph, graphDebugFileName );
+
 	vector<string> errors;
 	CErrosMsg::getInstance()->transferErrors( errors );
 	for( int i(0); i < errors.size(); ++i )

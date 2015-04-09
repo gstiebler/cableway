@@ -6,11 +6,14 @@
 #include <algorithm>
 #include <string>
 
+int TAresta::counter = 1;
+int TVerticeGeral::counter = 1;
 
 TAresta::TAresta( string layer ) :
 	Tam( 0.0 ),
 	_layer( layer )
 {
+	_autogenId = counter++;
 }
 //---------------------------------------------------------------------------
 
@@ -63,6 +66,7 @@ TVerticeGeral::TVerticeGeral()
     texto = "";
     ListaVerticesEArestas = shared_ptr<TListaVerticesEArestas>( new TListaVerticesEArestas );
     EhColar = false;
+	_autogenId = counter++;
 }
 //---------------------------------------------------------------------------
 

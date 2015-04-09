@@ -43,6 +43,8 @@ struct TListaVerticesEArestas
 
 struct TVerticeGeral
 {
+	static int counter;
+	int _autogenId;
   TVerticeGeral();
   TPonto pos;
   int TipoElemento;
@@ -75,6 +77,8 @@ struct TVerticesGerais
 
 struct TAresta
 {
+	static int counter;
+	int _autogenId;
 	shared_ptr<TVerticeGeral> _vertices[2];
   double Tam;
 	shared_ptr<TDesenho> _drawing;
