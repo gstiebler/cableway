@@ -123,56 +123,83 @@ namespace AutoCAD_CSharp_plug_in1
         }
 
 
+        public static void writeJsonString( System.IO.StreamWriter file, string key, string value )
+        {
+            file.WriteLine("\"" + key + "\": " + "\"" + value + "\",");
+        }
+
+
+        public static void writeJsonNumber(System.IO.StreamWriter file, string key, double number, bool hasFinalComma)
+        {
+            string text = "\"" + key + "\": " + number;
+            if(hasFinalComma)
+                text += ",";
+            file.WriteLine(text);
+        }
+
+
+        public static void writeJsonInteger(System.IO.StreamWriter file, string key, int number)
+        {
+            file.WriteLine("\"" + key + "\": " + number + ",");
+        }
+
 
         public static void writeCircle(System.IO.StreamWriter file, Circle circle)
         {
-            file.WriteLine("OBJ: CIRCLE");
-            file.WriteLine("LAYER: " + circle.Layer);
-            file.WriteLine("DIAMETER: " + circle.Diameter);
-            file.WriteLine("CENTER_X: " + circle.Center.X);
-            file.WriteLine("CENTER_Y: " + circle.Center.Y);
+            writeJsonString(file, "OBJ", "CIRCLE");
+            writeJsonString(file, "LAYER", circle.Layer);
+            writeJsonNumber(file, "DIAMETER", circle.Diameter, true);
+            writeJsonNumber(file, "CENTER_X", circle.Center.X, true);
+            writeJsonNumber(file, "CENTER_Y", circle.Center.Y, false);
         }
 
 
 
         public static void writeArc(System.IO.StreamWriter file, Arc arc)
         {
-            file.WriteLine("OBJ: ARC");
-            file.WriteLine("LAYER: " + arc.Layer);
-            file.WriteLine("CENTER_X: " + arc.Center.X);
-            file.WriteLine("CENTER_Y: " + arc.Center.Y);
-            file.WriteLine("END_POINT_X: " + arc.EndPoint.X);
-            file.WriteLine("END_POINT_Y: " + arc.EndPoint.Y);
-            file.WriteLine("START_ANGLE: " + arc.StartAngle);
-            file.WriteLine("END_ANGLE: " + arc.EndAngle);
+            writeJsonString(file, "OBJ", "ARC");
+            writeJsonString(file, "LAYER", arc.Layer);
+            writeJsonNumber(file, "CENTER_X", arc.Center.X, true);
+            writeJsonNumber(file, "CENTER_Y", arc.Center.Y, true);
+            writeJsonNumber(file, "END_POINT_X", arc.EndPoint.X, true);
+            writeJsonNumber(file, "END_POINT_Y", arc.EndPoint.Y, true);
+            writeJsonNumber(file, "START_ANGLE", arc.StartAngle, true);
+            writeJsonNumber(file, "END_ANGLE", arc.EndAngle, false);
         }
 
 
         
         public static void writeLine(System.IO.StreamWriter file, Line line)
         {
-            file.WriteLine("OBJ: LINE");
-            file.WriteLine("LAYER: " + line.Layer);
-            file.WriteLine("START_POINT_X: " + line.StartPoint.X);
-            file.WriteLine("START_POINT_Y: " + line.StartPoint.Y);
-            file.WriteLine("END_POINT_X: " + line.EndPoint.X);
-            file.WriteLine("END_POINT_Y: " + line.EndPoint.Y);
+            writeJsonString(file, "OBJ", "LINE");
+            writeJsonString(file, "LAYER", line.Layer);
+            writeJsonNumber(file, "START_POINT_X", line.StartPoint.X, true);
+            writeJsonNumber(file, "START_POINT_Y", line.StartPoint.Y, true);
+            writeJsonNumber(file, "END_POINT_X", line.EndPoint.X, true);
+            writeJsonNumber(file, "END_POINT_Y", line.EndPoint.Y, false);
         }
 
 
 
         public static void writePolyline(System.IO.StreamWriter file, Polyline pline)
         {
-            file.WriteLine("OBJ: PLINE");
-            file.WriteLine("LAYER: " + pline.Layer);
-            file.WriteLine("NUM_VERTEX: " + pline.NumberOfVertices);
+            writeJsonString(file, "OBJ", "PLINE");
+            writeJsonString(file, "LAYER", pline.Layer);
+            writeJsonInteger(file, "NUM_VERTEX", pline.NumberOfVertices);
+            file.WriteLine("[");
             for (int i = 0; i < pline.NumberOfVertices; i++)
             {
                 double x = pline.GetPoint2dAt(i).X;
                 double y = pline.GetPoint2dAt(i).Y;
-                file.WriteLine("X: " + x);
-                file.WriteLine("Y: " + y);
+                file.WriteLine("{");
+                writeJsonNumber(file, "X", x, true);
+                writeJsonNumber(file, "Y", y, false);
+                if (i == pline.NumberOfVertices - 1)
+                    file.WriteLine("}");
+                else
+                    file.WriteLine("},");
             }
+            file.WriteLine("]");
         }
 
 
@@ -186,29 +213,30 @@ namespace AutoCAD_CSharp_plug_in1
 
         public static void writeText(System.IO.StreamWriter file, MText text)
         {
-            file.WriteLine("OBJ: TEXT");
-            file.WriteLine("LAYER: " + text.Layer);
-            file.WriteLine("TEXT: " + replaceBreakString( text.Text) );
-            file.WriteLine("X: " + text.Location.X);
-            file.WriteLine("Y: " + text.Location.Y);
-            file.WriteLine("WIDTH: " + text.Width);
+            writeJsonString(file, "OBJ", "TEXT");
+            writeJsonString(file, "LAYER", text.Layer);
+            writeJsonString(file, "TEXT", replaceBreakString(text.Text));
+            writeJsonNumber(file, "X", text.Location.X, true);
+            writeJsonNumber(file, "Y", text.Location.Y, true);
+            writeJsonNumber(file, "WIDTH_FACTOR", text.Width, false);
         }
 
 
 
         public static void writeDBText(System.IO.StreamWriter file, DBText text)
         {
-            file.WriteLine("OBJ: DBTEXT");
-            file.WriteLine("LAYER: " + text.Layer);
-            file.WriteLine("TEXT: " + replaceBreakString( text.TextString) );
-            file.WriteLine("X: " + text.Position.X);
-            file.WriteLine("Y: " + text.Position.Y);
-            file.WriteLine("WIDTH_FACTOR: " + text.WidthFactor);
+            writeJsonString(file, "OBJ", "DBTEXT");
+            writeJsonString(file, "LAYER", text.Layer);
+            writeJsonString(file, "TEXT", replaceBreakString(text.TextString));
+            writeJsonNumber(file, "X", text.Position.X, true);
+            writeJsonNumber(file, "Y", text.Position.Y, true);
+            writeJsonNumber(file, "WIDTH_FACTOR", text.WidthFactor, false);
         }
 
 
-        public static void writeObject(System.IO.StreamWriter file, DBObject dbo, int id)
+        public static void writeObject(System.IO.StreamWriter file, DBObject dbo, int id, bool hasFinalComma)
         {
+            file.WriteLine("{");
             if (dbo is Circle)
             {
                 Circle circle = dbo as Circle;
@@ -240,9 +268,12 @@ namespace AutoCAD_CSharp_plug_in1
                 writePolyline( file, pline );
             }
             else
-                file.WriteLine("__type not processed: " + dbo.GetType());
-            file.WriteLine("ID: " + id);
-            file.WriteLine("END_OBJ");
+                file.WriteLine("\"__type not processed\": \"" + dbo.GetType() + "\"" );
+            writeJsonInteger(file, "ID", id);
+            if (hasFinalComma)
+                file.WriteLine("},");
+            else
+                file.WriteLine("}");
         }
 
 
@@ -265,7 +296,7 @@ namespace AutoCAD_CSharp_plug_in1
                 string path = DrawingPath();
                 int dotIndex = path.LastIndexOf('.');
                 string pathAndFileName = path.Substring(0, dotIndex);
-                outputFileName = pathAndFileName + ".cwe";
+                outputFileName = pathAndFileName + ".json";
             }
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(@outputFileName))
             {
@@ -287,13 +318,15 @@ namespace AutoCAD_CSharp_plug_in1
 
                     int id = 1;
                     System.Collections.Generic.HashSet<DBObject> usedObjects = new System.Collections.Generic.HashSet<DBObject>();
+
+                    file.WriteLine("{ \"groups\": [");
                     foreach (DBDictionaryEntry dictEntry in groups)
                     {
-                        file.WriteLine("OPEN_GROUP");
                         DBObject dbo = acTrans.GetObject(dictEntry.Value, OpenMode.ForRead);
                         Group group = dbo as Group;
                         ObjectId[] ids = group.GetAllEntityIds();
                         int l = ids.Length;
+                        file.WriteLine("[");
                         for (int i = 0; i < l; ++i )
                         {
                             ObjectId id2 = ids[i];
@@ -301,12 +334,13 @@ namespace AutoCAD_CSharp_plug_in1
                             writeObject(file, dboInG, id++);
                             usedObjects.Add(dboInG);
                         }
-                        file.WriteLine("CLOSE_GROUP");
+                        file.WriteLine("],");
                     }
+                    file.WriteLine("{}],");
 
                     int nCnt = 0;
-                    file.WriteLine("END_GROUPS");
 
+                    file.WriteLine("\"objects\": [");
                     // Step through each object in Model space and
                     // display the type of object found
                     foreach (ObjectId acObjId in acBlkTblRec)
@@ -320,7 +354,8 @@ namespace AutoCAD_CSharp_plug_in1
 
                         nCnt = nCnt + 1;
                     }
-                    file.WriteLine("END_FILE");
+                    file.WriteLine("{}]");
+                    file.WriteLine("}");
 
                     // If no objects are found then display a message
                     if (nCnt == 0)
