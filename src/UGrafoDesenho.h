@@ -96,6 +96,7 @@ private:
   void GeraVerticesInstrumentos();
   void OrdenaVerticesRetas();
   void GeraArestas();
+  void createColarEdges( TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento );
   void AchaTextoBandeirola(TPonto &pos, std::string &texto);
   TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice );

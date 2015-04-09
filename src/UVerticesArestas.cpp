@@ -8,6 +8,7 @@
 
 
 TAresta::TAresta( string layer ) :
+	Tam( 0.0 ),
 	_layer( layer )
 {
 }
