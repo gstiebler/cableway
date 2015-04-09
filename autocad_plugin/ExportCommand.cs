@@ -138,9 +138,12 @@ namespace AutoCAD_CSharp_plug_in1
         }
 
 
-        public static void writeJsonInteger(System.IO.StreamWriter file, string key, int number)
+        public static void writeJsonInteger(System.IO.StreamWriter file, string key, int number, bool hasFinalComma)
         {
-            file.WriteLine("\"" + key + "\": " + number + ",");
+            string text = "\"" + key + "\": " + number;
+            if (hasFinalComma)
+                text += ",";
+            file.WriteLine(text);
         }
 
 
@@ -150,7 +153,7 @@ namespace AutoCAD_CSharp_plug_in1
             writeJsonString(file, "LAYER", circle.Layer);
             writeJsonNumber(file, "DIAMETER", circle.Diameter, true);
             writeJsonNumber(file, "CENTER_X", circle.Center.X, true);
-            writeJsonNumber(file, "CENTER_Y", circle.Center.Y, false);
+            writeJsonNumber(file, "CENTER_Y", circle.Center.Y, true);
         }
 
 
@@ -164,7 +167,7 @@ namespace AutoCAD_CSharp_plug_in1
             writeJsonNumber(file, "END_POINT_X", arc.EndPoint.X, true);
             writeJsonNumber(file, "END_POINT_Y", arc.EndPoint.Y, true);
             writeJsonNumber(file, "START_ANGLE", arc.StartAngle, true);
-            writeJsonNumber(file, "END_ANGLE", arc.EndAngle, false);
+            writeJsonNumber(file, "END_ANGLE", arc.EndAngle, true);
         }
 
 
@@ -176,7 +179,7 @@ namespace AutoCAD_CSharp_plug_in1
             writeJsonNumber(file, "START_POINT_X", line.StartPoint.X, true);
             writeJsonNumber(file, "START_POINT_Y", line.StartPoint.Y, true);
             writeJsonNumber(file, "END_POINT_X", line.EndPoint.X, true);
-            writeJsonNumber(file, "END_POINT_Y", line.EndPoint.Y, false);
+            writeJsonNumber(file, "END_POINT_Y", line.EndPoint.Y, true);
         }
 
 
@@ -185,8 +188,8 @@ namespace AutoCAD_CSharp_plug_in1
         {
             writeJsonString(file, "OBJ", "PLINE");
             writeJsonString(file, "LAYER", pline.Layer);
-            writeJsonInteger(file, "NUM_VERTEX", pline.NumberOfVertices);
-            file.WriteLine("[");
+            writeJsonInteger(file, "NUM_VERTEX", pline.NumberOfVertices, true);
+            file.WriteLine("\"vertices\": [");
             for (int i = 0; i < pline.NumberOfVertices; i++)
             {
                 double x = pline.GetPoint2dAt(i).X;
@@ -199,7 +202,7 @@ namespace AutoCAD_CSharp_plug_in1
                 else
                     file.WriteLine("},");
             }
-            file.WriteLine("]");
+            file.WriteLine("],");
         }
 
 
@@ -218,7 +221,7 @@ namespace AutoCAD_CSharp_plug_in1
             writeJsonString(file, "TEXT", replaceBreakString(text.Text));
             writeJsonNumber(file, "X", text.Location.X, true);
             writeJsonNumber(file, "Y", text.Location.Y, true);
-            writeJsonNumber(file, "WIDTH_FACTOR", text.Width, false);
+            writeJsonNumber(file, "WIDTH_FACTOR", text.Width, true);
         }
 
 
@@ -230,7 +233,7 @@ namespace AutoCAD_CSharp_plug_in1
             writeJsonString(file, "TEXT", replaceBreakString(text.TextString));
             writeJsonNumber(file, "X", text.Position.X, true);
             writeJsonNumber(file, "Y", text.Position.Y, true);
-            writeJsonNumber(file, "WIDTH_FACTOR", text.WidthFactor, false);
+            writeJsonNumber(file, "WIDTH_FACTOR", text.WidthFactor, true);
         }
 
 
@@ -269,7 +272,7 @@ namespace AutoCAD_CSharp_plug_in1
             }
             else
                 file.WriteLine("\"__type not processed\": \"" + dbo.GetType() + "\"" );
-            writeJsonInteger(file, "ID", id);
+            writeJsonInteger(file, "ID", id, false);
             if (hasFinalComma)
                 file.WriteLine("},");
             else
@@ -320,6 +323,7 @@ namespace AutoCAD_CSharp_plug_in1
                     System.Collections.Generic.HashSet<DBObject> usedObjects = new System.Collections.Generic.HashSet<DBObject>();
 
                     file.WriteLine("{ \"groups\": [");
+                    int counter1 = 0;
                     foreach (DBDictionaryEntry dictEntry in groups)
                     {
                         DBObject dbo = acTrans.GetObject(dictEntry.Value, OpenMode.ForRead);
@@ -331,12 +335,16 @@ namespace AutoCAD_CSharp_plug_in1
                         {
                             ObjectId id2 = ids[i];
                             DBObject dboInG = acTrans.GetObject(id2, OpenMode.ForRead);
-                            writeObject(file, dboInG, id++);
+                            writeObject(file, dboInG, id++, i < (l - 1));
                             usedObjects.Add(dboInG);
                         }
-                        file.WriteLine("],");
+                        counter1++;
+                        if (counter1 == groups.Count)
+                            file.WriteLine("]");
+                        else
+                            file.WriteLine("],");
                     }
-                    file.WriteLine("{}],");
+                    file.WriteLine("],");
 
                     int nCnt = 0;
 
@@ -349,12 +357,11 @@ namespace AutoCAD_CSharp_plug_in1
 
                         if (usedObjects.Contains(dbo))
                             continue;
-
-                        writeObject(file, dbo, id++);
-
+                        
                         nCnt = nCnt + 1;
+                        writeObject(file, dbo, id++, true);
                     }
-                    file.WriteLine("{}]");
+                    file.WriteLine("{\"dummy\": \"dummy\"}]");
                     file.WriteLine("}");
 
                     // If no objects are found then display a message
