@@ -33,11 +33,12 @@ struct TListaVerticesEArestas
 {
     std::vector<TVerticeEAresta> list;
 
-  TVerticeEAresta* getVerticeEAresta(int Indice);
-  void AdicionaVerticeEAresta(shared_ptr<TVerticeGeral> vertice, shared_ptr<TAresta> aresta);
-  TListaVerticesEArestas(){}
-  ~TListaVerticesEArestas() {}
-  TListaVerticesEArestas(const TListaVerticesEArestas &cpy);
+	TVerticeEAresta* getVerticeEAresta(int Indice);
+	void AdicionaVerticeEAresta(shared_ptr<TVerticeGeral> vertice, shared_ptr<TAresta> aresta);
+	TListaVerticesEArestas(){}
+	~TListaVerticesEArestas() {}
+	TListaVerticesEArestas(const TListaVerticesEArestas &cpy);
+	void removeEdge( TVerticeGeral *vertex );
 };
 //---------------------------------------------------------------------------
 
@@ -46,6 +47,7 @@ struct TVerticeGeral
 	static int counter;
 	int _autogenId;
   TVerticeGeral();
+	TVerticeGeral( TVerticeGeral &other );
   TPonto pos;
   int TipoElemento;
   shared_ptr<TListaVerticesEArestas> ListaVerticesEArestas;
@@ -54,6 +56,7 @@ struct TVerticeGeral
   TTipoVertice TipoVertice;
   int IndiceOriginal;//usado somente na gera��o dos colares
   bool EhColar;
+	void removeEdges();
 };
 //---------------------------------------------------------------------------
 
@@ -84,7 +87,10 @@ struct TAresta
 	shared_ptr<TDesenho> _drawing;
   string _layer;
   TAresta( string layer );
+  TAresta( TAresta *other );
   void AdicionaVertices( shared_ptr<TVerticeGeral> v1, shared_ptr<TVerticeGeral> v2, double dist);
+  std::shared_ptr<TVerticeGeral> otherVertex( TVerticeGeral *vertex );
+	static void createAdjancency( shared_ptr<TAresta> edge );
 };
 //---------------------------------------------------------------------------
 

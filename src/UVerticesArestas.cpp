@@ -17,6 +17,17 @@ TAresta::TAresta( string layer ) :
 }
 //---------------------------------------------------------------------------
 
+
+TAresta::TAresta( TAresta *other ) :
+	_autogenId( other->_autogenId ),
+	Tam( other->Tam ),
+	_drawing( other->_drawing ),
+	_layer( other->_layer )
+{
+
+}
+
+
 TArestasCircuito::TArestasCircuito()
 {
 }
@@ -58,6 +69,19 @@ TListaVerticesEArestas::TListaVerticesEArestas(const TListaVerticesEArestas &cpy
 }
 
 
+void TListaVerticesEArestas::removeEdge( TVerticeGeral *vertex )
+{
+	for( int i(list.size() - 1); i >= 0; --i)
+	{
+		if( list[i].Vertice.get() == vertex )
+		{
+			list.erase( list.begin() + i );
+			return;
+		}
+	}
+}
+
+
 TVerticeGeral::TVerticeGeral()
 {
     pos.x = 0;
@@ -69,6 +93,28 @@ TVerticeGeral::TVerticeGeral()
 	_autogenId = counter++;
 }
 //---------------------------------------------------------------------------
+
+
+TVerticeGeral::TVerticeGeral( TVerticeGeral &other )
+{
+	pos = other.pos;
+	TipoElemento = other.TipoElemento;
+	texto = other.texto;
+    ListaVerticesEArestas = shared_ptr<TListaVerticesEArestas>( new TListaVerticesEArestas );
+	EhColar = other.EhColar;
+	_autogenId = other._autogenId;
+	drawing = other.drawing;
+}
+
+
+void TVerticeGeral::removeEdges()
+{
+	for( int i(0); i < ListaVerticesEArestas->list.size(); ++i )
+	{
+		shared_ptr<TVerticeGeral> otherVertex = ListaVerticesEArestas->list[i].Aresta->otherVertex( this );
+		otherVertex->ListaVerticesEArestas->removeEdge( this );
+	}
+}
 
 
 void TVerticesGerais::Adiciona(shared_ptr<TVerticeGeral> Item)
@@ -121,7 +167,26 @@ void TAresta::AdicionaVertices(shared_ptr<TVerticeGeral> v1, shared_ptr<TVertice
     Tam = dist;
 }
 //---------------------------------------------------------------------------   
-//---------------------------------------------------------------------------
+
+
+std::shared_ptr<TVerticeGeral> TAresta::otherVertex( TVerticeGeral *vertex )
+{
+	if( _vertices[0].get() == vertex )
+		return _vertices[1];
+	else
+		return _vertices[0];
+}
+
+
+void TAresta::createAdjancency( shared_ptr<TAresta> edge )
+{
+	shared_ptr<TVerticeGeral> v1 = edge->_vertices[0];
+	shared_ptr<TVerticeGeral> v2 = edge->_vertices[1];
+
+	v1->ListaVerticesEArestas->AdicionaVerticeEAresta( v2, edge );
+	v2->ListaVerticesEArestas->AdicionaVerticeEAresta( v1, edge );
+}
+
 
 void TListaVerticesEArestas::AdicionaVerticeEAresta(shared_ptr<TVerticeGeral> vertice, shared_ptr<TAresta> aresta)
 {

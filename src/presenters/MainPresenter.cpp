@@ -66,8 +66,10 @@ void MainPresenter::execute()
 	string graphDebugFileName = _window->getInputDirectory() + "/Grafo.txt";
 	Debug::printGraph( _mainExecution->_containerDesenhos->_graph, graphDebugFileName );
 
+	shared_ptr<Graph> reducedGraph = shared_ptr<Graph>( _mainExecution->_containerDesenhos->_graph );
+	reducedGraph->reduce();
 	string dotGraphDebugFileName = _window->getInputDirectory() + "/graph.dot";
-	Debug::generateDOTGraph( _mainExecution->_containerDesenhos->_graph->_verticesGerais->vertices, dotGraphDebugFileName );
+	Debug::generateDOTGraph( reducedGraph->_verticesGerais->vertices, dotGraphDebugFileName );
 
 	vector<string> errors;
 	CErrosMsg::getInstance()->transferErrors( errors );

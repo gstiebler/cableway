@@ -117,3 +117,112 @@ void Graph::getEdgesFromPath( vector< shared_ptr<TVerticeGeral> > &anterior, vec
 		vatual = anterior[vatual->IndiceOriginal];
     }
 }
+
+
+void Graph::GeraListaAdjacencias()
+{
+	for ( int n(0); n < _arestas.size(); n++)
+		TAresta::createAdjancency( _arestas[n] );
+}
+
+
+Graph* Graph::getCopy()
+{
+	Graph *copy = new Graph();
+	map<TVerticeGeral*, shared_ptr<TVerticeGeral>> verticesMap;
+	for( int i(0); i < _verticesGerais->vertices.size(); ++i )
+	{
+		shared_ptr<TVerticeGeral> verticeTemp( new TVerticeGeral( *(_verticesGerais->vertices[i].get()) ) );
+		verticesMap[_verticesGerais->vertices[i].get()] = verticeTemp;
+		copy->_verticesGerais->vertices.push_back( verticeTemp );
+	}
+
+	for( int i(0); i < _arestas.size(); ++i)
+	{
+		shared_ptr<TAresta> newEdge( new TAresta( _arestas[i].get() ) );
+
+		for( int j(0); j < 2; ++j )
+			newEdge->_vertices[j] = verticesMap[ _arestas[i]->_vertices[j].get() ];
+
+		copy->_arestas.push_back( newEdge );
+	}
+
+	copy->GeraListaAdjacencias();
+	return copy;
+}
+
+
+void Graph::reduce()
+{
+	vector<shared_ptr<TVerticeGeral> > vertices[2];
+
+	for( int i(0); i < _verticesGerais->vertices.size(); ++i)
+	{
+		if( !_verticesGerais->vertices[i]->texto.empty() ) 
+			continue;
+
+		shared_ptr<TListaVerticesEArestas> listaVerticesEArestas = _verticesGerais->vertices[i]->ListaVerticesEArestas;
+		if( listaVerticesEArestas->list.size() == 1 )
+			vertices[0].push_back( _verticesGerais->vertices[i] );
+	}
+
+	// eliminate vertices with no text and only one edge
+	for( int i(0); i < vertices[0].size(); ++i )
+	{
+		shared_ptr<TVerticeGeral> vertex = vertices[0][i];
+		// mark the edge to be removed
+		vertex->ListaVerticesEArestas->list[0].Aresta->_autogenId = -1;
+
+		vertex->removeEdges();
+
+		// mark the vertex to be removed
+		vertex->_autogenId = -1;
+	}
+
+	for( int i(0); i < _verticesGerais->vertices.size(); ++i)
+	{
+		shared_ptr<TVerticeGeral> vertex = _verticesGerais->vertices[i];
+		if( !vertex->texto.empty() ) 
+			continue;
+
+		shared_ptr<TListaVerticesEArestas> listaVerticesEArestas = vertex->ListaVerticesEArestas;
+		if ( listaVerticesEArestas->list.size() == 2 )
+			vertices[1].push_back( vertex );
+	}
+
+	// eliminate vertices with no text and two edges
+	for( int i(0); i < vertices[1].size(); ++i )
+	{
+		shared_ptr<TVerticeGeral> vertex = vertices[1][i];
+		shared_ptr<TAresta> newEdge( new TAresta( vertex->ListaVerticesEArestas->list[0].Aresta->_layer ) );
+
+		// remove old edges
+		for( int j(0); j < 2; ++j )
+		{
+			TVerticeEAresta &verticeEAresta = vertex->ListaVerticesEArestas->list[j];
+			newEdge->Tam += verticeEAresta.Aresta->Tam;
+			newEdge->_vertices[j] = verticeEAresta.Vertice;
+
+			// mark the edge to be removed
+			verticeEAresta.Aresta->_autogenId = -1;
+			vertex->removeEdges();
+			vertex->_autogenId = -1;
+		}
+		_arestas.push_back( newEdge );
+		TAresta::createAdjancency( newEdge );
+	}
+
+	// remove marked vertices
+	for( int i( _verticesGerais->vertices.size() - 1); i >= 0; --i )
+	{
+		if( _verticesGerais->vertices[i]->_autogenId < 0 )
+			_verticesGerais->vertices.erase( _verticesGerais->vertices.begin() + i );
+	}
+
+	// remove marked edges
+	for( int i( _arestas.size() - 1); i >= 0; --i ) 
+	{
+		if( _arestas[i]->_autogenId < 0 )
+			_arestas.erase( _arestas.begin() + i );
+	}
+}

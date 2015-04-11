@@ -72,12 +72,20 @@ void Debug::generateDOTGraph( vector<shared_ptr<TVerticeGeral> >& vertices, stri
 
 	for( int i(0); i < vertices.size(); ++i )
 	{
+		out << "\t";
 		char temp[256];
 		sprintf( temp, node_format, vertices[i]->_autogenId );
 		out << QString::fromUtf8( temp );
-		sprintf( temp, "[ label = \"%s\" ]\n", vertices[i]->texto.c_str() );
+		string label = vertices[i]->texto;
+		if( label.empty() )
+			label = "n";
+		sprintf( temp, "[ label = \"%s\" ", label.c_str() );
 		out << QString::fromUtf8( temp );
+		if( vertices[i]->drawing.get() )
+			out << " drawing=\"" << vertices[i]->drawing->NomeArquivo.c_str() << "\"";
+		out << " ]\n";
 	}
+	out << "\n";
 
 	for( int i(0); i < vertices.size(); ++i )
 	{
@@ -86,13 +94,13 @@ void Debug::generateDOTGraph( vector<shared_ptr<TVerticeGeral> >& vertices, stri
 		shared_ptr<TListaVerticesEArestas> verticesEArestas = vertices[i]->ListaVerticesEArestas;
 		for( int j(0); j < verticesEArestas->list.size(); ++j)
 		{
+			out << "\t";
 			TVerticeEAresta& verticeEAresta = verticesEArestas->list[j];
 			char nodeEdgeStr[256];
 			sprintf( nodeEdgeStr, node_format, verticeEAresta.Vertice->_autogenId );
 			out << nodeStr << " -- " << nodeEdgeStr;
 
-			if( !verticeEAresta.Aresta->_layer.empty() )
-				out << " [ label = \"" << QString::fromUtf8(  verticeEAresta.Aresta->_layer.c_str() ) << "\"]";
+			//out << " [ label = \"" << verticeEAresta.Aresta->Tam << "\"]";
 			out << "\n";
 		}
 	}

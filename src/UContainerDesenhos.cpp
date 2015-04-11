@@ -62,20 +62,6 @@ bool CContainerDesenhos::verificaTexto(string str)
   return exists;
 }
 
-void CContainerDesenhos::GeraListaAdjacencias()
-{
-	for ( int n(0); n < _graph->_arestas.size(); n++)
-	{
-		shared_ptr<TAresta> aresta = _graph->_arestas[n];
-		shared_ptr<TVerticeGeral> v1 = aresta->_vertices[0];
-		shared_ptr<TVerticeGeral> v2 = aresta->_vertices[1];
-
-		v1->ListaVerticesEArestas->AdicionaVerticeEAresta( v2, aresta );
-		v2->ListaVerticesEArestas->AdicionaVerticeEAresta( v1, aresta );
-	}
-}
-
-
 
 void CContainerDesenhos::Conclui()
 {
@@ -93,7 +79,7 @@ void CContainerDesenhos::Conclui()
         ligaColaresEntreDesenhos();
     }
     // Cria um novo InfoCircuitos baseado nos par�metros
-    GeraListaAdjacencias();
+    _graph->GeraListaAdjacencias();
 
     InfoCircuitos = shared_ptr<CInfoCircuitos>( new CInfoCircuitos( _graph ) );
 }

@@ -28,6 +28,9 @@ public:
 	std::shared_ptr<TVerticesGerais> _verticesGerais;
 	std::vector< std::shared_ptr<TAresta> > _arestas;
 	void merge( std::shared_ptr<Graph> other );
+	void GeraListaAdjacencias();
+	Graph* getCopy();
+	void Graph::reduce();
 
 	
     bool generateDistanceTree( std::shared_ptr<TVerticeGeral> vertice[2], std::vector< std::shared_ptr<TVerticeGeral> > &anterior, 

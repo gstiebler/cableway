@@ -24,7 +24,6 @@ private:
   std::vector< shared_ptr<TDesenho> > ListaDesenhos;
   static bool verificaTextoWrap(void* PonteiroThis, const char *str);
   bool verificaTexto(string str);
-  void GeraListaAdjacencias();
   void ligaColaresEntreDesenhos();
 public:
   shared_ptr<CInfoCircuitos> InfoCircuitos;
