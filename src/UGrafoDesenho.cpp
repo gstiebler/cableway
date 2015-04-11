@@ -547,7 +547,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
 
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
         CriaVerticesEArestasInstrumento( ListaItensCelula, VerticesInstrumento, PosVertice );
-		//createColarEdges( ListaItensCelula, VerticesInstrumento );
+		createColarEdges( ListaItensCelula, VerticesInstrumento );
 
 		for (i = 0; i < ListaItensCelula->_multipoints.size(); i++)  //percorre todos os itens da c�lula atual
 			GeraVerticesInstrumentosAdicionaMultipoint( ListaItensCelula->_multipoints[i], ListaItensCelula, ligado, VerticesInstrumento, PosVertice );
@@ -583,7 +583,8 @@ void CGrafoDesenho::createColarEdges( TListaItensCelula *ListaItensCelula, vecto
     if (ListaItensCelula->iTextos.size() == 2)
     {
         shared_ptr<TAresta> Aresta( new TAresta( "" ) );
-        Aresta->AdicionaVertices( VerticesInstrumento[0], VerticesInstrumento[1], 0 );
+		// the 0.1 is used for this edge not to be the preferred one sometimes
+        Aresta->AdicionaVertices( VerticesInstrumento[0], VerticesInstrumento[1], 0.1 );
         Aresta->_drawing = _dados->_drawing;
 		_graph->_arestas.push_back( Aresta );
     }
