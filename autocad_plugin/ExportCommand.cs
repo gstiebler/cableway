@@ -271,7 +271,7 @@ namespace AutoCAD_CSharp_plug_in1
                 writePolyline( file, pline );
             }
             else
-                file.WriteLine("\"__type not processed\": \"" + dbo.GetType() + "\"" );
+                file.WriteLine("\"__type not processed\": \"" + dbo.GetType() + "\"," );
             writeJsonInteger(file, "ID", id, false);
             if (hasFinalComma)
                 file.WriteLine("},");
