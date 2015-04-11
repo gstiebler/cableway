@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QCoreApplication>
 #include <QTextStream>
+#include <set>
 
 #include "UVerticesArestas.h"
 #include "TDesenho.h"
@@ -62,31 +63,49 @@ void Debug::printGraph( shared_ptr<Graph> _graph, string fileName )
 
 void Debug::generateDOTGraph( vector<shared_ptr<TVerticeGeral> >& vertices, string fileName )
 {
+	char node_format[] = "node_%09d";
+
 	QFile file( QString::fromLatin1( fileName.c_str() ) );
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
 
 	out << "graph G\n";
 	out << "{\n";
-	char node_format[] = "node_%09d";
+	out << "\tlabel = \"root\"\n";
+
+	map< string, vector< shared_ptr<TVerticeGeral> > > drawingsVertices;
 
 	for( int i(0); i < vertices.size(); ++i )
 	{
-		out << "\t";
-		char temp[256];
-		sprintf( temp, node_format, vertices[i]->_autogenId );
-		out << QString::fromUtf8( temp );
-		string label = vertices[i]->texto;
-		if( label.empty() )
-			label = "n";
-		sprintf( temp, "[ label = \"%s\" ", label.c_str() );
-		out << QString::fromUtf8( temp );
 		if( vertices[i]->drawing.get() )
-			out << " drawing=\"" << vertices[i]->drawing->NomeArquivo.c_str() << "\"";
-		out << " ]\n";
+			drawingsVertices[ vertices[i]->drawing->NomeArquivo ].push_back( vertices[i] );
 	}
-	out << "\n";
 
+	map< string, vector< shared_ptr<TVerticeGeral> > >::iterator it, e = drawingsVertices.end();
+	for( it = drawingsVertices.begin(); it != e; ++it )
+	{
+		vector< shared_ptr<TVerticeGeral> > &drawingVertices = it->second;
+		out << "subgraph \"" << it->first.c_str() << "\" {\n";
+		out << "\tlabel = \"" << it->first.c_str() << "\";\n";
+		out << "\tparent = \"G\";\n";
+		for( int i(0); i < drawingVertices.size(); ++i )
+		{
+			shared_ptr<TVerticeGeral> vertex = drawingVertices[i];
+			out << "\t";
+			char temp[256];
+			sprintf( temp, node_format, vertex->_autogenId );
+			out << QString::fromUtf8( temp );
+			string label = vertex->texto;
+			if( label.empty() )
+				label = "n";
+			sprintf( temp, "[ label = \"%s\" ", label.c_str() );
+			out << QString::fromUtf8( temp );
+			out << " ]\n";
+		}
+		out << "}\n";
+	}
+
+	set<TAresta*> printedEdges;
 	for( int i(0); i < vertices.size(); ++i )
 	{
 		char nodeStr[256];
@@ -94,14 +113,18 @@ void Debug::generateDOTGraph( vector<shared_ptr<TVerticeGeral> >& vertices, stri
 		shared_ptr<TListaVerticesEArestas> verticesEArestas = vertices[i]->ListaVerticesEArestas;
 		for( int j(0); j < verticesEArestas->list.size(); ++j)
 		{
-			out << "\t";
 			TVerticeEAresta& verticeEAresta = verticesEArestas->list[j];
+			if( printedEdges.find( verticeEAresta.Aresta.get() ) != printedEdges.end() )
+				continue;
+			out << "\t";
 			char nodeEdgeStr[256];
 			sprintf( nodeEdgeStr, node_format, verticeEAresta.Vertice->_autogenId );
 			out << nodeStr << " -- " << nodeEdgeStr;
 
 			//out << " [ label = \"" << verticeEAresta.Aresta->Tam << "\"]";
 			out << "\n";
+
+			printedEdges.insert( verticeEAresta.Aresta.get() );
 		}
 	}
 	out << "}";
