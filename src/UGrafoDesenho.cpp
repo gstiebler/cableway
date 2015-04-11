@@ -401,9 +401,9 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
                 straightCable->ponta[1] = true;
             }
 
-			shared_ptr<TAresta> Aresta( new TAresta( straightCable->_multipoint->layerName ) );
             for (int i = 0; i < VerticesInstrumento.size(); i++)
             {
+				shared_ptr<TAresta> Aresta( new TAresta( straightCable->_multipoint->layerName ) );
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], cableVertex, DistPontosManhattan( PosVertice, PosVertice ) );
                 Aresta->_drawing = _dados->_drawing;
 				_graph->_arestas.push_back( Aresta );
@@ -547,7 +547,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
 
         PosVertice = AchaPosVerticeInstrumento( ListaItensCelula );
         CriaVerticesEArestasInstrumento( ListaItensCelula, VerticesInstrumento, PosVertice );
-		createColarEdges( ListaItensCelula, VerticesInstrumento );
+		//createColarEdges( ListaItensCelula, VerticesInstrumento );
 
 		for (i = 0; i < ListaItensCelula->_multipoints.size(); i++)  //percorre todos os itens da c�lula atual
 			GeraVerticesInstrumentosAdicionaMultipoint( ListaItensCelula->_multipoints[i], ListaItensCelula, ligado, VerticesInstrumento, PosVertice );
