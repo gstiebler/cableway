@@ -30,6 +30,7 @@ void Debug::printVertices( shared_ptr<TVerticesGerais> _verticesGerais, string f
     file.close(); 
 }
 
+
 void Debug::printGraph( shared_ptr<Graph> _graph, string fileName )
 {
 	QFile file( QString::fromLatin1( fileName.c_str() ) );
@@ -55,5 +56,46 @@ void Debug::printGraph( shared_ptr<Graph> _graph, string fileName )
 				out << ";\n";
 		}
 	}
+    file.close(); 
+}
+
+
+void Debug::generateDOTGraph( vector<shared_ptr<TVerticeGeral> >& vertices, string fileName )
+{
+	QFile file( QString::fromLatin1( fileName.c_str() ) );
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+
+	out << "graph G\n";
+	out << "{\n";
+	char node_format[] = "node_%09d";
+
+	for( int i(0); i < vertices.size(); ++i )
+	{
+		char temp[256];
+		sprintf( temp, node_format, vertices[i]->_autogenId );
+		out << QString::fromUtf8( temp );
+		sprintf( temp, "[ label = \"%s\" ]\n", vertices[i]->texto.c_str() );
+		out << QString::fromUtf8( temp );
+	}
+
+	for( int i(0); i < vertices.size(); ++i )
+	{
+		char nodeStr[256];
+		sprintf( nodeStr, node_format, vertices[i]->_autogenId );
+		shared_ptr<TListaVerticesEArestas> verticesEArestas = vertices[i]->ListaVerticesEArestas;
+		for( int j(0); j < verticesEArestas->list.size(); ++j)
+		{
+			TVerticeEAresta& verticeEAresta = verticesEArestas->list[j];
+			char nodeEdgeStr[256];
+			sprintf( nodeEdgeStr, node_format, verticeEAresta.Vertice->_autogenId );
+			out << nodeStr << " -- " << nodeEdgeStr;
+
+			if( !verticeEAresta.Aresta->_layer.empty() )
+				out << " [ label = \"" << QString::fromUtf8(  verticeEAresta.Aresta->_layer.c_str() ) << "\"]";
+			out << "\n";
+		}
+	}
+	out << "}";
     file.close(); 
 }
