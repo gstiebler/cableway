@@ -213,12 +213,23 @@ namespace AutoCAD_CSharp_plug_in1
         }
 
 
+        public static string replaceAspasString(string input)
+        {
+            return input.Replace("\"", "<*aspas*>");
+        }
+
+
+        public static string normalizeOutputText(string input)
+        {
+            return replaceAspasString( replaceBreakString(input) );
+        }
+
 
         public static void writeText(System.IO.StreamWriter file, MText text)
         {
             writeJsonString(file, "OBJ", "TEXT");
             writeJsonString(file, "LAYER", text.Layer);
-            writeJsonString(file, "TEXT", replaceBreakString(text.Text));
+            writeJsonString(file, "TEXT", normalizeOutputText(text.Text));
             writeJsonNumber(file, "X", text.Location.X, true);
             writeJsonNumber(file, "Y", text.Location.Y, true);
             writeJsonNumber(file, "WIDTH_FACTOR", text.Width, true);
@@ -230,7 +241,7 @@ namespace AutoCAD_CSharp_plug_in1
         {
             writeJsonString(file, "OBJ", "DBTEXT");
             writeJsonString(file, "LAYER", text.Layer);
-            writeJsonString(file, "TEXT", replaceBreakString(text.TextString));
+            writeJsonString(file, "TEXT", normalizeOutputText(text.TextString));
             writeJsonNumber(file, "X", text.Position.X, true);
             writeJsonNumber(file, "Y", text.Position.Y, true);
             writeJsonNumber(file, "WIDTH_FACTOR", text.WidthFactor, true);
