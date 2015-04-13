@@ -300,8 +300,8 @@ namespace AutoCAD_CSharp_plug_in1
         }
 
         
-        [CommandMethod("ExportCW")]
-        public static void ExportCW()
+        [CommandMethod("dwg2json")]
+        public static void dwg2json()
         {
             // Get the current document and database, and start a transaction
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
