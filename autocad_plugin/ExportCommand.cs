@@ -103,7 +103,7 @@ namespace AutoCAD_CSharp_plug_in1
                             usedObjects.Add(dboInG);
                             cwGroup.objects.Add( obj );
                         }
-                        jsonDwg.groups.Add( group );
+                        jsonDwg.groups.Add(cwGroup);
                     }
 
                                         // Step through each object in Model space and

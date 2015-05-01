@@ -1,6 +1,5 @@
 ﻿using Autodesk.AutoCAD.Geometry;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +9,11 @@ namespace cwConversor
 {
     public class Group
     {
-        public ArrayList objects;
+        public List<BaseObj> objects;
 
         public Group()
         {
-            objects = new ArrayList();
+            objects = new List<BaseObj>();
         }
     }
 
@@ -22,9 +21,11 @@ namespace cwConversor
     {
         public string layer;
         public int id;
+        public string type;
 
-        public BaseObj(Autodesk.AutoCAD.DatabaseServices.Entity entity, int id_)
+        public BaseObj(string type_, Autodesk.AutoCAD.DatabaseServices.Entity entity, int id_)
         {
+            type = type_;
             layer = entity.Layer;
             id = id_;
         }
@@ -54,7 +55,7 @@ namespace cwConversor
         public Point end;
 
         public Line(Autodesk.AutoCAD.DatabaseServices.Line line, int id)
-            : base(line, id)
+            : base("line", line, id)
         {
             start = new Point(line.StartPoint);
             end = new Point(line.EndPoint);
@@ -67,7 +68,7 @@ namespace cwConversor
         public Point center;
 
         public Circle(Autodesk.AutoCAD.DatabaseServices.Circle circle, int id)
-            : base(circle, id)
+            : base("circle", circle, id)
         {
             diameter = circle.Diameter;
             center = new Point(circle.Center);
@@ -82,7 +83,7 @@ namespace cwConversor
         public double endAngle;
 
         public Arc(Autodesk.AutoCAD.DatabaseServices.Arc arc, int id)
-            : base(arc, id)
+            : base("arc", arc, id)
         {
             center = new Point(arc.Center);
             endPoint = new Point(arc.EndPoint);
@@ -96,7 +97,7 @@ namespace cwConversor
         public Point[] points;
 
         public Polyline(Autodesk.AutoCAD.DatabaseServices.Polyline polyline, int id)
-            : base(polyline, id)
+            : base("polyline", polyline, id)
         {
             points = new Point[polyline.NumberOfVertices];
             for (int i = 0; i < polyline.NumberOfVertices; i++)
@@ -111,7 +112,7 @@ namespace cwConversor
         public double factor;
 
         public Text(Autodesk.AutoCAD.DatabaseServices.MText textObj, int id)
-            : base(textObj, id)
+            : base("text", textObj, id)
         {
             location = new Point(textObj.Location);
             text = textObj.Text;
@@ -119,7 +120,7 @@ namespace cwConversor
         }
 
         public Text(Autodesk.AutoCAD.DatabaseServices.DBText textObj, int id)
-            : base(textObj, id)
+            : base("text", textObj, id)
         {
             location = new Point(textObj.Position);
             text = textObj.TextString;
@@ -129,11 +130,11 @@ namespace cwConversor
 
     public class JsonDwg : Group
     {
-        public ArrayList groups;
+        public List<Group> groups;
 
         public JsonDwg()
         {
-            groups = new ArrayList();
+            groups = new List<Group>();
         }
     }
 }
