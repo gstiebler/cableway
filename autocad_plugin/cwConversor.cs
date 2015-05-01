@@ -95,6 +95,7 @@ namespace cwConversor
     public class Polyline : BaseObj
     {
         public Point[] points;
+        public bool closed;
 
         public Polyline(Autodesk.AutoCAD.DatabaseServices.Polyline polyline, int id)
             : base("polyline", polyline, id)
@@ -102,6 +103,7 @@ namespace cwConversor
             points = new Point[polyline.NumberOfVertices];
             for (int i = 0; i < polyline.NumberOfVertices; i++)
                 points[i] = new Point(polyline.GetPoint2dAt(i));
+            closed = polyline.Closed;
         }
     }
 
@@ -109,22 +111,45 @@ namespace cwConversor
     {
         public Point location;
         public string text;
-        public double factor;
 
-        public Text(Autodesk.AutoCAD.DatabaseServices.MText textObj, int id)
-            : base("text", textObj, id)
+        public Text(string type, Autodesk.AutoCAD.DatabaseServices.Entity textObj, int id, string text_, Point location_) 
+            : base( type, textObj, id )
         {
-            location = new Point(textObj.Location);
-            text = textObj.Text;
-            factor = textObj.Width;
+            text = text_;
+            location = location_;
+        }
+    }
+
+    public class MText : Text
+    {
+        public double width;
+        public double height;
+        public double textHeight;
+        public string attachment;
+
+        public MText(Autodesk.AutoCAD.DatabaseServices.MText textObj, int id)
+            : base("mtext", textObj, id, textObj.Text, new Point( textObj.Location ) )
+        {
+            width = textObj.Width;
+            height = textObj.Height;
+            textHeight = textObj.TextHeight;
+            attachment = textObj.Attachment.ToString();
         }
 
-        public Text(Autodesk.AutoCAD.DatabaseServices.DBText textObj, int id)
-            : base("text", textObj, id)
+    }
+
+    public class DBText : Text
+    {
+        public double widthFactor;
+        public double height;
+        public string justify;
+
+        public DBText(Autodesk.AutoCAD.DatabaseServices.DBText textObj, int id)
+            : base("dbtext", textObj, id, textObj.TextString, new Point( textObj.Position ) )
         {
-            location = new Point(textObj.Position);
-            text = textObj.TextString;
-            factor = textObj.WidthFactor;
+            widthFactor = textObj.WidthFactor;
+            height = textObj.Height;
+            justify = textObj.Justify.ToString();
         }
     }
 

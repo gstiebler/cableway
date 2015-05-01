@@ -9,6 +9,8 @@ using Autodesk.AutoCAD.EditorInput;
 
 using Newtonsoft.Json;
 using System.Collections;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 // This line is not mandatory, but improves loading performances
 [assembly: CommandClass(typeof(AutoCAD_CSharp_plug_in1.MyCommands))]
@@ -34,9 +36,9 @@ namespace AutoCAD_CSharp_plug_in1
             else if (dbo is Line)
                 obj = new cwConversor.Line(dbo as Line, id);
             else if (dbo is MText)
-                obj = new cwConversor.Text(dbo as MText, id);
+                obj = new cwConversor.MText(dbo as MText, id);
             else if (dbo is DBText)
-                obj = new cwConversor.Text(dbo as DBText, id);
+                obj = new cwConversor.DBText(dbo as DBText, id);
             else if (dbo is Polyline)
                 obj = new cwConversor.Polyline(dbo as Polyline, id);
 
@@ -101,7 +103,8 @@ namespace AutoCAD_CSharp_plug_in1
                             DBObject dboInG = acTrans.GetObject(id2, OpenMode.ForRead);
                             cwConversor.BaseObj obj = getCWObject(dboInG, id++);
                             usedObjects.Add(dboInG);
-                            cwGroup.objects.Add( obj );
+                            if(obj != null)
+                                cwGroup.objects.Add( obj );
                         }
                         jsonDwg.groups.Add(cwGroup);
                     }
@@ -114,17 +117,52 @@ namespace AutoCAD_CSharp_plug_in1
 
                         if (usedObjects.Contains(dbo))
                             continue;
-                        
+
                         cwConversor.BaseObj obj = getCWObject(dbo, id++);
-                        jsonDwg.objects.Add( obj );
+                        if (obj != null)
+                            jsonDwg.objects.Add( obj );
                     }
 
                     // Dispose of the transaction
                 }
 
-                string output = JsonConvert.SerializeObject(jsonDwg);
+                string output = JsonConvert.SerializeObject(jsonDwg, Formatting.Indented);
                 file.WriteLine(output);
             }
+        }
+
+
+        [CommandMethod("json2dwg")]
+        public static void json2dwg()
+        {
+            Stream myStream = null;
+            System.Windows.Forms.OpenFileDialog openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+
+            openFileDialog1.InitialDirectory = "c:\\";
+            openFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 2;
+            openFileDialog1.RestoreDirectory = true;
+
+            string text = "";
+
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = openFileDialog1.OpenFile()) != null)
+                    {
+                        StreamReader reader = new StreamReader(myStream);
+                        text = reader.ReadToEnd();
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+
+            JObject jsonDwg = JObject.Parse(text);
+            json2dwgConverter.json2dwg(jsonDwg);
         }
 
     }
