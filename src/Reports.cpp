@@ -40,7 +40,6 @@ void Reports::generateCirtuitsReport( std::string fileName, const std::vector<In
 }
 
 
-
 void Reports::generateBandeirolaReport( std::string fileName, const std::vector<InputCircuit> &inputCircuits, const std::vector<CircuitResult> &resultCircuits )
 {
 	map<string, vector<InputCircuit> > circuitsOfBandeirola;
@@ -74,6 +73,33 @@ void Reports::generateBandeirolaReport( std::string fileName, const std::vector<
 		}
 	
 		out << "\n";
+	}
+
+    file.close(); 
+}
+
+
+void Reports::generateCableReport( string fileName, const vector<InputCircuit> &inputCircuits, const vector<CircuitResult> &resultCircuits )
+{
+	map<string, double> cablesLength;
+
+	for( int i(0); i < inputCircuits.size(); ++i )
+	{
+		const InputCircuit &inputCircuit = inputCircuits[i];
+		const CircuitResult &resultCircuit = resultCircuits[i];
+
+		cablesLength[inputCircuit.cable] += resultCircuit.length;
+	}
+
+	QFile file( QString::fromLatin1( fileName.c_str() ) );
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+ 
+	map<string, double >::iterator it, e = cablesLength.end();
+	for( it = cablesLength.begin(); it != e; it++)
+	{
+		out << QString::fromUtf8( it->first.c_str() ) + ";";
+		out << QString::number( it->second, 'f', 2 ) << ";\n";
 	}
 
     file.close(); 

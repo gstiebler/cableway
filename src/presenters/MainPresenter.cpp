@@ -60,6 +60,9 @@ void MainPresenter::execute()
 	string bandeirolasReportFileName = _window->getInputDirectory() + "/BandeirolasReport.csv";
 	Reports::generateBandeirolaReport( bandeirolasReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
 
+	string cablesReportFileName = _window->getInputDirectory() + "/CablesReport.csv";
+	Reports::generateCableReport( cablesReportFileName, _mainExecution->_inputCircuits, _mainExecution->_resultCircuits );
+	
 	string verticesDebugFileName = _window->getInputDirectory() + "/TextosEquipamentos.txt";
 	Debug::printVertices( _mainExecution->_containerDesenhos->_graph->_verticesGerais, verticesDebugFileName );
 
