@@ -115,7 +115,7 @@ namespace cwConversor
         public Text(string type, Autodesk.AutoCAD.DatabaseServices.Entity textObj, int id, string text_, Point location_) 
             : base( type, textObj, id )
         {
-            text = text_;
+            text = text_.Replace("\\\\n", "\n").Replace("\\\\r", "\r");
             location = location_;
         }
     }

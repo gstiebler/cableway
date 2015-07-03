@@ -18,3 +18,5 @@ CMakeFiles
 /src/.project
 .settings
 *.bak
+/autocad_plugin/*.user
+/autocad_plugin/*.suo

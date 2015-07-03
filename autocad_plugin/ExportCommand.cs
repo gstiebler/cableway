@@ -153,6 +153,7 @@ namespace AutoCAD_CSharp_plug_in1
                     {
                         StreamReader reader = new StreamReader(myStream);
                         text = reader.ReadToEnd();
+                        myStream.Close();
                     }
                 }
                 catch (System.Exception ex)
