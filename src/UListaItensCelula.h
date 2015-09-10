@@ -13,17 +13,17 @@ struct TMultipoint;
 
 struct TListaItensCelula
 {
-
+	TListaItensCelula();
+	TListaItensCelula(const TListaItensCelula &cpy);
+	~TListaItensCelula();
+	bool VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int indiceCabo);
+	bool VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int indiceCabo);
+	
+	std::vector<int> iTextos, iTextosBandeirola, cabosRetaRelacionados, cabosArcoRelacionados;
 	std::vector< std::shared_ptr<TArco> > _arcs;
 	std::vector< std::shared_ptr<TMultipoint> > _multipoints;
-  double esq, dir, enc, emb;
-  int id;
-  std::vector<int> iTextos, iTextosBandeirola, cabosRetaRelacionados, cabosArcoRelacionados;
-  TListaItensCelula();
-  TListaItensCelula(const TListaItensCelula &cpy);
-  ~TListaItensCelula();
-bool VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int indiceCabo);
-bool VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int indiceCabo);
+	double esq, dir, enc, emb;
+	int id;
 };
 //---------------------------------------------------------------------------
 #endif
