@@ -23,7 +23,7 @@ struct TListaCircuitos
 {
   int NumCircuitos;
 //  TStringList *Circuitos;
-  std::vector<std::string> *Circuitos;
+  std::vector<std::string> Circuitos;
   void AdicionaCircuito(std::string Circuito);
   TListaCircuitos();                           
   ~TListaCircuitos();

@@ -13,7 +13,7 @@ using namespace std;
 
 void TListaCircuitos::AdicionaCircuito(string Circuito)
 {
-    Circuitos->push_back( Circuito );
+    Circuitos.push_back( Circuito );
     NumCircuitos++;
 }
 //---------------------------------------------------------------------------
@@ -21,14 +21,12 @@ void TListaCircuitos::AdicionaCircuito(string Circuito)
 TListaCircuitos::TListaCircuitos()
 {
     NumCircuitos = 0;
-    Circuitos = new vector<string>;
 }
 //---------------------------------------------------------------------------
 
 TListaCircuitos::~TListaCircuitos()
 {
     NumCircuitos = 0;
-    delete Circuitos;
 }
 //---------------------------------------------------------------------------
 
