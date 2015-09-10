@@ -11,27 +11,6 @@
 
 using namespace std;
 
-void TListaCircuitos::AdicionaCircuito(string Circuito)
-{
-    Circuitos.push_back( Circuito );
-    NumCircuitos++;
-}
-//---------------------------------------------------------------------------
-
-TListaCircuitos::TListaCircuitos()
-{
-    NumCircuitos = 0;
-}
-//---------------------------------------------------------------------------
-
-TListaCircuitos::~TListaCircuitos()
-{
-    NumCircuitos = 0;
-}
-//---------------------------------------------------------------------------
-
-
-
 CInfoCircuitos::CInfoCircuitos( shared_ptr<Graph> graph ) :
 	_graph( graph )
 {

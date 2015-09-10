@@ -19,36 +19,6 @@ class TArestasCircuito;
 class TVerticesGerais;
 class Graph;
 
-struct TListaCircuitos
-{
-  int NumCircuitos;
-//  TStringList *Circuitos;
-  std::vector<std::string> Circuitos;
-  void AdicionaCircuito(std::string Circuito);
-  TListaCircuitos();                           
-  ~TListaCircuitos();
-};
-//---------------------------------------------------------------------------
-
-struct TCircuitoAreas
-{
-  int IDArquivo;
-  bool ativo;
-  vector<std::string> rota;
-  TCircuitoAreas()
-  {
-    ativo = false;
-    IDArquivo = I_DESENHO_NULO;
-  }
-};
-//---------------------------------------------------------------------------
-
-struct TListaCircuitosBandeirola: public TListaCircuitos
-{
-  string Bandeirola;
-};
-//---------------------------------------------------------------------------
-
 
 class CInfoCircuitos
 {
