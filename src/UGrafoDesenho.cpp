@@ -83,7 +83,7 @@ CGrafoDesenho::CGrafoDesenho( shared_ptr<Graph> graph, std::shared_ptr<CDadosGen
     memset( TipoElementoCor, 0, NUM_CORES * sizeof(TTipoElemento) );
 
     //O vértice 0 não pode ser usado, por isso adiciona-se este vértice vazio
-    shared_ptr<TVerticeGeral> temp( new TVerticeGeral() );
+    shared_ptr<TVerticeGeral> temp = make_shared<TVerticeGeral>();
     _graph->_verticesGerais->Adiciona( temp );
 
     GeraListaCabos();
@@ -115,7 +115,7 @@ void CGrafoDesenho::GeraListaCabos()
         //verifica o tipo de elemento pela cor
         if ( _dados->Multipoint[n]->Nivel == CABO )
         {
-			shared_ptr<CCaboReta> caboReta( new CCaboReta );
+			shared_ptr<CCaboReta> caboReta = make_shared<CCaboReta>();
 			_cabosReta.push_back( caboReta );
 			caboReta->_multipoint = _dados->Multipoint[n];
             Pontos = _dados->Multipoint[n]->pontos;
@@ -193,7 +193,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
     {
         int NumArcosBandeirola = 0;
         TListaItensCelula ListaItens( ListaBandeirolas[ n ] );
-        shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
+        shared_ptr<TVerticeGeral> VerticeGeral = make_shared<TVerticeGeral>();
         VerticeGeral->TipoVertice = VERTICE_BANDEIROLA;
 
         vector<TPonto> PontosExtremidadesElementosBandeirola;
@@ -379,7 +379,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 
         if (!isAdded)
         {
-            shared_ptr<TVerticeGeral> cableVertex( new TVerticeGeral() );
+            shared_ptr<TVerticeGeral> cableVertex = make_shared<TVerticeGeral>();
 			shared_ptr<CCaboReta> straightCable = _cabosReta[pontoEIndiceCabo.IndiceCabo];
 
             cableVertex->pos = pontoEIndiceCabo.PosVertice;
@@ -403,7 +403,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 
             for (int i = 0; i < VerticesInstrumento.size(); i++)
             {
-				shared_ptr<TAresta> Aresta( new TAresta( straightCable->_multipoint->layerName ) );
+				shared_ptr<TAresta> Aresta = make_shared<TAresta>( straightCable->_multipoint->layerName );
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], cableVertex, DistPontosManhattan( PosVertice, PosVertice ) );
                 Aresta->_drawing = _dados->_drawing;
 				_graph->_arestas.push_back( Aresta );
@@ -429,7 +429,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
             //if ( ListaItensCelula->iTexto > 0 )
             //  VerticesGerais->getItem(IndiceVertice)->texto = Textos[ListaItensCelula->iTexto].texto;
             ListaItensCelula->cabosArcoRelacionados.push_back( cableIndex );
-			shared_ptr<TAresta> Aresta( new TAresta( _cabosArco[cableIndex]._arco->layerName ) );
+			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _cabosArco[cableIndex]._arco->layerName );
 
             _cabosArco[cableIndex].ponta[ListaMenores.at( n ).IndiceArco] =
                     true;
@@ -494,7 +494,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
 
         if (!isAdded)
         {
-            shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
+            shared_ptr<TVerticeGeral> VerticeGeral = make_shared<TVerticeGeral>();
             //adiciona o vértice na lista de vértices do cabo
             _cabosReta[IndiceCabo]->AdicionaVertice( VerticeGeral );
 
@@ -513,7 +513,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             {
                 _cabosReta[IndiceCabo]->ponta[1] = true;
             }
-			shared_ptr<TAresta> Aresta( new TAresta( _cabosReta[IndiceCabo]->_multipoint->layerName ) );
+			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _cabosReta[IndiceCabo]->_multipoint->layerName );
             for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontos( PosVertice, PosVertice ) );
@@ -563,7 +563,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
     //para cada texto da c�lula cria um vértice
     for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
     {
-        shared_ptr<TVerticeGeral> VerticeInstrumento( new TVerticeGeral() );;
+        shared_ptr<TVerticeGeral> VerticeInstrumento = make_shared<TVerticeGeral>();
         VerticeInstrumento->TipoElemento = INSTRUMENTO;
 		VerticeInstrumento->drawing = _dados->_drawing;
         VerticeInstrumento->texto = _dados->Textos[ListaItensCelula->iTextos[i]]->texto;
@@ -582,7 +582,7 @@ void CGrafoDesenho::createColarEdges( TListaItensCelula *ListaItensCelula, vecto
     // Caso o equipamento seja um colar de subida/descida, então é necessário adicionar uma aresta entre a subida e a descida.
     if (ListaItensCelula->iTextos.size() == 2)
     {
-        shared_ptr<TAresta> Aresta( new TAresta( "" ) );
+        shared_ptr<TAresta> Aresta = make_shared<TAresta>( "" );
 		// the 0.1 is used for this edge not to be the preferred one sometimes
         Aresta->AdicionaVertices( VerticesInstrumento[0], VerticesInstrumento[1], 0.1 );
         Aresta->_drawing = _dados->_drawing;
@@ -660,7 +660,7 @@ void CGrafoDesenho::GeraVerticesArcos()
 
         for (m = 0; m < 2; m++)
         {
-			shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
+			shared_ptr<TVerticeGeral> VerticeGeral = make_shared<TVerticeGeral>();
 			VerticeGeral->TipoVertice = VERTICE_ARCO;
             // iV[m] � o índice do novo vértice que será criado, e como ele será o último vértice,
             // o seu índice � igual ao total atual de vértices
@@ -707,7 +707,7 @@ void CGrafoDesenho::GeraVerticesArcos()
             }
         }
 
-		shared_ptr<TAresta> Aresta( new TAresta( Arco->layerName ) );
+		shared_ptr<TAresta> Aresta = make_shared<TAresta>( Arco->layerName );
 		Aresta->AdicionaVertices( Arco->_vertices[0], Arco->_vertices[1], DistPontosManhattan( p[0], p[1] ) );
         Aresta->_drawing = _dados->_drawing;
 		_graph->_arestas.push_back( Aresta );
@@ -729,7 +729,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
 
         for (m = 0; m < tMultipoint->pontos.size(); m++)
         {
-			shared_ptr<TVerticeGeral> VerticeGeral( new TVerticeGeral() );
+			shared_ptr<TVerticeGeral> VerticeGeral = make_shared<TVerticeGeral>();
 			VerticeGeral->TipoVertice = VERTICE_PONTA_CABO;
             if (m != 0 && m != tMultipoint->pontos.size() - 1)
                 continue;
@@ -1085,7 +1085,7 @@ void CGrafoDesenho::GeraArestas()
         {
             VerticesReta1 = caboReta->VerticesReta[m];
             VerticesReta2 = caboReta->VerticesReta[m + 1];
-			shared_ptr<TAresta> Aresta( new TAresta( caboReta->_multipoint->layerName ) );
+			shared_ptr<TAresta> Aresta = make_shared<TAresta>( caboReta->_multipoint->layerName );
 			Aresta->AdicionaVertices( VerticesReta1, VerticesReta2,
             //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));
                     DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );

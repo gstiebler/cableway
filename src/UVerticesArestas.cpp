@@ -88,7 +88,7 @@ TVerticeGeral::TVerticeGeral()
     pos.y = 0;
     TipoElemento = NADA;
     texto = "";
-    ListaVerticesEArestas = shared_ptr<TListaVerticesEArestas>( new TListaVerticesEArestas );
+    ListaVerticesEArestas = make_shared<TListaVerticesEArestas>();
     EhColar = false;
 	_autogenId = counter++;
 }
@@ -100,7 +100,7 @@ TVerticeGeral::TVerticeGeral( TVerticeGeral &other )
 	pos = other.pos;
 	TipoElemento = other.TipoElemento;
 	texto = other.texto;
-    ListaVerticesEArestas = shared_ptr<TListaVerticesEArestas>( new TListaVerticesEArestas );
+    ListaVerticesEArestas = make_shared<TListaVerticesEArestas>();
 	EhColar = other.EhColar;
 	_autogenId = other._autogenId;
 	drawing = other.drawing;

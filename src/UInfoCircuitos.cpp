@@ -28,7 +28,7 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito )
 {
 	int m;
 	shared_ptr<TAresta> Aresta;
-	shared_ptr<TArestasCircuito> ArestasCircuito( new TArestasCircuito );
+	shared_ptr<TArestasCircuito> ArestasCircuito = make_shared<TArestasCircuito>();
 	ArestasDoCircuito[Circuito.NomeCircuito] = ArestasCircuito;
 	bool erro = true, erro_interno;
 

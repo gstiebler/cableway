@@ -25,9 +25,8 @@ bool VerticesDjikstra::operator>(const VerticesDjikstra& right) const
 
 
 Graph::Graph() :
-	_verticesGerais( new TVerticesGerais )
+	_verticesGerais( make_shared<TVerticesGerais>() )
 {
-
 }
 
 
@@ -132,14 +131,14 @@ Graph* Graph::getCopy()
 	map<TVerticeGeral*, shared_ptr<TVerticeGeral>> verticesMap;
 	for( int i(0); i < _verticesGerais->vertices.size(); ++i )
 	{
-		shared_ptr<TVerticeGeral> verticeTemp( new TVerticeGeral( *(_verticesGerais->vertices[i].get()) ) );
+		shared_ptr<TVerticeGeral> verticeTemp = make_shared<TVerticeGeral>( *(_verticesGerais->vertices[i].get()) );
 		verticesMap[_verticesGerais->vertices[i].get()] = verticeTemp;
 		copy->_verticesGerais->vertices.push_back( verticeTemp );
 	}
 
 	for( int i(0); i < _arestas.size(); ++i)
 	{
-		shared_ptr<TAresta> newEdge( new TAresta( _arestas[i].get() ) );
+		shared_ptr<TAresta> newEdge = make_shared<TAresta>( _arestas[i].get() );
 
 		for( int j(0); j < 2; ++j )
 			newEdge->_vertices[j] = verticesMap[ _arestas[i]->_vertices[j].get() ];
@@ -194,7 +193,7 @@ void Graph::reduce()
 	for( int i(0); i < vertices[1].size(); ++i )
 	{
 		shared_ptr<TVerticeGeral> vertex = vertices[1][i];
-		shared_ptr<TAresta> newEdge( new TAresta( vertex->ListaVerticesEArestas->list[0].Aresta->_layer ) );
+		shared_ptr<TAresta> newEdge = make_shared<TAresta>( vertex->ListaVerticesEArestas->list[0].Aresta->_layer );
 
 		// remove old edges
 		for( int j(0); j < 2; ++j )

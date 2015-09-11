@@ -48,7 +48,7 @@ void MainPresenter::execute()
 	string xlsFileName = _window->getInputDirectory() + "/user_params.xls";
     string inputCircuitsFileName = _window->getInputDirectory() + "/input_circuits.xls";
 
-	shared_ptr<InterfaceFeedback> interfaceFeecback( new InterfaceFeedback( _window ) );
+	shared_ptr<InterfaceFeedback> interfaceFeecback = make_shared<InterfaceFeedback>( _window );
     _mainExecution = new MainExecution( xlsFileName, interfaceFeecback );
     _mainExecution->execute( inputCircuitsFileName );
 

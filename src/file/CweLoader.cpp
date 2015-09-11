@@ -120,7 +120,7 @@ void CweLoader::readText()
 {
 	string line, key, value;
 	
-    shared_ptr<TTexto> texto( new TTexto() );
+	shared_ptr<TTexto> texto = make_shared<TTexto>();
 
 	while (true)
 	{
@@ -173,7 +173,7 @@ void CweLoader::readDBText()
 {
 	string line, key, value;
 	
-    shared_ptr<TTexto> texto( new TTexto() );
+    shared_ptr<TTexto> texto = make_shared<TTexto>();
 
 	while (true)
 	{
@@ -225,7 +225,7 @@ void CweLoader::readDBText()
 void CweLoader::readCircle()
 {
 	string line, key, value;
-    shared_ptr<TArco> arco( new TArco() ); 
+    shared_ptr<TArco> arco = make_shared<TArco>(); 
 
 	while (true)
 	{
@@ -276,7 +276,7 @@ void CweLoader::readCircle()
 void CweLoader::readArc()
 {
 	string line, key, value;
-    shared_ptr<TArco> arco( new TArco() ); 
+    shared_ptr<TArco> arco = make_shared<TArco>(); 
 
 	while (true)
 	{
@@ -353,7 +353,7 @@ void CweLoader::readLine()
 {
 	string line, key, value;
 	
-    shared_ptr<TMultipoint> multipoint( new TMultipoint() );
+    shared_ptr<TMultipoint> multipoint = make_shared<TMultipoint>();
 
 	while (true)
 	{
@@ -417,7 +417,7 @@ void CweLoader::readPolyLine()
 {
 	string line, key, value;
 	
-    shared_ptr<TMultipoint> multipoint( new TMultipoint() );
+    shared_ptr<TMultipoint> multipoint = make_shared<TMultipoint>();
 
 	while (true)
 	{

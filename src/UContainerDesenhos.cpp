@@ -9,17 +9,14 @@
 void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, string fileName )
 {
     // Cria um novo desenho
-    shared_ptr<TDesenho> desenho( new TDesenho );
+    shared_ptr<TDesenho> desenho = make_shared<TDesenho>();
 
     // O Id
 	dados->_drawing = desenho;
-	shared_ptr<Graph> graph( new Graph );
-
-    shared_ptr<CGrafoDesenho> grafoDesenho( new CGrafoDesenho( graph, dados) );
 
     // E o ID
     desenho->Altura = altura;
-    desenho->GrafoDesenho = grafoDesenho;
+    desenho->GrafoDesenho = make_shared<CGrafoDesenho>( make_shared<Graph>(), dados);
 	desenho->NomeArquivo = fileName;
 
     ListaDesenhos.push_back( desenho );
@@ -65,7 +62,7 @@ bool CContainerDesenhos::verificaTexto(string str)
 
 void CContainerDesenhos::Conclui()
 {
-	_graph = shared_ptr<Graph>( new Graph );
+	_graph = make_shared<Graph>();
 	for( int i(0); i < ListaDesenhos.size(); ++i)
 	{
 		_graph->merge( ListaDesenhos[i]->GrafoDesenho->_graph );
@@ -81,7 +78,7 @@ void CContainerDesenhos::Conclui()
     // Cria um novo InfoCircuitos baseado nos par�metros
     _graph->GeraListaAdjacencias();
 
-    InfoCircuitos = shared_ptr<CInfoCircuitos>( new CInfoCircuitos( _graph ) );
+    InfoCircuitos = make_shared<CInfoCircuitos>( _graph );
 }
 //---------------------------------------------------------------------------
 
@@ -103,7 +100,7 @@ void CContainerDesenhos::ligaColaresEntreDesenhos()
 			continue;
 
 		double alturaDaAresta = fabs( V1->drawing->Altura - V2->drawing->Altura );
-        shared_ptr<TAresta> Aresta( new TAresta( "" ) );
+        shared_ptr<TAresta> Aresta = make_shared<TAresta>( "" );
         Aresta->AdicionaVertices( V1, V2, alturaDaAresta );
 		_graph->_arestas.push_back( Aresta );
 

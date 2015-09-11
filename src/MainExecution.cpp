@@ -36,13 +36,13 @@ string MainExecution::getExePath()
 MainExecution::MainExecution( const string &userParametersFileName, shared_ptr<InterfaceFeedback> interfaceFeedback ) :
 	_interfaceFeedback( interfaceFeedback )
 {
-    _containerDesenhos = shared_ptr<CContainerDesenhos>( new CContainerDesenhos() );
+    _containerDesenhos = make_shared<CContainerDesenhos>();
     UserParams userParams;
     loadUserParams( userParametersFileName, &userParams );
 
     for(int i(0); i < (int) userParams.drawingsParams.size(); ++i)
     {
-        std::shared_ptr<CDadosGenerico> dados(new CDadosGenerico);
+        std::shared_ptr<CDadosGenerico> dados = make_shared<CDadosGenerico>();
 		interfaceFeedback->showMessage( "Carregando desenho " + userParams.drawingsParams[i].fileName );
         CweLoader dwgLoader( userParams.drawingsParams[i].fileName, dados, &userParams );
         _containerDesenhos->addDrawing( dados, userParams.drawingsParams[i].elevation, userParams.drawingsParams[i].fileName );
