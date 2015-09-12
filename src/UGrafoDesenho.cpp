@@ -130,8 +130,8 @@ void CGrafoDesenho::GeraListaCabos()
     {
 		if ( _dados->Arcos[n]->Nivel == CABO )
         {
-			_cabosArco.push_back( CCaboArco() );
-			_cabosArco.back()._arco = _dados->Arcos[n];
+			_cabosArco.push_back( make_shared<CCaboArco>() );
+			_cabosArco.back()->_arco = _dados->Arcos[n];
 
             SomaRaios += _dados->Arcos[n]->EixoPrimario;
         }
@@ -429,9 +429,9 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
             //if ( ListaItensCelula->iTexto > 0 )
             //  VerticesGerais->getItem(IndiceVertice)->texto = Textos[ListaItensCelula->iTexto].texto;
             ListaItensCelula->cabosArcoRelacionados.push_back( cableIndex );
-			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _cabosArco[cableIndex]._arco->layerName );
+			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _cabosArco[cableIndex]->_arco->layerName );
 
-            _cabosArco[cableIndex].ponta[ListaMenores.at( n ).IndiceArco] =
+            _cabosArco[cableIndex]->ponta[ListaMenores[n].IndiceArco] =
                     true;
             for (int i = 0; i < ListaItensCelula->_texts.size(); i++)
             {
@@ -655,7 +655,7 @@ void CGrafoDesenho::GeraVerticesArcos()
     for (n = 0; n < _cabosArco.size(); n++)
     {
         /* Olha todos os arcos do desenho */
-        Arco = _cabosArco[n]._arco;
+        Arco = _cabosArco[n]->_arco;
         Arco->PontasArco( p );
 
         for (m = 0; m < 2; m++)
@@ -675,8 +675,8 @@ void CGrafoDesenho::GeraVerticesArcos()
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
 				Arco->_vertices[m] = vertex;
-                _cabosArco[n].ponta[m] = true;
-                _cabosArco[IndiceCabo].ponta[PontaArco] = true;
+                _cabosArco[n]->ponta[m] = true;
+                _cabosArco[IndiceCabo]->ponta[PontaArco] = true;
 
             }
             else //se o vértice não foi aproveitado de outro cabo arco, verifica se este vértice está próximo a um cabo reta
@@ -689,7 +689,7 @@ void CGrafoDesenho::GeraVerticesArcos()
                     // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
 					caboReta->AdicionaVertice( Arco->_vertices[m] );
                     VerticeGeral->pos = PontoNaReta;
-                    _cabosArco[n].ponta[m] = true;
+                    _cabosArco[n]->ponta[m] = true;
                     if (caboReta->EhOPrimeiroPonto( PontoNaReta ))
                     {
                         caboReta->ponta[0] = true;
@@ -828,7 +828,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
     MenorDist = Infinity;
 	for (m = 0; m < _cabosArco.size(); m++)
     {
-		shared_ptr<TArco> arco = _cabosArco[m]._arco;
+		shared_ptr<TArco> arco = _cabosArco[m]->_arco;
         for (n = 0; n < 2; n++)
         {
 			pontoCabo = arco->_vertices[n]->pos;
@@ -858,13 +858,13 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
     {
         for (n = 0; n < 2; n++)
         {
-			pontoCabo = _cabosArco[m]._arco->_vertices[n]->pos;
+			pontoCabo = _cabosArco[m]->_arco->_vertices[n]->pos;
             Dist = DistPontoParaSegmentoReta( Reta, pontoCabo, PontoTemp );
             if (Dist < DistMinElemCabo)
             {
                 Cabo.IndiceCabo = m;
                 Cabo.PosVertice = pontoCabo;
-				Cabo._vertex = _cabosArco[m]._arco->_vertices[n];
+				Cabo._vertex = _cabosArco[m]->_arco->_vertices[n];
                 Cabo.IndiceArco = n;
                 ListaMenores.push_back( Cabo );
             }
@@ -949,7 +949,7 @@ void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo,
     MenorDist = Infinity;
     for (m = 0; m < _cabosArco.size(); m++)
     {
-        _cabosArco[m]._arco->PontasArco( PontosCabo );
+        _cabosArco[m]->_arco->PontasArco( PontosCabo );
         for (n = 0; n < 2; n++)
         {
             //eixo prim�rio em um c�rculo � o raio
@@ -983,7 +983,7 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto,
     {
         for (n = 0; n < 2; n++)
         {
-			pontoCabo = _cabosArco[m]._arco->_vertices[n]->pos;
+			pontoCabo = _cabosArco[m]->_arco->_vertices[n]->pos;
             Dist = DistPontos( ponto, pontoCabo );
             if (Dist < MenorDist)
             {
@@ -991,7 +991,7 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto,
                 IndiceCabo = m;
                 PosVertice = pontoCabo;
                 pontaCabo = n;
-				vertex = _cabosArco[m]._arco->_vertices[n];
+				vertex = _cabosArco[m]->_arco->_vertices[n];
             }
         }  //for (n=0; n<2; n++)
     }  //for (m=0; m<NumCabosReta; m++)

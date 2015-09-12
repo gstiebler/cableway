@@ -107,7 +107,7 @@ private:
 
 public:
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
-  std::vector<CCaboArco> _cabosArco;
+  std::vector< shared_ptr<CCaboArco> > _cabosArco;
   //armazena informa��es das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
   std::vector< shared_ptr<CCaboReta> > _cabosReta;

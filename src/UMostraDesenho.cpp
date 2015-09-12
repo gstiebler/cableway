@@ -310,12 +310,12 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 	for ( int i = 0 ; i < GrafoDesenho->_cabosArco.size() ; i++ )
 	{
 		TPonto pontos[2];
-		GrafoDesenho->_cabosArco[i]._arco->PontasArco(pontos);
-		if ( !GrafoDesenho->_cabosArco[i].ponta[0] )
+		GrafoDesenho->_cabosArco[i]->_arco->PontasArco(pontos);
+		if ( !GrafoDesenho->_cabosArco[i]->ponta[0] )
 		{
 			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 		}
-		if ( !GrafoDesenho->_cabosArco[i].ponta[1] )
+		if ( !GrafoDesenho->_cabosArco[i]->ponta[1] )
 		{
 			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
 		}
