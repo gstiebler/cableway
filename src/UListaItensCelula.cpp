@@ -1,53 +1,19 @@
 //---------------------------------------------------------------------------
 
-
-#pragma hdrstop
-
+#include <algorithm>
 #include "UListaItensCelula.h"
 
 using namespace std;
 
-//---------------------------------------------------------------------------
-TListaItensCelula::~TListaItensCelula()
-{
-}
-//---------------------------------------------------------------------------
-
-TListaItensCelula::TListaItensCelula()
-{
-}
-//---------------------------------------------------------------------------
-
 
 bool TListaItensCelula::VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int IndiceCabo)
 {
-  bool isAdded = false;
-  // Cada cabo só é ligado a um equipamento em um lugar, por isso ele é guardado no cabosRetaRelacionados
-  for ( unsigned int k = 0 ; k <(int) cabosRetaRelacionados.size() ; k++ )
-  {
-    if ( cabosRetaRelacionados[k] == IndiceCabo )
-    {
-      isAdded = true;
-      break;
-    }
-  }
-  return isAdded;
+	return std::find(cabosRetaRelacionados.begin(), cabosRetaRelacionados.end(), IndiceCabo) != cabosRetaRelacionados.end();
 }
 
 bool TListaItensCelula::VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int IndiceCabo)
 {
-  bool isAdded;
-  isAdded = false;
-  for ( unsigned int k = 0 ; k <(int) cabosArcoRelacionados.size() ; k++ )
-  {
-    if ( cabosArcoRelacionados[k] == IndiceCabo )
-    {
-      isAdded = true;
-      break;
-    }
-  }
-
-  return isAdded;
+	return std::find(cabosArcoRelacionados.begin(), cabosArcoRelacionados.end(), IndiceCabo) != cabosArcoRelacionados.end();
 }
 
 //---------------------------------------------------------------------------

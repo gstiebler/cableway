@@ -14,8 +14,6 @@ struct TTexto;
 
 struct TListaItensCelula
 {
-	TListaItensCelula();
-	~TListaItensCelula();
 	bool VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int indiceCabo);
 	bool VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int indiceCabo);
 	
