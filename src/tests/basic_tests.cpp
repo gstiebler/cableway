@@ -52,7 +52,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 		
 		TListaItensCelula lista;
 		lista._multipoints.push_back( equip1 );
-		lista.iTextos.push_back( dados->Textos.size() - 1 );
+		lista._texts.push_back( dados->Textos.back() );
 		dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
 	}
 
@@ -73,7 +73,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 
 		TListaItensCelula lista;
 		lista._multipoints.push_back( equip2 );
-		lista.iTextos.push_back( dados->Textos.size() - 1 );
+		lista._texts.push_back( dados->Textos.back() );
 		dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
 	}
 
@@ -102,7 +102,7 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 
 		TListaItensCelula lista;
 		lista._multipoints.push_back( bandeirola );
-		lista.iTextos.push_back( dados->Textos.size() - 1 );
+		lista._texts.push_back( dados->Textos.back() );
 		dados->InfoCelula.ListaCelulasBandeirolas.push_back( lista );
 	}
 }
@@ -127,7 +127,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
 
         TListaItensCelula lista;
 		lista._multipoints.push_back( equip3 );
-        lista.iTextos.push_back( dados->Textos.size() - 1 );
+        lista._texts.push_back( dados->Textos.back() );
 		dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
     }
 
@@ -148,7 +148,7 @@ void BasicTest::createFloor2( std::shared_ptr<CDadosGenerico> dados )
 
         TListaItensCelula lista;
 		lista._multipoints.push_back( equip2 );
-        lista.iTextos.push_back( dados->Textos.size() - 1 );
+        lista._texts.push_back( dados->Textos.back() );
         dados->InfoCelula.ListaCelulasInstrumentos.push_back( lista );
     }
 

@@ -261,9 +261,9 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             continue;
         }
 
-        if (ListaItens.iTextos.size() == 1) //se a bandeirola possui um e somente um texto, gera o vértice
+        if (ListaItens._texts.size() == 1) //se a bandeirola possui um e somente um texto, gera o vértice
         {
-            VerticeGeral->texto = _dados->Textos[ListaItens.iTextos[0]]->texto;
+			VerticeGeral->texto = ListaItens._texts[0]->texto;
             TPonto MaisDist;
             double DistMaisProx;
             bool Bandeirola2Retas = false;
@@ -314,7 +314,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
             }
             if (!Bandeirola2Retas)
             {
-				shared_ptr<TTexto> text = _dados->Textos[ListaItens.iTextos[0] ];
+				shared_ptr<TTexto> text = ListaItens._texts[0];
                 TPonto origemTexto = text->origem;
                 origemTexto.x += (text->FatorAltura * FATOR_FONTE * text->texto.size()) * cos(text->rotacao ) / 2;
                 origemTexto.x += text->FatorAltura * FATOR_FONTE * cos( text->rotacao * M_PI / 2 ) / 2;
@@ -343,16 +343,16 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 erros->novoErro( "Atenção: " +  _dados->NomeArq + " não possui cabos." );
             }
         }
-        else if (ListaItens.iTextos.size() > 1) //avisa caso a bandeirola tenha mais de um texto
+		else if (ListaItens._texts.size() > 1) //avisa caso a bandeirola tenha mais de um texto
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
             erros->novoErro("No desenho " + _dados->NomeArq
                             + " existe um grupamento em nível de bandeirola com mais de um texto associado. Textos: " );
-            for (int i = 0; i < ListaItens.iTextos.size(); i++)
-                erros->novoErro( _dados->Textos[ListaItens.iTextos[i]]->texto );
+            for (int i = 0; i < ListaItens._texts.size(); i++)
+                erros->novoErro( ListaItens._texts[i]->texto );
             erros->novoErro( "" );
         }
-        else if (ListaItens.iTextos.size() == 0) //avisa caso exista bandeirola sem texto nenhum
+        else if (ListaItens._texts.size() == 0) //avisa caso exista bandeirola sem texto nenhum
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
             erros->novoErro(
@@ -433,7 +433,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
 
             _cabosArco[cableIndex].ponta[ListaMenores.at( n ).IndiceArco] =
                     true;
-            for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
+            for (int i = 0; i < ListaItensCelula->_texts.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ],
                         ListaMenores[ n ]._vertex,
@@ -514,7 +514,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
                 _cabosReta[IndiceCabo]->ponta[1] = true;
             }
 			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _cabosReta[IndiceCabo]->_multipoint->layerName );
-            for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
+            for (int i = 0; i < ListaItensCelula->_texts.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontos( PosVertice, PosVertice ) );
 				Aresta->_drawing = _dados->_drawing;
@@ -538,7 +538,7 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
 		TListaItensCelula *ListaItensCelula = &(_dados->InfoCelula.ListaCelulasInstrumentos[ n ]);
  
 		vector< shared_ptr<TVerticeGeral> > VerticesInstrumento;
-        if (ListaItensCelula->iTextos.size() == 0)
+        if (ListaItensCelula->_texts.size() == 0)
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
             erros->novoErro("No desenho " + _dados->NomeArq + " existe um grupamento em nível de equipamento sem textos associados.\n" );
@@ -561,12 +561,12 @@ void CGrafoDesenho::GeraVerticesInstrumentos()
 void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice )
 {
     //para cada texto da c�lula cria um vértice
-    for (int i = 0; i < ListaItensCelula->iTextos.size(); i++)
+    for (int i = 0; i < ListaItensCelula->_texts.size(); i++)
     {
         shared_ptr<TVerticeGeral> VerticeInstrumento = make_shared<TVerticeGeral>();
         VerticeInstrumento->TipoElemento = INSTRUMENTO;
 		VerticeInstrumento->drawing = _dados->_drawing;
-        VerticeInstrumento->texto = _dados->Textos[ListaItensCelula->iTextos[i]]->texto;
+        VerticeInstrumento->texto = ListaItensCelula->_texts[i]->texto;
         VerticeInstrumento->pos = PosVertice;
         VerticesInstrumento.push_back( VerticeInstrumento );
         VerticeInstrumento->TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
@@ -580,7 +580,7 @@ void CGrafoDesenho::CriaVerticesEArestasInstrumento(TListaItensCelula *ListaIten
 void CGrafoDesenho::createColarEdges( TListaItensCelula *ListaItensCelula, vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento )
 {
     // Caso o equipamento seja um colar de subida/descida, então é necessário adicionar uma aresta entre a subida e a descida.
-    if (ListaItensCelula->iTextos.size() == 2)
+    if (ListaItensCelula->_texts.size() == 2)
     {
         shared_ptr<TAresta> Aresta = make_shared<TAresta>( "" );
 		// the 0.1 is used for this edge not to be the preferred one sometimes

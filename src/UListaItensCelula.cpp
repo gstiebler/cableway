@@ -20,37 +20,6 @@ TListaItensCelula::TListaItensCelula()
 }
 //---------------------------------------------------------------------------
 
-TListaItensCelula::TListaItensCelula(const TListaItensCelula &cpy)
-{
-//      temp->esq = old->esq;
-//      temp->dir = old->dir;
-//      temp->enc = old->enc;
-//      temp->emb = old->emb;
-//      temp->id = old->id;
-//      temp->iTextos->assign(old->iTextos->begin(), old->iTextos->end());
-//      temp->cabosRetaRelacionados->assign(old->cabosRetaRelacionados->begin(), old->cabosRetaRelacionados->end());
-//      temp->cabosArcoRelacionados->assign(old->cabosArcoRelacionados->begin(), old->cabosArcoRelacionados->end());
-  emb = cpy.emb;
-  esq = cpy.esq;
-  enc = cpy.enc;
-  dir = cpy.dir;
-  id = cpy.id;
-  
-	try
-	{
-		iTextosBandeirola.assign(cpy.iTextosBandeirola.begin(), cpy.iTextosBandeirola.end());
-		iTextos.assign(cpy.iTextos.begin(), cpy.iTextos.end());
-		cabosRetaRelacionados.assign(cpy.cabosRetaRelacionados.begin(), cpy.cabosRetaRelacionados.end());
-		cabosArcoRelacionados.assign(cpy.cabosArcoRelacionados.begin(), cpy.cabosArcoRelacionados.end());
-
-		_arcs.assign( cpy._arcs.begin(), cpy._arcs.end() );
-		_multipoints.assign( cpy._multipoints.begin(), cpy._multipoints.end() );
-	}
-	catch(...)
-	{
-		printf( "Erro!" );
-	}
-}
 
 bool TListaItensCelula::VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int IndiceCabo)
 {

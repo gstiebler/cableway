@@ -10,16 +10,17 @@
 
 struct TArco;
 struct TMultipoint;
+struct TTexto;
 
 struct TListaItensCelula
 {
 	TListaItensCelula();
-	TListaItensCelula(const TListaItensCelula &cpy);
 	~TListaItensCelula();
 	bool VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int indiceCabo);
 	bool VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int indiceCabo);
 	
-	std::vector<int> iTextos, iTextosBandeirola, cabosRetaRelacionados, cabosArcoRelacionados;
+	std::vector<int> cabosRetaRelacionados, cabosArcoRelacionados;
+	std::vector< std::shared_ptr<TTexto> > _texts;
 	std::vector< std::shared_ptr<TArco> > _arcs;
 	std::vector< std::shared_ptr<TMultipoint> > _multipoints;
 	double esq, dir, enc, emb;

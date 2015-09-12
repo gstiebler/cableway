@@ -162,8 +162,7 @@ void CweLoader::readText()
 
     if( _dados->InfoCelula.DentroCelula )
     {
-		int textIndex = _dados->Textos.size() - 1;
-		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex]->texto, _dados->Textos[textIndex]->Nivel );
+		_dados->InfoCelula.ListaItensCelula->_texts.push_back( _dados->Textos.back() );
     }
 }
 
@@ -215,8 +214,7 @@ void CweLoader::readDBText()
 
     if( _dados->InfoCelula.DentroCelula )
     {
-		int textIndex = _dados->Textos.size() - 1;
-		_dados->InfoCelula.AdicionaTexto( textIndex, _dados->Textos[textIndex]->texto, _dados->Textos[textIndex]->Nivel );
+		_dados->InfoCelula.ListaItensCelula->_texts.push_back( _dados->Textos.back() );
     }
 }
 
