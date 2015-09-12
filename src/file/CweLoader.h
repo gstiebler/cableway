@@ -50,6 +50,9 @@ private:
 	std::shared_ptr<CDadosGenerico> _dados;
     UserParams *_userParams;
 	std::ifstream _readFile;
+
+	//Temporary items list of current group
+	TListaItensCelula *ListaItensCelula;
 };
 
 #endif /* CWE_LOADER_H_ */

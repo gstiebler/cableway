@@ -26,7 +26,8 @@ using namespace std;
 CweLoader::CweLoader( std::string fileName, std::shared_ptr<CDadosGenerico> dados, UserParams *userParams ) :
 	_dados( dados ),
 	_userParams( userParams ),
-	_readFile( fileName )
+	_readFile( fileName ),
+	ListaItensCelula( NULL )
 {
 	if (!_readFile.is_open())
 	{
@@ -160,9 +161,9 @@ void CweLoader::readText()
 	
     _dados->Textos.push_back( texto );
 
-	if( _dados->InfoCelula.ListaItensCelula )
+	if( ListaItensCelula )
     {
-		_dados->InfoCelula.ListaItensCelula->_texts.push_back( _dados->Textos.back() );
+		ListaItensCelula->_texts.push_back( _dados->Textos.back() );
     }
 }
 
@@ -212,9 +213,9 @@ void CweLoader::readDBText()
 	
     _dados->Textos.push_back( texto );
 
-    if( _dados->InfoCelula.ListaItensCelula )
+    if( ListaItensCelula )
     {
-		_dados->InfoCelula.ListaItensCelula->_texts.push_back( _dados->Textos.back() );
+		ListaItensCelula->_texts.push_back( _dados->Textos.back() );
     }
 }
 
@@ -266,8 +267,8 @@ void CweLoader::readCircle()
 	
 	_dados->Arcos.push_back( arco );
 
-	if( _dados->InfoCelula.ListaItensCelula )
-		_dados->InfoCelula.ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
+	if( ListaItensCelula )
+		ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
 }
 
 
@@ -340,8 +341,8 @@ void CweLoader::readArc()
 	}
 	_dados->Arcos.push_back( arco );
 
-	if( _dados->InfoCelula.ListaItensCelula )
-		_dados->InfoCelula.ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
+	if( ListaItensCelula )
+		ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
 }
 
 
@@ -405,8 +406,8 @@ void CweLoader::readLine()
 	
     _dados->Multipoint.push_back( multipoint );
 
-	if( _dados->InfoCelula.ListaItensCelula )
-		_dados->InfoCelula.ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
+	if( ListaItensCelula )
+		ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
 }
 
 
@@ -461,8 +462,8 @@ void CweLoader::readPolyLine()
 	
     _dados->Multipoint.push_back( multipoint );
 
-	if( _dados->InfoCelula.ListaItensCelula )
-		_dados->InfoCelula.ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
+	if( ListaItensCelula )
+		ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
 }
 
 
@@ -483,7 +484,7 @@ void CweLoader::readGroups()
 			return;
 		}
 		
-		_dados->InfoCelula.EntraCelula();
+		ListaItensCelula = new TListaItensCelula();
 
 		eReadElementResult result;
 		while ( true )
@@ -493,7 +494,9 @@ void CweLoader::readGroups()
 				break;
 		}
 			
-		_dados->InfoCelula.FechaCelula();
+		_dados->InfoCelula.FechaCelula( ListaItensCelula );
+		delete ListaItensCelula;
+		ListaItensCelula = NULL;
 
 		if (result == E_END_GROUPS)
 			break;

@@ -5,26 +5,7 @@
 #include "UListaItensCelula.h"
 #include "UDadosGenerico.h"
 
-TInfoCelula::TInfoCelula()
-{
-  // � tempor�rio!
-	ListaItensCelula = NULL;
-}
-//---------------------------------------------------------------------------
-
-TInfoCelula::~TInfoCelula()
-{
-}
-//---------------------------------------------------------------------------
-
-
-void TInfoCelula::EntraCelula()
-{
-	// Cria um novo ItemCelula tempor�rio
-	ListaItensCelula=new TListaItensCelula;
-}
-
-void TInfoCelula::FechaCelula()
+void TInfoCelula::FechaCelula( TListaItensCelula *ListaItensCelula )
 {
 	if( ListaItensCelula->_texts.size() > 0 )
 	{
@@ -33,7 +14,5 @@ void TInfoCelula::FechaCelula()
 		else if ( ListaItensCelula->_texts.back()->Nivel == BANDEIROLA )
 			ListaCelulasBandeirolas.push_back(*ListaItensCelula);
 	}
-	delete ListaItensCelula;
-	ListaItensCelula = NULL;
 }
 
