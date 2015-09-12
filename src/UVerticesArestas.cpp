@@ -18,31 +18,10 @@ TAresta::TAresta( string layer ) :
 //---------------------------------------------------------------------------
 
 
-TAresta::TAresta( TAresta *other ) :
-	_autogenId( other->_autogenId ),
-	Tam( other->Tam ),
-	_drawing( other->_drawing ),
-	_layer( other->_layer )
+TAresta::TAresta( TAresta *other )
 {
-
+	*this = *other;
 }
-
-
-TArestasCircuito::TArestasCircuito()
-{
-}
-//---------------------------------------------------------------------------
-
-TArestasCircuito::~TArestasCircuito()
-{
-}
-//---------------------------------------------------------------------------
-TArestasCircuito::TArestasCircuito(const TArestasCircuito &cpy)
-{
-    Arestas.assign( cpy.Arestas.begin(), cpy.Arestas.end() );
-	ArestasDesenho = cpy.ArestasDesenho;
-}
-//---------------------------------------------------------------------------
 
 
 void TArestasCircuito::calcArestasDesenho()
@@ -93,18 +72,6 @@ TVerticeGeral::TVerticeGeral()
 	_autogenId = counter++;
 }
 //---------------------------------------------------------------------------
-
-
-TVerticeGeral::TVerticeGeral( TVerticeGeral &other )
-{
-	pos = other.pos;
-	TipoElemento = other.TipoElemento;
-	texto = other.texto;
-    ListaVerticesEArestas = make_shared<TListaVerticesEArestas>();
-	EhColar = other.EhColar;
-	_autogenId = other._autogenId;
-	drawing = other.drawing;
-}
 
 
 void TVerticeGeral::removeEdges()

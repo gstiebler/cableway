@@ -17,9 +17,6 @@ struct TDesenho;
 
 struct TArestasCircuito
 {
-  TArestasCircuito();
-  TArestasCircuito(const TArestasCircuito &cpy);
-  ~TArestasCircuito();
 	void calcArestasDesenho();
 
   vector< shared_ptr<TAresta> > Arestas;
@@ -46,7 +43,6 @@ struct TListaVerticesEArestas
 struct TVerticeGeral
 {
 	TVerticeGeral();
-	TVerticeGeral( TVerticeGeral &other );
 	void removeEdges();
 
 	TPonto pos;
