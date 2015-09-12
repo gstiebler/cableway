@@ -25,16 +25,6 @@ struct TElemento
 		ID = Nivel = Peso = Estilo = 0;
 		CorR = CorG = CorB = 0xFF;
 	}
-	TElemento(const TElemento& TElem)
-	{
-		ID = TElem.ID;
-		Nivel = TElem.Nivel;
-		Peso = TElem.Peso;
-		Estilo = TElem.Estilo;
-		CorR = TElem.CorR;
-		CorG = TElem.CorG;
-		CorB = TElem.CorB;
-	}
 };
 //---------------------------------------------------------------------------
 
@@ -52,8 +42,6 @@ struct TMultipoint: public TElemento
 	{
 		*this = TMulti;
 	}
-  // Operador de atribui��o
-	TMultipoint& operator=( const TMultipoint &TMulti );
 };
 //---------------------------------------------------------------------------
 
@@ -80,38 +68,7 @@ struct TArco: public TElemento
 		Centro.x = Centro.y = 0.0;
 		EixoPrimario = EixoSecundario = Rotacao = AngIni = AngEnd = 0.0;
 	}
-  TArco(const TArco &arco) : TElemento(arco)
-  {
-    Centro.x = arco.Centro.x;
-    Centro.y = arco.Centro.y;
-    EixoPrimario = arco.EixoPrimario;
-    EixoSecundario = arco.EixoSecundario;
-    Rotacao = arco.Rotacao;
-    AngIni = arco.AngIni;
-    AngEnd = arco.AngEnd;
-    _vertices[0] = arco._vertices[0];
-    _vertices[1] = arco._vertices[1];
-  }
-	TArco& operator=( const TArco &arco )
-  {
-		ID = arco.ID;
-		CorR = arco.CorR;
-		CorG = arco.CorG;
-		CorB = arco.CorB;
-		Nivel = arco.Nivel;
-		Peso = arco.Peso;
-		Estilo = arco.Estilo;
-    Centro.x = arco.Centro.x;
-    Centro.y = arco.Centro.y;
-    EixoPrimario = arco.EixoPrimario;
-    EixoSecundario = arco.EixoSecundario;
-    Rotacao = arco.Rotacao;
-    AngIni = arco.AngIni;
-    AngEnd = arco.AngEnd;
-	_vertices[0] = arco._vertices[0];
-    _vertices[1] = arco._vertices[1];
-  	return *this;
-  }
+
 	double getAng() const;
 };
 //---------------------------------------------------------------------------

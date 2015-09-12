@@ -60,20 +60,6 @@ CDadosGenerico::CDadosGenerico()
 	//      percorridos = NULL;
 }
 
-TMultipoint& TMultipoint::operator=( const TMultipoint &TMulti )
-{
-	ID = TMulti.ID;
-	CorR = TMulti.CorR;
-	CorG = TMulti.CorG;
-	CorB = TMulti.CorB;
-	Nivel = TMulti.Nivel;
-	Peso = TMulti.Peso;
-	Estilo = TMulti.Estilo;
-	tipo = TMulti.tipo;
-	pontos.assign(TMulti.pontos.begin(), TMulti.pontos.end());
-	return *this;
-}
-
 
 //---------------------------------------------------------------------------
 CDadosGenerico::~CDadosGenerico ()
