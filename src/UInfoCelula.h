@@ -16,7 +16,7 @@ struct TInfoCelula
 	~TInfoCelula();
 
 
-	void EntraCelula(int GrupoID, bool IsShared);
+	void EntraCelula();
 
 	/// <summary>Fecha a c�lula aberta no momento. Ou seja, v� qual � o tipo do grupo
 	/// e toma a medida de acordo</summary>

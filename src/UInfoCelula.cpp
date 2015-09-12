@@ -18,12 +18,10 @@ TInfoCelula::~TInfoCelula()
 //---------------------------------------------------------------------------
 
 
-void TInfoCelula::EntraCelula(int GrupoID, bool IsShared)
+void TInfoCelula::EntraCelula()
 {
 	// Cria um novo ItemCelula tempor�rio
 	ListaItensCelula=new TListaItensCelula;
-	// E seta o ID dele
-	ListaItensCelula->id = GrupoID;
 }
 
 void TInfoCelula::FechaCelula()

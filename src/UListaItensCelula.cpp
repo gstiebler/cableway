@@ -15,8 +15,6 @@ TListaItensCelula::~TListaItensCelula()
 
 TListaItensCelula::TListaItensCelula()
 {
-  emb=esq=1.5e280;
-  enc=dir=-1.5e280;
 }
 //---------------------------------------------------------------------------
 

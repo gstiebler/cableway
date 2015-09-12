@@ -483,7 +483,7 @@ void CweLoader::readGroups()
 			return;
 		}
 		
-		_dados->InfoCelula.EntraCelula( 0, false );
+		_dados->InfoCelula.EntraCelula();
 
 		eReadElementResult result;
 		while ( true )
