@@ -25,9 +25,6 @@ struct TInfoCelula
 	/// Lista de grupamentos em nível de Instrumento.
 	std::vector<TListaItensCelula> ListaCelulasInstrumentos, ListaCelulasBandeirolas;
 
-	/// Indica se está dentro de uma c�lula
-	bool DentroCelula;
-
 	/// Lista _TEMPOR�RIA_ de Itens da c�lula ATUAL
 	TListaItensCelula *ListaItensCelula;
 };

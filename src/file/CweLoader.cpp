@@ -160,7 +160,7 @@ void CweLoader::readText()
 	
     _dados->Textos.push_back( texto );
 
-    if( _dados->InfoCelula.DentroCelula )
+	if( _dados->InfoCelula.ListaItensCelula )
     {
 		_dados->InfoCelula.ListaItensCelula->_texts.push_back( _dados->Textos.back() );
     }
@@ -212,7 +212,7 @@ void CweLoader::readDBText()
 	
     _dados->Textos.push_back( texto );
 
-    if( _dados->InfoCelula.DentroCelula )
+    if( _dados->InfoCelula.ListaItensCelula )
     {
 		_dados->InfoCelula.ListaItensCelula->_texts.push_back( _dados->Textos.back() );
     }
@@ -266,7 +266,7 @@ void CweLoader::readCircle()
 	
 	_dados->Arcos.push_back( arco );
 
-	if( _dados->InfoCelula.DentroCelula )
+	if( _dados->InfoCelula.ListaItensCelula )
 		_dados->InfoCelula.ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
 }
 
@@ -340,7 +340,7 @@ void CweLoader::readArc()
 	}
 	_dados->Arcos.push_back( arco );
 
-	if( _dados->InfoCelula.DentroCelula )
+	if( _dados->InfoCelula.ListaItensCelula )
 		_dados->InfoCelula.ListaItensCelula->_arcs.push_back( _dados->Arcos.back() );
 }
 
@@ -405,7 +405,7 @@ void CweLoader::readLine()
 	
     _dados->Multipoint.push_back( multipoint );
 
-	if( _dados->InfoCelula.DentroCelula )
+	if( _dados->InfoCelula.ListaItensCelula )
 		_dados->InfoCelula.ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
 }
 
@@ -461,7 +461,7 @@ void CweLoader::readPolyLine()
 	
     _dados->Multipoint.push_back( multipoint );
 
-	if( _dados->InfoCelula.DentroCelula )
+	if( _dados->InfoCelula.ListaItensCelula )
 		_dados->InfoCelula.ListaItensCelula->_multipoints.push_back( _dados->Multipoint.back() );
 }
 

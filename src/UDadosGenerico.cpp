@@ -54,7 +54,6 @@ void TArco::PontasArco(TPonto pontas[2])
 
 CDadosGenerico::CDadosGenerico()
 {
-	InfoCelula.DentroCelula = false;
 	Multipoint.clear();
 	Arcos.clear();
 	Textos.clear();
