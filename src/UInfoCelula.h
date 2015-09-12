@@ -45,15 +45,6 @@ struct TInfoCelula
 	/// Indica se está dentro de uma c�lula
 	bool DentroCelula;
 
-	/// Indica se a c�lula � shared, usado em DGNV7
-	bool shared;
-
-	/// Indica quando � o fim da c�lula, usado em DGNV7
-	int FimCelula;
-
-	/// Quantia a ser somada a cada item da c�lula
-	double somaX, somaY, somaZ;
-
 	/// Lista _TEMPOR�RIA_ de Itens da c�lula ATUAL
 	TListaItensCelula *ListaItensCelula;
 };

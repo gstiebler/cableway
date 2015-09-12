@@ -11,9 +11,6 @@ TInfoCelula::TInfoCelula()
 {
 	TipoElementoCelulaAtual = NADA;
 	DentroCelula=false;
-	shared = false;
-	FimCelula = -1;
-	somaX = somaY = somaZ = 0;
   // � tempor�rio!
 	ListaItensCelula = NULL;
 }
@@ -37,11 +34,6 @@ TInfoCelula& TInfoCelula::operator=( TInfoCelula &f )
 
 	TipoElementoCelulaAtual = f.TipoElementoCelulaAtual;
 	DentroCelula=f.DentroCelula;
-	shared = f.shared;
-	FimCelula = f.FimCelula;
-	somaX = f.somaX;
-	somaY = f.somaY;
-	somaZ = f.somaZ;
 	ListaItensCelula = NULL;
 	return *this;
 };
@@ -52,10 +44,6 @@ void TInfoCelula::EntraCelula(int GrupoID, bool IsShared)
 	TipoElementoCelulaAtual = NADA;
 	// Mostra que t� dentro da C�lula
 	DentroCelula = true;
-	// Seta o shared
-	shared = IsShared;
-	// Zera as somas
-	somaX = somaY = somaZ = 0;
 	// Cria um novo ItemCelula tempor�rio
 	ListaItensCelula=new TListaItensCelula;
 	// E seta o ID dele
@@ -86,13 +74,6 @@ void TInfoCelula::FechaCelula()
 {
 	// Desliga o tag de DentroCelula.
 	DentroCelula=false;
-	if ( shared )
-	{
-		delete ListaItensCelula;
-		ListaItensCelula = NULL;
-		shared = false;
-		return;
-	}
 
 	// V� o tipo da c�lula atual
 	switch (TipoElementoCelulaAtual)
@@ -113,7 +94,5 @@ void TInfoCelula::FechaCelula()
 		delete ListaItensCelula;
 		ListaItensCelula = NULL;
 	}
-	// Seta a soma como 0.
-	somaX = somaY = somaZ = 0;
 }
 
