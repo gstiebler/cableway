@@ -141,7 +141,7 @@ void CGrafoDesenho::GeraListaCabos()
 
 //Acha o cabo mais próximo a um ponto. Retorna o índice do cabo,
 //a Distância � este cabo, e o ponto do cabo que está mais próximo ao ponto dado
-void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &_straightCable, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel)
+void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &_straightCable, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel) const
 {
     int m;
     double MenorDist, Dist;
@@ -571,7 +571,7 @@ void CGrafoDesenho::createColarEdges( TListaItensCelula *ListaItensCelula, vecto
 }
 
 
-TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula)
+TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula) const
 {
     int i, j;
     TPonto PosVertice;

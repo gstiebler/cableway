@@ -76,7 +76,7 @@ private:
   TTipoElemento TipoElementoCor[NUM_CORES];
   void GeraListaCabos();
   //dado um ponto pega o cabo reta mais pr�ximo do ponto
-  void CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &straightCable, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel);
+  void CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &straightCable, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel) const;
   void GeraVerticesBandeirola();
   void GeraVerticesArcos();
   void GeraVerticesPontaCabos();
@@ -92,8 +92,7 @@ private:
   void OrdenaVerticesRetas();
   void GeraArestas();
   void createColarEdges( TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento );
-  void AchaTextoBandeirola(TPonto &pos, std::string &texto);
-  TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula);
+  TPonto AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCelula) const;
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice );
   void GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
