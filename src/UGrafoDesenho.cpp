@@ -871,34 +871,6 @@ void CGrafoDesenho::DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, doub
 }
 //---------------------------------------------------------------------------
 
-//ESTA FUN��O DEVE SE ADAPTAR PARA TRABALHAR COM ARCOS QUE não são C�RCULOS
-void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo, double &DistMaisPerto, TPonto &PosVertice) const
-{
-    int m, n;
-    unsigned char ContadorMaior;
-    double MenorDist, Dist;
-    TPonto PontosCabo[2];
-    IndiceArcoCabo = -1;
-    MenorDist = Infinity;
-    for (m = 0; m < _cabosArco.size(); m++)
-    {
-        _cabosArco[m]->_arco->PontasArco( PontosCabo );
-        for (n = 0; n < 2; n++)
-        {
-            //eixo prim�rio em um c�rculo � o raio
-            Dist = fabs( sqrt( pow( Arco.Centro.x - PontosCabo[n].x, 2 ) + pow( Arco.Centro.y - PontosCabo[n].y, 2 ) ) - Arco.EixoPrimario );
-            if (Dist < MenorDist)
-            {
-                MenorDist = Dist;
-                IndiceArcoCabo = m;
-                PosVertice = PontosCabo[n];
-            }
-        }  //for (n=0; n<2; n++)
-    }  //for (m=0; m<NumCabosReta; m++)
-    DistMaisPerto = MenorDist;
-}
-//---------------------------------------------------------------------------
-
 void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, shared_ptr<CCaboArco> &arcCable, double &DistMaisPerto, TPonto &PosVertice, 
 	  shared_ptr<TVerticeGeral> &vertex, int IndiceMax, int &pontaCabo) const
 {
