@@ -65,7 +65,7 @@ void CMostraDesenho::initializeLimits()
 	_glCoords.initializeLimits();
 	if (GrafoDesenho->_ult > GrafoDesenho->_dados->Multipoint.size())
 		GrafoDesenho->_ult = GrafoDesenho->_dados->Multipoint.size();
-	for (int n=GrafoDesenho->_pri; n<GrafoDesenho->_ult; n++)
+	for (int n=0; n<GrafoDesenho->_ult; n++)
 	{
 		vector<TPonto> &points = GrafoDesenho->_dados->Multipoint[n]->pontos;
 		int numPoints = points.size();

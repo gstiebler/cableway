@@ -74,8 +74,6 @@ bool CCaboReta::EhOUltimoPonto( TPonto ponto )
 CGrafoDesenho::CGrafoDesenho( shared_ptr<Graph> graph, std::shared_ptr<CDadosGenerico> Dados) :
 	_graph( graph )
 {
-    _pri = 0;
-
     // Cria um DadosGenerico para ser usado
     this->_dados = Dados;
 
