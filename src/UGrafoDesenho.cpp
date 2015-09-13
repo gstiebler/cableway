@@ -239,10 +239,8 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 if (distancia < fat)
                 {
                     // Se tem dois pontos ligados dentro da bandeirola, então, apaga os dois. Pois isso significa que eles são o mesmo ponto.
-                    PontosExtremidadesElementosBandeirola.erase(
-                            PontosExtremidadesElementosBandeirola.begin() + j );
-                    PontosExtremidadesElementosBandeirola.erase(
-                            PontosExtremidadesElementosBandeirola.begin() + i );
+                    PontosExtremidadesElementosBandeirola.erase( PontosExtremidadesElementosBandeirola.begin() + j );
+                    PontosExtremidadesElementosBandeirola.erase( PontosExtremidadesElementosBandeirola.begin() + i );
                     i--;
                     break;
                 }
@@ -756,8 +754,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistRetaParaPontaCaboReta(TPonto Reta[2], int &IndiceCabo,
-        double &DistMaisPerto, TPonto &PosVertice)
+void CGrafoDesenho::DistRetaParaPontaCaboReta(TPonto Reta[2], int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice) const
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -784,8 +781,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboReta(TPonto Reta[2], int &IndiceCabo,
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2],
-        TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo)
+void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -813,7 +809,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2],
 //---------------------------------------------------------------------------
 
 void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
-        double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex)
+        double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex) const
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -841,8 +837,7 @@ void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
-        TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo)
+void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -868,8 +863,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2],
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco,
-        TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo)
+void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -901,8 +895,7 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco,
 //---------------------------------------------------------------------------
 
 //ESTA FUN��O DEVE SE ADAPTAR PARA TRABALHAR COM ARCOS QUE não são C�RCULOS
-void CGrafoDesenho::DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, double &DistMaisPerto,
-        TPonto &PosVertice)
+void CGrafoDesenho::DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice) const
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -933,8 +926,7 @@ void CGrafoDesenho::DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, doub
 //---------------------------------------------------------------------------
 
 //ESTA FUN��O DEVE SE ADAPTAR PARA TRABALHAR COM ARCOS QUE não são C�RCULOS
-void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo,
-        double &DistMaisPerto, TPonto &PosVertice)
+void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo, double &DistMaisPerto, TPonto &PosVertice) const
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -962,7 +954,7 @@ void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo,
 //---------------------------------------------------------------------------
 
 void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, shared_ptr<CCaboArco> &arcCable, double &DistMaisPerto, TPonto &PosVertice, 
-	  shared_ptr<TVerticeGeral> &vertex, int IndiceMax, int &pontaCabo)
+	  shared_ptr<TVerticeGeral> &vertex, int IndiceMax, int &pontaCabo) const
 {
     int m, n;
     unsigned char ContadorMaior;
