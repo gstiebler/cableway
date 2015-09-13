@@ -937,9 +937,7 @@ void CGrafoDesenho::GeraArestas()
             VerticesReta1 = caboReta->VerticesReta[m];
             VerticesReta2 = caboReta->VerticesReta[m + 1];
 			shared_ptr<TAresta> Aresta = make_shared<TAresta>( caboReta->_multipoint->layerName );
-			Aresta->AdicionaVertices( VerticesReta1, VerticesReta2,
-            //					DistPontosManhattan(VerticesReta1->pos, VerticesReta2->pos));
-                    DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );
+			Aresta->AdicionaVertices( VerticesReta1, VerticesReta2, DistPontos( VerticesReta1->pos, VerticesReta2->pos ) );
 			Aresta->_drawing = _dados->_drawing;
 			_graph->_arestas.push_back( Aresta );
         }
