@@ -11,13 +11,16 @@
 struct TArco;
 struct TMultipoint;
 struct TTexto;
+struct CCaboReta;
+struct CCaboArco;
 
 struct TListaItensCelula
 {
-	bool VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int indiceCabo);
-	bool VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int indiceCabo);
+	bool VerificaSeCaboRetaJaFoiLigadoAoEquipamento( CCaboReta *straightCable );
+	bool VerificaSeCaboArcoJaFoiLigadoAoEquipamento( CCaboArco *arcCable );
 	
-	std::vector<int> cabosRetaRelacionados, cabosArcoRelacionados;
+	std::vector< CCaboReta* > cabosRetaRelacionados;
+	std::vector< CCaboArco* > cabosArcoRelacionados;
 	std::vector< std::shared_ptr<TTexto> > _texts;
 	std::vector< std::shared_ptr<TArco> > _arcs;
 	std::vector< std::shared_ptr<TMultipoint> > _multipoints;

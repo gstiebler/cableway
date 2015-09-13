@@ -6,15 +6,15 @@
 using namespace std;
 
 
-bool TListaItensCelula::VerificaSeCaboRetaJaFoiLigadoAoEquipamento(int IndiceCabo)
+bool TListaItensCelula::VerificaSeCaboRetaJaFoiLigadoAoEquipamento( CCaboReta *straightCable )
 {
-	return find(cabosRetaRelacionados.begin(), cabosRetaRelacionados.end(), IndiceCabo) != cabosRetaRelacionados.end();
+	return find(cabosRetaRelacionados.begin(), cabosRetaRelacionados.end(), straightCable) != cabosRetaRelacionados.end();
 }
 
 
-bool TListaItensCelula::VerificaSeCaboArcoJaFoiLigadoAoEquipamento(int IndiceCabo)
+bool TListaItensCelula::VerificaSeCaboArcoJaFoiLigadoAoEquipamento( CCaboArco *arcCable )
 {
-	return find(cabosArcoRelacionados.begin(), cabosArcoRelacionados.end(), IndiceCabo) != cabosArcoRelacionados.end();
+	return find(cabosArcoRelacionados.begin(), cabosArcoRelacionados.end(), arcCable) != cabosArcoRelacionados.end();
 }
 
 //---------------------------------------------------------------------------

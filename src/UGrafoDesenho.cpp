@@ -367,19 +367,19 @@ void CGrafoDesenho::GeraVerticesBandeirola()
 //---------------------------------------------------------------------------
 
 void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
-        TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado,
+        TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCaboReta &ListaMenores, bool &ligado,
         std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice)
 {
 //percorre lista de cabos ligados ao equipamento
     for (int n = 0; n < (int) ListaMenores.size(); n++)
     {
-		TPontoEIndiceCabo &pontoEIndiceCabo = ListaMenores[ n ];
-        bool isAdded = ListaItensCelula->VerificaSeCaboRetaJaFoiLigadoAoEquipamento( pontoEIndiceCabo.IndiceCabo );
+		TPontoEIndiceCaboReta &pontoEIndiceCabo = ListaMenores[ n ];
+		bool isAdded = ListaItensCelula->VerificaSeCaboRetaJaFoiLigadoAoEquipamento( pontoEIndiceCabo.straightCable.get() );
 
         if (!isAdded)
         {
             shared_ptr<TVerticeGeral> cableVertex = make_shared<TVerticeGeral>();
-			shared_ptr<CCaboReta> straightCable = _cabosReta[pontoEIndiceCabo.IndiceCabo];
+			shared_ptr<CCaboReta> straightCable = pontoEIndiceCabo.straightCable;
 
             cableVertex->pos = pontoEIndiceCabo.PosVertice;
             cableVertex->TipoElemento = INSTRUMENTO;
@@ -389,7 +389,7 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
             //adiciona o vértice na lista de vértices do cabo
             straightCable->AdicionaVertice( cableVertex );
 			
-            ListaItensCelula->cabosRetaRelacionados.push_back( pontoEIndiceCabo.IndiceCabo );
+            ListaItensCelula->cabosRetaRelacionados.push_back( straightCable.get() );
 
             if (straightCable->EhOPrimeiroPonto( pontoEIndiceCabo.PosVertice  ))
             {
@@ -413,25 +413,23 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboReta(
 //---------------------------------------------------------------------------
 
 void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
-        TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado,
+        TListaItensCelula *ListaItensCelula, vector<TPontoEIndiceCaboArco> &ListaMenores, bool &ligado,
         std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice)
 {
     for (int n = 0; n < (int) ListaMenores.size(); n++)
     {
         bool isAdded;
-        isAdded = ListaItensCelula->VerificaSeCaboArcoJaFoiLigadoAoEquipamento(
-                ListaMenores.at( n ).IndiceCabo );
+		shared_ptr<CCaboArco> arcCable = ListaMenores[n].arcCable;
+        isAdded = ListaItensCelula->VerificaSeCaboArcoJaFoiLigadoAoEquipamento( arcCable.get() );
 
         if (!isAdded)
         {
-			int cableIndex = ListaMenores.at( n ).IndiceCabo;
             //if ( ListaItensCelula->iTexto > 0 )
             //  VerticesGerais->getItem(IndiceVertice)->texto = Textos[ListaItensCelula->iTexto].texto;
-            ListaItensCelula->cabosArcoRelacionados.push_back( cableIndex );
-			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _cabosArco[cableIndex]->_arco->layerName );
+            ListaItensCelula->cabosArcoRelacionados.push_back( arcCable.get() );
+			shared_ptr<TAresta> Aresta = make_shared<TAresta>( arcCable->_arco->layerName );
 
-            _cabosArco[cableIndex]->ponta[ListaMenores[n].IndiceArco] =
-                    true;
+            arcCable->ponta[ListaMenores[n].IndiceArco] = true;
             for (int i = 0; i < ListaItensCelula->_texts.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ],
@@ -448,7 +446,6 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
 void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint,
         TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice)
 {
-    TVectorPontoEIndiceCabo ListaMenores;
     int j;
     TPonto reta[2];
     for (j = 0; j < multipoint->pontos.size(); j++)
@@ -459,16 +456,20 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMult
         else
             reta[1] = multipoint->pontos[0];
 
-        ListaMenores.clear();
-        //retorna a lista de cabos que possuem Distância pequena para o equipamento
-        DistRetaParaTodasPontasCaboReta( reta, ListaMenores, DIST_MIN_ELEM_CABO );
-        GeraVerticesInstrumentosAdicionaMultipointCaboReta( ListaItensCelula, ListaMenores, ligado, VerticesInstrumento, PosVertice );
+		{
+			TVectorPontoEIndiceCaboReta ListaMenores;
+			//retorna a lista de cabos que possuem Distância pequena para o equipamento
+			DistRetaParaTodasPontasCaboReta( reta, ListaMenores, DIST_MIN_ELEM_CABO );
+			GeraVerticesInstrumentosAdicionaMultipointCaboReta( ListaItensCelula, ListaMenores, ligado, VerticesInstrumento, PosVertice );
+		}
 
-        ListaMenores.clear();
-        //localiza o cabo arco com a ponta mais pr�xima � reta
-        DistRetaParaTodasPontasCaboArco( reta, ListaMenores, DIST_MIN_ELEM_CABO );
-        //se a Distância for pequena, considera-se que estáo ligados
-        GeraVerticesInstrumentosAdicionaMultipointCaboArco( ListaItensCelula, ListaMenores, ligado, VerticesInstrumento, PosVertice );
+		{
+			vector<TPontoEIndiceCaboArco> ListaMenores;
+			//localiza o cabo arco com a ponta mais pr�xima � reta
+			DistRetaParaTodasPontasCaboArco( reta, ListaMenores, DIST_MIN_ELEM_CABO );
+			//se a Distância for pequena, considera-se que estáo ligados
+			GeraVerticesInstrumentosAdicionaMultipointCaboArco( ListaItensCelula, ListaMenores, ligado, VerticesInstrumento, PosVertice );
+		}
     }
 }
 //---------------------------------------------------------------------------
@@ -476,26 +477,25 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMult
 void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
         TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice)
 {
-    TVectorPontoEIndiceCabo ListaMenores;
-    int IndiceCabo;
+    TVectorPontoEIndiceCaboReta ListaMenores;
     ListaMenores.clear();
     DistArcoParaTodasPontasRetaCabo( *arc, ListaMenores, DIST_MIN_ELEM_CABO );
 
     for (int n = 0; n < (int) ListaMenores.size(); n++)
     {
-        IndiceCabo = ListaMenores[n].IndiceCabo;
+		shared_ptr<CCaboReta> straightCable = ListaMenores[n].straightCable;
 //    DistMaisPerto = ListaMenores[n].Dist;
         PosVertice = ListaMenores[n].PosVertice;
 
         //verifica se o cabo já não faz parte da c�lula (?)
         bool isAdded;
-        isAdded = ListaItensCelula->VerificaSeCaboRetaJaFoiLigadoAoEquipamento( IndiceCabo );
+        isAdded = ListaItensCelula->VerificaSeCaboRetaJaFoiLigadoAoEquipamento( straightCable.get() );
 
         if (!isAdded)
         {
             shared_ptr<TVerticeGeral> VerticeGeral = make_shared<TVerticeGeral>();
             //adiciona o vértice na lista de vértices do cabo
-            _cabosReta[IndiceCabo]->AdicionaVertice( VerticeGeral );
+            straightCable->AdicionaVertice( VerticeGeral );
 
             VerticeGeral->pos = PosVertice;
 			VerticeGeral->drawing = _dados->_drawing;
@@ -503,16 +503,16 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc,
             VerticeGeral->TipoVertice = VERTICE_INSTRUMENTO_ARCO;
             _graph->_verticesGerais->Adiciona( VerticeGeral );
 
-            ListaItensCelula->cabosRetaRelacionados.push_back( IndiceCabo );
-            if (_cabosReta[IndiceCabo]->EhOPrimeiroPonto( PosVertice ))
+            ListaItensCelula->cabosRetaRelacionados.push_back( straightCable.get() );
+            if (straightCable->EhOPrimeiroPonto( PosVertice ))
             {
-                _cabosReta[IndiceCabo]->ponta[0] = true;
+                straightCable->ponta[0] = true;
             }
-            else if (_cabosReta[IndiceCabo]->EhOUltimoPonto( PosVertice ))
+            else if (straightCable->EhOUltimoPonto( PosVertice ))
             {
-                _cabosReta[IndiceCabo]->ponta[1] = true;
+                straightCable->ponta[1] = true;
             }
-			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _cabosReta[IndiceCabo]->_multipoint->layerName );
+			shared_ptr<TAresta> Aresta = make_shared<TAresta>( straightCable->_multipoint->layerName );
             for (int i = 0; i < ListaItensCelula->_texts.size(); i++)
             {
                 Aresta->AdicionaVertices( VerticesInstrumento[ i ], VerticeGeral, DistPontos( PosVertice, PosVertice ) );
@@ -755,13 +755,13 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
 //---------------------------------------------------------------------------
 
 
-void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
+void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPontoEIndiceCaboReta &ListaMenores, double DistMinElemCabo) const
 {
     int m, n;
     unsigned char ContadorMaior;
     double Dist;
     TPonto PontoTemp;
-    TPontoEIndiceCabo Cabo;
+    TPontoEIndiceCaboReta Cabo;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
         // PontosCabo tem os pontos de in�cio e fim do cabo
@@ -772,10 +772,9 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPonto
             if (Dist < DistMinElemCabo)
             {
                 //IndiceCabo=m;
-                Cabo.IndiceCabo = m;
+                Cabo.straightCable = _cabosReta[m];
                 Cabo.PosVertice = PontosCabo[n];
                 ListaMenores.push_back( Cabo );
-                //PosVertice=PontosCabo[n];
             }
         }        //for (n=0; n<2; n++)
     }        //for (m=0; m<NumCabosReta; m++)
@@ -783,13 +782,13 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPonto
 //---------------------------------------------------------------------------
 
 
-void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
+void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2], vector<TPontoEIndiceCaboArco> &ListaMenores, double DistMinElemCabo) const
 {
     int m, n;
     unsigned char ContadorMaior;
     double Dist;
     TPonto pontoCabo, PontoTemp;
-    TPontoEIndiceCabo Cabo;
+    TPontoEIndiceCaboArco Cabo;
     for (m = 0; m < _cabosArco.size(); m++)
     {
         for (n = 0; n < 2; n++)
@@ -798,7 +797,7 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2], TVectorPonto
             Dist = DistPontoParaSegmentoReta( Reta, pontoCabo, PontoTemp );
             if (Dist < DistMinElemCabo)
             {
-                Cabo.IndiceCabo = m;
+				Cabo.arcCable = _cabosArco[m];
                 Cabo.PosVertice = pontoCabo;
 				Cabo._vertex = _cabosArco[m]->_arco->_vertices[n];
                 Cabo.IndiceArco = n;
@@ -809,14 +808,14 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2], TVectorPonto
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
+void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIndiceCaboReta &ListaMenores, double DistMinElemCabo) const
 {
     int m, n;
     unsigned char ContadorMaior;
     double Dist;
     TPonto *PontosCabo;
 
-    TPontoEIndiceCabo Cabo;
+    TPontoEIndiceCaboReta Cabo;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
 		vector<TPonto> &PontosCabo = _cabosReta[m]->_multipoint->pontos;
@@ -830,7 +829,7 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIn
                             - Arco.EixoPrimario );
             if (Dist < DistMinElemCabo)
             {
-                Cabo.IndiceCabo = m;
+                Cabo.straightCable = _cabosReta[m];
                 Cabo.PosVertice = PontosCabo[n];
                 Cabo.Dist = Dist;
                 ListaMenores.push_back( Cabo );

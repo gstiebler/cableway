@@ -42,17 +42,25 @@ public:
 };
 //---------------------------------------------------------------------------
 
-struct TPontoEIndiceCabo
+struct TPontoEIndiceCaboReta
 {
-  int IndiceCabo;
+  shared_ptr<CCaboReta> straightCable;
   TPonto PosVertice;
   shared_ptr<TVerticeGeral> _vertex;
-  int IndiceArco;
   double Dist;
 };
 
-typedef vector<TPontoEIndiceCabo> TVectorPontoEIndiceCabo;
+typedef vector<TPontoEIndiceCaboReta> TVectorPontoEIndiceCaboReta;
 //---------------------------------------------------------------------------
+
+struct TPontoEIndiceCaboArco
+{
+	shared_ptr<CCaboArco> arcCable;
+	TPonto PosVertice;
+	shared_ptr<TVerticeGeral> _vertex;
+	int IndiceArco;
+};
+
 
 struct TPontosBandeirola
 {
@@ -76,10 +84,10 @@ private:
   void DistPontoParaPontaCaboArco(TPonto ponto, shared_ptr<CCaboArco> &arcCable, double &DistMaisPerto, TPonto &PosVertice, 
 	  shared_ptr<TVerticeGeral> &vertex, int IndiceMax, int &pontaCabo) const;
   //dada uma reta (de instrumento) pega todos os cabos reta cuja ponta está t�o pr�xima quanto a Distância m�nima da reta dada
-  void DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const;
+  void DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPontoEIndiceCaboReta &ListaMenores, double DistMinElemCabo) const;
   //dada uma reta (de instrumento) pega todos os cabos arco cuja ponta está t�o pr�xima quanto a Distância m�nima da reta dada
-  void DistRetaParaTodasPontasCaboArco(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const;
-  void DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const;
+  void DistRetaParaTodasPontasCaboArco(TPonto Reta[2], vector<TPontoEIndiceCaboArco> &ListaMenores, double DistMinElemCabo) const;
+  void DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIndiceCaboReta &ListaMenores, double DistMinElemCabo) const;
   void GeraVerticesInstrumentos();
   void OrdenaVerticesRetas();
   void GeraArestas();
@@ -89,8 +97,8 @@ private:
   void CriaVerticesEArestasInstrumento (TListaItensCelula *ListaItensCelula, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice );
   void GeraVerticesInstrumentosAdicionaMultipoint( shared_ptr<TMultipoint> multipoint, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
   void GeraVerticesInstrumentosAdicionaArco( shared_ptr<TArco> arc, TListaItensCelula *ListaItensCelula, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
-  void GeraVerticesInstrumentosAdicionaMultipointCaboReta(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
-  void GeraVerticesInstrumentosAdicionaMultipointCaboArco(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCabo &ListaMenores, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
+  void GeraVerticesInstrumentosAdicionaMultipointCaboReta(TListaItensCelula *ListaItensCelula, TVectorPontoEIndiceCaboReta &ListaMenores, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
+  void GeraVerticesInstrumentosAdicionaMultipointCaboArco(TListaItensCelula *ListaItensCelula, vector<TPontoEIndiceCaboArco> &ListaMenores, bool &ligado, std::vector< shared_ptr<TVerticeGeral> > &VerticesInstrumento, TPonto PosVertice);
 
 public:
   //�ndices referentes ao vetor Multipoint que cont�m CabosArco
