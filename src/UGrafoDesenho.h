@@ -68,14 +68,13 @@ private:
   TTipoElemento TipoElementoCor[NUM_CORES];
   void GeraListaCabos();
   //dado um ponto pega o cabo reta mais pr�ximo do ponto
-  void CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &_straightCable, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel);
+  void CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &straightCable, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel);
   void GeraVerticesBandeirola();
   void GeraVerticesArcos();
   void GeraVerticesPontaCabos();
   //dado um ponto (de ponta de arco) pega o cabo arco cuja ponta � a mais pr�xima ao ponto dado
-  void DistPontoParaPontaCaboArco(TPonto ponto,
-             int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex, int IndiceMax,
-             int &pontaCabo);
+  void DistPontoParaPontaCaboArco(TPonto ponto, shared_ptr<CCaboArco> &arcCable, double &DistMaisPerto, TPonto &PosVertice, 
+	  shared_ptr<TVerticeGeral> &vertex, int IndiceMax, int &pontaCabo);
   //dada uma reta (de instrumento) pega o cabo reta cuja ponta � a mais pr�xima da reta dada
   void DistRetaParaPontaCaboReta(TPonto Reta[2],
                         int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice);

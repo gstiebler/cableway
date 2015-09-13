@@ -649,8 +649,8 @@ void CGrafoDesenho::GeraVerticesArcos()
     double DistMaisProx;
     TPonto p[2], PontoNaReta, PontoTemp;
     shared_ptr<TArco> Arco;
-    int IndiceCabo, PontaArco;
-    n = m = IndiceCabo = 0;
+    int PontaArco;
+    n = m = 0;
     DistMaisProx = 0;
     PontoNaReta.x = PontoNaReta.y = PontoTemp.x = PontoTemp.y = p[0].x = p[0].y = p[1].x = p[1].y =
             0.0;
@@ -672,13 +672,13 @@ void CGrafoDesenho::GeraVerticesArcos()
             //se já estiver, não cria um vértice novo, aproveita o vértice que já existe
             //no outro cabo arco
 			shared_ptr<TVerticeGeral> vertex;
-            DistPontoParaPontaCaboArco( p[m], IndiceCabo, DistMaisProx, PontoTemp, vertex, n,
-                    PontaArco );
+			shared_ptr<CCaboArco> arcCable;
+            DistPontoParaPontaCaboArco( p[m], arcCable, DistMaisProx, PontoTemp, vertex, n, PontaArco );
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
 				Arco->_vertices[m] = vertex;
                 _cabosArco[n]->ponta[m] = true;
-                _cabosArco[IndiceCabo]->ponta[PontaArco] = true;
+                arcCable->ponta[PontaArco] = true;
 
             }
             else //se o vértice não foi aproveitado de outro cabo arco, verifica se este vértice está próximo a um cabo reta
@@ -963,9 +963,8 @@ void CGrafoDesenho::DistArcoParaPontaArcoCabo(TArco &Arco, int &IndiceArcoCabo,
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto,
-             int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex, int IndiceMax,
-             int &pontaCabo)
+void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto, shared_ptr<CCaboArco> &arcCable, double &DistMaisPerto, TPonto &PosVertice, 
+	  shared_ptr<TVerticeGeral> &vertex, int IndiceMax, int &pontaCabo)
 {
     int m, n;
     unsigned char ContadorMaior;
@@ -985,7 +984,7 @@ void CGrafoDesenho::DistPontoParaPontaCaboArco(TPonto ponto,
             if (Dist < MenorDist)
             {
                 MenorDist = Dist;
-                IndiceCabo = m;
+                arcCable = _cabosArco[m];
                 PosVertice = pontoCabo;
                 pontaCabo = n;
 				vertex = _cabosArco[m]->_arco->_vertices[n];
