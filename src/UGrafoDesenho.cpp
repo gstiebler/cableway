@@ -233,8 +233,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         {
             for (int j = i + 1; j < (int) PontosExtremidadesElementosBandeirola.size(); j++)
             {
-                double distancia = DistPontos( PontosExtremidadesElementosBandeirola.at( i ),
-                        PontosExtremidadesElementosBandeirola.at( j ) );
+                double distancia = DistPontos( PontosExtremidadesElementosBandeirola[i], PontosExtremidadesElementosBandeirola[j] );
                 double fat = FATOR_DIST_MIN_ELEM_CABO * 6;
                 if (distancia < fat)
                 {
@@ -272,10 +271,10 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 //percorre as 2 retas e verifica qual a que possui menor inclina��o
                 for (int k = 0; k < 2; k++)
                 {
-                    DifX = RetasBandeirola.at( k ).pontos[0].x
-                            - RetasBandeirola.at( k ).pontos[1].x;
-                    DifY = RetasBandeirola.at( k ).pontos[0].y
-                            - RetasBandeirola.at( k ).pontos[1].y;
+                    DifX = RetasBandeirola[k].pontos[0].x
+                            - RetasBandeirola[k].pontos[1].x;
+                    DifY = RetasBandeirola[k].pontos[0].y
+                            - RetasBandeirola[k].pontos[1].y;
                     if (fabs( DifX ) > 0.00001)
                         Inclinacao = fabs( DifY / DifX );
                     else
@@ -295,16 +294,14 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                     //percorre os pontos da reta que não � a horizontal e verifica qual fica mais longe da reta horizontal
                     for (int k = 0; k < 2; k++)
                     {
-                        DifY = fabs(
-                                RetasBandeirola.at( iMaisInclinado ).pontos[k].y
-                                        - RetasBandeirola.at( iMenosInclinado ).pontos[0].y );
+                        DifY = fabs( RetasBandeirola[ iMaisInclinado ].pontos[k].y  - RetasBandeirola[ iMenosInclinado ].pontos[0].y );
                         if (DifY > MaiorDifY)
                         {
                             MaiorDifY = DifY;
                             iPontoMaisLonge = k;
                         }
                     }
-                    MaisDist = RetasBandeirola.at( iMaisInclinado ).pontos[iPontoMaisLonge];
+                    MaisDist = RetasBandeirola[ iMaisInclinado ].pontos[iPontoMaisLonge];
                     Bandeirola2Retas = true;
                 }
             }
