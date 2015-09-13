@@ -113,7 +113,8 @@ void CInfoCircuitos::MergeRota(vector<std::string> &rota, vector<std::string> No
 //---------------------------------------------------------------------------
 
 //Recebe a origem e o destino, e toda a rota do usuário
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, vector<string> &rota, shared_ptr<TArestasCircuito> ArestasCircuito)
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos, double &tam, vector<string> &rota, 
+							  shared_ptr<TArestasCircuito> ArestasCircuito) const
 {
     vector<string> ListaRota;
     int i;
@@ -163,7 +164,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, string ListaPontos,
 //---------------------------------------------------------------------------
 
 
-set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex )
+set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex ) const
 {
     shared_ptr<TListaVerticesEArestas> verticeEArestaTemp = vertexIndex->ListaVerticesEArestas;
 	set<string> result;
@@ -176,7 +177,7 @@ set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> verte
 }
 
 
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &ListaArestas )
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &ListaArestas ) const
 {
     int n, m;
 	shared_ptr<TVerticeGeral> vertice[2];
