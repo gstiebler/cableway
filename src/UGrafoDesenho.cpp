@@ -754,32 +754,6 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistRetaParaPontaCaboReta(TPonto Reta[2], int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice) const
-{
-    int m, n;
-    unsigned char ContadorMaior;
-    double MenorDist, Dist;
-    TPonto PontoTemp;
-    IndiceCabo = -1;
-    MenorDist = Infinity;
-	for (m = 0; m < _cabosReta.size(); m++)
-    {
-        // PontosCabo tem os pontos de in�cio e fim do cabo
-		vector<TPonto> &PontosCabo = _cabosReta[m]->_multipoint->pontos;
-        for (n = 0; n < 2; n++)
-        {
-            Dist = DistPontoParaSegmentoReta( Reta, PontosCabo[n], PontoTemp );
-            if (Dist < MenorDist)
-            {
-                MenorDist = Dist;
-                IndiceCabo = m;
-                PosVertice = PontosCabo[n];
-            }
-        }        //for (n=0; n<2; n++)
-    }        //for (m=0; m<NumCabosReta; m++)
-    DistMaisPerto = MenorDist;
-}
-//---------------------------------------------------------------------------
 
 void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
 {
@@ -808,34 +782,6 @@ void CGrafoDesenho::DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPonto
 }
 //---------------------------------------------------------------------------
 
-void CGrafoDesenho::DistRetaParaPontaCaboArco(TPonto Reta[2], int &IndiceCabo,
-        double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex) const
-{
-    int m, n;
-    unsigned char ContadorMaior;
-    double MenorDist, Dist;
-    TPonto pontoCabo, PontoTemp;
-    IndiceCabo = -1;
-    MenorDist = Infinity;
-	for (m = 0; m < _cabosArco.size(); m++)
-    {
-		shared_ptr<TArco> arco = _cabosArco[m]->_arco;
-        for (n = 0; n < 2; n++)
-        {
-			pontoCabo = arco->_vertices[n]->pos;
-            Dist = DistPontoParaSegmentoReta( Reta, pontoCabo, PontoTemp );
-            if (Dist < MenorDist)
-            {
-                MenorDist = Dist;
-                IndiceCabo = m;
-                PosVertice = pontoCabo;
-				vertex = arco->_vertices[n];
-            }
-        }        //for (n=0; n<2; n++)
-    }        //for (m=0; m<NumCabosReta; m++)
-    DistMaisPerto = MenorDist;
-}
-//---------------------------------------------------------------------------
 
 void CGrafoDesenho::DistRetaParaTodasPontasCaboArco(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const
 {

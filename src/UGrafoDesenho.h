@@ -75,13 +75,8 @@ private:
   //dado um ponto (de ponta de arco) pega o cabo arco cuja ponta � a mais pr�xima ao ponto dado
   void DistPontoParaPontaCaboArco(TPonto ponto, shared_ptr<CCaboArco> &arcCable, double &DistMaisPerto, TPonto &PosVertice, 
 	  shared_ptr<TVerticeGeral> &vertex, int IndiceMax, int &pontaCabo) const;
-  //dada uma reta (de instrumento) pega o cabo reta cuja ponta � a mais pr�xima da reta dada
-  void DistRetaParaPontaCaboReta(TPonto Reta[2], int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice) const;
   //dada uma reta (de instrumento) pega todos os cabos reta cuja ponta está t�o pr�xima quanto a Distância m�nima da reta dada
   void DistRetaParaTodasPontasCaboReta(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const;
-  //dada uma reta (de instrumento) pega o cabo arco cuja ponta � a mais pr�xima da reta dada
-  void DistRetaParaPontaCaboArco(TPonto Reta[2],
-                        int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice, shared_ptr<TVerticeGeral> &vertex) const;
   //dada uma reta (de instrumento) pega todos os cabos arco cuja ponta está t�o pr�xima quanto a Distância m�nima da reta dada
   void DistRetaParaTodasPontasCaboArco(TPonto Reta[2], TVectorPontoEIndiceCabo &ListaMenores, double DistMinElemCabo) const;
   void DistArcoParaPontaRetaCabo(TArco &Arco, int &IndiceCabo, double &DistMaisPerto, TPonto &PosVertice) const;
