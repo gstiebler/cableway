@@ -29,7 +29,7 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito )
 	int m;
 	shared_ptr<TAresta> Aresta;
 	shared_ptr<TArestasCircuito> ArestasCircuito = make_shared<TArestasCircuito>();
-	ArestasDoCircuito[Circuito.NomeCircuito] = ArestasCircuito;
+	_circuitEdges[Circuito.NomeCircuito] = ArestasCircuito;
 	bool erro = true, erro_interno;
 
 	erro_interno = false;
@@ -60,7 +60,7 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito )
 
 vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(std::string circuitName, shared_ptr<TDesenho> drawing)
 {
-    return ArestasDoCircuito[circuitName]->ArestasDesenho[drawing.get()];
+    return _circuitEdges[circuitName]->ArestasDesenho[drawing.get()];
 }
 //---------------------------------------------------------------------------
 
