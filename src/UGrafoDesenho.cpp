@@ -135,8 +135,6 @@ void CGrafoDesenho::GeraListaCabos()
         }
     }
     _mediaRaioCaboArco = _cabosArco.size() > 0 ? SomaRaios / _cabosArco.size() : 0;
-    //DistMinElemCaboPraOpenGL = MediaRaioCaboArco * FATOR_DIST_MIN_ELEM_CABO;
-	//temporary!
 	_distMinElemCaboPraOpenGL = 10.0;
 }
 //---------------------------------------------------------------------------
@@ -169,11 +167,6 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &_
     {
         CErrosMsg *erros = CErrosMsg::getInstance();
         erros->novoErro( "Atenção: " + _dados->NomeArq + " não possui cabos." );
-        /*    if ( Dados->IMP )
-         {
-         //ShowMessage("Erro: não há cabo.");
-         }
-         */
     }
 }
 //---------------------------------------------------------------------------
@@ -250,8 +243,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         if (!PontosExtremidadesElementosBandeirola.size())
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
-            erros->novoErro(
-                    (string) "Atenção: há algo em nível de bandeirola fora do formato esperado." );
+            erros->novoErro( "Atenção: há algo em nível de bandeirola fora do formato esperado." );
 
             continue;
         }
@@ -271,10 +263,8 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 //percorre as 2 retas e verifica qual a que possui menor inclina��o
                 for (int k = 0; k < 2; k++)
                 {
-                    DifX = RetasBandeirola[k].pontos[0].x
-                            - RetasBandeirola[k].pontos[1].x;
-                    DifY = RetasBandeirola[k].pontos[0].y
-                            - RetasBandeirola[k].pontos[1].y;
+                    DifX = RetasBandeirola[k].pontos[0].x - RetasBandeirola[k].pontos[1].x;
+                    DifY = RetasBandeirola[k].pontos[0].y - RetasBandeirola[k].pontos[1].y;
                     if (fabs( DifX ) > 0.00001)
                         Inclinacao = fabs( DifY / DifX );
                     else
@@ -351,9 +341,7 @@ void CGrafoDesenho::GeraVerticesBandeirola()
         else if (ListaItens._texts.size() == 0) //avisa caso exista bandeirola sem texto nenhum
         {
             CErrosMsg *erros = CErrosMsg::getInstance();
-            erros->novoErro(
-                    (string) "No desenho " + _dados->NomeArq
-                            + " existe um grupamento em nível de bandeirola sem textos associados.\n" );
+            erros->novoErro( "No desenho " + _dados->NomeArq + " existe um grupamento em nível de bandeirola sem textos associados.\n" );
         }
 
         VerticeGeral->TipoElemento = BANDEIROLA;
@@ -421,17 +409,13 @@ void CGrafoDesenho::GeraVerticesInstrumentosAdicionaMultipointCaboArco(
 
         if (!isAdded)
         {
-            //if ( ListaItensCelula->iTexto > 0 )
-            //  VerticesGerais->getItem(IndiceVertice)->texto = Textos[ListaItensCelula->iTexto].texto;
             ListaItensCelula->cabosArcoRelacionados.push_back( arcCable.get() );
 			shared_ptr<TAresta> Aresta = make_shared<TAresta>( arcCable->_arco->layerName );
 
             arcCable->ponta[ListaMenores[n].IndiceArco] = true;
             for (int i = 0; i < ListaItensCelula->_texts.size(); i++)
             {
-                Aresta->AdicionaVertices( VerticesInstrumento[ i ],
-                        ListaMenores[ n ]._vertex,
-                        DistPontosManhattan( PosVertice, PosVertice ) );
+                Aresta->AdicionaVertices( VerticesInstrumento[ i ], ListaMenores[ n ]._vertex, DistPontosManhattan( PosVertice, PosVertice ) );
 				Aresta->_drawing = _dados->_drawing;
 				_graph->_arestas.push_back( Aresta );
             }
@@ -729,8 +713,7 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
                 continue;
             /* Olha cada ponta da reta */
 			shared_ptr<CCaboReta> straightCableMinDist;
-            CaboMaisProximo( tMultipoint->pontos[m], straightCableMinDist, DistMaisProx, PontoNaReta, n,
-                    tMultipoint->Nivel );
+            CaboMaisProximo( tMultipoint->pontos[m], straightCableMinDist, DistMaisProx, PontoNaReta, n, tMultipoint->Nivel );
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
                 // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
@@ -819,11 +802,9 @@ void CGrafoDesenho::DistArcoParaTodasPontasRetaCabo(TArco &Arco, TVectorPontoEIn
         for (n = 0; n < 2; n++)
         {
             //eixo prim�rio em um c�rculo � o raio
-            Dist = fabs(
-                    sqrt(
-                            pow( Arco.Centro.x - PontosCabo[n].x, 2 )
-                                    + pow( Arco.Centro.y - PontosCabo[n].y, 2 ) )
-                            - Arco.EixoPrimario );
+			double difX = Arco.Centro.x - PontosCabo[n].x;
+			double difY = Arco.Centro.y - PontosCabo[n].y;
+            Dist = fabs( sqrt( pow( difX, 2 ) + pow( difY, 2 ) ) - Arco.EixoPrimario );
             if (Dist < DistMinElemCabo)
             {
                 Cabo.straightCable = _cabosReta[m];
