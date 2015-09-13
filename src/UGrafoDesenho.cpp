@@ -869,7 +869,7 @@ void CGrafoDesenho::OrdenaVerticesRetas()
 
 
 
-void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho> > &ListaDesenhos)
+void CGrafoDesenho::ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho> > &ListaDesenhos) const
 {
     int n;
     vector< shared_ptr<TVerticeGeral> > Lista;

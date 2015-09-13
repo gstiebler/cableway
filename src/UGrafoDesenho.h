@@ -106,7 +106,7 @@ public:
   //armazena informa��es das retas que compoem um cabo. Armazena
   //diversos vértices do grafo, ou seja, os outros elementos q se ligam ao cabo
   std::vector< shared_ptr<CCaboReta> > _cabosReta;
-  void ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho> > &ListaDesenhos);
+  void ChecagemVerticeDuplo(const std::vector< shared_ptr<TDesenho> > &ListaDesenhos) const;
   int _ult;
 //  TVectorPonto PontosBandeirolas[2];
   TVectorPontosBandeirola _pontosPraMostrarBandeirola;
