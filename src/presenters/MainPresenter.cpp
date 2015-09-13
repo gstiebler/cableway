@@ -102,7 +102,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 
 	string circuit, source, dest;
 	_window->getCircuit( indexOnGrid, circuit, source, dest );
-	shared_ptr<TArestasCircuito> arestasCircuito = infoCircuitos->ArestasDoCircuito[circuit];
+	shared_ptr<TArestasCircuito> arestasCircuito = infoCircuitos->_circuitEdges[circuit];
 
 	// circuit is OK
 	if (arestasCircuito.get() != 0 && arestasCircuito->Arestas.size() > 0 )

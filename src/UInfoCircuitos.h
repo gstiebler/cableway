@@ -31,7 +31,7 @@ public:
   CInfoCircuitos( shared_ptr<Graph> graph );
   ~CInfoCircuitos();
   void AdicionaCircuito(TCircuito &Circuito);
-  vector< shared_ptr<TAresta> >& ArestasCircuito( std::string circuitName, shared_ptr<TDesenho> drawing);
+  vector< shared_ptr<TAresta> >& ArestasCircuito( std::string circuitName, shared_ptr<TDesenho> drawing) const;
   void PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta);
   bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota, shared_ptr<TArestasCircuito> ArestasCircuito);
   bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &ListaArestas);

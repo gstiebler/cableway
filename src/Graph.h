@@ -25,19 +25,18 @@ class Graph
 {
 public:
 	Graph();
-	std::shared_ptr<TVerticesGerais> _verticesGerais;
-	std::vector< std::shared_ptr<TAresta> > _arestas;
 	void merge( std::shared_ptr<Graph> other );
 	void GeraListaAdjacencias();
-	Graph* getCopy();
+	Graph* getCopy() const;
 	void Graph::reduce();
-
-	
     bool generateDistanceTree( std::shared_ptr<TVerticeGeral> vertice[2], std::vector< std::shared_ptr<TVerticeGeral> > &anterior, 
 		std::vector< std::shared_ptr<TAresta> > &vArestas, std::string layer );
 
 	void getEdgesFromPath( std::vector< std::shared_ptr<TVerticeGeral> > &anterior, std::vector< std::shared_ptr<TAresta> > &vArestas, 
-				std::vector< std::shared_ptr<TAresta> > &ListaArestas, std::vector< std::string > &vertexLabels, std::shared_ptr<TVerticeGeral> vertex );
+				std::vector< std::shared_ptr<TAresta> > &ListaArestas, std::vector< std::string > &vertexLabels, std::shared_ptr<TVerticeGeral> vertex ) const;
+
+	std::shared_ptr<TVerticesGerais> _verticesGerais;
+	std::vector< std::shared_ptr<TAresta> > _arestas;
 };
 
 #endif

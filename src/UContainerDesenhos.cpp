@@ -115,7 +115,7 @@ void CContainerDesenhos::MostraCircuito(string circuito)
 {
   bool AchouCircuito;
   TCircuito Circuito;
-	if ( InfoCircuitos->ArestasDoCircuito[circuito].get() == 0 )
+  if ( InfoCircuitos->_circuitEdges[circuito].get() == 0 )
     {
  string erro;
       erro = "não foi encontrado caminho.";

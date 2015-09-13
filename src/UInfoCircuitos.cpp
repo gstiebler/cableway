@@ -58,9 +58,10 @@ void CInfoCircuitos::AdicionaCircuito( TCircuito &Circuito )
 //---------------------------------------------------------------------------
 
 
-vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(std::string circuitName, shared_ptr<TDesenho> drawing)
+vector< shared_ptr<TAresta> >& CInfoCircuitos::ArestasCircuito(std::string circuitName, shared_ptr<TDesenho> drawing) const
 {
-    return _circuitEdges[circuitName]->ArestasDesenho[drawing.get()];
+	std::map<std::string, shared_ptr<TArestasCircuito> >::const_iterator it = _circuitEdges.find( circuitName );
+    return it->second->ArestasDesenho[drawing.get()];
 }
 //---------------------------------------------------------------------------
 
@@ -185,7 +186,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 
     for (m=0; m<2; m++)
     {
-        // vertice[] guarda os índices dos vértices, já que eles são passados pelo nome. 
+        // vertice[] guarda os índices dos vértices, já que eles são passados pelo nome.
 		vertice[m] = _graph->_verticesGerais->AchaVerticePeloTexto(V[m]);
         if (vertice[m].get() == 0)
 			return 1;

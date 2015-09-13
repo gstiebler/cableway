@@ -99,7 +99,7 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
 
 
 void Graph::getEdgesFromPath( vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, 
-							 vector< shared_ptr<TAresta> > &ListaArestas, std::vector< std::string > &vertexLabels, shared_ptr<TVerticeGeral> vertex )
+				 vector< shared_ptr<TAresta> > &ListaArestas, std::vector< std::string > &vertexLabels, shared_ptr<TVerticeGeral> vertex ) const
 {
 	string lastText;
 	shared_ptr<TAresta> ArestaTemp;
@@ -125,7 +125,7 @@ void Graph::GeraListaAdjacencias()
 }
 
 
-Graph* Graph::getCopy()
+Graph* Graph::getCopy() const
 {
 	Graph *copy = new Graph();
 	map<TVerticeGeral*, shared_ptr<TVerticeGeral>> verticesMap;
