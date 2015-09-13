@@ -145,11 +145,11 @@ void CGrafoDesenho::GeraListaCabos()
 
 //Acha o cabo mais próximo a um ponto. Retorna o índice do cabo,
 //a Distância � este cabo, e o ponto do cabo que está mais próximo ao ponto dado
-void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel)
+void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, std::shared_ptr<CCaboReta> &_straightCable, double &DistMaisProx, TPonto &PosVertice, int Diferente, int Nivel)
 {
     int m;
     double MenorDist, Dist;
-    IndiceCabo = -1;
+    _straightCable.reset();
     MenorDist = Infinity;
 	for (m = 0; m < _cabosReta.size(); m++)
     {
@@ -162,12 +162,12 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &Dist
         if ((Dist < MenorDist) && (m != Diferente))
         {
             MenorDist = Dist;
-            IndiceCabo = m;
+            _straightCable = _cabosReta[m];
             PosVertice = volta;
         }
     }  //for (m=0; m<NumCabosReta; m++)
     DistMaisProx = MenorDist;
-    if (IndiceCabo == -1)
+    if ( !_straightCable )
     {
         CErrosMsg *erros = CErrosMsg::getInstance();
         erros->novoErro( "Atenção: " + _dados->NomeArq + " não possui cabos." );
@@ -184,7 +184,7 @@ void CGrafoDesenho::CaboMaisProximo(TPonto &ponto, int &IndiceCabo, double &Dist
 //adiciona os vértices das bandeirolas nas estruturas dos cabos
 void CGrafoDesenho::GeraVerticesBandeirola()
 {
-    int n, m, iMenorDist;
+    int n, m;
     TPonto PontoBandeirola[2], PontoNaReta;
     vector<TListaItensCelula> &ListaBandeirolas = _dados->InfoCelula.ListaCelulasBandeirolas;
 
@@ -324,24 +324,27 @@ void CGrafoDesenho::GeraVerticesBandeirola()
                 //verifica qual o ponto livre da bandeirola mais longe do centro do texto
                 PontoMaisDistante( origemTexto, PontosExtremidadesElementosBandeirola, MaisDist );
             }
-            //verifica qual o cabo mais próximo da ponta da bandeirola
-            CaboMaisProximo( MaisDist, iMenorDist, DistMaisProx, PontoNaReta, -1, -1 );
-            if (iMenorDist >= 0)
-            {
-                VerticeGeral->pos = PontoNaReta;
-                _cabosReta[iMenorDist]->AdicionaVertice( VerticeGeral );
+			{
+				shared_ptr<CCaboReta> straightCableMinDist;
+				//verifica qual o cabo mais próximo da ponta da bandeirola
+				CaboMaisProximo( MaisDist, straightCableMinDist, DistMaisProx, PontoNaReta, -1, -1 );
+				if ( straightCableMinDist )
+				{
+					VerticeGeral->pos = PontoNaReta;
+					straightCableMinDist->AdicionaVertice( VerticeGeral );
 
-                TPontosBandeirola pontoTemp;
-                pontoTemp.NaBandeirola = MaisDist;
-                pontoTemp.NoCabo = PontoNaReta;
+					TPontosBandeirola pontoTemp;
+					pontoTemp.NaBandeirola = MaisDist;
+					pontoTemp.NoCabo = PontoNaReta;
 
-                _pontosPraMostrarBandeirola.push_back( pontoTemp );
-            }
-            else //avisa caso o desenhos não possuam nenhum cabo
-            {
-                CErrosMsg *erros = CErrosMsg::getInstance();
-                erros->novoErro( "Atenção: " +  _dados->NomeArq + " não possui cabos." );
-            }
+					_pontosPraMostrarBandeirola.push_back( pontoTemp );
+				}
+				else //avisa caso o desenhos não possuam nenhum cabo
+				{
+					CErrosMsg *erros = CErrosMsg::getInstance();
+					erros->novoErro( "Atenção: " +  _dados->NomeArq + " não possui cabos." );
+				}
+			}
         }
 		else if (ListaItens._texts.size() > 1) //avisa caso a bandeirola tenha mais de um texto
         {
@@ -643,12 +646,11 @@ TPonto CGrafoDesenho::AchaPosVerticeInstrumento(TListaItensCelula *ListaItensCel
 void CGrafoDesenho::GeraVerticesArcos()
 {
     int n, m;
-    int iMenorDist;     //, iV[2];
     double DistMaisProx;
     TPonto p[2], PontoNaReta, PontoTemp;
     shared_ptr<TArco> Arco;
     int IndiceCabo, PontaArco;
-    n = m = iMenorDist = IndiceCabo = 0;
+    n = m = IndiceCabo = 0;
     DistMaisProx = 0;
     PontoNaReta.x = PontoNaReta.y = PontoTemp.x = PontoTemp.y = p[0].x = p[0].y = p[1].x = p[1].y =
             0.0;
@@ -681,22 +683,22 @@ void CGrafoDesenho::GeraVerticesArcos()
             }
             else //se o vértice não foi aproveitado de outro cabo arco, verifica se este vértice está próximo a um cabo reta
             {
+				shared_ptr<CCaboReta> straightCableMinDist;
                 /* Olha cada ponta do arco */
-                CaboMaisProximo( p[m], iMenorDist, DistMaisProx, PontoNaReta, -1, Arco->Nivel );
-				shared_ptr<CCaboReta> caboReta = _cabosReta[iMenorDist];
+                CaboMaisProximo( p[m], straightCableMinDist, DistMaisProx, PontoNaReta, -1, Arco->Nivel );
                 if (DistMaisProx < DIST_MIN_ELEM_CABO)
                 {
                     // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
-					caboReta->AdicionaVertice( Arco->_vertices[m] );
+					straightCableMinDist->AdicionaVertice( Arco->_vertices[m] );
                     VerticeGeral->pos = PontoNaReta;
                     _cabosArco[n]->ponta[m] = true;
-                    if (caboReta->EhOPrimeiroPonto( PontoNaReta ))
+                    if (straightCableMinDist->EhOPrimeiroPonto( PontoNaReta ))
                     {
-                        caboReta->ponta[0] = true;
+                        straightCableMinDist->ponta[0] = true;
                     }
-                    else if (caboReta->EhOUltimoPonto( PontoNaReta ))
+                    else if (straightCableMinDist->EhOUltimoPonto( PontoNaReta ))
                     {
-                        caboReta->ponta[1] = true;
+                        straightCableMinDist->ponta[1] = true;
                     }
                 }
                 else
@@ -718,7 +720,6 @@ void CGrafoDesenho::GeraVerticesArcos()
 void CGrafoDesenho::GeraVerticesPontaCabos()
 {
     int n, m;
-    int iMenorDist;
     double DistMaisProx;
     TPonto PontoNaReta;
     shared_ptr<TMultipoint> tMultipoint;
@@ -734,18 +735,14 @@ void CGrafoDesenho::GeraVerticesPontaCabos()
             if (m != 0 && m != tMultipoint->pontos.size() - 1)
                 continue;
             /* Olha cada ponta da reta */
-            CaboMaisProximo( tMultipoint->pontos[m], iMenorDist, DistMaisProx, PontoNaReta, n,
+			shared_ptr<CCaboReta> straightCableMinDist;
+            CaboMaisProximo( tMultipoint->pontos[m], straightCableMinDist, DistMaisProx, PontoNaReta, n,
                     tMultipoint->Nivel );
             if (DistMaisProx < DIST_MIN_ELEM_CABO)
             {
                 // Se a Distância for menor do que o limite, então esse vértice também será adicionado ao cabo mais próximo
                 VerticeGeral->pos = PontoNaReta;
-                _cabosReta[iMenorDist]->AdicionaVertice( VerticeGeral );
-                //        if ( CabosReta[iMenorDist]->EhOPrimeiroPonto(PontoNaReta, Dados->Multipoint, DistMinElemCabo) )
-                //          CabosReta[iMenorDist]->ponta[0] = true;
-                //       if ( CabosReta[iMenorDist]->EhOUltimoPonto(PontoNaReta, Dados->Multipoint, DistMinElemCabo) )
-                //          CabosReta[iMenorDist]->ponta[1] = true;
-                //        CabosReta[iMenorDist]->ponta[m] = true;
+                straightCableMinDist->AdicionaVertice( VerticeGeral );
                 if (m == 0)
                     _cabosReta[n]->ponta[0] = true;
                 else
