@@ -196,7 +196,7 @@ void CMostraDesenho::showCircuit()
 	{
 		if ( ( n == 0 || n == (int)edges.size()-1 ) && !mostraLigacaoEquipamento )
 			continue;
-		InfoCircuitos->PontosAresta(Pontos, edges[n]);
+		CInfoCircuitos::PontosAresta(Pontos, edges[n]);
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(Pontos[0].x, Pontos[0].y);
 		glVertex2f(Pontos[1].x, Pontos[1].y);

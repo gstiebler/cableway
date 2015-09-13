@@ -233,7 +233,7 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 //---------------------------------------------------------------------------
 
 
-void CInfoCircuitos::Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing)
+void CInfoCircuitos::Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing) const
 {
     int n;
     queue<TVerticeGeral*> fila;
