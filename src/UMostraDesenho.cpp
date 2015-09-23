@@ -182,7 +182,8 @@ void CMostraDesenho::showCircuit()
 {
 	TPonto Pontos[2];
 	setColor( pegaVermelho(CORCAMINHO), pegaVerde(CORCAMINHO), pegaAzul(CORCAMINHO) );
-	glLineWidth((GLfloat)(3.0));
+	_pen.setWidth( 3.0 );
+	_painter->setPen( _pen );
 	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[GrafoDesenho->_dados->_drawing.get()];
 
 	int ini = 0;
@@ -195,12 +196,11 @@ void CMostraDesenho::showCircuit()
 	for (int n=ini; n<end; n++)
 	{
 		CInfoCircuitos::PontosAresta(Pontos, edges[n]);
-		glBegin(GL_LINE_STRIP);
-		glVertex2f(Pontos[0].x, Pontos[0].y);
-		glVertex2f(Pontos[1].x, Pontos[1].y);
-		glEnd();
+		QLineF line( QPoint( Pontos[0].x, Pontos[0].y ), QPoint( Pontos[1].x, Pontos[1].y ) );
+		_painter->drawLine( line );
 	}
-	glLineWidth((GLfloat)(1.0));
+	_pen.setWidth( 1.0 );
+	_painter->setPen( _pen );
 }
 
 
@@ -209,7 +209,8 @@ void CMostraDesenho::showTree()
 {
 	string origem = VerticeArvore->texto.c_str();
 	setColor( pegaVermelho(CORARVORE), pegaVerde(CORARVORE), pegaAzul(CORARVORE));
-	glLineWidth((GLfloat)(3.0));
+	_pen.setWidth( 3.0 );
+	_painter->setPen( _pen );
 
 	vector< shared_ptr<TAresta> > Arestas;
 	InfoCircuitos->Arvore(VerticeArvore, Arestas, GrafoDesenho->_dados->_drawing);
@@ -235,7 +236,8 @@ void CMostraDesenho::showTree()
 			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 		}
 	}
-	glLineWidth((GLfloat)(1.0));
+	_pen.setWidth( 1.0 );
+	_painter->setPen( _pen );
 	if (bMostraArvore2)
 	{
 		// Roxo - Destino
@@ -244,12 +246,8 @@ void CMostraDesenho::showTree()
 //				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
 		setColor(pegaVermelho(CORARVORE2), pegaVerde(CORARVORE2), pegaAzul(CORARVORE2));
 		//			glColor3f(0.7, 0.0, 0.7);
-		glLineWidth((GLfloat)(3.0));
-
-		glPushMatrix();
-		//				EscreveTexto(("Destino: "+ GrafoDesenho->VerticesGerais->getItem(VerticeArvore2)->texto).c_str(), pos, 0,
-		//						GrafoDesenho->Dados->Textos[0].FatorAltura*10);
-		glPopMatrix();
+	_pen.setWidth( 1.0 );
+	_painter->setPen( _pen );
 
 		vector< shared_ptr<TAresta> > Arestas;
 		InfoCircuitos->Arvore(VerticeArvore2, Arestas, GrafoDesenho->_dados->_drawing);
@@ -273,7 +271,6 @@ void CMostraDesenho::showTree()
 				}
 			}
 		}
-		glLineWidth((GLfloat)(1.0));
 	}
 }
 
@@ -319,7 +316,8 @@ void CMostraDesenho::showBandeirolaEndings()
 	for (int n=0; n<(int)GrafoDesenho->_pontosPraMostrarBandeirola.size();n++)
 	{
 		setColor(1.0, 1.0, 1.0);
-		glLineWidth((GLfloat)(4.0));
+	_pen.setWidth( 4.0 );
+	_painter->setPen( _pen );
 		double dist = DistPontos(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo);
 		if (dist > GrafoDesenho->_distMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
 		{
@@ -334,7 +332,8 @@ void CMostraDesenho::showBandeirolaEndings()
 			DesenhaArco( pontosBandeirola.NoCabo.x, pontosBandeirola.NoCabo.y,
 					GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
 		}
-		glLineWidth((GLfloat)(1.0));
+	_pen.setWidth( 1.0 );
+	_painter->setPen( _pen );
 	}
 }
 
