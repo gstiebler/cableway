@@ -15,7 +15,7 @@
 
 class CGrafoDesenho;
 class CInfoCircuitos;	
-class CMostraDesenho;
+class COpenGL;
 
 class DrawingWindow : public QDialog, private Ui::Dialog
 {
@@ -27,7 +27,7 @@ public:
 
 	void getOptions( bool &showOriginalColors, bool &showDisconnectedCables, bool &showBandeirolas, bool &showEquipmentEnding );
 
-	CMostraDesenho *_mostraDesenho;
+	COpenGL *_mostraDesenho;
 
 signals:
 	void dialogClose();

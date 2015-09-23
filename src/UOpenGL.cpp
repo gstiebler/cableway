@@ -10,6 +10,7 @@ COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent) :
   DEBUG=CONTADOR;
   CONTADOR++;
   initialized = false;
+	primeiro=true;
 }
 //---------------------------------------------------------------------------
 
@@ -33,41 +34,17 @@ void COpenGL::paintEvent(QPaintEvent *event)
 {
 	_painter = new QPainter();
     _painter->begin(this);
-    _painter->setRenderHint(QPainter::Antialiasing);
-    DrawObjects();
+    _painter->setRenderHint(QPainter::Antialiasing);	
+	if (primeiro && !initialized)
+	{
+		_mostraDesenho.initializeLimits();
+		initialized = true;
+	}
+    _mostraDesenho.DrawObjects();
     _painter->end();
 	delete _painter;
 }
 
-
-void COpenGL::DesenhaArco(float x_center, float y_center, float w,
-          float h, float startAngle, float endAngle )
-{
-	QRectF rectf( x_center - w / 2, y_center - h / 2, w, h );
-	_painter->drawArc( QRectF( x_center - w / 2, y_center - h / 2, w, h ), startAngle, endAngle - startAngle );
-}
-//---------------------------------------------------------------------------
-
-
-void COpenGL::DesenhaBolaFechada(float x_center, float y_center, float w,
-          float h, float startAngle, float arcAngle )
-{
-	_painter->drawEllipse( QRectF( x_center - w / 2, y_center - h / 2, w, h ) );
-}
-//---------------------------------------------------------------------------
-
-void COpenGL::EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura)
-{
-	QFont textFont;
-	double canvasWidth = _glCoords.getRight() - _glCoords.getLeft();
-    textFont.setPixelSize( 150000 / canvasWidth );
-	_painter->setFont( textFont );
-	_painter->setPen( QPen(Qt::white) );
-	QPointF coords( origem.x, origem.y );
-	_painter->rotate( rotacao );
-	_painter->drawText( coords, QString( texto.c_str() ) );
-}
-//---------------------------------------------------------------------------
 
 void COpenGL::AjustaExibicao()
 {

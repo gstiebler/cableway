@@ -1,4 +1,7 @@
 
+#ifndef __GL_COORDS__
+#define __GL_COORDS__
+
 #include "UDefines.h"
 
 #define FATOR_TELA 0.162
@@ -43,3 +46,5 @@ public:
 	
 	double menorx, menory, maiorx, maiory;
 };
+
+#endif

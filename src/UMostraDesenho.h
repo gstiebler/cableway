@@ -2,14 +2,14 @@
 #ifndef UMostraDesenhoH
 #define UMostraDesenhoH
 
-#include "UOpenGL.h"
-#include "UInfoCircuitos.h"
 #include "UGeometria.h" 
-//#include "uglyfont.h"
-#include <math.h>
-#include <time.h>
+#include <QPainter>
+#include <QBrush>
+#include <QPen>
+#include "GLCoords.h"
 
 class CGrafoDesenho;
+class CInfoCircuitos;
 
 #define FATOR_FATORES 500
 #define FATOR_TEXTO_NUM_VERTICES 0.0005
@@ -26,7 +26,7 @@ class CGrafoDesenho;
 #define CORARVORE 0xFF7F00 // Ab�bora
 #define CORARVORE2 0xB200B2 // Roxo
 
-class CMostraDesenho: public COpenGL
+class CMostraDesenho 
 {
 private:
 
@@ -46,18 +46,34 @@ private:
   bool mostraLigacaoEquipamento;
   bool MostrarPontasDeCaboDescon;
   double xBola, yBola, tamBola;
-  void mousePressEvent( QMouseEvent *event );
-  void mouseMoveEvent( QMouseEvent *event );
-  void wheelEvent(QWheelEvent * event);
+  //void mousePressEvent( QMouseEvent *event );
+  //void mouseMoveEvent( QMouseEvent *event );
+  //void wheelEvent(QWheelEvent * event);
   void setColorFromLevel( int level );
   void setColor( unsigned char r, unsigned char g, unsigned char b );
+  
+  
+  void DesenhaArco(float x_center, float y_center, float w,
+          float h, float startAngle, float endAngle );
+  void DesenhaBolaFechada(float x_center, float y_center, float w,
+          float h, float startAngle, float arcAngle );
+  void EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura);  
+  void drawMultipoints();
+  void drawArcs();
+  void showCircuit();
+  void showTree();
+  void showDisconnectedCircuitEndings();
+  void showBandeirolaEndings();
+  void drawTexts();
+  QPainter* _painter;
+  GLCoords _glCoords;
+  QBrush _brush;
+  QPen _pen;
 
 protected:
-  void DrawObjects();
-  bool semCores;
-  bool primeiro;      
+  bool semCores;   
 public:
-  CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, QWidget *parent = 0);
+  CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos);
   ~CMostraDesenho();
   void MostraCircuito(std::shared_ptr<TArestasCircuito> arestasCircuito);
   void ApagaCircuito();
@@ -68,20 +84,13 @@ public:
   void SetDestacaBandeirolas(bool facilita);
   void SetMostraChegaEquip(bool MostraEquip);
   void SetMostrarPontasDeCaboDescon(bool mostraPontas);
-  void initializeGL();
-  void resizeGL(int width, int height);
   void initializeLimits();
-  void drawMultipoints();
-  void drawArcs();
-  void showCircuit();
-  void showTree();
-  void showDisconnectedCircuitEndings();
-  void showBandeirolaEndings();
-  void drawTexts();
+
+  void DrawObjects();
 };
 //---------------------------------------------------------------------------
 
-GLfloat inline GeraCor()
+float GeraCor()
 {
 #define LUM_MIN 0.2
 #define COMPLEMENTO (1.0-LUM_MIN)/50.0

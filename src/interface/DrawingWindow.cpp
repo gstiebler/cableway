@@ -7,7 +7,7 @@
 
 #include "DrawingWindow.h"
 
-#include <UMostraDesenho.h>
+#include "UOpenGL.h"
 
 using namespace std;
 

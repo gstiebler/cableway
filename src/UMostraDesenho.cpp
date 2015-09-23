@@ -2,6 +2,9 @@
 #pragma hdrstop
 #include "UMostraDesenho.h"
 #include <UGrafoDesenho.h>
+#include "UInfoCircuitos.h"
+#include <math.h>
+#include <time.h>
 
 using namespace std;
 
@@ -22,15 +25,13 @@ unsigned char pegaVermelho ( int cor )
 }
 
 
-CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, QWidget *parent) :
-        COpenGL(600, 600, parent),
+CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos) :
         bMostraArvore2( false ),
         xBola( -1 ),
         yBola( - 1),
         tamBola( -1 )
 {
   semCores = false;
-	primeiro=true;
 	GrafoDesenho=grafoDesenho;
 	InfoCircuitos=infoCircuitos;
 	ExibirCircuito=false;
@@ -81,7 +82,6 @@ void CMostraDesenho::initializeLimits()
 	}
 
 	_glCoords.updateProportion();
-	initialized = true;
 }
 
 
@@ -208,7 +208,7 @@ void CMostraDesenho::showCircuit()
 void CMostraDesenho::showTree()
 {
 	string origem = VerticeArvore->texto.c_str();
-	glColor3f(pegaVermelho(CORARVORE)/255.0, pegaVerde(CORARVORE)/255.0, pegaAzul(CORARVORE)/255.0);
+	setColor( pegaVermelho(CORARVORE), pegaVerde(CORARVORE), pegaAzul(CORARVORE));
 	glLineWidth((GLfloat)(3.0));
 
 	vector< shared_ptr<TAresta> > Arestas;
@@ -242,7 +242,7 @@ void CMostraDesenho::showTree()
 		string destino = VerticeArvore2->texto;
 //				if ( ponteiroPraFuncao )
 //				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
-		glColor3f(pegaVermelho(CORARVORE2)/255.0, pegaVerde(CORARVORE2)/255.0, pegaAzul(CORARVORE2)/255.0);
+		setColor(pegaVermelho(CORARVORE2), pegaVerde(CORARVORE2), pegaAzul(CORARVORE2));
 		//			glColor3f(0.7, 0.0, 0.7);
 		glLineWidth((GLfloat)(3.0));
 
@@ -281,7 +281,7 @@ void CMostraDesenho::showTree()
 
 void CMostraDesenho::showDisconnectedCircuitEndings()
 {
-	glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
+	setColor(pegaVermelho(CORINSTRUMENTODESCON), pegaVerde(CORINSTRUMENTODESCON), pegaAzul(CORINSTRUMENTODESCON));
 	for ( int i = 0 ; i < GrafoDesenho->_cabosReta.size() ; i++ )
 	{
 		if ( !GrafoDesenho->_cabosReta[i]->ponta[0] )
@@ -318,7 +318,7 @@ void CMostraDesenho::showBandeirolaEndings()
 {
 	for (int n=0; n<(int)GrafoDesenho->_pontosPraMostrarBandeirola.size();n++)
 	{
-		glColor3f(1.0, 1.0, 1.0);
+		setColor(1.0, 1.0, 1.0);
 		glLineWidth((GLfloat)(4.0));
 		double dist = DistPontos(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo);
 		if (dist > GrafoDesenho->_distMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
@@ -348,23 +348,15 @@ void CMostraDesenho::drawTexts()
 
 		if ( destacaCoresDeEquipamentos )
 		{
-			if( texto->Nivel == INSTRUMENTO)
-				glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
-			else if( texto->Nivel == BANDEIROLA)
-				glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
-			else
-				glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
+			setColorFromLevel( texto->Nivel );
 
 		}
 		else if ( semCores )
-			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
+			setColorFromLevel( -1 );
 		else
-			glColor3f( texto->CorR/255.0, texto->CorG/255.0, texto->CorB/255.0);
-
-		glPushMatrix();
+			setColor( texto->CorR, texto->CorG, texto->CorB);
 
 		EscreveTexto(texto->texto, texto->origem, texto->rotacao, texto->FatorAltura);
-		glPopMatrix();
 	}
 }
 
@@ -372,12 +364,8 @@ void CMostraDesenho::drawTexts()
 
 void CMostraDesenho::DrawObjects()
 {
-	//glClearColor(0.0, 0.0, 0.0, 0.0);
-	glColor3f(1.0, 1.0, 1.0);
+	setColor( 255, 255, 255);
 	glPushMatrix();
-
-	if (primeiro && !initialized)
-		initializeLimits();
 
 	AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
 
@@ -408,14 +396,9 @@ void CMostraDesenho::DrawObjects()
 
 		if (bMostraBola)
 		{
-			glColor3f(0.0, 0.0, 1.0);
+			setColor( 0, 0, 255 );
 			DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI );
 		}
-	//	glEndList();
-	//}
-	//else
-	//	glCallList(1);
-	primeiro=false;
 	glPopMatrix();   
 }
 //---------------------------------------------------------------------------
@@ -423,21 +406,18 @@ void CMostraDesenho::DrawObjects()
 void CMostraDesenho::MostraCircuito( shared_ptr<TArestasCircuito> arestasCircuito )
 {
 	ExibirCircuito=true;
-	primeiro=true;
 	_arestasCircuito = arestasCircuito;
 }
 //---------------------------------------------------------------------------
 
 void CMostraDesenho::MostraNumVerticesDEBUG(bool mostra)
 {
-	primeiro=true;
 	bMostraNumVerticesDEBUG=mostra;
 }
 //---------------------------------------------------------------------------
 
 void CMostraDesenho::MostraArvore(shared_ptr<TVerticeGeral> vertice)
 {
-	primeiro=true;
 	VerticeArvore=vertice;
 	bMostraArvore=true;
 	bMostraArvore2=false;
@@ -446,7 +426,6 @@ void CMostraDesenho::MostraArvore(shared_ptr<TVerticeGeral> vertice)
 
 void CMostraDesenho::MostraDoubleArvore(shared_ptr<TVerticeGeral> vertice, shared_ptr<TVerticeGeral> vertice2)
 {
-	primeiro=true;
 	VerticeArvore=vertice;
 	VerticeArvore2=vertice2;
 	bMostraArvore=true;
@@ -455,22 +434,18 @@ void CMostraDesenho::MostraDoubleArvore(shared_ptr<TVerticeGeral> vertice, share
 //---------------------------------------------------------------------------
 void CMostraDesenho::SetDestacaBandeirolas(bool facilita)
 {
-	primeiro=true;
 	facilitarVerBandeirola = facilita;
 }
 //---------------------------------------------------------------------------
 
 
-
 void CMostraDesenho::SetDestacaCores(bool DestacaCores)
 {
-	primeiro = true;
 	destacaCoresDeEquipamentos = DestacaCores;
 }
 //---------------------------------------------------------------------------
 void CMostraDesenho::SetMostraChegaEquip(bool MostraEquip)
 {
-	primeiro = true;
 	mostraLigacaoEquipamento = MostraEquip;
 }
 //---------------------------------------------------------------------------
@@ -479,44 +454,59 @@ void CMostraDesenho::SetMostraChegaEquip(bool MostraEquip)
 
 void CMostraDesenho::SetMostrarPontasDeCaboDescon(bool mostraPontas)
 {
-	primeiro = true;
 	MostrarPontasDeCaboDescon = mostraPontas;
 }
 
 
-
-void CMostraDesenho::initializeGL()
+void CMostraDesenho::DesenhaArco(float x_center, float y_center, float w,
+          float h, float startAngle, float endAngle )
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	QRectF rectf( x_center - w / 2, y_center - h / 2, w, h );
+	_painter->drawArc( QRectF( x_center - w / 2, y_center - h / 2, w, h ), startAngle, endAngle - startAngle );
 }
+//---------------------------------------------------------------------------
 
 
-
-void CMostraDesenho::resizeGL(int width, int height)
+void CMostraDesenho::DesenhaBolaFechada(float x_center, float y_center, float w,
+          float h, float startAngle, float arcAngle )
 {
-	Resize( width, height );
+	_painter->drawEllipse( QRectF( x_center - w / 2, y_center - h / 2, w, h ) );
 }
+//---------------------------------------------------------------------------
 
-
-
-void CMostraDesenho::mousePressEvent( QMouseEvent *event )
+void CMostraDesenho::EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura)
 {
-	_glCoords.mousePress( event->x(), event->y() );
+	QFont textFont;
+	double canvasWidth = _glCoords.getRight() - _glCoords.getLeft();
+    textFont.setPixelSize( 150000 / canvasWidth );
+	_painter->setFont( textFont );
+	_painter->setPen( QPen(Qt::white) );
+	QPointF coords( origem.x, origem.y );
+	_painter->rotate( rotacao );
+	_painter->drawText( coords, QString( texto.c_str() ) );
 }
+//---------------------------------------------------------------------------
 
 
+//
+//void CMostraDesenho::mousePressEvent( QMouseEvent *event )
+//{
+//	_glCoords.mousePress( event->x(), event->y() );
+//}
+//
+//
+//
+//void CMostraDesenho::mouseMoveEvent( QMouseEvent *event )
+//{
+//	_glCoords.mouseMove( event->x(), event->y() );
+//	repaint();
+//}
+//
 
-void CMostraDesenho::mouseMoveEvent( QMouseEvent *event )
-{
-	_glCoords.mouseMove( event->x(), event->y() );
-	repaint();
-}
-
-
-
-void CMostraDesenho::wheelEvent(QWheelEvent * event)
-{
-	double increase = 1.0 + (event->angleDelta().y() / 1200.0);
-	_glCoords.incZoom( increase );
-	repaint();
-}
+//
+//void CMostraDesenho::wheelEvent(QWheelEvent * event)
+//{
+//	double increase = 1.0 + (event->angleDelta().y() / 1200.0);
+//	_glCoords.incZoom( increase );
+//	repaint();
+//}

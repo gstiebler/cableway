@@ -5,6 +5,7 @@
 #include <math.h>
 #include "UDefines.h"
 #include "GLCoords.h"
+#include "UMostraDesenho.h"
 
 #include <QtOpenGL/QGLWidget>
 
@@ -20,20 +21,14 @@ protected:
   bool initialized;
   void paintEvent(QPaintEvent *event);
   QPainter* _painter;
-  QBrush _brush;
-  QPen _pen;
+  
+  bool primeiro;   
 public:
   COpenGL(int ClientWidth, int ClientHeight, QWidget *parent);
   virtual ~COpenGL();
-  virtual void DrawObjects() = 0;
   void Resize(int ClientWidth, int ClientHeight);
+  CMostraDesenho _mostraDesenho;
 //  void Ortho();
-  
-  void DesenhaArco(float x_center, float y_center, float w,
-          float h, float startAngle, float endAngle );
-  void DesenhaBolaFechada(float x_center, float y_center, float w,
-          float h, float startAngle, float arcAngle );
-  void EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura);
 
   GLCoords _glCoords;
 };

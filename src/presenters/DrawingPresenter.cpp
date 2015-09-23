@@ -7,6 +7,7 @@
 
 #include "DrawingPresenter.h"
 #include "UMostraDesenho.h"
+#include "UOpenGL.h"
 
 #include <interface/DrawingWindow.h>
 
@@ -19,7 +20,7 @@ DrawingPresenter::DrawingPresenter( shared_ptr<CGrafoDesenho> grafoDesenho, shar
 	//mostraCircuito( circuitIndex );
 	
 	if( arestasCircuito.get() != 0 )
-		_window->_mostraDesenho->MostraCircuito( arestasCircuito );
+		_window->_mostraDesenho->_mostraDesenho.MostraCircuito( arestasCircuito );
 
     connect( _window, SIGNAL( dialogClose() ), this, SLOT( windowClosed() ) );
     connect( _window, SIGNAL( optionsChanged() ), this, SLOT( optionsChanged() ) );
@@ -43,10 +44,10 @@ void DrawingPresenter::optionsChanged()
 {
 	bool showOriginalColors, showDisconnectedCables, showBandeirolas, showEquipmentEnding;
 	_window->getOptions( showOriginalColors, showDisconnectedCables, showBandeirolas, showEquipmentEnding );
-	_window->_mostraDesenho->SetDestacaCores( showOriginalColors );
-	_window->_mostraDesenho->SetMostrarPontasDeCaboDescon( showDisconnectedCables );
-	_window->_mostraDesenho->SetDestacaBandeirolas( showBandeirolas );
-	_window->_mostraDesenho->SetMostraChegaEquip( showEquipmentEnding );
+	_window->_mostraDesenho->_mostraDesenho.SetDestacaCores( showOriginalColors );
+	_window->_mostraDesenho->_mostraDesenho.SetMostrarPontasDeCaboDescon( showDisconnectedCables );
+	_window->_mostraDesenho->_mostraDesenho.SetDestacaBandeirolas( showBandeirolas );
+	_window->_mostraDesenho->_mostraDesenho.SetMostraChegaEquip( showEquipmentEnding );
 	_window->_mostraDesenho->repaint();
 }
 
