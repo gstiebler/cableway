@@ -2,9 +2,6 @@
 #ifndef UOpenGLH
 #define UOpenGLH
 
-//#include <GL/glu.h>
-//#include <GL/gl.h>
-#include <QtOpenGL>
 #include <math.h>
 #include "UDefines.h"
 #include "GLCoords.h"
@@ -21,21 +18,21 @@ protected:
   void AjustaExibicao();
   int DEBUG;
   bool initialized;
+  void paintEvent(QPaintEvent *event);
+  QPainter* _painter;
+  QBrush _brush;
+  QPen _pen;
 public:
   COpenGL(int ClientWidth, int ClientHeight, QWidget *parent);
   virtual ~COpenGL();
-  void RenderGLScene();
-  void SetPixelFormatDescriptor();
   virtual void DrawObjects() = 0;
   void Resize(int ClientWidth, int ClientHeight);
 //  void Ortho();
-
-  void Paint();
   
   void DesenhaArco(float x_center, float y_center, float w,
-          float h, float startAngle, float endAngle, int n);
+          float h, float startAngle, float endAngle );
   void DesenhaBolaFechada(float x_center, float y_center, float w,
-          float h, float startAngle, float arcAngle, int n);
+          float h, float startAngle, float arcAngle );
   void EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura);
 
   GLCoords _glCoords;

@@ -52,13 +52,6 @@ CMostraDesenho::~CMostraDesenho()
 
 
 
-void CMostraDesenho::paintGL()
-{  
-    Paint();    
-}
-
-
-
 void CMostraDesenho::initializeLimits()
 {	
 	float x, y;
@@ -91,111 +84,116 @@ void CMostraDesenho::initializeLimits()
 	initialized = true;
 }
 
+
+void CMostraDesenho::setColor( unsigned char r, unsigned char g, unsigned char b )
+{
+	_brush.setColor( QColor( r, g, b ) );
+	_painter->setBrush( _brush );
+}
+
+
 void CMostraDesenho::setColorFromLevel( int level )
 {
+	QColor color;
 	switch ( level )
 	{
 		case CALHA:
-			glColor3f(0.0, 1, 1);
+			setColor( 0, 255, 255 );
 			break;
 		case CABO:
-			glColor3f(pegaVermelho(CORCABO)/255.0, pegaVerde(CORCABO)/255.0, pegaAzul(CORCABO)/255.0);
+			setColor( pegaVermelho(CORCABO), pegaVerde(CORCABO), pegaAzul(CORCABO) );
 			break;
 		case BANDEIROLA:
-			glColor3f(pegaVermelho(CORBANDEIROLA)/255.0, pegaVerde(CORBANDEIROLA)/255.0, pegaAzul(CORBANDEIROLA)/255.0);
+			setColor( pegaVermelho(CORBANDEIROLA), pegaVerde(CORBANDEIROLA), pegaAzul(CORBANDEIROLA) );
 			break;
 		case TAG:
-			glColor3f(pegaVermelho(CORTAG)/255.0, pegaVerde(CORTAG)/255.0, pegaAzul(CORTAG)/255.0);
+			setColor( pegaVermelho(CORTAG), pegaVerde(CORTAG), pegaAzul(CORTAG) );
 			break;
 		case INSTRUMENTO:
-			glColor3f(pegaVermelho(CORINSTRUMENTO)/255.0, pegaVerde(CORINSTRUMENTO)/255.0, pegaAzul(CORINSTRUMENTO)/255.0);
+			setColor( pegaVermelho(CORINSTRUMENTO), pegaVerde(CORINSTRUMENTO), pegaAzul(CORINSTRUMENTO) );
 			break;
 		case INSTRUMENTODESCON:
-			glColor3f(pegaVermelho(CORINSTRUMENTODESCON)/255.0, pegaVerde(CORINSTRUMENTODESCON)/255.0, pegaAzul(CORINSTRUMENTODESCON)/255.0);
+			setColor( pegaVermelho(CORINSTRUMENTODESCON), pegaVerde(CORINSTRUMENTODESCON), pegaAzul(CORINSTRUMENTODESCON) );
 			break;
 		case NADA:
 		default:
-			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
+			setColor( pegaVermelho(CORNADA), pegaVerde(CORNADA), pegaAzul(CORNADA) );
 			break;
 	}
 }
+
 
 void CMostraDesenho::drawMultipoints()
 {
 	for (int n=0; n<GrafoDesenho->_dados->Multipoint.size(); n++)
 			//    for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
 	{
-		//      byte cor=GrafoDesenho->Dados->Multipoint[n].Cor;
-		glColor3f(GrafoDesenho->_dados->Multipoint[n]->CorR/255.0, GrafoDesenho->_dados->Multipoint[n]->CorG/255.0,
-				GrafoDesenho->_dados->Multipoint[n]->CorB/255.0);
-		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
-		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
+		shared_ptr<TMultipoint> multipoint = GrafoDesenho->_dados->Multipoint[n];
+		setColor(multipoint->CorR, multipoint->CorG, multipoint->CorB);
 		if (destacaCoresDeEquipamentos)
-			setColorFromLevel( GrafoDesenho->_dados->Multipoint[n]->Nivel );
-    if ( semCores )
-    {
-			glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
-    }
-		switch (GrafoDesenho->_dados->Multipoint[n]->tipo)
+			setColorFromLevel( multipoint->Nivel );
+		if ( semCores )
 		{
-			case LINE_CLOSED:
-				glBegin(GL_LINE_LOOP);
-				break;
-			case LINE_OPEN:
-				glBegin(GL_LINE_STRIP);
-				break;
+			setColorFromLevel( -1 );
 		}
-		//glLineWidth((GLfloat)(1.0+GrafoDesenho->Multipoint[n].Peso));
-		//if (GrafoDesenho->Multipoint[n].tam<10)
+		int numPoints = multipoint->pontos.size();
+		if( multipoint->tipo == LINE_CLOSED )
+			numPoints++;
+		QPolygon polygon( numPoints );
+
+		for (int i=0; i<multipoint->pontos.size(); i++)
 		{
-			for (int i=0; i<GrafoDesenho->_dados->Multipoint[n]->pontos.size(); i++)
-			{
-				double x = GrafoDesenho->_dados->Multipoint[n]->pontos[i].x;
-				double y = GrafoDesenho->_dados->Multipoint[n]->pontos[i].y;
-				glVertex2f(x, y);
-			}
+			double x = multipoint->pontos[i].x;
+			double y = multipoint->pontos[i].y;
+
+			polygon.setPoint( i, x, y );
 		}
-		glEnd();
+
+		if( multipoint->tipo == LINE_CLOSED )
+		{
+			double x = multipoint->pontos[numPoints - 1].x;
+			double y = multipoint->pontos[numPoints - 1].y;
+
+			polygon.setPoint( numPoints - 1, x, y );
+		}
+		_painter->drawPolyline( polygon );
 	}
 }
-
 
 
 void CMostraDesenho::drawArcs()
 {
-	//TArco *Arcos=GrafoDesenho->Arcos;
-	vector< shared_ptr<TArco> > &Arcos = GrafoDesenho->_dados->Arcos;
 	for (int n=0; n<GrafoDesenho->_dados->Arcos.size(); n++)
 	{
-		//      byte cor=GrafoDesenho->Dados->Arcos[n].Cor;
-		//      glColor3f(GrafoDesenho->Dados->TabelaCores[cor][0]/255.0, GrafoDesenho->Dados->TabelaCores[cor][1]/255.0,
-		//                                                          GrafoDesenho->Dados->TabelaCores[cor][2]/255.0);
-		glColor3f(GrafoDesenho->_dados->Arcos[n]->CorR/255.0, GrafoDesenho->_dados->Arcos[n]->CorG/255.0,
-				GrafoDesenho->_dados->Arcos[n]->CorB/255.0);
+		shared_ptr<TArco> arc = GrafoDesenho->_dados->Arcos[n];
+		setColor( arc->CorR, arc->CorG, arc->CorB);
 		if ( destacaCoresDeEquipamentos )
-			setColorFromLevel( GrafoDesenho->_dados->Arcos[n]->Nivel );
+			setColorFromLevel( arc->Nivel );
 		if ( semCores )
 		{
-				glColor3f(pegaVermelho(CORNADA)/255.0, pegaVerde(CORNADA)/255.0, pegaAzul(CORNADA)/255.0);
+			setColorFromLevel( -1 );
 		}
-		shared_ptr<TArco> arco = Arcos[n];
-		DesenhaArco( arco->Centro.x, arco->Centro.y, arco->EixoPrimario, arco->EixoSecundario, arco->AngIni, arco->AngEnd, 20);
+		DesenhaArco( arc->Centro.x, arc->Centro.y, arc->EixoPrimario, arc->EixoSecundario, arc->AngIni, arc->AngEnd );
 	}
 }
-
 
 
 void CMostraDesenho::showCircuit()
 {
 	TPonto Pontos[2];
-	glColor3f(pegaVermelho(CORCAMINHO)/255.0, pegaVerde(CORCAMINHO)/255.0, pegaAzul(CORCAMINHO)/255.0);
-//			glColor3f(0.0, 0.0, 1.0);
+	setColor( pegaVermelho(CORCAMINHO), pegaVerde(CORCAMINHO), pegaAzul(CORCAMINHO) );
 	glLineWidth((GLfloat)(3.0));
 	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[GrafoDesenho->_dados->_drawing.get()];
-	for (int n=0; n<(int)edges.size(); n++)
+
+	int ini = 0;
+	int end = edges.size()-1;
+	if( !mostraLigacaoEquipamento )
 	{
-		if ( ( n == 0 || n == (int)edges.size()-1 ) && !mostraLigacaoEquipamento )
-			continue;
+		ini++;
+		end--;
+	}
+	for (int n=ini; n<end; n++)
+	{
 		CInfoCircuitos::PontosAresta(Pontos, edges[n]);
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(Pontos[0].x, Pontos[0].y);
@@ -209,18 +207,10 @@ void CMostraDesenho::showCircuit()
 
 void CMostraDesenho::showTree()
 {
-	// Laranja - Origem
-
-	//			glColor3f(1.0, 0.5, 0.0);
 	string origem = VerticeArvore->texto.c_str();
-//			if ( !bMostraArvore2 && ponteiroPraFuncao)
-//			    ponteiroPraFuncao(ponteiroProThis, origem , "");
 	glColor3f(pegaVermelho(CORARVORE)/255.0, pegaVerde(CORARVORE)/255.0, pegaAzul(CORARVORE)/255.0);
 	glLineWidth((GLfloat)(3.0));
-	glPushMatrix();
-	//			EscreveTexto(("Origem: "+ GrafoDesenho->VerticesGerais->getItem(VerticeArvore)->texto).c_str(), pos, 0,
-	//					GrafoDesenho->Dados->Textos[0].FatorAltura*10);
-	glPopMatrix();
+
 	vector< shared_ptr<TAresta> > Arestas;
 	InfoCircuitos->Arvore(VerticeArvore, Arestas, GrafoDesenho->_dados->_drawing);
 	shared_ptr<TAresta> Aresta;
@@ -238,11 +228,11 @@ void CMostraDesenho::showTree()
 #define TAMBOLACOLAR (1000)
 		if ( Aresta->_vertices[0]->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 		}
 		if ( Aresta->_vertices[1]->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 		}
 	}
 	glLineWidth((GLfloat)(1.0));
@@ -279,7 +269,7 @@ void CMostraDesenho::showTree()
 			{
 				if ( Aresta->_vertices[i]->EhColar )
 				{
-					DesenhaBolaFechada(Pontos[i].x, Pontos[i].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI, 20);
+					DesenhaBolaFechada(Pontos[i].x, Pontos[i].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 				}
 			}
 		}
@@ -297,13 +287,13 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 		if ( !GrafoDesenho->_cabosReta[i]->ponta[0] )
 		{
 			TPonto pontos = GrafoDesenho->_cabosReta[i]->_multipoint->pontos[0];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
 		}
 		if ( !GrafoDesenho->_cabosReta[i]->ponta[1] )
 		{
 			int tam = GrafoDesenho->_cabosReta[i]->_multipoint->pontos.size();
 			TPonto pontos = GrafoDesenho->_cabosReta[i]->_multipoint->pontos[tam-1];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
 		}
 	}
 
@@ -313,11 +303,11 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 		GrafoDesenho->_cabosArco[i]->_arco->PontasArco(pontos);
 		if ( !GrafoDesenho->_cabosArco[i]->ponta[0] )
 		{
-			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
 		}
 		if ( !GrafoDesenho->_cabosArco[i]->ponta[1] )
 		{
-			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
 		}
 	}
 }
@@ -342,7 +332,7 @@ void CMostraDesenho::showBandeirolaEndings()
 		{
 			TPontosBandeirola &pontosBandeirola = GrafoDesenho->_pontosPraMostrarBandeirola[n];
 			DesenhaArco( pontosBandeirola.NoCabo.x, pontosBandeirola.NoCabo.y,
-					GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI, 20);
+					GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
 		}
 		glLineWidth((GLfloat)(1.0));
 	}
@@ -416,34 +406,10 @@ void CMostraDesenho::DrawObjects()
 		//TEXTOS
 		drawTexts();
 
-//		if (bMostraNumVerticesDEBUG)
-//		{
-//			randomize();
-//			for (int n=1; n<GrafoDesenho->VerticesGerais->Tamanho(); n++)
-//			{
-//				int IndiceDesenho=GrafoDesenho->Dados->IndiceDesenho;
-//
-//				if ( GrafoDesenho->VerticesGerais->getItem(n)->iDesenho == IndiceDesenho )
-//				{
-//
-//					glColor3f(GeraCor(), GeraCor(), GeraCor());
-//					glPushMatrix();
-//					char texto[10]={0};
-//					sprintf(texto, "%d", n);
-//          TPonto ponto_debug=GrafoDesenho->VerticesGerais->getItem(n)->pos;
-//          ponto_debug.x += random(5);
-//          ponto_debug.y += random(5);
-//					EscreveTexto(texto, GrafoDesenho->VerticesGerais->getItem(n)->pos, 0,
-//							GrafoDesenho->Dados->Textos[0].FatorAltura/2);
-//					//                          FATOR_TEXTO_NUM_VERTICES/fator);
-//					glPopMatrix();
-//				}
-//			}
-//		}
 		if (bMostraBola)
 		{
 			glColor3f(0.0, 0.0, 1.0);
-			DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI, 20);
+			DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI );
 		}
 	//	glEndList();
 	//}

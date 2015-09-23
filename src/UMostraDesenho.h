@@ -30,7 +30,6 @@ class CMostraDesenho: public COpenGL
 {
 private:
 
-    void paintGL();
 
   bool ExibirCircuito;
   std::shared_ptr<TArestasCircuito> _arestasCircuito;
@@ -51,6 +50,7 @@ private:
   void mouseMoveEvent( QMouseEvent *event );
   void wheelEvent(QWheelEvent * event);
   void setColorFromLevel( int level );
+  void setColor( unsigned char r, unsigned char g, unsigned char b );
 
 protected:
   void DrawObjects();
