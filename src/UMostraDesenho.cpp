@@ -360,7 +360,6 @@ void CMostraDesenho::drawTexts()
 void CMostraDesenho::DrawObjects()
 {
 	setColor( 255, 255, 255);
-	glPushMatrix();
 
 	AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
 
@@ -394,7 +393,6 @@ void CMostraDesenho::DrawObjects()
 			setColor( 0, 0, 255 );
 			DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI );
 		}
-	glPopMatrix();   
 }
 //---------------------------------------------------------------------------
 
