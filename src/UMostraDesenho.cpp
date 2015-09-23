@@ -222,10 +222,8 @@ void CMostraDesenho::showTree()
 		string debugTexto = Aresta->_vertices[0]->texto;
 		Pontos[0] = Aresta->_vertices[0]->pos;
 		Pontos[1] = Aresta->_vertices[1]->pos;
-		glBegin(GL_LINE_STRIP);
-		glVertex2f(Pontos[0].x, Pontos[0].y);
-		glVertex2f(Pontos[1].x, Pontos[1].y);
-		glEnd();
+		QLineF line( QPoint( Pontos[0].x, Pontos[0].y ), QPoint( Pontos[1].x, Pontos[1].y ) );
+		_painter->drawLine( line );
 #define TAMBOLACOLAR (1000)
 		if ( Aresta->_vertices[0]->EhColar )
 		{
@@ -258,10 +256,8 @@ void CMostraDesenho::showTree()
 			for( int i(0); i < 2; ++i )
 				Pontos[i] = Aresta->_vertices[i]->pos;
 
-			glBegin(GL_LINE_STRIP);
-			for( int i(0); i < 2; ++i )
-				glVertex2f(Pontos[i].x, Pontos[i].y);
-			glEnd();
+			QLineF line( QPoint( Pontos[0].x, Pontos[0].y ), QPoint( Pontos[1].x, Pontos[1].y ) );
+			_painter->drawLine( line );
 			
 			for( int i(0); i < 2; ++i )
 			{
@@ -315,21 +311,21 @@ void CMostraDesenho::showBandeirolaEndings()
 {
 	for (int n=0; n<(int)GrafoDesenho->_pontosPraMostrarBandeirola.size();n++)
 	{
+		TPontosBandeirola &pontosPraMostrarBandeirola = GrafoDesenho->_pontosPraMostrarBandeirola[n];
 		setColor(1.0, 1.0, 1.0);
-	_pen.setWidth( 4.0 );
-	_painter->setPen( _pen );
-		double dist = DistPontos(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo);
+		_pen.setWidth( 4.0 );
+		_painter->setPen( _pen );
+		double dist = DistPontos(pontosPraMostrarBandeirola.NaBandeirola, pontosPraMostrarBandeirola.NoCabo);
 		if (dist > GrafoDesenho->_distMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
 		{
-			glBegin(GL_LINE_STRIP);
-			glVertex2f(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola.x, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NaBandeirola.y);
-			glVertex2f(GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo.x, GrafoDesenho->_pontosPraMostrarBandeirola.at(n).NoCabo.y);
-			glEnd();
+			QPoint inBandeirola( pontosPraMostrarBandeirola.NaBandeirola.x, pontosPraMostrarBandeirola.NaBandeirola.y );
+			QPoint inCable( pontosPraMostrarBandeirola.NoCabo.x, pontosPraMostrarBandeirola.NoCabo.y );
+			QLineF line( inBandeirola, inCable );
+			_painter->drawLine( line );
 		}
 		else // Senão, faz um círculo em volta dos pontos
 		{
-			TPontosBandeirola &pontosBandeirola = GrafoDesenho->_pontosPraMostrarBandeirola[n];
-			DesenhaArco( pontosBandeirola.NoCabo.x, pontosBandeirola.NoCabo.y,
+			DesenhaArco( pontosPraMostrarBandeirola.NoCabo.x, pontosPraMostrarBandeirola.NoCabo.y,
 					GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
 		}
 	_pen.setWidth( 1.0 );
