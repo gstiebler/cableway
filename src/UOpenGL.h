@@ -28,8 +28,6 @@ protected:
   void mouseMoveEvent( QMouseEvent *event );
   void wheelEvent(QWheelEvent * event);
   QPainter* _painter;
-  
-  bool primeiro;   
 public:
   COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos );
   virtual ~COpenGL();

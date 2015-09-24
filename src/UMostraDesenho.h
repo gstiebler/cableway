@@ -83,7 +83,7 @@ public:
   void SetMostrarPontasDeCaboDescon(bool mostraPontas);
   void initializeLimits();
 
-  void DrawObjects();
+  void DrawObjects( QPainter *painter );
 };
 //---------------------------------------------------------------------------
 

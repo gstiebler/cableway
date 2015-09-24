@@ -11,7 +11,7 @@ COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<
   DEBUG=CONTADOR;
   CONTADOR++;
   initialized = false;
-	primeiro=true;
+	_mostraDesenho.initializeLimits();
 }
 //---------------------------------------------------------------------------
 
@@ -36,13 +36,8 @@ void COpenGL::paintEvent(QPaintEvent *event)
 	_painter = new QPainter();
     _painter->begin(this);
     _painter->setRenderHint(QPainter::Antialiasing);	
-	if (primeiro && !initialized)
-	{
-		_mostraDesenho.initializeLimits();
-		initialized = true;
-	}
-	AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
-    _mostraDesenho.DrawObjects();
+	//AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
+    _mostraDesenho.DrawObjects( _painter );
     _painter->end();
 	delete _painter;
 }
@@ -50,7 +45,8 @@ void COpenGL::paintEvent(QPaintEvent *event)
 
 void COpenGL::AjustaExibicao()
 {
-	_painter->setViewport( _glCoords.getLeft(), _glCoords.getTop(), _glCoords.getWorldWidth(), _glCoords.getWorldHeight() );
+	QRect rectf( _glCoords.getLeft(), _glCoords.getTop(), _glCoords.getWorldWidth(), _glCoords.getWorldHeight() );
+	_painter->setViewport( rectf );
 }
 //---------------------------------------------------------------------------
 

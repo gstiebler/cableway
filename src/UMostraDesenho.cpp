@@ -5,6 +5,7 @@
 #include "UInfoCircuitos.h"
 #include <math.h>
 #include <time.h>
+#include <assert.h>
 
 using namespace std;
 
@@ -152,8 +153,8 @@ void CMostraDesenho::drawMultipoints()
 
 		if( multipoint->tipo == LINE_CLOSED )
 		{
-			double x = multipoint->pontos[numPoints - 1].x;
-			double y = multipoint->pontos[numPoints - 1].y;
+			double x = multipoint->pontos[0].x;
+			double y = multipoint->pontos[0].y;
 
 			polygon.setPoint( numPoints - 1, x, y );
 		}
@@ -164,6 +165,7 @@ void CMostraDesenho::drawMultipoints()
 
 void CMostraDesenho::drawArcs()
 {
+	assert( _painter );
 	for (int n=0; n<GrafoDesenho->_dados->Arcos.size(); n++)
 	{
 		shared_ptr<TArco> arc = GrafoDesenho->_dados->Arcos[n];
@@ -358,40 +360,48 @@ void CMostraDesenho::drawTexts()
 
 
 
-void CMostraDesenho::DrawObjects()
+void CMostraDesenho::DrawObjects( QPainter *painter )
 {
-	setColor( 255, 255, 255);
+	_painter = painter;
+	_brush.setColor( QColor(64, 255, 64) );
+	_painter->setBrush( _brush );
+	_painter->setPen( _pen );
+    painter->fillRect(QRect( 0, 0, 600, 600 ), QColor(64, 32, 64));
 
-	//if (primeiro)
-	//{
-	//	glNewList(1, GL_COMPILE);
-		//LINHAS
-		drawMultipoints();
+	//setColor( 255, 255, 255);
 
-		//ARCOS
-		drawArcs();
+	////if (primeiro)
+	////{
+	////	glNewList(1, GL_COMPILE);
+	//	//LINHAS
+	//	drawMultipoints();
 
-		if (ExibirCircuito)
-			showCircuit();
+	//	//ARCOS
+	//	drawArcs();
 
-		if (bMostraArvore)
-			showTree();
+	//	if (ExibirCircuito)
+	//		showCircuit();
 
-		// Facilitar pontas de cabo desconectadas
-		if ( MostrarPontasDeCaboDescon )
-			showDisconnectedCircuitEndings();
+	//	if (bMostraArvore)
+	//		showTree();
 
-		if ( facilitarVerBandeirola )
-			showBandeirolaEndings();
+	//	// Facilitar pontas de cabo desconectadas
+	//	if ( MostrarPontasDeCaboDescon )
+	//		showDisconnectedCircuitEndings();
 
-		//TEXTOS
-		drawTexts();
+	//	if ( facilitarVerBandeirola )
+	//		showBandeirolaEndings();
 
-		if (bMostraBola)
-		{
-			setColor( 0, 0, 255 );
-			DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI );
-		}
+	//	//TEXTOS
+	//	drawTexts();
+
+	//	if (bMostraBola)
+	//	{
+	//		setColor( 0, 0, 255 );
+	//		DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI );
+	//	}
+	//	
+	_painter = NULL;
 }
 //---------------------------------------------------------------------------
 
@@ -454,7 +464,7 @@ void CMostraDesenho::DesenhaArco(float x_center, float y_center, float w,
           float h, float startAngle, float endAngle )
 {
 	QRectF rectf( x_center - w / 2, y_center - h / 2, w, h );
-	_painter->drawArc( QRectF( x_center - w / 2, y_center - h / 2, w, h ), startAngle, endAngle - startAngle );
+	_painter->drawArc( rectf, startAngle, endAngle - startAngle );
 }
 //---------------------------------------------------------------------------
 
