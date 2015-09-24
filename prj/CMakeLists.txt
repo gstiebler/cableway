@@ -19,33 +19,56 @@ set(EXECUTABLE_OUTPUT_PATH ../bin)
 set(SRC_BASE ../src)
 set(QT_UI_BASE_PATH ../data/qt)
 
-set(ALL_SOURCES ${SRC_BASE}/UContainerDesenhos.cpp
-				${SRC_BASE}/UDadosGenerico.cpp
-				${SRC_BASE}/UErros.cpp
-				${SRC_BASE}/UGeometria.cpp
-				${SRC_BASE}/UGrafoDesenho.cpp
-				${SRC_BASE}/UInfoCelula.cpp
-				${SRC_BASE}/UInfoCircuitos.cpp
-				${SRC_BASE}/UListaItensCelula.cpp
-				${SRC_BASE}/UMostraDesenho.cpp
-				${SRC_BASE}/UOpenGL.cpp
-				${SRC_BASE}/GLCoords.cpp
-				${SRC_BASE}/UVerticesArestas.cpp
-				${SRC_BASE}/Graph.cpp
-				${SRC_BASE}/Debug.cpp
-				${SRC_BASE}/InterfaceFeedback.cpp
-				${SRC_BASE}/MainExecution.cpp
-				${SRC_BASE}/Reports.cpp
-				${SRC_BASE}/interface/MainWindow.cpp
-				${SRC_BASE}/interface/DrawingWindow.cpp
-				${SRC_BASE}/presenters/MainPresenter.cpp
-				${SRC_BASE}/presenters/DrawingPresenter.cpp
-				${SRC_BASE}/file/CweLoader.cpp
-				${SRC_BASE}/file/InputCircuitsReader.cpp
-				${SRC_BASE}/file/CsvReader.cpp
-				${SRC_BASE}/UserParams/LoadUserParams.cpp
-				${SRC_BASE}/UserParams/UserParams.cpp  )
-                
+set( PRESENTER_SOURCES
+    ${SRC_BASE}/presenters/MainPresenter.cpp
+    ${SRC_BASE}/presenters/DrawingPresenter.cpp
+)
+
+set( WINDOW_SOURCES
+    ${SRC_BASE}/interface/MainWindow.cpp
+    ${SRC_BASE}/interface/DrawingWindow.cpp   
+)
+
+set( FILE_UTILS_SOURCES
+    ${SRC_BASE}/file/CweLoader.cpp
+    ${SRC_BASE}/file/InputCircuitsReader.cpp
+    ${SRC_BASE}/file/CsvReader.cpp  
+)
+
+set( USER_PARAMS_SOURCES
+    ${SRC_BASE}/UserParams/LoadUserParams.cpp
+    ${SRC_BASE}/UserParams/UserParams.cpp
+)
+
+set( ALL_SOURCES 
+    ${SRC_BASE}/UContainerDesenhos.cpp
+    ${SRC_BASE}/UDadosGenerico.cpp
+    ${SRC_BASE}/UErros.cpp
+    ${SRC_BASE}/UGeometria.cpp
+    ${SRC_BASE}/UGrafoDesenho.cpp
+    ${SRC_BASE}/UInfoCelula.cpp
+    ${SRC_BASE}/UInfoCircuitos.cpp
+    ${SRC_BASE}/UListaItensCelula.cpp
+    ${SRC_BASE}/UMostraDesenho.cpp
+    ${SRC_BASE}/UOpenGL.cpp
+    ${SRC_BASE}/GLCoords.cpp
+    ${SRC_BASE}/UVerticesArestas.cpp
+    ${SRC_BASE}/Graph.cpp
+    ${SRC_BASE}/Debug.cpp
+    ${SRC_BASE}/InterfaceFeedback.cpp
+    ${SRC_BASE}/MainExecution.cpp
+    ${SRC_BASE}/Reports.cpp
+    ${PRESENTER_SOURCES}
+    ${WINDOW_SOURCES}
+    ${FILE_UTILS_SOURCES}
+    ${USER_PARAMS_SOURCES}
+)
+
+source_group( "Source Files\\Presenters" FILES ${PRESENTER_SOURCES} )
+source_group( "Source Files\\Windows" FILES ${WINDOW_SOURCES} )
+source_group( "Source Files\\FileUtils" FILES ${FILE_UTILS_SOURCES} )
+source_group( "Source Files\\UserParams" FILES ${USER_PARAMS_SOURCES} )
+            
 SET( QT_UIS
      ${QT_UI_BASE_PATH}/MainWindow.ui
      ${QT_UI_BASE_PATH}/DrawingWindow.ui
@@ -55,6 +78,15 @@ QT5_WRAP_CPP(cw_HEADERS_MOC ${SRC_BASE}/interface/MainWindow.h
                             ${SRC_BASE}/presenters/MainPresenter.h 
                             ${SRC_BASE}/interface/DrawingWindow.h
                             ${SRC_BASE}/presenters/DrawingPresenter.h)
+                          
+set( MOC_BASE_DIR __/src )
+                          
+source_group( "Source Files\\Moc" FILES 
+    ${MOC_BASE_DIR}/interface/moc_MainWindow.cpp 
+    ${MOC_BASE_DIR}/presenters/moc_MainPresenter.cpp 
+    ${MOC_BASE_DIR}/interface/moc_DrawingWindow.cpp 
+    ${MOC_BASE_DIR}/presenters/moc_DrawingPresenter.cpp 
+)
                             
 QT5_WRAP_UI(QTTEST_GEN_UIS ${QT_UIS} )
 				
@@ -99,6 +131,8 @@ set(TESTS_SOURCES ${SRC_BASE}/tests/main_tests.cpp
                   ${SRC_BASE}/tests/DrawingLoaderTests.cpp
                   ${SRC_BASE}/tests/InputCircuitsReaderTests.cpp
                   ${SRC_BASE}/tests/File2FileTests.cpp)
+                  
+source_group( "Source Files\\Tests" FILES ${TESTS_SOURCES} )
 
 add_executable(cableway_tests ${ALL_SOURCES} 
                     ${TESTS_SOURCES}
