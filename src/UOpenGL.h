@@ -8,6 +8,10 @@
 #include "UMostraDesenho.h"
 
 #include <QtOpenGL/QGLWidget>
+#include <QMouseEvent>
+
+class CGrafoDesenho;
+class CInfoCircuitos;
 
 //---------------------------------------------------------------------------
 
@@ -20,17 +24,20 @@ protected:
   int DEBUG;
   bool initialized;
   void paintEvent(QPaintEvent *event);
+  void mousePressEvent( QMouseEvent *event );
+  void mouseMoveEvent( QMouseEvent *event );
+  void wheelEvent(QWheelEvent * event);
   QPainter* _painter;
   
   bool primeiro;   
 public:
-  COpenGL(int ClientWidth, int ClientHeight, QWidget *parent);
+  COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos );
   virtual ~COpenGL();
   void Resize(int ClientWidth, int ClientHeight);
+  GLCoords _glCoords;
   CMostraDesenho _mostraDesenho;
 //  void Ortho();
 
-  GLCoords _glCoords;
 };
 //---------------------------------------------------------------------------
 

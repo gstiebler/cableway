@@ -46,9 +46,6 @@ private:
   bool mostraLigacaoEquipamento;
   bool MostrarPontasDeCaboDescon;
   double xBola, yBola, tamBola;
-  //void mousePressEvent( QMouseEvent *event );
-  //void mouseMoveEvent( QMouseEvent *event );
-  //void wheelEvent(QWheelEvent * event);
   void setColorFromLevel( int level );
   void setColor( unsigned char r, unsigned char g, unsigned char b );
   
@@ -66,14 +63,14 @@ private:
   void showBandeirolaEndings();
   void drawTexts();
   QPainter* _painter;
-  GLCoords _glCoords;
+  GLCoords *_glCoords;
   QBrush _brush;
   QPen _pen;
 
 protected:
   bool semCores;   
 public:
-  CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos);
+  CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords);
   ~CMostraDesenho();
   void MostraCircuito(std::shared_ptr<TArestasCircuito> arestasCircuito);
   void ApagaCircuito();

@@ -20,6 +20,7 @@
 #include "UErros.h"
 #include "InterfaceFeedback.h"
 #include "Debug.h"
+#include "UOpenGL.h"
 
 using namespace std;
 
@@ -130,7 +131,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 				shared_ptr<TDesenho> drawing = _mainExecution->_containerDesenhos->getDesenho( n );
 				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
 				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
-				drawingPresenter->_window->_mostraDesenho->MostraDoubleArvore(vertice, vertice2);
+				drawingPresenter->_window->_mostraDesenho->_mostraDesenho.MostraDoubleArvore(vertice, vertice2);
 			}
 		}
 		else // just showing all the drawings

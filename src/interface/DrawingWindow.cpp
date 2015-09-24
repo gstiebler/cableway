@@ -15,7 +15,7 @@ DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<
 {
     setupUi(this);
 
-    _mostraDesenho = new CMostraDesenho( grafoDesenho, infoCircuitos );
+	_mostraDesenho = new COpenGL( 600, 600, this, grafoDesenho, infoCircuitos );
     verticalLayout->addWidget( _mostraDesenho );
 
 	setWindowTitle( drawingName.c_str() );

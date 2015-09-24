@@ -25,11 +25,12 @@ unsigned char pegaVermelho ( int cor )
 }
 
 
-CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos) :
+CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords) :
         bMostraArvore2( false ),
         xBola( -1 ),
         yBola( - 1),
-        tamBola( -1 )
+        tamBola( -1 ),
+		_glCoords( glCoords )
 {
   semCores = false;
 	GrafoDesenho=grafoDesenho;
@@ -56,7 +57,7 @@ CMostraDesenho::~CMostraDesenho()
 void CMostraDesenho::initializeLimits()
 {	
 	float x, y;
-	_glCoords.initializeLimits();
+	_glCoords->initializeLimits();
 	if (GrafoDesenho->_ult > GrafoDesenho->_dados->Multipoint.size())
 		GrafoDesenho->_ult = GrafoDesenho->_dados->Multipoint.size();
 	for (int n=0; n<GrafoDesenho->_ult; n++)
@@ -68,7 +69,7 @@ void CMostraDesenho::initializeLimits()
 			x = points[i].x;
 			y = points[i].y;
 
-			_glCoords.updateLimits( x, y );
+			_glCoords->updateLimits( x, y );
 		}
 	}
 	for ( int i=0; i<GrafoDesenho->_dados->Arcos.size(); i++)
@@ -78,10 +79,10 @@ void CMostraDesenho::initializeLimits()
 
 			double raio = GrafoDesenho->_dados->Arcos[i]->EixoPrimario;
 
-			_glCoords.updateLimits( x + raio, y + raio );
+			_glCoords->updateLimits( x + raio, y + raio );
 	}
 
-	_glCoords.updateProportion();
+	_glCoords->updateProportion();
 }
 
 
@@ -227,11 +228,11 @@ void CMostraDesenho::showTree()
 #define TAMBOLACOLAR (1000)
 		if ( Aresta->_vertices[0]->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords.getWorldWidth() / TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
+			DesenhaBolaFechada(Pontos[0].x, Pontos[0].y, _glCoords->getWorldWidth() / TAMBOLACOLAR, _glCoords->getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 		}
 		if ( Aresta->_vertices[1]->EhColar )
 		{
-			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
+			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords->getWorldWidth()/TAMBOLACOLAR, _glCoords->getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 		}
 	}
 	_pen.setWidth( 1.0 );
@@ -263,7 +264,7 @@ void CMostraDesenho::showTree()
 			{
 				if ( Aresta->_vertices[i]->EhColar )
 				{
-					DesenhaBolaFechada(Pontos[i].x, Pontos[i].y, _glCoords.getWorldWidth()/TAMBOLACOLAR, _glCoords.getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
+					DesenhaBolaFechada(Pontos[i].x, Pontos[i].y, _glCoords->getWorldWidth()/TAMBOLACOLAR, _glCoords->getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 				}
 			}
 		}
@@ -360,8 +361,6 @@ void CMostraDesenho::drawTexts()
 void CMostraDesenho::DrawObjects()
 {
 	setColor( 255, 255, 255);
-
-	AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
 
 	//if (primeiro)
 	//{
@@ -470,7 +469,7 @@ void CMostraDesenho::DesenhaBolaFechada(float x_center, float y_center, float w,
 void CMostraDesenho::EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura)
 {
 	QFont textFont;
-	double canvasWidth = _glCoords.getRight() - _glCoords.getLeft();
+	double canvasWidth = _glCoords->getRight() - _glCoords->getLeft();
     textFont.setPixelSize( 150000 / canvasWidth );
 	_painter->setFont( textFont );
 	_painter->setPen( QPen(Qt::white) );
@@ -480,26 +479,3 @@ void CMostraDesenho::EscreveTexto(string texto, TPonto origem, double rotacao, d
 }
 //---------------------------------------------------------------------------
 
-
-//
-//void CMostraDesenho::mousePressEvent( QMouseEvent *event )
-//{
-//	_glCoords.mousePress( event->x(), event->y() );
-//}
-//
-//
-//
-//void CMostraDesenho::mouseMoveEvent( QMouseEvent *event )
-//{
-//	_glCoords.mouseMove( event->x(), event->y() );
-//	repaint();
-//}
-//
-
-//
-//void CMostraDesenho::wheelEvent(QWheelEvent * event)
-//{
-//	double increase = 1.0 + (event->angleDelta().y() / 1200.0);
-//	_glCoords.incZoom( increase );
-//	repaint();
-//}
