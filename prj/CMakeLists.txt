@@ -52,15 +52,21 @@ set( GRAPH_RELATED_SOURCES
     ${SRC_BASE}/UVerticesArestas.cpp
 )
 
-set( ALL_SOURCES 
-    ${SRC_BASE}/UContainerDesenhos.cpp
+set( CAD_DRAWING_SOURCES
+    ${SRC_BASE}/UListaItensCelula.cpp
+    ${SRC_BASE}/UInfoCelula.cpp
     ${SRC_BASE}/UDadosGenerico.cpp
+)
+
+set( UTILS_SOURCES
+    ${SRC_BASE}/Debug.cpp
     ${SRC_BASE}/UErros.cpp
     ${SRC_BASE}/UGeometria.cpp
-    ${SRC_BASE}/UInfoCelula.cpp
+)
+
+set( ALL_SOURCES 
+    ${SRC_BASE}/UContainerDesenhos.cpp
     ${SRC_BASE}/UInfoCircuitos.cpp
-    ${SRC_BASE}/UListaItensCelula.cpp
-    ${SRC_BASE}/Debug.cpp
     ${SRC_BASE}/InterfaceFeedback.cpp
     ${SRC_BASE}/MainExecution.cpp
     ${SRC_BASE}/Reports.cpp
@@ -70,6 +76,8 @@ set( ALL_SOURCES
     ${USER_PARAMS_SOURCES}
     ${SCREEN_DRAWING_SOURCES}
     ${GRAPH_RELATED_SOURCES}
+    ${CAD_DRAWING_SOURCES}
+    ${UTILS_SOURCES}
 )
 
 source_group( "Source Files\\Presenters" FILES ${PRESENTER_SOURCES} )
@@ -78,6 +86,8 @@ source_group( "Source Files\\FileUtils" FILES ${FILE_UTILS_SOURCES} )
 source_group( "Source Files\\UserParams" FILES ${USER_PARAMS_SOURCES} )
 source_group( "Source Files\\ScreenDrawing" FILES ${SCREEN_DRAWING_SOURCES} )
 source_group( "Source Files\\GraphRelated" FILES ${GRAPH_RELATED_SOURCES} )
+source_group( "Source Files\\CadDrawing" FILES ${CAD_DRAWING_SOURCES} )
+source_group( "Source Files\\Utils" FILES ${UTILS_SOURCES} )
             
 SET( QT_UIS
      ${QT_UI_BASE_PATH}/MainWindow.ui
