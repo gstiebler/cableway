@@ -87,11 +87,4 @@ public:
 };
 //---------------------------------------------------------------------------
 
-float GeraCor()
-{
-#define LUM_MIN 0.2
-#define COMPLEMENTO (1.0-LUM_MIN)/50.0
-	return LUM_MIN + 25 * COMPLEMENTO;
-}
-
 #endif
