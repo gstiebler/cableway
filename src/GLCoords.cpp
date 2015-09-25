@@ -101,6 +101,20 @@ double GLCoords::getWorldHeight() const
 
 
 
+double GLCoords::getWidth() const
+{
+	return (maiorx - menorx) / zoom;
+}
+
+
+
+double GLCoords::getHeight() const
+{
+	return (maiory - menory) / zoom;
+}
+
+
+
 double GLCoords::getLeft() const
 {
 	return xViewCenter - getWorldWidth() / ( 2 * zoom );

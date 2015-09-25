@@ -89,7 +89,15 @@ void CMostraDesenho::initializeLimits()
 
 void CMostraDesenho::setColor( unsigned char r, unsigned char g, unsigned char b )
 {
-	_brush.setColor( QColor( r, g, b ) );
+	_pen.setColor( QColor( r, g, b ) );
+	//_painter->setPen( _pen );
+
+	//_pen.setColor( QColor( 255, 255, 255 ) );
+	_pen.setStyle( Qt::SolidLine );
+	_pen.setWidth( 50 );
+	_painter->setPen( _pen );
+
+	_brush.setColor( QColor( 255, 255, 255 ) );
 	_painter->setBrush( _brush );
 }
 
@@ -127,6 +135,8 @@ void CMostraDesenho::setColorFromLevel( int level )
 
 void CMostraDesenho::drawMultipoints()
 {
+	_pen.setWidth( 2 );
+	_painter->setPen( _pen );
 	for (int n=0; n<GrafoDesenho->_dados->Multipoint.size(); n++)
 			//    for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
 	{
@@ -185,7 +195,7 @@ void CMostraDesenho::showCircuit()
 {
 	TPonto Pontos[2];
 	setColor( pegaVermelho(CORCAMINHO), pegaVerde(CORCAMINHO), pegaAzul(CORCAMINHO) );
-	_pen.setWidth( 3.0 );
+	_pen.setWidth( 3 );
 	_painter->setPen( _pen );
 	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[GrafoDesenho->_dados->_drawing.get()];
 
@@ -202,7 +212,7 @@ void CMostraDesenho::showCircuit()
 		QLineF line( QPoint( Pontos[0].x, Pontos[0].y ), QPoint( Pontos[1].x, Pontos[1].y ) );
 		_painter->drawLine( line );
 	}
-	_pen.setWidth( 1.0 );
+	_pen.setWidth( 1 );
 	_painter->setPen( _pen );
 }
 
@@ -478,7 +488,7 @@ void CMostraDesenho::EscreveTexto(string texto, TPonto origem, double rotacao, d
 {
 	QFont textFont;
 	double canvasWidth = _glCoords->getRight() - _glCoords->getLeft();
-    textFont.setPixelSize( 1500000 / canvasWidth );
+    textFont.setPixelSize( 4500000 / canvasWidth );
 	_painter->setFont( textFont );
 	_painter->setPen( QPen(Qt::white) );
 	QPointF coords( origem.x, origem.y );

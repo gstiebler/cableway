@@ -34,7 +34,6 @@ public:
   void Resize(int ClientWidth, int ClientHeight);
   GLCoords _glCoords;
   CMostraDesenho _mostraDesenho;
-//  void Ortho();
 
 };
 //---------------------------------------------------------------------------

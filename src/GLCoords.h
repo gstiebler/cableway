@@ -37,6 +37,9 @@ public:
 	
 	double getWorldWidth() const;
 	double getWorldHeight() const;
+	
+	double getWidth() const;
+	double getHeight() const;
 
 	int xMousePress, yMousePress;
 	double xViewCenterOnMousePress, yViewCenterOnMousePress;

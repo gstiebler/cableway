@@ -35,6 +35,7 @@ void COpenGL::paintEvent(QPaintEvent *event)
     _painter->begin(this);
     _painter->setRenderHint(QPainter::Antialiasing);
 	_painter->fillRect(event->rect(), QBrush( QColor( 0, 0, 0 ) ) );	
+	_glCoords.resize( event->rect().width(), event->rect().height() );
 	AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
     _mostraDesenho.DrawObjects( _painter );
     _painter->end();
@@ -45,7 +46,7 @@ void COpenGL::paintEvent(QPaintEvent *event)
 
 void COpenGL::AjustaExibicao()
 {
-	QRect rectf( _glCoords.getLeft(), _glCoords.getTop(), _glCoords.getWorldWidth(), _glCoords.getWorldHeight() );
+	QRect rectf( _glCoords.getLeft(), _glCoords.getTop(), _glCoords.getWidth(), _glCoords.getHeight() );
 	_painter->setWindow( rectf );  
 } 
 //---------------------------------------------------------------------------
