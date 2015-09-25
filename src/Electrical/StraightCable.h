@@ -2,13 +2,14 @@
 #define STRAIGHT_CABLE_H__
 
 #include <memory>
+#include "ElectricalElement.h"
 
-class TMultipoint;
+struct TMultipoint;
 
-class StraightCable
+class StraightCable : public ElectricalElement
 {
 public:
-    StraightCable();
+    StraightCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TMultipoint> multipoint );
 	std::shared_ptr<TMultipoint> _multipoint;
 };
 

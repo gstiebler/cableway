@@ -10,62 +10,58 @@ using namespace std;
 
 void ElectricalElementsBuilder::build( std::shared_ptr<CDadosGenerico> drawingData, std::shared_ptr<ElectricalElements> electricalElements )
 {
-	buildStraightCable( drawingData->Multipoint, electricalElements->_straightCables );
-	buildArcCable( drawingData->Arcos, electricalElements->_arcCables );
-	buildInstrumentsArray( drawingData->InfoCelula.ListaCelulasInstrumentos, electricalElements->_instruments );
-	buildBandeirolasArray( drawingData->InfoCelula.ListaCelulasBandeirolas, electricalElements->_bandeirolas );
+	buildStraightCable( drawingData->Multipoint, electricalElements->_straightCables, drawingData->_drawing );
+	buildArcCable( drawingData->Arcos, electricalElements->_arcCables, drawingData->_drawing );
+	buildInstrumentsArray( drawingData->InfoCelula.ListaCelulasInstrumentos, electricalElements->_instruments, drawingData->_drawing );
+	buildBandeirolasArray( drawingData->InfoCelula.ListaCelulasBandeirolas, electricalElements->_bandeirolas, drawingData->_drawing );
 }
 
 
-void ElectricalElementsBuilder::buildStraightCable( vector< shared_ptr<TMultipoint> > &multiPoints, vector< shared_ptr<StraightCable> > &straightCables )
+void ElectricalElementsBuilder::buildStraightCable( vector< shared_ptr<TMultipoint> > &multiPoints, vector< shared_ptr<StraightCable> > &straightCables,
+												   shared_ptr<TDesenho> drawing )
 {
 	for ( auto multiPoint : multiPoints )
     {
         if ( multiPoint->Nivel == CABO )
         {
-			shared_ptr<StraightCable> straightCable = make_shared<StraightCable>();
+			shared_ptr<StraightCable> straightCable = make_shared<StraightCable>( drawing, multiPoint );
 			straightCables.push_back( straightCable );
-			straightCable->_multipoint = multiPoint;
         }
     }
 }
 
 
-void ElectricalElementsBuilder::buildArcCable( std::vector< std::shared_ptr<TArco> > &arcs, std::vector< shared_ptr<ArcCable> > &arcCables )
+void ElectricalElementsBuilder::buildArcCable( std::vector< std::shared_ptr<TArco> > &arcs, std::vector< shared_ptr<ArcCable> > &arcCables,
+												   shared_ptr<TDesenho> drawing )
 {
 	for ( auto arc : arcs )
     {
 		if ( arc->Nivel == CABO )
         {
-			shared_ptr<ArcCable> arcCable = make_shared<ArcCable>();
-			arcCable->_arco = arc;
+			shared_ptr<ArcCable> arcCable = make_shared<ArcCable>( drawing, arc );
 			arcCables.push_back( arcCable );
         }
     }
 }
 
 
-void ElectricalElementsBuilder::buildInstrumentsArray( std::vector<TListaItensCelula> &groupItems, std::vector< std::shared_ptr<Instrument> > &instruments )
+void ElectricalElementsBuilder::buildInstrumentsArray( std::vector<TListaItensCelula> &groupItems, std::vector< std::shared_ptr<Instrument> > &instruments,
+												   shared_ptr<TDesenho> drawing )
 {
 	for( auto groupItem : groupItems )
 	{
-		std::shared_ptr<Instrument> instrument = make_shared<Instrument>();
-		instrument->_arcs = groupItem._arcs;
-		instrument->_multipoints = groupItem._multipoints;
-		instrument->_texts = groupItem._texts;
+		std::shared_ptr<Instrument> instrument = make_shared<Instrument>( drawing, groupItem );
 		instruments.push_back( instrument );
 	}
 }
 
 
-void ElectricalElementsBuilder::buildBandeirolasArray( std::vector<TListaItensCelula> &groupItems, std::vector< std::shared_ptr<Bandeirola> > &bandeirolas )
+void ElectricalElementsBuilder::buildBandeirolasArray( std::vector<TListaItensCelula> &groupItems, std::vector< std::shared_ptr<Bandeirola> > &bandeirolas,
+												   shared_ptr<TDesenho> drawing )
 {
 	for( auto groupItem : groupItems )
 	{
-		std::shared_ptr<Bandeirola> bandeirola = make_shared<Bandeirola>();
-		bandeirola->_arcs = groupItem._arcs;
-		bandeirola->_multipoints = groupItem._multipoints;
-		bandeirola->_texts = groupItem._texts;
+		std::shared_ptr<Bandeirola> bandeirola = make_shared<Bandeirola>( drawing, groupItem );
 		bandeirolas.push_back( bandeirola );
 	}
 }

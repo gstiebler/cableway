@@ -70,6 +70,7 @@ set( ELECTRICAL_SOURCES
     ${SRC_BASE}/Electrical/StraightCable.cpp
     ${SRC_BASE}/Electrical/Instrument.cpp
     ${SRC_BASE}/Electrical/Bandeirola.cpp
+    ${SRC_BASE}/Electrical/ElectricalElement.cpp
 )
 
 set( ALL_SOURCES 

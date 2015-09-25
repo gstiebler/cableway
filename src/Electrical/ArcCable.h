@@ -2,14 +2,15 @@
 #define ARC_CABLE_H__
 
 #include <memory>
+#include "ElectricalElement.h"
 
-class TArco;
+struct TArco;
 
-class ArcCable
+class ArcCable : public ElectricalElement
 {
 public:
-    ArcCable();
-    std::shared_ptr<TArco> _arco;
+    ArcCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> arc );
+    std::shared_ptr<TArco> _arc;
 };
 
 #endif
