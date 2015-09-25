@@ -15,13 +15,13 @@ void ElectricalElementsBuilder::build( std::shared_ptr<CDadosGenerico> drawingDa
 
 void ElectricalElementsBuilder::buildStraightCable( vector< shared_ptr<TMultipoint> > &multiPoints, vector< shared_ptr<StraightCable> > &straightCables )
 {
-	for (int n = 0; n < multiPoints.size(); n++)
+	for ( auto multiPoint : multiPoints )
     {
-        if ( multiPoints[n]->Nivel == CABO )
+        if ( multiPoint->Nivel == CABO )
         {
 			shared_ptr<StraightCable> straightCable = make_shared<StraightCable>();
 			straightCables.push_back( straightCable );
-			straightCable->_multipoint = multiPoints[n];
+			straightCable->_multipoint = multiPoint;
         }
     }
 }
@@ -29,12 +29,12 @@ void ElectricalElementsBuilder::buildStraightCable( vector< shared_ptr<TMultipoi
 
 void ElectricalElementsBuilder::buildArcCable( std::vector< std::shared_ptr<TArco> > &arcs, std::vector< shared_ptr<ArcCable> > &arcCables )
 {
-	for (int n = 0; n < arcs.size(); n++)
+	for ( auto arc : arcs )
     {
-		if ( arcs[n]->Nivel == CABO )
+		if ( arc->Nivel == CABO )
         {
 			shared_ptr<ArcCable> arcCable = make_shared<ArcCable>();
-			arcCable->_arco = arcs[n];
+			arcCable->_arco = arc;
 			arcCables.push_back( arcCable );
         }
     }
