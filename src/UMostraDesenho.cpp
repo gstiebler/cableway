@@ -366,41 +366,39 @@ void CMostraDesenho::DrawObjects( QPainter *painter )
 	_brush.setColor( QColor(64, 255, 64) );
 	_painter->setBrush( _brush );
 	_painter->setPen( _pen );
-    painter->fillRect(QRect( 0, 0, 600, 600 ), QColor(64, 32, 64));
+	QRect rect( _glCoords->getLeft(), _glCoords->getRight(), _glCoords->getWorldWidth(), _glCoords->getWorldHeight() );
+	painter->fillRect( rect, QColor(64, 255, 64));
 
-	//setColor( 255, 255, 255);
+	setColor( 255, 255, 255);
 
-	////if (primeiro)
-	////{
-	////	glNewList(1, GL_COMPILE);
-	//	//LINHAS
-	//	drawMultipoints();
+		//LINHAS
+		drawMultipoints();
 
-	//	//ARCOS
-	//	drawArcs();
+		//ARCOS
+		drawArcs();
 
-	//	if (ExibirCircuito)
-	//		showCircuit();
+		if (ExibirCircuito)
+			showCircuit();
 
-	//	if (bMostraArvore)
-	//		showTree();
+		if (bMostraArvore)
+			showTree();
 
-	//	// Facilitar pontas de cabo desconectadas
-	//	if ( MostrarPontasDeCaboDescon )
-	//		showDisconnectedCircuitEndings();
+		// Facilitar pontas de cabo desconectadas
+		if ( MostrarPontasDeCaboDescon )
+			showDisconnectedCircuitEndings();
 
-	//	if ( facilitarVerBandeirola )
-	//		showBandeirolaEndings();
+		if ( facilitarVerBandeirola )
+			showBandeirolaEndings();
 
-	//	//TEXTOS
-	//	drawTexts();
+		//TEXTOS
+		drawTexts();
 
-	//	if (bMostraBola)
-	//	{
-	//		setColor( 0, 0, 255 );
-	//		DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI );
-	//	}
-	//	
+		if (bMostraBola)
+		{
+			setColor( 0, 0, 255 );
+			DesenhaBolaFechada(xBola, yBola, tamBola, tamBola, 0, 2*M_PI );
+		}
+		
 	_painter = NULL;
 }
 //---------------------------------------------------------------------------
@@ -480,7 +478,7 @@ void CMostraDesenho::EscreveTexto(string texto, TPonto origem, double rotacao, d
 {
 	QFont textFont;
 	double canvasWidth = _glCoords->getRight() - _glCoords->getLeft();
-    textFont.setPixelSize( 150000 / canvasWidth );
+    textFont.setPixelSize( 1500000 / canvasWidth );
 	_painter->setFont( textFont );
 	_painter->setPen( QPen(Qt::white) );
 	QPointF coords( origem.x, origem.y );

@@ -15,7 +15,7 @@ class CInfoCircuitos;
 
 //---------------------------------------------------------------------------
 
-class COpenGL : public QGLWidget
+class COpenGL : public QWidget
 {
 protected:
   int PixelFormat;

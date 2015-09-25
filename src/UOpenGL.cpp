@@ -3,7 +3,7 @@
 #include "UOpenGL.h"
 
 COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos) : 
-        QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
+        QWidget( parent),
 		_glCoords( ClientWidth, ClientHeight ),
 		_mostraDesenho( grafoDesenho, infoCircuitos, &_glCoords )
 {
@@ -25,8 +25,6 @@ COpenGL::~COpenGL()
 void COpenGL::Resize(int ClientWidth, int ClientHeight)
 {
 	_glCoords.resize( ClientWidth, ClientHeight );
-	_painter->setViewport(0, 0, _glCoords.canvasWidth, _glCoords.canvasHeight);
-	AjustaExibicao();
 }
 //---------------------------------------------------------------------------
 
@@ -35,22 +33,22 @@ void COpenGL::paintEvent(QPaintEvent *event)
 {
 	_painter = new QPainter();
     _painter->begin(this);
-    _painter->setRenderHint(QPainter::Antialiasing);	
-	//AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
+    _painter->setRenderHint(QPainter::Antialiasing);
+	_painter->fillRect(event->rect(), QBrush( QColor( 0, 0, 0 ) ) );	
+	AjustaExibicao();//DESLOCA IMAGEM E D� ZOOM
     _mostraDesenho.DrawObjects( _painter );
     _painter->end();
 	delete _painter;
+	_painter = NULL;
 }
 
 
 void COpenGL::AjustaExibicao()
 {
 	QRect rectf( _glCoords.getLeft(), _glCoords.getTop(), _glCoords.getWorldWidth(), _glCoords.getWorldHeight() );
-	_painter->setViewport( rectf );
-}
+	_painter->setWindow( rectf );  
+} 
 //---------------------------------------------------------------------------
-
-
 
 
 void COpenGL::mousePressEvent( QMouseEvent *event )
