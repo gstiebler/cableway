@@ -16,7 +16,7 @@ CCaboReta::CCaboReta()
 //---------------------------------------------------------------------------
 
 CCaboReta::~CCaboReta()
-{
+{ 
 }
 //---------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ void CCaboReta::AdicionaVertice(shared_ptr<TVerticeGeral> Vertice)
 	VerticesReta.push_back( Vertice );
 }
 //---------------------------------------------------------------------------
-
+ 
 //Retorna verdadeiro se o ponto recebido está próximo ao primeiro ponto do vetor
 bool CCaboReta::EhOPrimeiroPonto( TPonto ponto )
 {
