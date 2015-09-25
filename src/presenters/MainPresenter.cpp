@@ -12,7 +12,7 @@
 #include <MainExecution.h>
 #include "DrawingPresenter.h"
 #include "interface/DrawingWindow.h"
-#include "UMostraDesenho.h"
+#include "ScreenDrawing/UMostraDesenho.h"
 #include <UContainerDesenhos.h>
 #include "Reports.h"
 #include "TDesenho.h"
@@ -20,7 +20,7 @@
 #include "UErros.h"
 #include "InterfaceFeedback.h"
 #include "Debug.h"
-#include "UOpenGL.h"
+#include "ScreenDrawing/UOpenGL.h"
 
 using namespace std;
 

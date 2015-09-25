@@ -41,9 +41,9 @@ set( USER_PARAMS_SOURCES
 )
 
 set( SCREEN_DRAWING_SOURCES
-    ${SRC_BASE}/UMostraDesenho.cpp
-    ${SRC_BASE}/UOpenGL.cpp
-    ${SRC_BASE}/GLCoords.cpp
+    ${SRC_BASE}/ScreenDrawing/UMostraDesenho.cpp
+    ${SRC_BASE}/ScreenDrawing/UOpenGL.cpp
+    ${SRC_BASE}/ScreenDrawing/GLCoords.cpp
 )
 
 set( GRAPH_RELATED_SOURCES

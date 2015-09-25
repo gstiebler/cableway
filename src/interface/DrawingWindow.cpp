@@ -7,7 +7,7 @@
 
 #include "DrawingWindow.h"
 
-#include "UOpenGL.h"
+#include "ScreenDrawing/UOpenGL.h"
 
 using namespace std;
 

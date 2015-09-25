@@ -6,8 +6,8 @@
  */
 
 #include "DrawingPresenter.h"
-#include "UMostraDesenho.h"
-#include "UOpenGL.h"
+#include "ScreenDrawing/UMostraDesenho.h"
+#include "ScreenDrawing/UOpenGL.h"
 
 #include <interface/DrawingWindow.h>
 
