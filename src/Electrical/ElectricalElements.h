@@ -13,8 +13,8 @@ struct ElectricalElements
 {
     std::vector< std::shared_ptr<ArcCable> > _arcCables;
     std::vector< std::shared_ptr<StraightCable> > _straightCables;
-    std::vector< std::shared_ptr<Instrument> > _arcInstruments;
-    std::vector< std::shared_ptr<Bandeirola> > _arcBandeirolas;
+    std::vector< std::shared_ptr<Instrument> > _instruments;
+    std::vector< std::shared_ptr<Bandeirola> > _bandeirolas;
 };
 
 #endif

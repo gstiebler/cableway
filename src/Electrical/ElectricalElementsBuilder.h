@@ -3,10 +3,13 @@
 
 #include <memory>
 #include "ElectricalElements.h"
+#include "UListaItensCelula.h"
 
 class CDadosGenerico;
 class StraightCable;
 class ArcCable;
+class Instrument;
+class Bandeirola;
 struct TMultipoint;
 struct TArco;
 
@@ -28,6 +31,16 @@ private:
 	 * Builds the arc cables array
 	 */
 	static void buildArcCable( std::vector< std::shared_ptr<TArco> > &arcs, std::vector< std::shared_ptr<ArcCable> > &arcCables );
+
+	/**
+	 * Builds the instruments array
+	 */
+	static void buildInstrumentsArray( std::vector<TListaItensCelula> &groupItems, std::vector< std::shared_ptr<Instrument> > &instruments );
+
+	/**
+	 * Builds the bandeirolas array
+	 */
+	static void buildBandeirolasArray( std::vector<TListaItensCelula> &groupItems, std::vector< std::shared_ptr<Bandeirola> > &bandeirolas );
 };
 
 #endif
