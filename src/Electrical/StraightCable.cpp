@@ -17,3 +17,8 @@ StraightCable::StraightCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr
 		_edges[i]->pos = _multipoint->pontos[i];
 	}
 }
+
+
+void StraightCable::connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges )
+{
+}

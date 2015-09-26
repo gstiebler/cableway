@@ -19,3 +19,8 @@ ArcCable::ArcCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> ar
 		_edges[i]->pos = p[i];
 	}
 } 
+
+
+void ArcCable::connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges )
+{
+}

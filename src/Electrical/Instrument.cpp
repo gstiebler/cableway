@@ -7,3 +7,8 @@ Instrument::Instrument( std::shared_ptr<TDesenho> drawing, TListaItensCelula &gr
 	_texts( groupItems._texts )
 {
 }
+
+
+void Instrument::connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges )
+{
+}
