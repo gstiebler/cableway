@@ -21,7 +21,8 @@ public:
 	/**
 	 * Generates the electrical elements from the drawing data
 	 */
-	ElectricalElementsBuilder( std::shared_ptr<Graph> graph, std::shared_ptr<CDadosGenerico> drawingData, std::shared_ptr<ElectricalElements> electricalElements );
+	ElectricalElementsBuilder( std::shared_ptr<Graph> graph, std::shared_ptr<CDadosGenerico> drawingData, 
+					std::shared_ptr<ElectricalElements> electricalElements );
 
 	void build();
 

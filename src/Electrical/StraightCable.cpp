@@ -3,6 +3,7 @@
 #include "UDadosGenerico.h"
 #include "UDefines.h"
 #include "Graph.h"
+#include "UGeometria.h"
 
 using namespace std;
 
@@ -31,4 +32,13 @@ void StraightCable::initializeEdges()
 
 void StraightCable::connectEdge( shared_ptr<TVerticeGeral> edge )
 {
+	const double MIN_DIST = 10e-1;
+	TPonto line[2];
+	for( int i(0); i < 2; ++i )
+		line[i] = _multipoint->pontos[i];
+
+	TPonto pointInLine;
+	double distance = DistPontoParaSegmentoReta( line, edge->pos, pointInLine  );
+	if( distance < MIN_DIST ) // if the edge is over a line of the cable, add this edge
+		_edges.push_back( edge );
 }
