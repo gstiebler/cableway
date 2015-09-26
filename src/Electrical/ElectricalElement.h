@@ -9,7 +9,7 @@ class ElectricalElement
 public:
     ElectricalElement( std::shared_ptr<TDesenho> drawing );
     
-private:
+protected:
     std::shared_ptr<TDesenho> _drawing;
 };
 

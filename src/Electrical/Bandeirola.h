@@ -18,6 +18,9 @@ public:
    	std::vector< std::shared_ptr<TTexto> > _texts;
 	std::vector< std::shared_ptr<TArco> > _arcs;
 	std::vector< std::shared_ptr<TMultipoint> > _multipoints;
+
+private:
+	void initializeEdges();
 };
 
 #endif

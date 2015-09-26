@@ -8,5 +8,11 @@ Bandeirola::Bandeirola( std::shared_ptr<TDesenho> drawing, TListaItensCelula &gr
 	_multipoints( groupItems._multipoints ),
 	_texts( groupItems._texts )
 {
+    initializeEdges();
+}
+
+
+void Bandeirola::initializeEdges()
+{
 	_edges.resize( _texts.size() );
 }

@@ -10,6 +10,9 @@ class GeometricEdges
 {
 public:
     std::vector< std::shared_ptr<TVerticeGeral> > _edges;
+    
+protected:
+    virtual void initializeEdges() = 0;
 };
 
 #endif

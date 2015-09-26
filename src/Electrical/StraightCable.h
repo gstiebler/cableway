@@ -16,6 +16,7 @@ public:
 
 private:
 	void connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges );
+	void initializeEdges();
 };
 
 #endif

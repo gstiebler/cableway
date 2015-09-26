@@ -7,6 +7,12 @@ ArcCable::ArcCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> ar
 	ElectricalElement( drawing ), 
 	_arc( arc )
 {
+    initializeEdges();
+} 
+
+
+void ArcCable::initializeEdges()
+{
 	TPonto p[2];
     _arc->PontasArco( p );
 	_edges.resize( 2 );
@@ -15,10 +21,10 @@ ArcCable::ArcCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> ar
 		_edges[i] = make_shared<TVerticeGeral>();
 		_edges[i]->TipoVertice = VERTICE_ARCO;
 		_edges[i]->TipoElemento = INSTRUMENTO;
-		_edges[i]->drawing = drawing;
+		_edges[i]->drawing = _drawing;
 		_edges[i]->pos = p[i];
 	}
-} 
+}
 
 
 void ArcCable::connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges )
