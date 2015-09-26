@@ -62,6 +62,9 @@ void ElectricalElementsBuilder::buildBandeirolasArray( std::vector<TListaItensCe
 	for( auto groupItem : groupItems )
 	{
 		std::shared_ptr<Bandeirola> bandeirola = make_shared<Bandeirola>( drawing, groupItem );
+		if( !bandeirola->isValid() )
+			continue;
+
 		bandeirolas.push_back( bandeirola );
 	}
 }

@@ -6,6 +6,7 @@
 #include "UListaItensCelula.h"
 #include "ElectricalElement.h"
 #include "GeometricEdges.h"
+#include "UDefines.h"
 
 struct TTexto;
 struct TArco;
@@ -19,8 +20,21 @@ public:
 	std::vector< std::shared_ptr<TArco> > _arcs;
 	std::vector< std::shared_ptr<TMultipoint> > _multipoints;
 
+	/**
+	 * Returns true if the bandeirola is ok
+	 */
+	bool isValid();
+
 private:
 	void initializeEdges();
+
+	/**
+	 * Returns the free edges from internal elements
+	 */
+	void getFreeInternalEdges( std::vector<TPonto> &internalEdges );
+
+	/** Indicates if the bandeirola has all necessary geometry components */
+	bool _isValid;
 };
 
 #endif
