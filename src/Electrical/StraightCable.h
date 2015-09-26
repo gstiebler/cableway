@@ -12,11 +12,13 @@ class StraightCable : public ElectricalElement, public GeometricEdges, public Ed
 {
 public:
     StraightCable( std::shared_ptr<Graph> graph, std::shared_ptr<TDesenho> drawing, std::shared_ptr<TMultipoint> multipoint );
+	void generateEdges();
 	std::shared_ptr<TMultipoint> _multipoint;
 
 private:
 	void connectEdge( std::shared_ptr<TVerticeGeral> edge );
 	void initializeEdges();
+	void sortEdges();
 };
 
 #endif

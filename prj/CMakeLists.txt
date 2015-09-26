@@ -48,6 +48,7 @@ set( SCREEN_DRAWING_SOURCES
 
 set( GRAPH_RELATED_SOURCES
     ${SRC_BASE}/Graph.cpp
+    ${SRC_BASE}/GraphBuilder.cpp
     ${SRC_BASE}/UGrafoDesenho.cpp
     ${SRC_BASE}/UVerticesArestas.cpp
 )

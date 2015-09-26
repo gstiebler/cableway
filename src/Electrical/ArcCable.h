@@ -4,19 +4,18 @@
 #include <memory>
 #include "ElectricalElement.h"
 #include "GeometricEdges.h"
-#include "EdgeConnector.h"
 
 struct TArco;
 
-class ArcCable : public ElectricalElement, public GeometricEdges, public EdgeConnector
+class ArcCable : public ElectricalElement, public GeometricEdges
 {
 public:
     ArcCable( std::shared_ptr<Graph> graph, std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> arc );
     std::shared_ptr<TArco> _arc;
 
 private:
-	void connectEdge( std::shared_ptr<TVerticeGeral> edge );
 	void initializeEdges();
+	void addInternalEdge();
 };
 
 #endif

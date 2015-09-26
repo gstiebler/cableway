@@ -15,7 +15,6 @@ Bandeirola::Bandeirola( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, T
 	_isValid( true )
 {
     initializeEdges();
-	// TODO mostrar erros quando bandeirola não tem texto ou tem mais de um texto
 }
 
 

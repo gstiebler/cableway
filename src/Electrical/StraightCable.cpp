@@ -42,3 +42,27 @@ void StraightCable::connectEdge( shared_ptr<TVerticeGeral> edge )
 	if( distance < MIN_DIST ) // if the edge is over a line of the cable, add this edge
 		_edges.push_back( edge );
 }
+
+
+void StraightCable::sortEdges()
+{            
+	double DifX = fabs( _multipoint->pontos[0].x - _multipoint->pontos[1].x );
+    double DifY = fabs( _multipoint->pontos[0].y - _multipoint->pontos[1].y );
+
+	auto orderFunc = DifY > DifX ? OrdenaRetaVertical : OrdenaRetaHorizontal;
+    sort( _edges.begin(), _edges.end(), orderFunc );
+}
+
+
+void StraightCable::generateEdges()
+{
+	sortEdges();
+
+	for ( int i(0); i < _edges.size() - 1; ++i ) 
+    {
+		shared_ptr<TAresta> Aresta = make_shared<TAresta>( _multipoint->layerName );
+		Aresta->AdicionaVertices( _edges[i], _edges[i + 1], DistPontos( _edges[i]->pos, _edges[i + 1]->pos ) );
+		Aresta->_drawing = _drawing;
+		_graph->_arestas.push_back( Aresta );
+    }
+}
