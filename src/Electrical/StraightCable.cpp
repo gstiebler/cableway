@@ -2,6 +2,7 @@
 
 #include "UDadosGenerico.h"
 #include "UDefines.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ void StraightCable::initializeEdges()
 		_edges[i]->TipoElemento = INSTRUMENTO;
 		_edges[i]->drawing = _drawing;
 		_edges[i]->pos = _multipoint->pontos[i];
+		_graph->_verticesGerais->Adiciona( _edges[i] );
 	}
 }
 

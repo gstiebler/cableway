@@ -4,6 +4,8 @@
 #include "UErros.h"
 #include "TDesenho.h"
 #include "UGeometria.h"
+#include "Graph.h"
+
 
 Bandeirola::Bandeirola( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems ) :
 	ElectricalElement( graph, drawing ), 
@@ -63,6 +65,8 @@ void Bandeirola::initializeEdges()
 		PontoMaisDistante( _texts[0]->origem, internalEdges, farthestPoint );
 		_edges[0]->pos = farthestPoint;
 	}
+	
+	_graph->_verticesGerais->Adiciona( _edges[0] );
 }
 
 

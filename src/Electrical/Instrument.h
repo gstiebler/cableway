@@ -22,9 +22,10 @@ public:
 
 private:
 	void connectEdge( std::shared_ptr<TVerticeGeral> edge );
+	void createColarEdge();
 	TPonto getCenter() const;
 	void initializeEdges();
-	std::vector< std::shared_ptr<TVerticeGeral> > instrumentVertices;
+	std::vector< std::shared_ptr<TVerticeGeral> > _instrumentVertices;
 };
 
 #endif

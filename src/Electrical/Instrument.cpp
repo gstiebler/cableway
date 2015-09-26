@@ -4,6 +4,7 @@
 #include <algorithm> 
 #include "UVerticesArestas.h"
 #include "UDadosGenerico.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -14,23 +15,38 @@ Instrument::Instrument( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, T
 	_texts( groupItems._texts )
 {
 	initializeEdges();
+	createColarEdge();
 }
 
 
 void Instrument::initializeEdges()
 {
-	instrumentVertices.resize( _texts.size() );
+	_instrumentVertices.resize( _texts.size() );
 	TPonto center = getCenter();
 	//para cada texto da célula cria um vértice
 	for ( int i(0); i < _texts.size(); ++i )
     {
-        instrumentVertices[i] = make_shared<TVerticeGeral>();
-        instrumentVertices[i]->TipoElemento = INSTRUMENTO;
-		instrumentVertices[i]->drawing = _drawing;
-        instrumentVertices[i]->texto = _texts[i]->texto;
-        instrumentVertices[i]->pos = center;
-        instrumentVertices[i]->TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
+        _instrumentVertices[i] = make_shared<TVerticeGeral>();
+        _instrumentVertices[i]->TipoElemento = INSTRUMENTO;
+		_instrumentVertices[i]->drawing = _drawing;
+        _instrumentVertices[i]->texto = _texts[i]->texto;
+        _instrumentVertices[i]->pos = center;
+        _instrumentVertices[i]->TipoVertice = VERTICE_CENTRO_INSTRUMENTO;
+		_graph->_verticesGerais->Adiciona( _instrumentVertices[i] );
     }
+}
+
+
+void Instrument::createColarEdge()
+{
+	if( _instrumentVertices.size() == 2 )
+	{        
+		shared_ptr<TAresta> Aresta = make_shared<TAresta>( "" );
+		// the 0.1 is used for this edge not to be the preferred one sometimes
+        Aresta->AdicionaVertices( _instrumentVertices[0], _instrumentVertices[1], 0.1 );
+        Aresta->_drawing = _drawing;
+		_graph->_arestas.push_back( Aresta );
+	}
 }
 
 
