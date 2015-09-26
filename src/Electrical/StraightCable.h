@@ -15,7 +15,7 @@ public:
 	std::shared_ptr<TMultipoint> _multipoint;
 
 private:
-	void connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges );
+	void connectEdge( std::shared_ptr<TVerticeGeral> edge );
 	void initializeEdges();
 };
 

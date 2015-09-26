@@ -25,6 +25,6 @@ void StraightCable::initializeEdges()
 }
 
 
-void StraightCable::connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges )
+void StraightCable::connectEdge( std::shared_ptr<TVerticeGeral> edge )
 {
 }

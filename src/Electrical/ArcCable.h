@@ -15,7 +15,7 @@ public:
     std::shared_ptr<TArco> _arc;
 
 private:
-	void connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges );
+	void connectEdge( std::shared_ptr<TVerticeGeral> edge );
 	void initializeEdges();
 };
 

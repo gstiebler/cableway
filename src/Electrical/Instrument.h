@@ -21,7 +21,7 @@ public:
 	std::vector< std::shared_ptr<TMultipoint> > _multipoints;
 
 private:
-	void connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges );
+	void connectEdge( std::shared_ptr<TVerticeGeral> edge );
 	TPonto getCenter() const;
 	void initializeEdges();
 	std::vector< std::shared_ptr<TVerticeGeral> > instrumentVertices;

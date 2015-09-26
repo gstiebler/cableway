@@ -68,7 +68,6 @@ TPonto Instrument::getCenter() const
 }
 
 
-void Instrument::connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges )
+void Instrument::connectEdge( shared_ptr<TVerticeGeral> edge )
 {
-
 }

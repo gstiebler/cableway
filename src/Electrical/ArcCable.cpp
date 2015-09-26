@@ -27,6 +27,6 @@ void ArcCable::initializeEdges()
 }
 
 
-void ArcCable::connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges )
+void ArcCable::connectEdge( shared_ptr<TVerticeGeral> edge )
 {
 }
