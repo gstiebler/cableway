@@ -6,6 +6,7 @@
 #include "UListaItensCelula.h"
 #include "ElectricalElement.h"
 #include "EdgeConnector.h"
+#include "UDefines.h"
 
 struct TTexto;
 struct TArco;
@@ -21,6 +22,9 @@ public:
 
 private:
 	void connectEdges( std::vector< std::shared_ptr<TVerticeGeral> >& edges );
+	TPonto getCenter() const;
+	void initializeEdges();
+	std::vector< std::shared_ptr<TVerticeGeral> > instrumentVertices;
 };
 
 #endif
