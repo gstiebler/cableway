@@ -11,7 +11,7 @@ struct TArco;
 class ArcCable : public ElectricalElement, public GeometricEdges, public EdgeConnector
 {
 public:
-    ArcCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> arc );
+    ArcCable( std::shared_ptr<Graph> graph, std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> arc );
     std::shared_ptr<TArco> _arc;
 
 private:

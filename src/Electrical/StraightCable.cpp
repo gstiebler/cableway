@@ -3,8 +3,10 @@
 #include "UDadosGenerico.h"
 #include "UDefines.h"
 
-StraightCable::StraightCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TMultipoint> multipoint ) :
-	ElectricalElement( drawing ), 
+using namespace std;
+
+StraightCable::StraightCable( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, shared_ptr<TMultipoint> multipoint ) :
+	ElectricalElement( graph, drawing ), 
 	_multipoint( multipoint )
 {
     initializeEdges();
@@ -25,6 +27,6 @@ void StraightCable::initializeEdges()
 }
 
 
-void StraightCable::connectEdge( std::shared_ptr<TVerticeGeral> edge )
+void StraightCable::connectEdge( shared_ptr<TVerticeGeral> edge )
 {
 }

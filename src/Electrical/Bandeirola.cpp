@@ -5,8 +5,8 @@
 #include "TDesenho.h"
 #include "UGeometria.h"
 
-Bandeirola::Bandeirola( std::shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems ) :
-	ElectricalElement( drawing ), 
+Bandeirola::Bandeirola( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems ) :
+	ElectricalElement( graph, drawing ), 
 	_arcs( groupItems._arcs ),
 	_multipoints( groupItems._multipoints ),
 	_texts( groupItems._texts ),

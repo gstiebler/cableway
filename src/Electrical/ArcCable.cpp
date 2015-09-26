@@ -3,8 +3,8 @@
 #include "UDadosGenerico.h"
 #include "UDefines.h"
 
-ArcCable::ArcCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> arc ) :
-	ElectricalElement( drawing ), 
+ArcCable::ArcCable( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, shared_ptr<TArco> arc ) :
+	ElectricalElement( graph, drawing ), 
 	_arc( arc )
 {
     initializeEdges();

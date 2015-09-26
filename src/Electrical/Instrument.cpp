@@ -7,8 +7,8 @@
 
 using namespace std;
 
-Instrument::Instrument( std::shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems ) :
-	ElectricalElement( drawing ), 
+Instrument::Instrument( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems ) :
+	ElectricalElement( graph, drawing ), 
 	_arcs( groupItems._arcs ),
 	_multipoints( groupItems._multipoints ),
 	_texts( groupItems._texts )
@@ -70,4 +70,5 @@ TPonto Instrument::getCenter() const
 
 void Instrument::connectEdge( shared_ptr<TVerticeGeral> edge )
 {
+
 }

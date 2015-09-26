@@ -15,7 +15,7 @@ struct TMultipoint;
 class Instrument : public ElectricalElement, public EdgeConnector
 {
 public:
-	Instrument( std::shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems );
+	Instrument( std::shared_ptr<Graph> graph, std::shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems );
 	std::vector< std::shared_ptr<TTexto> > _texts;
 	std::vector< std::shared_ptr<TArco> > _arcs;
 	std::vector< std::shared_ptr<TMultipoint> > _multipoints;
