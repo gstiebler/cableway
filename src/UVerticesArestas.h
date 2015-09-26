@@ -46,7 +46,7 @@ struct TVerticeGeral
 	void removeEdges();
 
 	TPonto pos;
-	int TipoElemento;
+	TTipoElemento TipoElemento;
 	shared_ptr<TListaVerticesEArestas> ListaVerticesEArestas;
 	string texto;
 	shared_ptr<TDesenho> drawing;

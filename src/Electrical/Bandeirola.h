@@ -5,12 +5,13 @@
 #include <memory>
 #include "UListaItensCelula.h"
 #include "ElectricalElement.h"
+#include "GeometricEdges.h"
 
 struct TTexto;
 struct TArco;
 struct TMultipoint;
 
-class Bandeirola : public ElectricalElement
+class Bandeirola : public ElectricalElement, public GeometricEdges
 {
 public:
 	Bandeirola( std::shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems ) ;

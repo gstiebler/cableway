@@ -9,6 +9,7 @@ ArcCable::ArcCable( std::shared_ptr<TDesenho> drawing, std::shared_ptr<TArco> ar
 {
 	TPonto p[2];
     _arc->PontasArco( p );
+	_edges.resize( 2 );
 	for( int i(0); i < 2; ++i )
 	{
 		_edges[i] = make_shared<TVerticeGeral>();
