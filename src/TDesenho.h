@@ -4,10 +4,13 @@
 //---------------------------------------------------------------------------
 #include <string>
 
-class CGrafoDesenho;
+class CDadosGenerico;
+class Graph;
+
 struct TDesenho
 {
-  shared_ptr<CGrafoDesenho> GrafoDesenho;
+	std::shared_ptr<CDadosGenerico> _dados;
+	shared_ptr<Graph> _graph;
   string NomeArquivo;
   double Altura;
 };

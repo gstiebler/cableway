@@ -4,19 +4,24 @@
 #include "UErros.h"
 #include "TDesenho.h"
 #include "Graph.h"
+#include "Electrical/ElectricalElementsBuilder.h"
+#include "GraphBuilder.h"
 
+using namespace std;
 
 void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, string fileName )
 {
     // Cria um novo desenho
     shared_ptr<TDesenho> desenho = make_shared<TDesenho>();
-
-    // O Id
 	dados->_drawing = desenho;
-
-    // E o ID
     desenho->Altura = altura;
-    desenho->GrafoDesenho = make_shared<CGrafoDesenho>( make_shared<Graph>(), dados);
+	desenho->_dados = dados;
+	desenho->_graph =  make_shared<Graph>();
+	auto electricalElements = make_shared<ElectricalElements>();
+
+	ElectricalElementsBuilder elementsBuilder( desenho->_graph, dados, electricalElements );
+	elementsBuilder.build();
+	GraphBuilder::build( desenho->_graph, electricalElements );
 	desenho->NomeArquivo = fileName;
 
     ListaDesenhos.push_back( desenho );
@@ -45,9 +50,9 @@ bool CContainerDesenhos::verificaTexto(string str)
   for ( int j = 0 ; j < NumDesenhos() ; j++ )
   {
     shared_ptr<TDesenho> pnt = getDesenho(j);
-    for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
+    for ( int i = 0 ; i < (int)pnt->_dados->Textos.size() ; i++ )
     {
-      if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == str )
+      if ( pnt->_dados->Textos[i]->texto == str )
       {
         exists = true;
         break;
@@ -65,7 +70,7 @@ void CContainerDesenhos::Conclui()
 	_graph = make_shared<Graph>();
 	for( int i(0); i < ListaDesenhos.size(); ++i)
 	{
-		_graph->merge( ListaDesenhos[i]->GrafoDesenho->_graph );
+		_graph->merge( ListaDesenhos[i]->_graph );
 	}
 
     if (ListaDesenhos.size() > 1)
@@ -128,9 +133,9 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
         {
           shared_ptr<TDesenho> pnt = getDesenho(j);
-          for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
+          for ( int i = 0 ; i < (int)pnt->_dados->Textos.size() ; i++ )
           {
-            if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Origem )
+            if ( pnt->_dados->Textos[i]->texto == Circuito.Origem )
             {
               exists = true;
               break;
@@ -154,9 +159,9 @@ void CContainerDesenhos::MostraCircuito(string circuito)
         for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
         {
           shared_ptr<TDesenho> pnt = getDesenho(j);
-          for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
+          for ( int i = 0 ; i < (int)pnt->_dados->Textos.size() ; i++ )
           {
-            if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Destino )
+            if ( pnt->_dados->Textos[i]->texto == Circuito.Destino )
             {
               exists = true;
               break;

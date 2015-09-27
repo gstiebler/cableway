@@ -113,7 +113,6 @@ public:
   //para por exemplo ter um limiar do quanto uma ponta de cabo pode ser separada da outra
   double _mediaRaioCaboArco;
   double _distMinElemCaboPraOpenGL;
-  CGrafoDesenho( shared_ptr<Graph> graph, std::shared_ptr<CDadosGenerico> Dados);
 //  CGrafoDesenho(TParamsGrafoDesenho &ParamsGrafoDesenho, TInterfaceMainPar &imp);
   ~CGrafoDesenho();
 

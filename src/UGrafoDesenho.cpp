@@ -71,30 +71,6 @@ bool CCaboReta::EhOUltimoPonto( TPonto ponto )
 
 //---------------------------------------------------------------------------
 
-CGrafoDesenho::CGrafoDesenho( shared_ptr<Graph> graph, std::shared_ptr<CDadosGenerico> Dados) :
-	_graph( graph )
-{
-    // Cria um DadosGenerico para ser usado
-    this->_dados = Dados;
-
-    unsigned int n;
-    memset( TipoElementoCor, 0, NUM_CORES * sizeof(TTipoElemento) );
-
-    //O vértice 0 não pode ser usado, por isso adiciona-se este vértice vazio
-    shared_ptr<TVerticeGeral> temp = make_shared<TVerticeGeral>();
-    _graph->_verticesGerais->Adiciona( temp );
-
-    GeraListaCabos();
-    GeraVerticesBandeirola();
-    GeraVerticesArcos();
-    GeraVerticesPontaCabos();
-    GeraVerticesInstrumentos();
-    OrdenaVerticesRetas();
-    GeraArestas();
-
-    _ult = Dados->Multipoint.size();
-}
-//---------------------------------------------------------------------------
 
 CGrafoDesenho::~CGrafoDesenho()
 {
