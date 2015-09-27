@@ -5,6 +5,7 @@
 #include "UVerticesArestas.h"
 #include "UDadosGenerico.h"
 #include "Graph.h"
+#include "UGeometria.h"
 
 using namespace std;
 
@@ -84,7 +85,28 @@ TPonto Instrument::getCenter() const
 }
 
 
-void Instrument::connectEdge( shared_ptr<TVerticeGeral> edge )
+void Instrument::connectEdge( shared_ptr<TVerticeGeral> geometricEdge )
 {
-
+	const double MIN_DIST = 10e-1;
+	for( auto multiPoint : _multipoints ) // iterate on all multipoints of the instrument
+	{
+		for( int i(0); i < multiPoint->pontos.size() - 1; ++i) // iterate on all points of the multipoint
+		{
+			TPonto line[2];
+			line[0] = multiPoint->pontos[i];
+			line[1] = multiPoint->pontos[i + 1];
+			TPonto pointInLine;
+			double distance = DistPontoParaSegmentoReta( line, geometricEdge->pos, pointInLine  );
+			if( distance < MIN_DIST ) // if the edge is over a line of the equipment, add this edge
+			{
+				for( auto instrumentVertex : _instrumentVertices ) // add an edge for all the instruments internal vertices
+				{
+					shared_ptr<TAresta> edge = make_shared<TAresta>( multiPoint->layerName );
+					edge->AdicionaVertices( instrumentVertex, geometricEdge, 0.0 );
+					edge->_drawing = _drawing;
+					_graph->_arestas.push_back( edge );
+				}
+			}
+		}
+	}
 }

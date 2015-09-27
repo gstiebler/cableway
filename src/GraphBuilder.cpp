@@ -4,11 +4,15 @@
 #include "UDadosGenerico.h"
 #include "Graph.h"
 #include "Electrical/StraightCable.h"
+#include "Electrical/ArcCable.h"
+#include "Electrical/Bandeirola.h"
+#include "Electrical/Instrument.h"
 #include "Electrical/GeometricEdges.h"
 #include "Electrical/EdgeConnector.h"
 #include "Electrical/ElectricalElements.h"
 
 using namespace std;
+
 
 void GraphBuilder::build( std::shared_ptr<Graph> graph, std::shared_ptr<ElectricalElements> electricalElements )
 {
@@ -18,9 +22,8 @@ void GraphBuilder::build( std::shared_ptr<Graph> graph, std::shared_ptr<Electric
 	 
 	vector< shared_ptr<GeometricEdges> > geometricEdges;
 	vector< shared_ptr<EdgeConnector> > edgeConnector;
-
-	geometricEdges.insert( geometricEdges.end(), electricalElements->_arcCables.begin(), electricalElements->_arcCables.end() );
 	geometricEdges.insert( geometricEdges.end(), electricalElements->_straightCables.begin(), electricalElements->_straightCables.end() );
+	geometricEdges.insert( geometricEdges.end(), electricalElements->_arcCables.begin(), electricalElements->_arcCables.end() );
 	geometricEdges.insert( geometricEdges.end(), electricalElements->_bandeirolas.begin(), electricalElements->_bandeirolas.end() );
 
 	edgeConnector.insert( edgeConnector.end(), electricalElements->_straightCables.begin(), electricalElements->_straightCables.end() );
