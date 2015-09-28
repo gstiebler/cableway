@@ -1,11 +1,14 @@
 ﻿#include "Bandeirola.h"
 
+#include <limits>
+#include <algorithm> 
 #include "UDadosGenerico.h"
 #include "UErros.h"
 #include "TDesenho.h"
 #include "UGeometria.h"
 #include "Graph.h"
 
+using namespace std;
 
 Bandeirola::Bandeirola( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, TListaItensCelula &groupItems ) :
 	ElectricalElement( graph, drawing ), 
@@ -91,4 +94,27 @@ void Bandeirola::getFreeInternalEdges( std::vector<TPonto> &internalEdges )
 bool Bandeirola::isValid()
 {
 	return _isValid;
+}
+
+
+double Bandeirola::getWidth()
+{
+	double minX = std::numeric_limits<double>::max();
+	double maxX = std::numeric_limits<double>::min();
+	for( auto multiPoint : _multipoints )
+	{
+		for( auto point : multiPoint->pontos )
+		{
+			minX = min( minX, point.x );
+			maxX = min( maxX, point.x );
+		}
+	}
+
+	for( auto arc : _arcs )
+	{
+		minX = min( minX, arc->Centro.x - arc->EixoPrimario );
+		maxX = min( maxX, arc->Centro.x + arc->EixoPrimario );
+	}
+
+	return maxX - minX;
 }

@@ -25,6 +25,11 @@ public:
 	 */
 	bool isValid();
 
+	/**
+	 * Returns the width of the bandeirola
+	 */
+	double getWidth();
+
 private:
 	void initializeEdges();
 

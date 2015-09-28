@@ -10,6 +10,7 @@
 
 class CDadosGenerico;
 class CInfoCircuitos;
+class ElectricalElements;
 
 #define FATOR_FATORES 500
 #define FATOR_TEXTO_NUM_VERTICES 0.0005
@@ -64,11 +65,13 @@ private:
   QBrush _brush;
   QPen _pen;
   std::shared_ptr<CDadosGenerico> _dados;
+  std::shared_ptr<ElectricalElements> _electricalElements;
 
 protected:
   bool semCores;   
 public:
-  CMostraDesenho( std::shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords);
+  CMostraDesenho( std::shared_ptr<CDadosGenerico> dados, std::shared_ptr<ElectricalElements> electricalElements, 
+	  shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords);
   ~CMostraDesenho();
   void MostraCircuito(std::shared_ptr<TArestasCircuito> arestasCircuito);
   void ApagaCircuito();

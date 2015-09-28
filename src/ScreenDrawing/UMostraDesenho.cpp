@@ -6,6 +6,8 @@
 #include <assert.h>
 #include "UInfoCircuitos.h"
 #include "UDadosGenerico.h"
+#include "Electrical\ElectricalElements.h"
+#include "Electrical\Bandeirola.h"
 
 using namespace std;
 
@@ -26,13 +28,15 @@ unsigned char pegaVermelho ( int cor )
 }
 
 
-CMostraDesenho::CMostraDesenho( shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords) :
+CMostraDesenho::CMostraDesenho(  std::shared_ptr<CDadosGenerico> dados, std::shared_ptr<ElectricalElements> electricalElements, 
+	  shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords ) :
         bMostraArvore2( false ),
         xBola( -1 ),
         yBola( - 1),
         tamBola( -1 ),
 		_glCoords( glCoords ),
-		_dados( dados )
+		_dados( dados ),
+		_electricalElements( electricalElements )
 {
   semCores = false;
 	InfoCircuitos=infoCircuitos;
@@ -308,29 +312,16 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 
 
 void CMostraDesenho::showBandeirolaEndings()
-{
-	for (int n=0; n<(int)GrafoDesenho->_pontosPraMostrarBandeirola.size();n++)
+{		
+	setColor(1.0, 1.0, 1.0);
+	_pen.setWidth( 4.0 );
+	for ( auto bandeirola : _electricalElements->_bandeirolas )
 	{
-		TPontosBandeirola &pontosPraMostrarBandeirola = GrafoDesenho->_pontosPraMostrarBandeirola[n];
-		setColor(1.0, 1.0, 1.0);
-		_pen.setWidth( 4.0 );
-		_painter->setPen( _pen );
-		double dist = DistPontos(pontosPraMostrarBandeirola.NaBandeirola, pontosPraMostrarBandeirola.NoCabo);
-		if (dist > GrafoDesenho->_distMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
-		{
-			QPoint inBandeirola( pontosPraMostrarBandeirola.NaBandeirola.x, pontosPraMostrarBandeirola.NaBandeirola.y );
-			QPoint inCable( pontosPraMostrarBandeirola.NoCabo.x, pontosPraMostrarBandeirola.NoCabo.y );
-			QLineF line( inBandeirola, inCable );
-			_painter->drawLine( line );
-		}
-		else // Senão, faz um círculo em volta dos pontos
-		{
-			DesenhaArco( pontosPraMostrarBandeirola.NoCabo.x, pontosPraMostrarBandeirola.NoCabo.y,
-					GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
+		double size = bandeirola->getWidth() * 0.2;
+		DesenhaArco( bandeirola->_edges[0]->pos.x, bandeirola->_edges[0]->pos.y, size, size, 0, 2*M_PI );
+	}
 	_pen.setWidth( 1.0 );
 	_painter->setPen( _pen );
-	}
 }
 
 
