@@ -7,6 +7,7 @@
 #include "Electrical/ElectricalElementsBuilder.h"
 #include "Electrical/ElectricalElements.h"
 #include "GraphBuilder.h"
+#include "UDadosGenerico.h"
 
 using namespace std;
 

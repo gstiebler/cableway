@@ -3,13 +3,13 @@
 #define UContainerDesenhosH
 //---------------------------------------------------------------------------
 
-#include "UGrafoDesenho.h"
 #include "UInfoCircuitos.h"
 #include <stack>
 #include <vector>
 
 struct TDesenho;
 class Graph;
+class CDadosGenerico;
 
 struct intVertices
 {
