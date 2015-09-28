@@ -294,18 +294,6 @@ void CMostraDesenho::showDisconnectedCircuitEndings()
 {
 	showDisconnectedCircuitEndings( _electricalElements->_straightCables );
 	showDisconnectedCircuitEndings( _electricalElements->_arcCables );
-	//// TODO set a dynamic size
-	//const int GAMBIARRA_SIZE = 10.0;
-	//setColor(pegaVermelho(CORINSTRUMENTODESCON), pegaVerde(CORINSTRUMENTODESCON), pegaAzul(CORINSTRUMENTODESCON));
-	//for ( auto straightCable : _electricalElements->_straightCables )
-	//	for( auto edge : straightCable->_edges )
-	//		if( edge->ListaVerticesEArestas->list.size() == 1 )
-	//			DesenhaBolaFechada( edge->pos.x, edge->pos.y, GAMBIARRA_SIZE, GAMBIARRA_SIZE, 0, 2*M_PI );
-	//
-	//for ( auto arc : _electricalElements->_arcCables )
-	//	for( auto edge : arc->_edges )
-	//		if( edge->ListaVerticesEArestas->list.size() == 1 )
-	//			DesenhaBolaFechada( edge->pos.x, edge->pos.y, GAMBIARRA_SIZE, GAMBIARRA_SIZE, 0, 2*M_PI );
 }
 
 
