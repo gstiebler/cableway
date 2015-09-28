@@ -75,9 +75,8 @@ void CContainerDesenhos::Conclui()
 
     if (ListaDesenhos.size() > 1)
     {
-		shared_ptr<CGrafoDesenho> grafoDesenho = ListaDesenhos[0]->GrafoDesenho;
         // Checa vertices duplos(?)
-        grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
+		ChecagemVerticeDuplo( ListaDesenhos[0]->_graph );
         ligaColaresEntreDesenhos();
     }
     // Cria um novo InfoCircuitos baseado nos par�metros
@@ -87,6 +86,61 @@ void CContainerDesenhos::Conclui()
 }
 //---------------------------------------------------------------------------
 
+
+void CContainerDesenhos::ChecagemVerticeDuplo( shared_ptr<Graph> graph )
+{
+    int n;
+    vector< shared_ptr<TVerticeGeral> > Lista;
+    graph->_verticesGerais->ListaOrd( Lista );  //gera lista ordenada
+    shared_ptr<TVerticeGeral> V1, V2;
+    string Ultimo;
+    for (n = 0; n < (int) (Lista.size() - 1); n++)
+    {
+        V1 = Lista[ n ];
+        if (V1->texto == "")
+			continue;
+
+        V2 = Lista[ n + 1 ];
+        if (V1->texto != V2->texto)
+			continue;
+
+		if (V1->drawing.get() != V2->drawing.get()
+                && (V1->TipoElemento == INSTRUMENTO && V2->TipoElemento == INSTRUMENTO)
+                && (n + 2 < (int) (Lista.size() - 1)
+                        && (Lista[ n + 1 ])->texto != V1->texto))
+        {
+            n++;
+            break;
+        }
+
+        CErrosMsg *erros = CErrosMsg::getInstance();
+        erros->novoErro( "Elementos com o texto \"" + V1->texto + "\" repetido: " );
+
+        for (; n < (int) Lista.size(); n++)
+        {
+            if ((Lista[ n ])->texto != V1->texto)
+				break;
+            string tipo;
+            if ( Lista[ n ]->TipoElemento == INSTRUMENTO)
+            {
+                tipo = "Equipamento";
+            }
+            else if ( Lista[ n ]->TipoElemento == CABO)
+            {
+                tipo = "Cabo";
+            }
+            else if ( Lista[ n ]->TipoElemento == BANDEIROLA)
+            {
+                tipo = "Bandeirola";
+            }
+            else
+                tipo = "Desconhecido";
+
+			erros->novoErro( "No desenho: " + (Lista[ n ])->drawing->NomeArquivo + " em nível de " + tipo );
+        }
+        erros->novoErro( "" );
+    }
+}
 
 
 void CContainerDesenhos::ligaColaresEntreDesenhos()
