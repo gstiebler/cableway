@@ -44,7 +44,7 @@ typedef vector<string> TVectorString;
 //para informar se um tipo de elemento é definido por cor ou nivel
 enum TTipoReferencia {NIVEL, COR};
 // Informa os tipos de elemento
-enum TTipoElemento {NADA, CABO, BANDEIROLA, ESTRUTURA, CALHA, INSTRUMENTO, TAG, INSTRUMENTODESCON};
+enum TTipoElemento {NADA, CABO, BANDEIROLA, ESTRUTURA, INSTRUMENTO, TAG, INSTRUMENTODESCON};
 
 //---------------------------------------------------------------------------
 struct TPonto

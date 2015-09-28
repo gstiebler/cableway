@@ -103,9 +103,6 @@ void CMostraDesenho::setColorFromLevel( int level )
 	QColor color;
 	switch ( level )
 	{
-		case CALHA:
-			setColor( 0, 255, 255 );
-			break;
 		case CABO:
 			setColor( pegaVermelho(CORCABO), pegaVerde(CORCABO), pegaAzul(CORCABO) );
 			break;

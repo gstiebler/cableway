@@ -22,7 +22,7 @@ void StraightCable::initializeEdges()
 	{
 		_edges[i] = make_shared<TVerticeGeral>();
 		_edges[i]->TipoVertice = VERTICE_PONTA_CABO;
-		_edges[i]->TipoElemento = INSTRUMENTO;
+		_edges[i]->TipoElemento = CABO;
 		_edges[i]->drawing = _drawing;
 		_edges[i]->pos = _multipoint->pontos[i];
 		_graph->_verticesGerais->Adiciona( _edges[i] );
@@ -35,14 +35,34 @@ void StraightCable::initializeEdges()
 void StraightCable::connectEdge( shared_ptr<TVerticeGeral> edge )
 {
 	const double MIN_DIST = 10e-1;
+	const double MAX_DIST = 10e-10;
 	TPonto line[2];
 	for( int i(0); i < 2; ++i )
 		line[i] = _multipoint->pontos[i];
 
 	TPonto pointInLine;
-	double distance = DistPontoParaSegmentoReta( line, edge->pos, pointInLine  );
-	if( distance < MIN_DIST ) // if the edge is over a line of the cable, add this edge
-		_internalEdges.push_back( edge );
+	double distance = DistPontoParaSegmentoReta( line, edge->pos, pointInLine );
+	// if the edge is over a line of the cable, create an vertex inside cable and connect it to the received edge
+	if( distance < MIN_DIST )
+	{
+		if( distance < MAX_DIST )
+			_internalEdges.push_back( edge );
+		else
+		{
+			shared_ptr<TVerticeGeral> edgeInsideCable = make_shared<TVerticeGeral>();
+			edgeInsideCable->TipoElemento = CABO;
+			edgeInsideCable->drawing = _drawing;
+			edgeInsideCable->pos = pointInLine;
+			edgeInsideCable->texto = edge->texto;
+			_internalEdges.push_back( edgeInsideCable );
+			_graph->_verticesGerais->Adiciona( edgeInsideCable );
+
+			shared_ptr<TAresta> Aresta = make_shared<TAresta>( _multipoint->layerName );
+			Aresta->AdicionaVertices( edge, edgeInsideCable, distance );
+			Aresta->_drawing = _drawing;
+			_graph->_arestas.push_back( Aresta );
+		}
+	}
 }
 
 
@@ -63,7 +83,8 @@ void StraightCable::generateEdges()
 	for ( int i(0); i < _internalEdges.size() - 1; ++i ) 
     {
 		shared_ptr<TAresta> Aresta = make_shared<TAresta>( _multipoint->layerName );
-		Aresta->AdicionaVertices( _internalEdges[i], _internalEdges[i + 1], DistPontos( _internalEdges[i]->pos, _internalEdges[i + 1]->pos ) );
+		double distance = DistPontos( _internalEdges[i]->pos, _internalEdges[i + 1]->pos );
+		Aresta->AdicionaVertices( _internalEdges[i], _internalEdges[i + 1], distance );
 		Aresta->_drawing = _drawing;
 		_graph->_arestas.push_back( Aresta );
     }

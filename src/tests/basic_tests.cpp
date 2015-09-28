@@ -91,13 +91,15 @@ void BasicTest::createFloor1( std::shared_ptr<CDadosGenerico> dados )
 	{
 		shared_ptr<TMultipoint> bandeirola( new TMultipoint() );
 		bandeirola->pontos.push_back( TPonto( 30.0, 5.0 ) );
-		bandeirola->pontos.push_back( TPonto( 30.0, 14.0 ) );
+		bandeirola->pontos.push_back( TPonto( 30.0, 14.95 ) );
 		bandeirola->Nivel = BANDEIROLA;
 		dados->Multipoint.push_back( bandeirola );
 
 		shared_ptr<TTexto> bandeirolaText( new TTexto() );
 		bandeirolaText->texto = "Bandeirola1";
 		bandeirolaText->Nivel = BANDEIROLA;
+		bandeirolaText->origem.x = 30.0;
+		bandeirolaText->origem.y = 5.0;
 		dados->Textos.push_back( bandeirolaText );
 
 		TListaItensCelula lista;
