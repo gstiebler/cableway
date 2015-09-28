@@ -8,6 +8,8 @@
 #include "UDadosGenerico.h"
 #include "Electrical\ElectricalElements.h"
 #include "Electrical\Bandeirola.h"
+#include "Electrical\StraightCable.h"
+#include "Electrical\ArcCable.h"
 
 using namespace std;
 
@@ -276,37 +278,34 @@ void CMostraDesenho::showTree()
 
 
 
+template<class T>
+void CMostraDesenho::showDisconnectedCircuitEndings( std::vector< std::shared_ptr<T> > &geometricEdges )
+{
+	// TODO set a dynamic size
+	const int GAMBIARRA_SIZE = 10.0;
+	for ( auto element : geometricEdges )
+		for( auto edge : element->_edges )
+			if( edge->ListaVerticesEArestas->list.size() == 1 )
+				DesenhaBolaFechada( edge->pos.x, edge->pos.y, GAMBIARRA_SIZE, GAMBIARRA_SIZE, 0, 2*M_PI );
+}
+
+
 void CMostraDesenho::showDisconnectedCircuitEndings()
 {
-	setColor(pegaVermelho(CORINSTRUMENTODESCON), pegaVerde(CORINSTRUMENTODESCON), pegaAzul(CORINSTRUMENTODESCON));
-	for ( int i = 0 ; i < GrafoDesenho->_cabosReta.size() ; i++ )
-	{
-		if ( !GrafoDesenho->_cabosReta[i]->ponta[0] )
-		{
-			TPonto pontos = GrafoDesenho->_cabosReta[i]->_multipoint->pontos[0];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-		if ( !GrafoDesenho->_cabosReta[i]->ponta[1] )
-		{
-			int tam = GrafoDesenho->_cabosReta[i]->_multipoint->pontos.size();
-			TPonto pontos = GrafoDesenho->_cabosReta[i]->_multipoint->pontos[tam-1];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-	}
-
-	for ( int i = 0 ; i < GrafoDesenho->_cabosArco.size() ; i++ )
-	{
-		TPonto pontos[2];
-		GrafoDesenho->_cabosArco[i]->_arco->PontasArco(pontos);
-		if ( !GrafoDesenho->_cabosArco[i]->ponta[0] )
-		{
-			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-		if ( !GrafoDesenho->_cabosArco[i]->ponta[1] )
-		{
-			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-	}
+	showDisconnectedCircuitEndings( _electricalElements->_straightCables );
+	showDisconnectedCircuitEndings( _electricalElements->_arcCables );
+	//// TODO set a dynamic size
+	//const int GAMBIARRA_SIZE = 10.0;
+	//setColor(pegaVermelho(CORINSTRUMENTODESCON), pegaVerde(CORINSTRUMENTODESCON), pegaAzul(CORINSTRUMENTODESCON));
+	//for ( auto straightCable : _electricalElements->_straightCables )
+	//	for( auto edge : straightCable->_edges )
+	//		if( edge->ListaVerticesEArestas->list.size() == 1 )
+	//			DesenhaBolaFechada( edge->pos.x, edge->pos.y, GAMBIARRA_SIZE, GAMBIARRA_SIZE, 0, 2*M_PI );
+	//
+	//for ( auto arc : _electricalElements->_arcCables )
+	//	for( auto edge : arc->_edges )
+	//		if( edge->ListaVerticesEArestas->list.size() == 1 )
+	//			DesenhaBolaFechada( edge->pos.x, edge->pos.y, GAMBIARRA_SIZE, GAMBIARRA_SIZE, 0, 2*M_PI );
 }
 
 

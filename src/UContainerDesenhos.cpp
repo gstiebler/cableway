@@ -17,11 +17,11 @@ void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, doub
     desenho->Altura = altura;
 	desenho->_dados = dados;
 	desenho->_graph =  make_shared<Graph>();
-	auto electricalElements = make_shared<ElectricalElements>();
+	desenho->_electricalElements = make_shared<ElectricalElements>();
 
-	ElectricalElementsBuilder elementsBuilder( desenho->_graph, dados, electricalElements );
+	ElectricalElementsBuilder elementsBuilder( desenho->_graph, dados, desenho->_electricalElements );
 	elementsBuilder.build();
-	GraphBuilder::build( desenho->_graph, electricalElements );
+	GraphBuilder::build( desenho->_graph, desenho->_electricalElements );
 	desenho->NomeArquivo = fileName;
 
     ListaDesenhos.push_back( desenho );

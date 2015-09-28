@@ -11,10 +11,10 @@
 
 #include <interface/DrawingWindow.h>
 
-DrawingPresenter::DrawingPresenter( shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos, 
-								   shared_ptr<TArestasCircuito> arestasCircuito, std::string drawingName )
+DrawingPresenter::DrawingPresenter( shared_ptr<CDadosGenerico> dados, shared_ptr<ElectricalElements> electricalElements,
+								   shared_ptr<CInfoCircuitos> infoCircuitos, shared_ptr<TArestasCircuito> arestasCircuito, std::string drawingName )
 {
-    _window = new DrawingWindow( dados, infoCircuitos, drawingName );
+    _window = new DrawingWindow( dados, electricalElements, infoCircuitos, drawingName );
     _window->show();
 
 	//mostraCircuito( circuitIndex );

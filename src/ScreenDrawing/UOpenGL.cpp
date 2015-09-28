@@ -2,10 +2,11 @@
 #pragma hdrstop
 #include "UOpenGL.h"
 
-COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos) : 
+COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<CDadosGenerico> dados, 
+				 shared_ptr<ElectricalElements> electricalElements, shared_ptr<CInfoCircuitos> infoCircuitos) : 
         QWidget( parent),
 		_glCoords( ClientWidth, ClientHeight ),
-		_mostraDesenho( grafoDesenho, infoCircuitos, &_glCoords )
+		_mostraDesenho( dados, electricalElements, infoCircuitos, &_glCoords )
 {
   static int CONTADOR=0;
   DEBUG=CONTADOR;

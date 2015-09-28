@@ -57,6 +57,8 @@ private:
   void drawArcs();
   void showCircuit();
   void showTree();
+  template<class T>
+  void showDisconnectedCircuitEndings( std::vector< std::shared_ptr<T> > &geometricEdges );
   void showDisconnectedCircuitEndings();
   void showBandeirolaEndings();
   void drawTexts();

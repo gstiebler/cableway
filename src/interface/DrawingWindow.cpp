@@ -11,11 +11,12 @@
 
 using namespace std;
 
-DrawingWindow::DrawingWindow( shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName)
+DrawingWindow::DrawingWindow( shared_ptr<CDadosGenerico> dados, shared_ptr<ElectricalElements> electricalElements, 
+							 shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName)
 {
     setupUi(this);
 
-	_mostraDesenho = new COpenGL( 600, 600, this, dados, infoCircuitos );
+	_mostraDesenho = new COpenGL( 600, 600, this, dados, electricalElements, infoCircuitos );
     verticalLayout->addWidget( _mostraDesenho );
 
 	setWindowTitle( drawingName.c_str() );

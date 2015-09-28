@@ -14,6 +14,7 @@
 class DrawingWindow;
 class CDadosGenerico;
 class CInfoCircuitos;
+class ElectricalElements;
 struct TArestasCircuito;
 
 class DrawingPresenter : public QObject
@@ -21,8 +22,8 @@ class DrawingPresenter : public QObject
     Q_OBJECT
 
 public:
-    DrawingPresenter( std::shared_ptr<CDadosGenerico> dados, std::shared_ptr<CInfoCircuitos> infoCircuitos, 
-		std::shared_ptr<TArestasCircuito> arestasCircuito, std::string drawingName );
+    DrawingPresenter( std::shared_ptr<CDadosGenerico> dados, std::shared_ptr<ElectricalElements> electricalElements, 
+		std::shared_ptr<CInfoCircuitos> infoCircuitos, std::shared_ptr<TArestasCircuito> arestasCircuito, std::string drawingName );
 
     DrawingWindow *_window;
 

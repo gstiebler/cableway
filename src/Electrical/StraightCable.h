@@ -19,6 +19,7 @@ private:
 	void connectEdge( std::shared_ptr<TVerticeGeral> edge );
 	void initializeEdges();
 	void sortEdges();
+    std::vector< std::shared_ptr<TVerticeGeral> > _internalEdges;
 };
 
 #endif
