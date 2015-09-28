@@ -8,7 +8,7 @@
 #include <QPen>
 #include "GLCoords.h"
 
-class CGrafoDesenho;
+class CDadosGenerico;
 class CInfoCircuitos;
 
 #define FATOR_FATORES 500
@@ -29,11 +29,8 @@ class CInfoCircuitos;
 class CMostraDesenho 
 {
 private:
-
-
   bool ExibirCircuito;
   std::shared_ptr<TArestasCircuito> _arestasCircuito;
-  shared_ptr<CGrafoDesenho> GrafoDesenho;
   shared_ptr<CInfoCircuitos> InfoCircuitos;
   bool bMostraNumVerticesDEBUG;
   bool bMostraArvore;
@@ -66,11 +63,12 @@ private:
   GLCoords *_glCoords;
   QBrush _brush;
   QPen _pen;
+  std::shared_ptr<CDadosGenerico> _dados;
 
 protected:
   bool semCores;   
 public:
-  CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords);
+  CMostraDesenho( std::shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords);
   ~CMostraDesenho();
   void MostraCircuito(std::shared_ptr<TArestasCircuito> arestasCircuito);
   void ApagaCircuito();

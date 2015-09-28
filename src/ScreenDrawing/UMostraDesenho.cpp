@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "UMostraDesenho.h"
-#include <UGrafoDesenho.h>
-#include "UInfoCircuitos.h"
 #include <math.h>
 #include <time.h>
 #include <assert.h>
+#include "UInfoCircuitos.h"
+#include "UDadosGenerico.h"
 
 using namespace std;
 
@@ -26,15 +26,15 @@ unsigned char pegaVermelho ( int cor )
 }
 
 
-CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords) :
+CMostraDesenho::CMostraDesenho( shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords) :
         bMostraArvore2( false ),
         xBola( -1 ),
         yBola( - 1),
         tamBola( -1 ),
-		_glCoords( glCoords )
+		_glCoords( glCoords ),
+		_dados( dados )
 {
   semCores = false;
-	GrafoDesenho=grafoDesenho;
 	InfoCircuitos=infoCircuitos;
 	ExibirCircuito=false;
 	bMostraNumVerticesDEBUG=false;
@@ -59,26 +59,16 @@ void CMostraDesenho::initializeLimits()
 {	
 	float x, y;
 	_glCoords->initializeLimits();
-	if (GrafoDesenho->_ult > GrafoDesenho->_dados->Multipoint.size())
-		GrafoDesenho->_ult = GrafoDesenho->_dados->Multipoint.size();
-	for (int n=0; n<GrafoDesenho->_ult; n++)
-	{
-		vector<TPonto> &points = GrafoDesenho->_dados->Multipoint[n]->pontos;
-		int numPoints = points.size();
-		for (int i=0; i < numPoints; i++)
-		{
-			x = points[i].x;
-			y = points[i].y;
+	for ( auto multiPoint : _dados->Multipoint )
+		for ( auto point : multiPoint->pontos )
+			_glCoords->updateLimits( point.x, point.y );
 
-			_glCoords->updateLimits( x, y );
-		}
-	}
-	for ( int i=0; i<GrafoDesenho->_dados->Arcos.size(); i++)
+	for ( auto arc : _dados->Arcos )
 	{
-			x = GrafoDesenho->_dados->Arcos[i]->Centro.x;
-			y = GrafoDesenho->_dados->Arcos[i]->Centro.y;
+			x = arc->Centro.x;
+			y = arc->Centro.y;
 
-			double raio = GrafoDesenho->_dados->Arcos[i]->EixoPrimario;
+			double raio = arc->EixoPrimario;
 
 			_glCoords->updateLimits( x + raio, y + raio );
 	}
@@ -137,10 +127,8 @@ void CMostraDesenho::drawMultipoints()
 {
 	_pen.setWidth( 2 );
 	_painter->setPen( _pen );
-	for (int n=0; n<GrafoDesenho->_dados->Multipoint.size(); n++)
-			//    for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
+	for ( auto multipoint : _dados->Multipoint )
 	{
-		shared_ptr<TMultipoint> multipoint = GrafoDesenho->_dados->Multipoint[n];
 		setColor(multipoint->CorR, multipoint->CorG, multipoint->CorB);
 		if (destacaCoresDeEquipamentos)
 			setColorFromLevel( multipoint->Nivel );
@@ -176,9 +164,8 @@ void CMostraDesenho::drawMultipoints()
 void CMostraDesenho::drawArcs()
 {
 	assert( _painter );
-	for (int n=0; n<GrafoDesenho->_dados->Arcos.size(); n++)
+	for ( auto arc : _dados->Arcos )
 	{
-		shared_ptr<TArco> arc = GrafoDesenho->_dados->Arcos[n];
 		setColor( arc->CorR, arc->CorG, arc->CorB);
 		if ( destacaCoresDeEquipamentos )
 			setColorFromLevel( arc->Nivel );
@@ -197,7 +184,7 @@ void CMostraDesenho::showCircuit()
 	setColor( pegaVermelho(CORCAMINHO), pegaVerde(CORCAMINHO), pegaAzul(CORCAMINHO) );
 	_pen.setWidth( 3 );
 	_painter->setPen( _pen );
-	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[GrafoDesenho->_dados->_drawing.get()];
+	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[ _dados->_drawing.get() ];
 
 	int ini = 0;
 	int end = edges.size()-1;
@@ -226,7 +213,7 @@ void CMostraDesenho::showTree()
 	_painter->setPen( _pen );
 
 	vector< shared_ptr<TAresta> > Arestas;
-	InfoCircuitos->Arvore(VerticeArvore, Arestas, GrafoDesenho->_dados->_drawing);
+	InfoCircuitos->Arvore(VerticeArvore, Arestas, _dados->_drawing);
 	shared_ptr<TAresta> Aresta;
 	TPonto Pontos[2];
 	for (int n=0; n<(int)Arestas.size(); n++)
@@ -261,7 +248,7 @@ void CMostraDesenho::showTree()
 	_painter->setPen( _pen );
 
 		vector< shared_ptr<TAresta> > Arestas;
-		InfoCircuitos->Arvore(VerticeArvore2, Arestas, GrafoDesenho->_dados->_drawing);
+		InfoCircuitos->Arvore(VerticeArvore2, Arestas, _dados->_drawing);
 		TPonto Pontos[2];
 		for (int n=0; n<(int)Arestas.size(); n++)
 		{
@@ -350,10 +337,8 @@ void CMostraDesenho::showBandeirolaEndings()
 
 void CMostraDesenho::drawTexts()
 {
-	for (int n=0; n<GrafoDesenho->_dados->Textos.size(); n++)
+	for ( auto texto : _dados->Textos)
 	{
-		shared_ptr<TTexto> texto = GrafoDesenho->_dados->Textos[n];
-
 		if ( destacaCoresDeEquipamentos )
 		{
 			setColorFromLevel( texto->Nivel );

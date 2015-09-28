@@ -11,11 +11,11 @@
 
 using namespace std;
 
-DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName)
+DrawingWindow::DrawingWindow( shared_ptr<CDadosGenerico> dados, shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName)
 {
     setupUi(this);
 
-	_mostraDesenho = new COpenGL( 600, 600, this, grafoDesenho, infoCircuitos );
+	_mostraDesenho = new COpenGL( 600, 600, this, dados, infoCircuitos );
     verticalLayout->addWidget( _mostraDesenho );
 
 	setWindowTitle( drawingName.c_str() );
@@ -30,13 +30,6 @@ DrawingWindow::DrawingWindow(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<
 	connect( cbShowDisconnectedCableEndings, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
 	connect( cbShowBandeirolas, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
 	connect( cbShowEquipmentEnding, SIGNAL(stateChanged(int)), this, SIGNAL(optionsChanged()) );
-}
-
-
-
-DrawingWindow::~DrawingWindow()
-{
-    // TODO Auto-generated destructor stub
 }
 
 

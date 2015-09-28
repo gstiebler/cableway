@@ -114,8 +114,7 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			vector< shared_ptr<TAresta> > &arestasDesenho = arestasCircuito->ArestasDesenho[drawing.get()];
 			if (arestasDesenho.size() > 0)
 			{
-				shared_ptr<CGrafoDesenho> grafoDesenho = drawing->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( drawing->_dados, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
 			}
 		}
 	}
@@ -129,8 +128,8 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
 				shared_ptr<TDesenho> drawing = _mainExecution->_containerDesenhos->getDesenho( n );
-				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
+				shared_ptr<CDadosGenerico> dados = _mainExecution->_containerDesenhos->getDesenho( n )->_dados;
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( dados, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
 				drawingPresenter->_window->_mostraDesenho->_mostraDesenho.MostraDoubleArvore(vertice, vertice2);
 			}
 		}
@@ -139,8 +138,8 @@ void MainPresenter::showCircuit( const QModelIndex &index )
 			for (int n=0; n < _mainExecution->_containerDesenhos->NumDesenhos(); n++)
 			{
 				shared_ptr<TDesenho> drawing = _mainExecution->_containerDesenhos->getDesenho( n );
-				shared_ptr<CGrafoDesenho> grafoDesenho = _mainExecution->_containerDesenhos->getDesenho( n )->GrafoDesenho;
-				DrawingPresenter *drawingPresenter = new DrawingPresenter( grafoDesenho, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
+				shared_ptr<CDadosGenerico> dados = _mainExecution->_containerDesenhos->getDesenho( n )->_dados;
+				DrawingPresenter *drawingPresenter = new DrawingPresenter( dados, infoCircuitos, arestasCircuito, drawing->NomeArquivo );
 			}
 		}
 	}
