@@ -22,8 +22,6 @@ class CContainerDesenhos
 {
 private:
   std::vector< shared_ptr<TDesenho> > ListaDesenhos;
-  static bool verificaTextoWrap(void* PonteiroThis, const char *str);
-  bool verificaTexto(string str);
   void ligaColaresEntreDesenhos();
   static void ChecagemVerticeDuplo( shared_ptr<Graph> graph );
 public:

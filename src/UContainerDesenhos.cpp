@@ -5,6 +5,7 @@
 #include "TDesenho.h"
 #include "Graph.h"
 #include "Electrical/ElectricalElementsBuilder.h"
+#include "Electrical/ElectricalElements.h"
 #include "GraphBuilder.h"
 
 using namespace std;
@@ -38,31 +39,6 @@ int CContainerDesenhos::NumDesenhos()
     return ListaDesenhos.size();
 }
 //---------------------------------------------------------------------------
-
-bool CContainerDesenhos::verificaTextoWrap(void* PonteiroThis, const char *str)
-{
-  CContainerDesenhos *interno = (CContainerDesenhos*)PonteiroThis;
-  return interno->verificaTexto(str);
-}
-bool CContainerDesenhos::verificaTexto(string str)
-{
-  bool exists = false;
-  for ( int j = 0 ; j < NumDesenhos() ; j++ )
-  {
-    shared_ptr<TDesenho> pnt = getDesenho(j);
-    for ( int i = 0 ; i < (int)pnt->_dados->Textos.size() ; i++ )
-    {
-      if ( pnt->_dados->Textos[i]->texto == str )
-      {
-        exists = true;
-        break;
-      }
-    }
-    if ( exists )
-      break;
-  }
-  return exists;
-}
 
 
 void CContainerDesenhos::Conclui()
@@ -169,7 +145,6 @@ void CContainerDesenhos::ligaColaresEntreDesenhos()
 //---------------------------------------------------------------------------
 
 
-
 void CContainerDesenhos::MostraCircuito(string circuito)
 {
   bool AchouCircuito;
@@ -184,19 +159,18 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       {
         exists = false;
         equips = false;
-        for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
+		for ( auto drawing : ListaDesenhos )
         {
-          shared_ptr<TDesenho> pnt = getDesenho(j);
-          for ( int i = 0 ; i < (int)pnt->_dados->Textos.size() ; i++ )
-          {
-            if ( pnt->_dados->Textos[i]->texto == Circuito.Origem )
-            {
-              exists = true;
-              break;
-            }
-          }
-          if ( exists )
-            break;
+			for ( auto text : drawing->_dados->Textos )
+			{
+				if ( text->texto == Circuito.Origem )
+				{
+					exists = true;
+					break;
+				}
+			}
+			if ( exists )
+			break;
         }
 
         if ( exists )
@@ -210,17 +184,16 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       {
         exists = false;
         equips = false;
-        for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
+		for ( auto drawing : ListaDesenhos )
         {
-          shared_ptr<TDesenho> pnt = getDesenho(j);
-          for ( int i = 0 ; i < (int)pnt->_dados->Textos.size() ; i++ )
-          {
-            if ( pnt->_dados->Textos[i]->texto == Circuito.Destino )
-            {
-              exists = true;
-              break;
-            }
-          }
+			for ( auto text : drawing->_dados->Textos )
+			{
+				if ( text->texto == Circuito.Destino )
+				{
+					exists = true;
+					break;
+				}
+			}
           if ( exists )
             break;
         }

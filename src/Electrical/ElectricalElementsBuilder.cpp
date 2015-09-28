@@ -5,6 +5,7 @@
 #include "ArcCable.h"
 #include "Instrument.h"
 #include "Bandeirola.h"
+#include "ElectricalElements.h"
 
 using namespace std;
 

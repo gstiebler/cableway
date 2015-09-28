@@ -2,7 +2,6 @@
 #define ELECTRICAL_ELEMENTS_BUILDER_H__
 
 #include <memory>
-#include "ElectricalElements.h"
 #include "UListaItensCelula.h"
 
 class CDadosGenerico;
@@ -11,6 +10,7 @@ class ArcCable;
 class Instrument;
 class Bandeirola;
 class Graph;
+class ElectricalElements;
 struct TMultipoint;
 struct TArco;
 struct TDesenho;
