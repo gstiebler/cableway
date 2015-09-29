@@ -63,8 +63,8 @@ TPonto Instrument::getCenter() const
 		for( auto point : multiPoint->pontos )
 		{
 			minX = min( minX, point.x );
-			maxX = min( maxX, point.x );
-			minY = max( minY, point.y );
+			maxX = max( maxX, point.x );
+			minY = min( minY, point.y );
 			maxY = max( maxY, point.y );
 		}
 	}
@@ -76,8 +76,8 @@ TPonto Instrument::getCenter() const
 		for( auto edge : edges )
 		{
 			minX = min( minX, edge.x );
-			maxX = min( maxX, edge.x );
-			minY = max( minY, edge.y );
+			maxX = max( maxX, edge.x );
+			minY = min( minY, edge.y );
 			maxY = max( maxY, edge.y );
 		}
 	}

@@ -113,7 +113,7 @@ double Bandeirola::getWidth()
 	for( auto arc : _arcs )
 	{
 		minX = min( minX, arc->Centro.x - arc->EixoPrimario );
-		maxX = min( maxX, arc->Centro.x + arc->EixoPrimario );
+		maxX = max( maxX, arc->Centro.x + arc->EixoPrimario );
 	}
 
 	return maxX - minX;

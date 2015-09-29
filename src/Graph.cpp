@@ -39,18 +39,12 @@ void Graph::merge( shared_ptr<Graph> other )
 
 bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< shared_ptr<TVerticeGeral> > &anterior, vector< shared_ptr<TAresta> > &vArestas, string layer )
 {
-	//vector<int> PaisVertices( VerticesGerais->vertices.size() );//armazena os pais de cada vértice na �rvore
 	vector<double> DistanciaDjikstra( _verticesGerais->vertices.size() );
-    shared_ptr<TVerticeGeral> VerticeTemp;
-    TVerticeEAresta *VerticeEArestaTemp;
-	shared_ptr<TVerticeGeral> vfila, vatual;
-    double dist;
-    shared_ptr<TListaVerticesEArestas> ListaVerticesEArestasT;
     priority_queue<VerticesDjikstra> heap;
     heap.push(VerticesDjikstra(vertice[0], 0));
 	bool achou_final = false;
 
-	    /* initialize single source */
+	/* initialize single source */
     for ( int n = 0; n < _verticesGerais->vertices.size(); n++ )
     {
         DistanciaDjikstra[n] = Infinity;
@@ -62,8 +56,8 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
 
     while(heap.size())
     {
-		vfila = heap.top()._vertex;
-        dist = heap.top().distancia;
+		shared_ptr<TVerticeGeral> vfila = heap.top()._vertex;
+        double dist = heap.top().distancia;
         heap.pop();
 
         if(vfila == vertice[1])
@@ -72,18 +66,14 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
 		if(dist > DistanciaDjikstra[vfila->IndiceOriginal])
             continue;
 
-        ListaVerticesEArestasT = vfila->ListaVerticesEArestas;
-        for(int n = 0; n < ListaVerticesEArestasT->list.size(); n++)
+        for( auto VerticeEArestaTemp : vfila->ListaVerticesEArestas->list )
         {
-            VerticeEArestaTemp = ListaVerticesEArestasT->getVerticeEAresta(n);
-			shared_ptr<TAresta> edge = VerticeEArestaTemp->Aresta;
+			shared_ptr<TAresta> edge = VerticeEArestaTemp.Aresta;
 			if ( edge->_layer != "" && edge->_layer != layer )
 				continue;
 
-            vatual = VerticeEArestaTemp->Vertice;
-            int alt;
-
-			alt = DistanciaDjikstra[vfila->IndiceOriginal] + edge->Tam;
+            shared_ptr<TVerticeGeral> vatual = VerticeEArestaTemp.Vertice;
+            int alt = DistanciaDjikstra[vfila->IndiceOriginal] + edge->Tam;
             if ( alt < DistanciaDjikstra[vatual->IndiceOriginal] )
             {
 				DistanciaDjikstra[vatual->IndiceOriginal] = alt;
