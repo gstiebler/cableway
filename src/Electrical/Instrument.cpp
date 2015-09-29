@@ -90,11 +90,13 @@ void Instrument::connectEdge( shared_ptr<TVerticeGeral> geometricEdge )
 	const double MIN_DIST = 10e-1;
 	for( auto multiPoint : _multipoints ) // iterate on all multipoints of the instrument
 	{
-		for( int i(0); i < multiPoint->pontos.size() - 1; ++i) // iterate on all points of the multipoint
+		auto pointsClosed = multiPoint->pontos;
+		pointsClosed.push_back( multiPoint->pontos.front() );
+		for( int i(0); i < pointsClosed.size() - 1; ++i) // iterate on all points of the multipoint
 		{
 			TPonto line[2];
-			line[0] = multiPoint->pontos[i];
-			line[1] = multiPoint->pontos[i + 1];
+			line[0] = pointsClosed[i];
+			line[1] = pointsClosed[i + 1];
 			TPonto pointInLine;
 			double distance = DistPontoParaSegmentoReta( line, geometricEdge->pos, pointInLine  );
 			if( distance < MIN_DIST ) // if the edge is over a line of the equipment, add this edge
