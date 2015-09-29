@@ -25,6 +25,7 @@ void StraightCable::initializeEdges()
 		_edges[i]->TipoElemento = CABO;
 		_edges[i]->drawing = _drawing;
 		_edges[i]->pos = _multipoint->pontos[i];
+		_edges[i]->_layer = _multipoint->layerName;
 		_graph->_verticesGerais->Adiciona( _edges[i] );
 	}
 	for( auto edge : _edges )

@@ -103,7 +103,8 @@ void Instrument::connectEdge( shared_ptr<TVerticeGeral> geometricEdge )
 			{
 				for( auto instrumentVertex : _instrumentVertices ) // add an edge for all the instruments internal vertices
 				{
-					shared_ptr<TAresta> edge = make_shared<TAresta>( multiPoint->layerName );
+					// TODO get the level from the received edge
+					shared_ptr<TAresta> edge = make_shared<TAresta>( geometricEdge->_layer );
 					edge->AdicionaVertices( instrumentVertex, geometricEdge, 0.0 );
 					edge->_drawing = _drawing;
 					_graph->_arestas.push_back( edge );

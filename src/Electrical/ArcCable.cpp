@@ -36,6 +36,7 @@ void ArcCable::initializeEdges()
 		_edges[i]->TipoElemento = INSTRUMENTO;
 		_edges[i]->drawing = _drawing;
 		_edges[i]->pos = p[i];
+		_edges[i]->_layer = _arc->layerName;
 		_graph->_verticesGerais->Adiciona( _edges[i] );
 	}
 }

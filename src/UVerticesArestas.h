@@ -55,6 +55,7 @@ struct TVerticeGeral
 	bool EhColar;
 	static int counter;
 	int _autogenId;
+	string _layer;
 };
 //---------------------------------------------------------------------------
 

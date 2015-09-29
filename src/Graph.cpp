@@ -57,6 +57,7 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
     while(heap.size())
     {
 		shared_ptr<TVerticeGeral> vfila = heap.top()._vertex;
+		//printf( "VFila: %f %f %d %s\n", vfila->pos.x, vfila->pos.y, vfila->IndiceOriginal, vfila->texto.c_str() );
         double dist = heap.top().distancia;
         heap.pop();
 
@@ -73,6 +74,8 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
 				continue;
 
             shared_ptr<TVerticeGeral> vatual = VerticeEArestaTemp.Vertice;
+			
+			//printf( "vatual: %f %f %d %s\n", vatual->pos.x, vatual->pos.y, vatual->IndiceOriginal, vatual->texto.c_str() );
             int alt = DistanciaDjikstra[vfila->IndiceOriginal] + edge->Tam;
             if ( alt < DistanciaDjikstra[vatual->IndiceOriginal] )
             {
@@ -110,8 +113,8 @@ void Graph::getEdgesFromPath( vector< shared_ptr<TVerticeGeral> > &anterior, vec
 
 void Graph::GeraListaAdjacencias()
 {
-	for ( int n(0); n < _arestas.size(); n++)
-		TAresta::createAdjancency( _arestas[n] );
+	for ( auto edge : _arestas )
+		TAresta::createAdjancency( edge );
 }
 
 
