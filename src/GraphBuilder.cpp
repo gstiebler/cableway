@@ -27,13 +27,21 @@ void GraphBuilder::build( std::shared_ptr<Graph> graph, std::shared_ptr<Electric
 	geometricEdges.insert( geometricEdges.end(), electricalElements->_bandeirolas.begin(), electricalElements->_bandeirolas.end() );
 
 	edgeConnector.insert( edgeConnector.end(), electricalElements->_straightCables.begin(), electricalElements->_straightCables.end() );
+	edgeConnector.insert( edgeConnector.end(), electricalElements->_arcCables.begin(), electricalElements->_arcCables.end() );
 	edgeConnector.insert( edgeConnector.end(), electricalElements->_instruments.begin(), electricalElements->_instruments.end() );
 
 	// connect everything
 	for( auto geometricEdgesItem : geometricEdges )
+	{
 		for( auto edgeConnector : edgeConnector )
+		{
+			// do not connect an element to itself
+			if( int( edgeConnector.get() ) == int( geometricEdgesItem.get() ) )
+				continue;
 			for( auto edge : geometricEdgesItem->_edges )
 				edgeConnector->connectEdge( edge );
+		}
+	}
 
 	// generate straight cable internal edges
 	for( auto straightCable : electricalElements->_straightCables )

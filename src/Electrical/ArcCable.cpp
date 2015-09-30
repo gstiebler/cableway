@@ -40,3 +40,21 @@ void ArcCable::initializeEdges()
 		_graph->_verticesGerais->Adiciona( _edges[i] );
 	}
 }
+
+
+void ArcCable::connectEdge( std::shared_ptr<TVerticeGeral> geometricEdge )
+{
+	const double MIN_DIST = 10e-1;
+	// TODO connect to the middle of the arc
+	for( auto internalEdge : _edges )
+	{
+		TPonto diffPoint = internalEdge->pos - geometricEdge->pos;
+		if( diffPoint.getLength() < MIN_DIST )
+		{
+			shared_ptr<TAresta> edge = make_shared<TAresta>( geometricEdge->_layer );
+			edge->AdicionaVertices( internalEdge, geometricEdge, 0.0 );
+			edge->_drawing = _drawing;
+			_graph->_arestas.push_back( edge );
+		}
+	}
+}
