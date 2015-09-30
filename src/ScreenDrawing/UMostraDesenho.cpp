@@ -185,7 +185,7 @@ void CMostraDesenho::showCircuit()
 {
 	TPonto Pontos[2];
 	setColor( pegaVermelho(CORCAMINHO), pegaVerde(CORCAMINHO), pegaAzul(CORCAMINHO) );
-	_pen.setWidth( 3 );
+	//_pen.setWidth( 3 );
 	_painter->setPen( _pen );
 	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[ _dados->_drawing.get() ];
 
@@ -202,7 +202,7 @@ void CMostraDesenho::showCircuit()
 		QLineF line( QPoint( Pontos[0].x, Pontos[0].y ), QPoint( Pontos[1].x, Pontos[1].y ) );
 		_painter->drawLine( line );
 	}
-	_pen.setWidth( 1 );
+	//_pen.setWidth( 1 );
 	_painter->setPen( _pen );
 }
 
@@ -212,7 +212,7 @@ void CMostraDesenho::showTree()
 {
 	string origem = VerticeArvore->texto.c_str();
 	setColor( pegaVermelho(CORARVORE), pegaVerde(CORARVORE), pegaAzul(CORARVORE));
-	_pen.setWidth( 3.0 );
+	//_pen.setWidth( 3.0 );
 	_painter->setPen( _pen );
 
 	vector< shared_ptr<TAresta> > Arestas;
@@ -237,7 +237,7 @@ void CMostraDesenho::showTree()
 			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords->getWorldWidth()/TAMBOLACOLAR, _glCoords->getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 		}
 	}
-	_pen.setWidth( 1.0 );
+	//_pen.setWidth( 1.0 );
 	_painter->setPen( _pen );
 	if (bMostraArvore2)
 	{
@@ -247,7 +247,7 @@ void CMostraDesenho::showTree()
 //				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
 		setColor(pegaVermelho(CORARVORE2), pegaVerde(CORARVORE2), pegaAzul(CORARVORE2));
 		//			glColor3f(0.7, 0.0, 0.7);
-	_pen.setWidth( 1.0 );
+	//_pen.setWidth( 1.0 );
 	_painter->setPen( _pen );
 
 		vector< shared_ptr<TAresta> > Arestas;

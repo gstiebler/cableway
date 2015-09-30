@@ -81,7 +81,7 @@ TPonto Instrument::getCenter() const
 			maxY = max( maxY, edge.y );
 		}
 	}
-	return TPonto( (maxX - minX) / 2, (maxY - minY) / 2 );
+	return TPonto( (maxX + minX) / 2, (maxY + minY) / 2 );
 }
 
 
