@@ -6,7 +6,7 @@
 #include "UListaItensCelula.h"
 #include "ElectricalElement.h"
 #include "GeometricEdges.h"
-#include "UDefines.h"
+#include "UGeometria.h"
 
 struct TTexto;
 struct TArco;

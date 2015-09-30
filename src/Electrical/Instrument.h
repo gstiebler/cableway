@@ -6,7 +6,7 @@
 #include "UListaItensCelula.h"
 #include "ElectricalElement.h"
 #include "EdgeConnector.h"
-#include "UDefines.h"
+#include "UGeometria.h"
 
 struct TTexto;
 struct TArco;
@@ -25,6 +25,7 @@ private:
 	void createColarEdge();
 	TPonto getCenter() const;
 	void initializeEdges();
+	void addEdgeToCenter( std::shared_ptr<TVerticeGeral> edge );
 	std::vector< std::shared_ptr<TVerticeGeral> > _instrumentVertices;
 };
 

@@ -5,6 +5,7 @@
 //---------------------------------------------------------------------------
 
 #include "UDefines.h"
+#include "UGeometria.h"
 #include <algorithm>
 #include <memory>
 #include <map>

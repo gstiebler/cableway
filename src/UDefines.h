@@ -46,24 +46,6 @@ enum TTipoReferencia {NIVEL, COR};
 // Informa os tipos de elemento
 enum TTipoElemento {NADA, CABO, BANDEIROLA, ESTRUTURA, INSTRUMENTO, TAG, INSTRUMENTODESCON};
 
-//---------------------------------------------------------------------------
-struct TPonto
-{
-	double x, y;
-
-	TPonto( double X, double Y ) :
-		x( X ),
-		y( Y )
-	{}
-
-	TPonto() {}
-};
-
-struct TReta
-{
-  TPonto pontos[2];
-};
-
 std::string ExtractFileName(std::string path);
 
 #define Infinity 9999999999999999.9999

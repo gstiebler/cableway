@@ -11,6 +11,7 @@
 class CDadosGenerico;
 class CInfoCircuitos;
 class ElectricalElements;
+struct TArestasCircuito;
 
 #define FATOR_FATORES 500
 #define FATOR_TEXTO_NUM_VERTICES 0.0005

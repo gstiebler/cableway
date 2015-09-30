@@ -100,16 +100,26 @@ void Instrument::connectEdge( shared_ptr<TVerticeGeral> geometricEdge )
 			TPonto pointInLine;
 			double distance = DistPontoParaSegmentoReta( line, geometricEdge->pos, pointInLine  );
 			if( distance < MIN_DIST ) // if the edge is over a line of the equipment, add this edge
-			{
-				for( auto instrumentVertex : _instrumentVertices ) // add an edge for all the instruments internal vertices
-				{
-					// TODO get the level from the received edge
-					shared_ptr<TAresta> edge = make_shared<TAresta>( geometricEdge->_layer );
-					edge->AdicionaVertices( instrumentVertex, geometricEdge, 0.0 );
-					edge->_drawing = _drawing;
-					_graph->_arestas.push_back( edge );
-				}
-			}
+				addEdgeToCenter( geometricEdge );
 		}
+	}
+
+	for( auto arc : _arcs )
+	{
+		TPonto diffPoint = arc->Centro - geometricEdge->pos;
+		if ( fabs( diffPoint.getLength() - arc->EixoPrimario ) < MIN_DIST ) // consider that the arc is a circle
+			addEdgeToCenter( geometricEdge );
+	}
+}
+
+
+void Instrument::addEdgeToCenter( shared_ptr<TVerticeGeral> geometricEdge )
+{	
+	for( auto instrumentVertex : _instrumentVertices ) // add an edge for all the instruments internal vertices
+	{
+		shared_ptr<TAresta> edge = make_shared<TAresta>( geometricEdge->_layer );
+		edge->AdicionaVertices( instrumentVertex, geometricEdge, 0.0 );
+		edge->_drawing = _drawing;
+		_graph->_arestas.push_back( edge );
 	}
 }
