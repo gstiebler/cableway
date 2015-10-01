@@ -54,7 +54,8 @@ void ArcCable::connectEdge( std::shared_ptr<TVerticeGeral> geometricEdge )
 		if( diffPoint.getLength() < MIN_DIST )
 		{
 			shared_ptr<TAresta> edge = make_shared<TAresta>( geometricEdge->_layer );
-			edge->AdicionaVertices( internalEdge, geometricEdge, 0.0 );
+			double dist = DistPontosManhattan( internalEdge->pos, geometricEdge->pos );
+			edge->AdicionaVertices( internalEdge, geometricEdge, dist );
 			edge->_drawing = _drawing;
 			_graph->_arestas.push_back( edge );
 		}

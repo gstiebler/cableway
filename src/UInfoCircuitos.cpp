@@ -12,8 +12,6 @@
 
 using namespace std;
 
-string Debug::_projPath;
-
 CInfoCircuitos::CInfoCircuitos( shared_ptr<Graph> graph ) :
 	_graph( graph )
 {

@@ -11,6 +11,8 @@
 
 using namespace std;
 
+string Debug::_projPath;
+
 void Debug::printVertices( shared_ptr<TVerticesGerais> _verticesGerais, string fileName )
 {
 	vector< shared_ptr<TVerticeGeral> > sortedVertices;
