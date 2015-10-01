@@ -11,17 +11,17 @@
 struct TCircuito
 {
   //imputado
-  string NomeCircuito;
+  std::string NomeCircuito;
   int Quantidade;
-  string Tipo;
-  string Origem;
-  string Destino;
-  string RotaUsuario;
+  std::string Tipo;
+  std::string Origem;
+  std::string Destino;
+  std::string RotaUsuario;
   int ID;
 
   //obtido do desenho
   double metragem;
-  vector<string> rota;
+  std::vector<std::string> rota;
 };
 //---------------------------------------------------------------------------
  

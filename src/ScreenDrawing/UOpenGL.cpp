@@ -2,6 +2,8 @@
 #pragma hdrstop
 #include "UOpenGL.h"
 
+using namespace std;
+
 COpenGL::COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<CDadosGenerico> dados, 
 				 shared_ptr<ElectricalElements> electricalElements, shared_ptr<CInfoCircuitos> infoCircuitos) : 
         QWidget( parent),

@@ -21,21 +21,21 @@ struct intVertices
 class CContainerDesenhos
 {
 private:
-  std::vector< shared_ptr<TDesenho> > ListaDesenhos;
+  std::vector< std::shared_ptr<TDesenho> > ListaDesenhos;
   void ligaColaresEntreDesenhos();
-  static void ChecagemVerticeDuplo( shared_ptr<Graph> graph );
+  static void ChecagemVerticeDuplo( std::shared_ptr<Graph> graph );
 public:
-  shared_ptr<CInfoCircuitos> InfoCircuitos;
+  std::shared_ptr<CInfoCircuitos> InfoCircuitos;
 
   void addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, std::string fileName );
 
-  shared_ptr<TDesenho> getDesenho(int Indice);
-  void MostraCircuito(string circuito);
-  void MostraArvore(string Nome);
-  void MostraDoubleArvore(string Nome, string Nome2);
+  std::shared_ptr<TDesenho> getDesenho(int Indice);
+  void MostraCircuito(std::string circuito);
+  void MostraArvore(std::string Nome);
+  void MostraDoubleArvore(std::string Nome, std::string Nome2);
   int NumDesenhos();
   void Conclui();
-  shared_ptr<Graph> _graph;
+  std::shared_ptr<Graph> _graph;
 };
 //---------------------------------------------------------------------------
 #endif

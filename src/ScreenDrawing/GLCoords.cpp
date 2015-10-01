@@ -1,5 +1,6 @@
 ﻿
 #include "GLCoords.h"
+#include <limits>
 
 GLCoords::GLCoords( int clientWidth, int clientHeight ) :
 	xMousePress( -1 ),
@@ -57,10 +58,10 @@ void GLCoords::incZoom( double increase )
 
 void GLCoords::initializeLimits()
 {
-	menorx = Infinity;
-	menory = Infinity;
-	maiorx = -Infinity;
-	maiory = -Infinity;
+	menorx = std::numeric_limits<double>::max();
+	menory = std::numeric_limits<double>::max();
+	maiorx = -std::numeric_limits<double>::max();
+	maiory = -std::numeric_limits<double>::max();
 }
 
 

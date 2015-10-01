@@ -33,13 +33,13 @@ class CMostraDesenho
 private:
   bool ExibirCircuito;
   std::shared_ptr<TArestasCircuito> _arestasCircuito;
-  shared_ptr<CInfoCircuitos> InfoCircuitos;
+  std::shared_ptr<CInfoCircuitos> InfoCircuitos;
   bool bMostraNumVerticesDEBUG;
   bool bMostraArvore;
   bool bMostraArvore2;
   bool bMostraBola;
-  shared_ptr<TVerticeGeral> VerticeArvore;
-  shared_ptr<TVerticeGeral> VerticeArvore2;
+  std::shared_ptr<TVerticeGeral> VerticeArvore;
+  std::shared_ptr<TVerticeGeral> VerticeArvore2;
   bool destacaCoresDeEquipamentos;
   bool facilitarVerBandeirola;
   bool mostraLigacaoEquipamento;
@@ -53,7 +53,7 @@ private:
           float h, float startAngle, float endAngle );
   void DesenhaBolaFechada(float x_center, float y_center, float w,
           float h, float startAngle, float arcAngle );
-  void EscreveTexto(string texto, TPonto origem, double rotacao, double FatorAltura);  
+  void EscreveTexto(std::string texto, TPonto origem, double rotacao, double FatorAltura);  
   void drawMultipoints();
   void drawArcs();
   void showCircuit();
@@ -74,13 +74,13 @@ protected:
   bool semCores;   
 public:
   CMostraDesenho( std::shared_ptr<CDadosGenerico> dados, std::shared_ptr<ElectricalElements> electricalElements, 
-	  shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords);
+	  std::shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords);
   ~CMostraDesenho();
   void MostraCircuito(std::shared_ptr<TArestasCircuito> arestasCircuito);
   void ApagaCircuito();
   void MostraNumVerticesDEBUG(bool mostra);
-  void MostraArvore(shared_ptr<TVerticeGeral> vertice);
-  void MostraDoubleArvore(shared_ptr<TVerticeGeral> vertice, shared_ptr<TVerticeGeral> vertice2);
+  void MostraArvore(std::shared_ptr<TVerticeGeral> vertice);
+  void MostraDoubleArvore(std::shared_ptr<TVerticeGeral> vertice, std::shared_ptr<TVerticeGeral> vertice2);
   void SetDestacaCores(bool DestacaCores);
   void SetDestacaBandeirolas(bool facilita);
   void SetMostraChegaEquip(bool MostraEquip);

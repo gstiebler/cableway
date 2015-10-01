@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <memory>
 #include <map>
+#include <string>
 
 //---------------------------------------------------------------------------
 
@@ -20,8 +21,8 @@ struct TArestasCircuito
 {
 	void calcArestasDesenho();
 
-  vector< shared_ptr<TAresta> > Arestas;
-  map< TDesenho*, vector< shared_ptr<TAresta> > > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
+  std::vector< std::shared_ptr<TAresta> > Arestas;
+  std::map< TDesenho*, std::vector< std::shared_ptr<TAresta> > > ArestasDesenho;//vetor de vectors, o tamanho do vetor � o n�mero de desenhos
 };
 //----------------------------------------------------------------------------  
 
@@ -31,7 +32,7 @@ struct TAresta;
 struct TListaVerticesEArestas
 {
 	TVerticeEAresta* getVerticeEAresta(int Indice);
-	void AdicionaVerticeEAresta(shared_ptr<TVerticeGeral> vertice, shared_ptr<TAresta> aresta);
+	void AdicionaVerticeEAresta(std::shared_ptr<TVerticeGeral> vertice, std::shared_ptr<TAresta> aresta);
 	TListaVerticesEArestas(){}
 	~TListaVerticesEArestas() {}
 	TListaVerticesEArestas(const TListaVerticesEArestas &cpy);
@@ -48,15 +49,15 @@ struct TVerticeGeral
 
 	TPonto pos;
 	TTipoElemento TipoElemento;
-	shared_ptr<TListaVerticesEArestas> ListaVerticesEArestas;
-	string texto;
-	shared_ptr<TDesenho> drawing;
+	std::shared_ptr<TListaVerticesEArestas> ListaVerticesEArestas;
+	std::string texto;
+	std::shared_ptr<TDesenho> drawing;
 	TTipoVertice TipoVertice;
 	int IndiceOriginal;//usado somente na gera��o dos colares
 	bool EhColar;
 	static int counter;
 	int _autogenId;
-	string _layer;
+	std::string _layer;
 };
 //---------------------------------------------------------------------------
 
@@ -64,42 +65,42 @@ struct TAresta;
 
 struct TVerticeEAresta
 {
-	shared_ptr<TVerticeGeral> Vertice;
-    shared_ptr<TAresta> Aresta;//� a aresta que liga o vértice ao pai da lista de adjac�ncia
+	std::shared_ptr<TVerticeGeral> Vertice;
+    std::shared_ptr<TAresta> Aresta;//� a aresta que liga o vértice ao pai da lista de adjac�ncia
 };
 //--------------------------------------------------------------------------
 
 struct TVerticesGerais
 {
-  void Adiciona(shared_ptr<TVerticeGeral> Item);
-  shared_ptr<TVerticeGeral> AchaVerticePeloTexto(string Texto);
-  void ListaOrd( vector<shared_ptr<TVerticeGeral> > &ListaOrdenada);
+  void Adiciona(std::shared_ptr<TVerticeGeral> Item);
+  std::shared_ptr<TVerticeGeral> AchaVerticePeloTexto(std::string Texto);
+  void ListaOrd( std::vector<std::shared_ptr<TVerticeGeral> > &ListaOrdenada);
 
-	vector<shared_ptr<TVerticeGeral> > vertices;
+	std::vector<std::shared_ptr<TVerticeGeral> > vertices;
 };
 //---------------------------------------------------------------------------
 
 struct TAresta
 {	
-	TAresta( string layer );
+	TAresta( std::string layer );
 	TAresta( TAresta *other );
-	void AdicionaVertices( shared_ptr<TVerticeGeral> v1, shared_ptr<TVerticeGeral> v2, double dist);
+	void AdicionaVertices( std::shared_ptr<TVerticeGeral> v1, std::shared_ptr<TVerticeGeral> v2, double dist);
 	std::shared_ptr<TVerticeGeral> otherVertex( TVerticeGeral *vertex );
-	static void createAdjancency( shared_ptr<TAresta> edge );
+	static void createAdjancency( std::shared_ptr<TAresta> edge );
 
 	static int counter;
 	int _autogenId;
-	shared_ptr<TVerticeGeral> _vertices[2];
+	std::shared_ptr<TVerticeGeral> _vertices[2];
 	double Tam;
-	shared_ptr<TDesenho> _drawing;
-	string _layer;
+	std::shared_ptr<TDesenho> _drawing;
+	std::string _layer;
 };
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-bool ComparaTVerticeGeral(shared_ptr<TVerticeGeral> Item1, shared_ptr<TVerticeGeral> Item2);
+bool ComparaTVerticeGeral(std::shared_ptr<TVerticeGeral> Item1, std::shared_ptr<TVerticeGeral> Item2);
 
 #endif
 

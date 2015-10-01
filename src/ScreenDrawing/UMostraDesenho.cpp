@@ -11,6 +11,9 @@
 #include "Electrical\StraightCable.h"
 #include "Electrical\ArcCable.h"
 
+#define LINE_CLOSED 0
+#define LINE_OPEN 1
+
 using namespace std;
 
 

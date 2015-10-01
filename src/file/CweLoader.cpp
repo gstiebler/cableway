@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
-
+#include <math.h>
 
 #include "UDadosGenerico.h"
 #include "UDefines.h"

@@ -1,9 +1,9 @@
 ﻿#include "Graph.h"
 #include "UVerticesArestas.h"
 #include <queue>
+#include <limits>
 
 using namespace std;
-
 
 VerticesDjikstra::VerticesDjikstra(shared_ptr<TVerticeGeral> vertex, double Distancia)
 {
@@ -47,7 +47,7 @@ bool Graph::generateDistanceTree( shared_ptr<TVerticeGeral> vertice[2], vector< 
 	/* initialize single source */
     for ( int n = 0; n < _verticesGerais->vertices.size(); n++ )
     {
-        DistanciaDjikstra[n] = Infinity;
+        DistanciaDjikstra[n] = std::numeric_limits<double>::max();
         anterior[n] = shared_ptr<TVerticeGeral>();
 		_verticesGerais->vertices[n]->IndiceOriginal = n;
     }

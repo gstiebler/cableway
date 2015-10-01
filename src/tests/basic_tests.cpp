@@ -17,6 +17,8 @@
 #include "TestsUtil.h"
 #include "InterfaceFeedback.h"
 
+using namespace std;
+
 namespace {
 
 class BasicTest : public ::testing::Test {

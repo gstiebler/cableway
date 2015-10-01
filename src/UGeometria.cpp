@@ -6,6 +6,8 @@
 #include "UGeometria.h"
 #include "UVerticesArestas.h"
 
+using namespace std;
+
 TPonto::TPonto()
 {
 }

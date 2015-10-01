@@ -29,8 +29,8 @@ protected:
   void wheelEvent(QWheelEvent * event);
   QPainter* _painter;
 public:
-	COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, shared_ptr<CDadosGenerico> dados, 
-		std::shared_ptr<ElectricalElements> electricalElements, shared_ptr<CInfoCircuitos> infoCircuitos );
+	COpenGL(int ClientWidth, int ClientHeight, QWidget *parent, std::shared_ptr<CDadosGenerico> dados, 
+		std::shared_ptr<ElectricalElements> electricalElements, std::shared_ptr<CInfoCircuitos> infoCircuitos );
   void Resize(int ClientWidth, int ClientHeight);
   GLCoords _glCoords;
   CMostraDesenho _mostraDesenho;

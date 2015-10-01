@@ -9,6 +9,8 @@
 int TAresta::counter = 1;
 int TVerticeGeral::counter = 1;
 
+using namespace std;
+
 TAresta::TAresta( string layer ) :
 	Tam( 0.0 ),
 	_layer( layer )

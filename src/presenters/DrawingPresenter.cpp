@@ -11,6 +11,8 @@
 
 #include <interface/DrawingWindow.h>
 
+using namespace std;
+
 DrawingPresenter::DrawingPresenter( shared_ptr<CDadosGenerico> dados, shared_ptr<ElectricalElements> electricalElements,
 								   shared_ptr<CInfoCircuitos> infoCircuitos, shared_ptr<TArestasCircuito> arestasCircuito, std::string drawingName )
 {

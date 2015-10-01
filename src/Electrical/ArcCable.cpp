@@ -5,6 +5,8 @@
 #include "Graph.h"
 #include "UGeometria.h"
 
+using namespace std;
+
 ArcCable::ArcCable( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, shared_ptr<TArco> arc ) :
 	ElectricalElement( graph, drawing ), 
 	_arc( arc )
