@@ -130,3 +130,25 @@ void Debug::generateDOTGraph( vector<shared_ptr<TVerticeGeral> >& vertices, stri
 	out << "}";
     file.close(); 
 }
+
+
+void Debug::printEdges( std::string source, std::string dest, const std::vector< shared_ptr<TAresta> > &edgesList )
+{	
+	string fileName = _projPath + "/debug/" + source + "_" + dest + "_" + "arestas.txt";
+	QFile file( QString::fromLatin1( fileName.c_str() ) );
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+	out << "Circuito: " << QString::fromUtf8( source.c_str() ) << "/" << QString::fromUtf8( dest.c_str() );
+	for( auto edge : edgesList )
+	{
+		out << "Tamanho: " << edge->Tam << "\n";
+		for( auto vertex : edge->_vertices )
+		{
+			out << "  Texto: " << QString::fromUtf8( vertex->texto.c_str() ) << "\n";
+			out << "  Pos: " << vertex->pos.x << ", " << vertex->pos.y << "\n";
+		}
+		out << "\n";
+	}
+ 
+    file.close(); 
+}
