@@ -8,6 +8,7 @@
 
 #include "UArmazenamentoCircuitos.h"
 #include "Graph.h"
+#include "Debug.h"
 
 using namespace std;
 
@@ -221,6 +222,8 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 		tam = 0;
 		for(int i(0); i < ListaArestas.size(); ++i)
 			tam += ListaArestas[i]->Tam;
+
+		Debug::printEdges( Origem, Destino, ListaArestas );
     }
     else
 		tam=0;
