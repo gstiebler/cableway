@@ -19,8 +19,10 @@ ArcCable::ArcCable( shared_ptr<Graph> graph, shared_ptr<TDesenho> drawing, share
 void ArcCable::addInternalEdge()
 {
 	TPonto p[2];
+	_arc->PontasArco( p );
 	shared_ptr<TAresta> Aresta = make_shared<TAresta>( _arc->layerName );
-	Aresta->AdicionaVertices( _edges[0], _edges[1], DistPontosManhattan( p[0], p[1] ) );
+	double dist = DistPontosManhattan( p[0], p[1] );
+	Aresta->AdicionaVertices( _edges[0], _edges[1], dist );
     Aresta->_drawing = _drawing;
 	_graph->_arestas.push_back( Aresta );
 }
