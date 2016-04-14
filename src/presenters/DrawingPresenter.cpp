@@ -11,10 +11,12 @@
 
 #include <interface/DrawingWindow.h>
 
-DrawingPresenter::DrawingPresenter( shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, 
-								   shared_ptr<TArestasCircuito> arestasCircuito, std::string drawingName )
+using namespace std;
+
+DrawingPresenter::DrawingPresenter( shared_ptr<CDadosGenerico> dados, shared_ptr<ElectricalElements> electricalElements,
+								   shared_ptr<CInfoCircuitos> infoCircuitos, shared_ptr<TArestasCircuito> arestasCircuito, std::string drawingName )
 {
-    _window = new DrawingWindow(grafoDesenho, infoCircuitos, drawingName);
+    _window = new DrawingWindow( dados, electricalElements, infoCircuitos, drawingName );
     _window->show();
 
 	//mostraCircuito( circuitIndex );
@@ -24,12 +26,6 @@ DrawingPresenter::DrawingPresenter( shared_ptr<CGrafoDesenho> grafoDesenho, shar
 
     connect( _window, SIGNAL( dialogClose() ), this, SLOT( windowClosed() ) );
     connect( _window, SIGNAL( optionsChanged() ), this, SLOT( optionsChanged() ) );
-}
-
-
-
-DrawingPresenter::~DrawingPresenter()
-{
 }
 
 

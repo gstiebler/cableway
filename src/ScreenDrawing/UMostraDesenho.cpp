@@ -1,11 +1,18 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "UMostraDesenho.h"
-#include <UGrafoDesenho.h>
-#include "UInfoCircuitos.h"
 #include <math.h>
 #include <time.h>
 #include <assert.h>
+#include "UInfoCircuitos.h"
+#include "UDadosGenerico.h"
+#include "Electrical\ElectricalElements.h"
+#include "Electrical\Bandeirola.h"
+#include "Electrical\StraightCable.h"
+#include "Electrical\ArcCable.h"
+
+#define LINE_CLOSED 0
+#define LINE_OPEN 1
 
 using namespace std;
 
@@ -26,15 +33,17 @@ unsigned char pegaVermelho ( int cor )
 }
 
 
-CMostraDesenho::CMostraDesenho(shared_ptr<CGrafoDesenho> grafoDesenho, shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords) :
+CMostraDesenho::CMostraDesenho(  std::shared_ptr<CDadosGenerico> dados, std::shared_ptr<ElectricalElements> electricalElements, 
+	  shared_ptr<CInfoCircuitos> infoCircuitos, GLCoords *glCoords ) :
         bMostraArvore2( false ),
         xBola( -1 ),
         yBola( - 1),
         tamBola( -1 ),
-		_glCoords( glCoords )
+		_glCoords( glCoords ),
+		_dados( dados ),
+		_electricalElements( electricalElements )
 {
   semCores = false;
-	GrafoDesenho=grafoDesenho;
 	InfoCircuitos=infoCircuitos;
 	ExibirCircuito=false;
 	bMostraNumVerticesDEBUG=false;
@@ -59,26 +68,16 @@ void CMostraDesenho::initializeLimits()
 {	
 	float x, y;
 	_glCoords->initializeLimits();
-	if (GrafoDesenho->_ult > GrafoDesenho->_dados->Multipoint.size())
-		GrafoDesenho->_ult = GrafoDesenho->_dados->Multipoint.size();
-	for (int n=0; n<GrafoDesenho->_ult; n++)
-	{
-		vector<TPonto> &points = GrafoDesenho->_dados->Multipoint[n]->pontos;
-		int numPoints = points.size();
-		for (int i=0; i < numPoints; i++)
-		{
-			x = points[i].x;
-			y = points[i].y;
+	for ( auto multiPoint : _dados->Multipoint )
+		for ( auto point : multiPoint->pontos )
+			_glCoords->updateLimits( point.x, point.y );
 
-			_glCoords->updateLimits( x, y );
-		}
-	}
-	for ( int i=0; i<GrafoDesenho->_dados->Arcos.size(); i++)
+	for ( auto arc : _dados->Arcos )
 	{
-			x = GrafoDesenho->_dados->Arcos[i]->Centro.x;
-			y = GrafoDesenho->_dados->Arcos[i]->Centro.y;
+			x = arc->Centro.x;
+			y = arc->Centro.y;
 
-			double raio = GrafoDesenho->_dados->Arcos[i]->EixoPrimario;
+			double raio = arc->EixoPrimario;
 
 			_glCoords->updateLimits( x + raio, y + raio );
 	}
@@ -107,9 +106,6 @@ void CMostraDesenho::setColorFromLevel( int level )
 	QColor color;
 	switch ( level )
 	{
-		case CALHA:
-			setColor( 0, 255, 255 );
-			break;
 		case CABO:
 			setColor( pegaVermelho(CORCABO), pegaVerde(CORCABO), pegaAzul(CORCABO) );
 			break;
@@ -137,10 +133,8 @@ void CMostraDesenho::drawMultipoints()
 {
 	_pen.setWidth( 2 );
 	_painter->setPen( _pen );
-	for (int n=0; n<GrafoDesenho->_dados->Multipoint.size(); n++)
-			//    for (int n=GrafoDesenho->pri; n<GrafoDesenho->ult; n++)
+	for ( auto multipoint : _dados->Multipoint )
 	{
-		shared_ptr<TMultipoint> multipoint = GrafoDesenho->_dados->Multipoint[n];
 		setColor(multipoint->CorR, multipoint->CorG, multipoint->CorB);
 		if (destacaCoresDeEquipamentos)
 			setColorFromLevel( multipoint->Nivel );
@@ -176,9 +170,8 @@ void CMostraDesenho::drawMultipoints()
 void CMostraDesenho::drawArcs()
 {
 	assert( _painter );
-	for (int n=0; n<GrafoDesenho->_dados->Arcos.size(); n++)
+	for ( auto arc : _dados->Arcos )
 	{
-		shared_ptr<TArco> arc = GrafoDesenho->_dados->Arcos[n];
 		setColor( arc->CorR, arc->CorG, arc->CorB);
 		if ( destacaCoresDeEquipamentos )
 			setColorFromLevel( arc->Nivel );
@@ -195,9 +188,9 @@ void CMostraDesenho::showCircuit()
 {
 	TPonto Pontos[2];
 	setColor( pegaVermelho(CORCAMINHO), pegaVerde(CORCAMINHO), pegaAzul(CORCAMINHO) );
-	_pen.setWidth( 3 );
+	//_pen.setWidth( 3 );
 	_painter->setPen( _pen );
-	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[GrafoDesenho->_dados->_drawing.get()];
+	vector< shared_ptr<TAresta> > &edges = _arestasCircuito->ArestasDesenho[ _dados->_drawing.get() ];
 
 	int ini = 0;
 	int end = edges.size()-1;
@@ -212,7 +205,7 @@ void CMostraDesenho::showCircuit()
 		QLineF line( QPoint( Pontos[0].x, Pontos[0].y ), QPoint( Pontos[1].x, Pontos[1].y ) );
 		_painter->drawLine( line );
 	}
-	_pen.setWidth( 1 );
+	//_pen.setWidth( 1 );
 	_painter->setPen( _pen );
 }
 
@@ -222,11 +215,11 @@ void CMostraDesenho::showTree()
 {
 	string origem = VerticeArvore->texto.c_str();
 	setColor( pegaVermelho(CORARVORE), pegaVerde(CORARVORE), pegaAzul(CORARVORE));
-	_pen.setWidth( 3.0 );
+	//_pen.setWidth( 3.0 );
 	_painter->setPen( _pen );
 
 	vector< shared_ptr<TAresta> > Arestas;
-	InfoCircuitos->Arvore(VerticeArvore, Arestas, GrafoDesenho->_dados->_drawing);
+	InfoCircuitos->Arvore(VerticeArvore, Arestas, _dados->_drawing);
 	shared_ptr<TAresta> Aresta;
 	TPonto Pontos[2];
 	for (int n=0; n<(int)Arestas.size(); n++)
@@ -247,7 +240,7 @@ void CMostraDesenho::showTree()
 			DesenhaBolaFechada(Pontos[1].x, Pontos[1].y, _glCoords->getWorldWidth()/TAMBOLACOLAR, _glCoords->getWorldWidth()/TAMBOLACOLAR, 0, 2*M_PI );
 		}
 	}
-	_pen.setWidth( 1.0 );
+	//_pen.setWidth( 1.0 );
 	_painter->setPen( _pen );
 	if (bMostraArvore2)
 	{
@@ -257,11 +250,11 @@ void CMostraDesenho::showTree()
 //				    ponteiroPraFuncao(ponteiroProThis, origem , destino);
 		setColor(pegaVermelho(CORARVORE2), pegaVerde(CORARVORE2), pegaAzul(CORARVORE2));
 		//			glColor3f(0.7, 0.0, 0.7);
-	_pen.setWidth( 1.0 );
+	//_pen.setWidth( 1.0 );
 	_painter->setPen( _pen );
 
 		vector< shared_ptr<TAresta> > Arestas;
-		InfoCircuitos->Arvore(VerticeArvore2, Arestas, GrafoDesenho->_dados->_drawing);
+		InfoCircuitos->Arvore(VerticeArvore2, Arestas, _dados->_drawing);
 		TPonto Pontos[2];
 		for (int n=0; n<(int)Arestas.size(); n++)
 		{
@@ -285,75 +278,45 @@ void CMostraDesenho::showTree()
 
 
 
+template<class T>
+void CMostraDesenho::showDisconnectedCircuitEndings( std::vector< std::shared_ptr<T> > &geometricEdges )
+{
+	// TODO set a dynamic size
+	const int GAMBIARRA_SIZE = 10.0;
+	for ( auto element : geometricEdges )
+		for( auto edge : element->_edges )
+			if( edge->ListaVerticesEArestas->list.size() == 1 )
+				DesenhaBolaFechada( edge->pos.x, edge->pos.y, GAMBIARRA_SIZE, GAMBIARRA_SIZE, 0, 2*M_PI );
+}
+
+
 void CMostraDesenho::showDisconnectedCircuitEndings()
 {
-	setColor(pegaVermelho(CORINSTRUMENTODESCON), pegaVerde(CORINSTRUMENTODESCON), pegaAzul(CORINSTRUMENTODESCON));
-	for ( int i = 0 ; i < GrafoDesenho->_cabosReta.size() ; i++ )
-	{
-		if ( !GrafoDesenho->_cabosReta[i]->ponta[0] )
-		{
-			TPonto pontos = GrafoDesenho->_cabosReta[i]->_multipoint->pontos[0];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-		if ( !GrafoDesenho->_cabosReta[i]->ponta[1] )
-		{
-			int tam = GrafoDesenho->_cabosReta[i]->_multipoint->pontos.size();
-			TPonto pontos = GrafoDesenho->_cabosReta[i]->_multipoint->pontos[tam-1];
-			DesenhaBolaFechada(pontos.x, pontos.y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-	}
-
-	for ( int i = 0 ; i < GrafoDesenho->_cabosArco.size() ; i++ )
-	{
-		TPonto pontos[2];
-		GrafoDesenho->_cabosArco[i]->_arco->PontasArco(pontos);
-		if ( !GrafoDesenho->_cabosArco[i]->ponta[0] )
-		{
-			DesenhaBolaFechada(pontos[0].x, pontos[0].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-		if ( !GrafoDesenho->_cabosArco[i]->ponta[1] )
-		{
-			DesenhaBolaFechada(pontos[1].x, pontos[1].y, GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
-	}
+	showDisconnectedCircuitEndings( _electricalElements->_straightCables );
+	showDisconnectedCircuitEndings( _electricalElements->_arcCables );
 }
 
 
 
 void CMostraDesenho::showBandeirolaEndings()
-{
-	for (int n=0; n<(int)GrafoDesenho->_pontosPraMostrarBandeirola.size();n++)
+{		
+	setColor(1.0, 1.0, 1.0);
+	_pen.setWidth( 4.0 );
+	for ( auto bandeirola : _electricalElements->_bandeirolas )
 	{
-		TPontosBandeirola &pontosPraMostrarBandeirola = GrafoDesenho->_pontosPraMostrarBandeirola[n];
-		setColor(1.0, 1.0, 1.0);
-		_pen.setWidth( 4.0 );
-		_painter->setPen( _pen );
-		double dist = DistPontos(pontosPraMostrarBandeirola.NaBandeirola, pontosPraMostrarBandeirola.NoCabo);
-		if (dist > GrafoDesenho->_distMinElemCaboPraOpenGL) // Se a distância entre os pontos não for muito pequena mostra uma reta
-		{
-			QPoint inBandeirola( pontosPraMostrarBandeirola.NaBandeirola.x, pontosPraMostrarBandeirola.NaBandeirola.y );
-			QPoint inCable( pontosPraMostrarBandeirola.NoCabo.x, pontosPraMostrarBandeirola.NoCabo.y );
-			QLineF line( inBandeirola, inCable );
-			_painter->drawLine( line );
-		}
-		else // Senão, faz um círculo em volta dos pontos
-		{
-			DesenhaArco( pontosPraMostrarBandeirola.NoCabo.x, pontosPraMostrarBandeirola.NoCabo.y,
-					GrafoDesenho->_distMinElemCaboPraOpenGL*4, GrafoDesenho->_distMinElemCaboPraOpenGL*4, 0, 2*M_PI );
-		}
+		double size = bandeirola->getWidth() * 0.2;
+		DesenhaArco( bandeirola->_edges[0]->pos.x, bandeirola->_edges[0]->pos.y, size, size, 0, 2*M_PI );
+	}
 	_pen.setWidth( 1.0 );
 	_painter->setPen( _pen );
-	}
 }
 
 
 
 void CMostraDesenho::drawTexts()
 {
-	for (int n=0; n<GrafoDesenho->_dados->Textos.size(); n++)
+	for ( auto texto : _dados->Textos)
 	{
-		shared_ptr<TTexto> texto = GrafoDesenho->_dados->Textos[n];
-
 		if ( destacaCoresDeEquipamentos )
 		{
 			setColorFromLevel( texto->Nivel );

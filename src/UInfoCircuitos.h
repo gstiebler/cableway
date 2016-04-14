@@ -23,22 +23,22 @@ class Graph;
 class CInfoCircuitos
 {
 private:
-  static void SeparaRota(std::string ListaPontos, vector<string> &ListaRota);
-  static void MergeRota(vector<std::string> &rota, vector<std::string> NovaParte);
-  set<string> getLevelsFromVertex( shared_ptr<TVerticeGeral> vertexIndex ) const;
+  static void SeparaRota(std::string ListaPontos, std::vector<std::string> &ListaRota);
+  static void MergeRota(std::vector<std::string> &rota, std::vector<std::string> NovaParte);
+  std::set<std::string> getLevelsFromVertex( std::shared_ptr<TVerticeGeral> vertexIndex ) const;
 
 public:      
-  CInfoCircuitos( shared_ptr<Graph> graph );
+  CInfoCircuitos( std::shared_ptr<Graph> graph );
   ~CInfoCircuitos();
   void AdicionaCircuito(TCircuito &Circuito);
-  static void PontosAresta(TPonto Pontos[2], shared_ptr<TAresta> Aresta);
-  vector< shared_ptr<TAresta> >& ArestasCircuito( std::string circuitName, shared_ptr<TDesenho> drawing) const;
-  bool GeraRota(string V1, string V2, string ListaPontos, double &tam, vector<string> &rota, shared_ptr<TArestasCircuito> ArestasCircuito) const;
-  bool GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &ListaArestas) const;
-  void Arvore( shared_ptr<TVerticeGeral> Vertice, std::vector< shared_ptr<TAresta> > &ListaArestas, shared_ptr<TDesenho> drawing) const; 
+  static void PontosAresta(TPonto Pontos[2], std::shared_ptr<TAresta> Aresta);
+  std::vector< std::shared_ptr<TAresta> >& ArestasCircuito( std::string circuitName, std::shared_ptr<TDesenho> drawing) const;
+  bool GeraRota(std::string V1, std::string V2, std::string ListaPontos, double &tam, std::vector<std::string> &rota, std::shared_ptr<TArestasCircuito> ArestasCircuito) const;
+  bool GeraRota(std::string Destino, std::string Origem, double &tam, std::vector<std::string> &rota, std::vector< std::shared_ptr<TAresta> > &ListaArestas) const;
+  void Arvore( std::shared_ptr<TVerticeGeral> Vertice, std::vector< std::shared_ptr<TAresta> > &ListaArestas, std::shared_ptr<TDesenho> drawing) const; 
 
-  std::map<std::string, shared_ptr<TArestasCircuito> > _circuitEdges;//arestas de um determinado circuito, indexado pelo nome
-  shared_ptr<Graph> _graph;
+  std::map<std::string, std::shared_ptr<TArestasCircuito> > _circuitEdges;//arestas de um determinado circuito, indexado pelo nome
+  std::shared_ptr<Graph> _graph;
 };                                     
 //---------------------------------------------------------------------------
 

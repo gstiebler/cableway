@@ -13,17 +13,18 @@
 
 #include "ui_DrawingWindow.h"
 
-class CGrafoDesenho;
+class CDadosGenerico;
 class CInfoCircuitos;	
 class COpenGL;
+class ElectricalElements;
 
 class DrawingWindow : public QDialog, private Ui::Dialog
 {
     Q_OBJECT
 
 public:
-    DrawingWindow( std::shared_ptr<CGrafoDesenho> grafoDesenho, std::shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName);
-    virtual ~DrawingWindow();
+    DrawingWindow( std::shared_ptr<CDadosGenerico> dados, std::shared_ptr<ElectricalElements> electricalElements, 
+		std::shared_ptr<CInfoCircuitos> infoCircuitos, std::string drawingName);
 
 	void getOptions( bool &showOriginalColors, bool &showDisconnectedCables, bool &showBandeirolas, bool &showEquipmentEnding );
 

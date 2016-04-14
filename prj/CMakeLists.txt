@@ -48,7 +48,7 @@ set( SCREEN_DRAWING_SOURCES
 
 set( GRAPH_RELATED_SOURCES
     ${SRC_BASE}/Graph.cpp
-    ${SRC_BASE}/UGrafoDesenho.cpp
+    ${SRC_BASE}/GraphBuilder.cpp
     ${SRC_BASE}/UVerticesArestas.cpp
 )
 
@@ -62,6 +62,15 @@ set( UTILS_SOURCES
     ${SRC_BASE}/Debug.cpp
     ${SRC_BASE}/UErros.cpp
     ${SRC_BASE}/UGeometria.cpp
+)
+
+set( ELECTRICAL_SOURCES
+    ${SRC_BASE}/Electrical/ElectricalElementsBuilder.cpp
+    ${SRC_BASE}/Electrical/ArcCable.cpp
+    ${SRC_BASE}/Electrical/StraightCable.cpp
+    ${SRC_BASE}/Electrical/Instrument.cpp
+    ${SRC_BASE}/Electrical/Bandeirola.cpp
+    ${SRC_BASE}/Electrical/ElectricalElement.cpp
 )
 
 set( ALL_SOURCES 
@@ -78,6 +87,7 @@ set( ALL_SOURCES
     ${GRAPH_RELATED_SOURCES}
     ${CAD_DRAWING_SOURCES}
     ${UTILS_SOURCES}
+    ${ELECTRICAL_SOURCES}
 )
 
 source_group( "Source Files\\Presenters" FILES ${PRESENTER_SOURCES} )
@@ -88,6 +98,7 @@ source_group( "Source Files\\ScreenDrawing" FILES ${SCREEN_DRAWING_SOURCES} )
 source_group( "Source Files\\GraphRelated" FILES ${GRAPH_RELATED_SOURCES} )
 source_group( "Source Files\\CadDrawing" FILES ${CAD_DRAWING_SOURCES} )
 source_group( "Source Files\\Utils" FILES ${UTILS_SOURCES} )
+source_group( "Source Files\\Electrical" FILES ${ELECTRICAL_SOURCES} )
             
 SET( QT_UIS
      ${QT_UI_BASE_PATH}/MainWindow.ui

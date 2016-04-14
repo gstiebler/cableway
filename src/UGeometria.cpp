@@ -6,6 +6,30 @@
 #include "UGeometria.h"
 #include "UVerticesArestas.h"
 
+using namespace std;
+
+TPonto::TPonto()
+{
+}
+
+
+TPonto::TPonto( double X, double Y ) :
+	x( X ),
+	y( Y )
+{}
+
+
+TPonto& TPonto::operator-( TPonto &other )
+{
+	return TPonto( x - other.x, y - other.y );
+}
+
+
+double TPonto::getLength()
+{
+	return sqrt( x * x + y * y );
+}
+
 
 void PontoMaisDistante(TPonto ponto, vector<TPonto> pontos,
 		TPonto &maisDist)

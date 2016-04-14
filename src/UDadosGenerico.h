@@ -19,7 +19,7 @@ struct TElemento
 	int Nivel;
 	int Peso;
 	int Estilo;
-	string layerName;
+	std::string layerName;
 	TElemento()
 	{
 		ID = Nivel = Peso = Estilo = 0;
@@ -57,7 +57,7 @@ struct TArco: public TElemento
 	// Sweep angle (degrees)
 	double AngEnd;
 	// �ndice dos vertices 
-	std::vector< shared_ptr<TVerticeGeral> > _vertices;
+	std::vector< std::shared_ptr<TVerticeGeral> > _vertices;
   ///<summary>Fun��o que calcula as duas pontas de um arco.</summary>
   ///<param name"Arco">O Arco.</param>
   ///<param name"pontas">O ponteiro para o vetor de pontas</param>
@@ -77,7 +77,7 @@ struct TTexto: public TElemento
 {
 	TPonto origem;
 	double rotacao;
-	string texto;
+	std::string texto;
 	double FatorAltura;
 	TTexto() : TElemento()
 	{
@@ -90,12 +90,12 @@ class CDadosGenerico
 {
 protected:
 public:
-	shared_ptr<TDesenho> _drawing;
+	std::shared_ptr<TDesenho> _drawing;
 	TInfoCelula InfoCelula;
-	string NomeArq;
-	vector< std::shared_ptr<TMultipoint> > Multipoint;
-	vector< std::shared_ptr<TArco> > Arcos;
-	vector< std::shared_ptr<TTexto> > Textos;
+	std::string NomeArq;
+	std::vector< std::shared_ptr<TMultipoint> > Multipoint;
+	std::vector< std::shared_ptr<TArco> > Arcos;
+	std::vector< std::shared_ptr<TTexto> > Textos;
 	CDadosGenerico();
 	~CDadosGenerico ();
 };

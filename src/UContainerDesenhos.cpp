@@ -4,19 +4,26 @@
 #include "UErros.h"
 #include "TDesenho.h"
 #include "Graph.h"
+#include "Electrical/ElectricalElementsBuilder.h"
+#include "Electrical/ElectricalElements.h"
+#include "GraphBuilder.h"
+#include "UDadosGenerico.h"
 
+using namespace std;
 
 void CContainerDesenhos::addDrawing( std::shared_ptr<CDadosGenerico> dados, double altura, string fileName )
 {
     // Cria um novo desenho
     shared_ptr<TDesenho> desenho = make_shared<TDesenho>();
-
-    // O Id
 	dados->_drawing = desenho;
-
-    // E o ID
     desenho->Altura = altura;
-    desenho->GrafoDesenho = make_shared<CGrafoDesenho>( make_shared<Graph>(), dados);
+	desenho->_dados = dados;
+	desenho->_graph =  make_shared<Graph>();
+	desenho->_electricalElements = make_shared<ElectricalElements>();
+
+	ElectricalElementsBuilder elementsBuilder( desenho->_graph, dados, desenho->_electricalElements );
+	elementsBuilder.build();
+	GraphBuilder::build( desenho->_graph, desenho->_electricalElements );
 	desenho->NomeArquivo = fileName;
 
     ListaDesenhos.push_back( desenho );
@@ -34,45 +41,19 @@ int CContainerDesenhos::NumDesenhos()
 }
 //---------------------------------------------------------------------------
 
-bool CContainerDesenhos::verificaTextoWrap(void* PonteiroThis, const char *str)
-{
-  CContainerDesenhos *interno = (CContainerDesenhos*)PonteiroThis;
-  return interno->verificaTexto(str);
-}
-bool CContainerDesenhos::verificaTexto(string str)
-{
-  bool exists = false;
-  for ( int j = 0 ; j < NumDesenhos() ; j++ )
-  {
-    shared_ptr<TDesenho> pnt = getDesenho(j);
-    for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
-    {
-      if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == str )
-      {
-        exists = true;
-        break;
-      }
-    }
-    if ( exists )
-      break;
-  }
-  return exists;
-}
-
 
 void CContainerDesenhos::Conclui()
 {
 	_graph = make_shared<Graph>();
 	for( int i(0); i < ListaDesenhos.size(); ++i)
 	{
-		_graph->merge( ListaDesenhos[i]->GrafoDesenho->_graph );
+		_graph->merge( ListaDesenhos[i]->_graph );
 	}
 
     if (ListaDesenhos.size() > 1)
     {
-		shared_ptr<CGrafoDesenho> grafoDesenho = ListaDesenhos[0]->GrafoDesenho;
         // Checa vertices duplos(?)
-        grafoDesenho->ChecagemVerticeDuplo( ListaDesenhos );
+		ChecagemVerticeDuplo( ListaDesenhos[0]->_graph );
         ligaColaresEntreDesenhos();
     }
     // Cria um novo InfoCircuitos baseado nos par�metros
@@ -82,6 +63,61 @@ void CContainerDesenhos::Conclui()
 }
 //---------------------------------------------------------------------------
 
+
+void CContainerDesenhos::ChecagemVerticeDuplo( shared_ptr<Graph> graph )
+{
+    int n;
+    vector< shared_ptr<TVerticeGeral> > Lista;
+    graph->_verticesGerais->ListaOrd( Lista );  //gera lista ordenada
+    shared_ptr<TVerticeGeral> V1, V2;
+    string Ultimo;
+    for (n = 0; n < (int) (Lista.size() - 1); n++)
+    {
+        V1 = Lista[ n ];
+        if (V1->texto == "")
+			continue;
+
+        V2 = Lista[ n + 1 ];
+        if (V1->texto != V2->texto)
+			continue;
+
+		if (V1->drawing.get() != V2->drawing.get()
+                && (V1->TipoElemento == INSTRUMENTO && V2->TipoElemento == INSTRUMENTO)
+                && (n + 2 < (int) (Lista.size() - 1)
+                        && (Lista[ n + 1 ])->texto != V1->texto))
+        {
+            n++;
+            break;
+        }
+
+        CErrosMsg *erros = CErrosMsg::getInstance();
+        erros->novoErro( "Elementos com o texto \"" + V1->texto + "\" repetido: " );
+
+        for (; n < (int) Lista.size(); n++)
+        {
+            if ((Lista[ n ])->texto != V1->texto)
+				break;
+            string tipo;
+            if ( Lista[ n ]->TipoElemento == INSTRUMENTO)
+            {
+                tipo = "Equipamento";
+            }
+            else if ( Lista[ n ]->TipoElemento == CABO)
+            {
+                tipo = "Cabo";
+            }
+            else if ( Lista[ n ]->TipoElemento == BANDEIROLA)
+            {
+                tipo = "Bandeirola";
+            }
+            else
+                tipo = "Desconhecido";
+
+			erros->novoErro( "No desenho: " + (Lista[ n ])->drawing->NomeArquivo + " em nível de " + tipo );
+        }
+        erros->novoErro( "" );
+    }
+}
 
 
 void CContainerDesenhos::ligaColaresEntreDesenhos()
@@ -110,7 +146,6 @@ void CContainerDesenhos::ligaColaresEntreDesenhos()
 //---------------------------------------------------------------------------
 
 
-
 void CContainerDesenhos::MostraCircuito(string circuito)
 {
   bool AchouCircuito;
@@ -125,19 +160,18 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       {
         exists = false;
         equips = false;
-        for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
+		for ( auto drawing : ListaDesenhos )
         {
-          shared_ptr<TDesenho> pnt = getDesenho(j);
-          for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
-          {
-            if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Origem )
-            {
-              exists = true;
-              break;
-            }
-          }
-          if ( exists )
-            break;
+			for ( auto text : drawing->_dados->Textos )
+			{
+				if ( text->texto == Circuito.Origem )
+				{
+					exists = true;
+					break;
+				}
+			}
+			if ( exists )
+			break;
         }
 
         if ( exists )
@@ -151,17 +185,16 @@ void CContainerDesenhos::MostraCircuito(string circuito)
       {
         exists = false;
         equips = false;
-        for ( int j = 0 ; j < this->NumDesenhos() ; j++ )
+		for ( auto drawing : ListaDesenhos )
         {
-          shared_ptr<TDesenho> pnt = getDesenho(j);
-          for ( int i = 0 ; i < (int)pnt->GrafoDesenho->_dados->Textos.size() ; i++ )
-          {
-            if ( pnt->GrafoDesenho->_dados->Textos[i]->texto == Circuito.Destino )
-            {
-              exists = true;
-              break;
-            }
-          }
+			for ( auto text : drawing->_dados->Textos )
+			{
+				if ( text->texto == Circuito.Destino )
+				{
+					exists = true;
+					break;
+				}
+			}
           if ( exists )
             break;
         }

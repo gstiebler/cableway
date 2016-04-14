@@ -178,7 +178,7 @@ set<string> CInfoCircuitos::getLevelsFromVertex( shared_ptr<TVerticeGeral> verte
 }
 
 
-bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &ListaArestas ) const
+bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector<string> &rota, vector< shared_ptr<TAresta> > &edgesList ) const
 {
     int n, m;
 	shared_ptr<TVerticeGeral> vertice[2];
@@ -216,14 +216,14 @@ bool CInfoCircuitos::GeraRota(string Destino, string Origem, double &tam, vector
 	
     if(achou_final)
     {
-		_graph->getEdgesFromPath( anterior, vArestas, ListaArestas, rota, vertice[1] );
+		_graph->getEdgesFromPath( anterior, vArestas, edgesList, rota, vertice[1] );
 		rota.push_back( Destino );
 		
 		tam = 0;
-		for(int i(0); i < ListaArestas.size(); ++i)
-			tam += ListaArestas[i]->Tam;
+		for( auto edge : edgesList )
+			tam += edge->Tam;
 
-		Debug::printEdges( Origem, Destino, ListaArestas );
+		Debug::printEdges( Origem, Destino, edgesList );
     }
     else
 		tam=0;
